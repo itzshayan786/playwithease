@@ -8,209 +8,324 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
-body{background:#f8fafc;color:#0f172a}
+body{
+  background:#f8fafc;
+  color:#0f172a;
+}
 
 /* HEADER */
-header{background:#fff;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:100}
-.header-wrap{max-width:1200px;margin:auto;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
-.logo{display:flex;align-items:center;gap:12px}
-.logo img{width:42px;height:42px;border-radius:10px}
-.logo .name{font-size:20px;font-weight:800}
-.logo .tag{font-size:11px;color:#64748b}
-nav a{margin-left:18px;text-decoration:none;color:#334155;font-size:14px}
+header{
+  background:#fff;
+  border-bottom:1px solid #e5e7eb;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+.header-wrap{
+  max-width:1200px;
+  margin:auto;
+  padding:16px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+/* LOGO (FAVICON AS LOGO) */
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.logo img{
+  width:42px;
+  height:42px;
+  border-radius:10px;
+}
+.logo .name{
+  font-size:20px;
+  font-weight:800;
+}
+.logo .tag{
+  display:block;
+  font-size:11px;
+  color:#64748b;
+}
+
+/* NAV */
+nav a{
+  margin-left:18px;
+  text-decoration:none;
+  color:#334155;
+  font-size:14px;
+}
 nav a:hover{color:#2563eb}
-.cart-count{background:#2563eb;color:#fff;border-radius:999px;padding:2px 7px;font-size:11px}
+.cart-count{
+  background:#2563eb;
+  color:#fff;
+  border-radius:999px;
+  padding:2px 7px;
+  font-size:11px;
+  margin-left:4px;
+}
 
 /* HERO */
 .hero{
-  max-width:1200px;margin:40px auto;padding:40px;
-  display:grid;grid-template-columns:1.2fr 1fr;
-  gap:40px;align-items:center;
-  background:linear-gradient(180deg,#f8fafc,#eef2ff);
-  border-radius:28px
+  max-width:1200px;
+  margin:50px auto;
+  padding:0 20px;
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:40px;
+  align-items:center;
 }
-.hero h1{font-size:42px;line-height:1.2}
+.hero h1{
+  font-size:42px;
+  line-height:1.2;
+}
 .hero h1 span{color:#2563eb}
-.hero p{margin-top:12px;color:#475569}
+.hero p{
+  margin-top:14px;
+  color:#475569;
+}
 .actions{margin-top:22px}
-.btn{padding:12px 24px;border-radius:8px;font-weight:600;text-decoration:none;margin-right:10px;cursor:pointer}
-.btn.primary{background:#2563eb;color:#fff}
-.btn.secondary{border:1px solid #cbd5f5;color:#2563eb;background:#fff}
-
-/* TRUST BAR */
-.trust-bar{margin-top:18px;display:flex;gap:14px;flex-wrap:wrap;font-size:13px}
-.trust-bar span{background:#fff;padding:6px 12px;border-radius:999px;border:1px solid #e5e7eb}
+.btn{
+  display:inline-block;
+  padding:12px 24px;
+  border-radius:8px;
+  font-weight:600;
+  text-decoration:none;
+  margin-right:10px;
+  transition:.25s;
+}
+.btn.primary{
+  background:#2563eb;
+  color:#fff;
+}
+.btn.primary:hover{transform:translateY(-2px)}
+.btn.secondary{
+  border:1px solid #cbd5f5;
+  color:#2563eb;
+  background:#fff;
+}
 
 /* SECTION */
-.section{max-width:1200px;margin:auto;padding:60px 20px}
-.section h2{font-size:26px;margin-bottom:16px}
-
-/* CATEGORY */
-.category-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-.cat-btn{padding:8px 16px;border-radius:999px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;font-size:13px}
-.cat-btn.active{background:#2563eb;color:#fff;border-color:#2563eb}
-
-/* SEARCH */
-.search-wrap{max-width:420px;margin-bottom:28px}
-.search-wrap input{
-  width:100%;padding:14px 18px;border-radius:999px;
-  border:1px solid #cbd5e1;font-size:14px
+.section{
+  max-width:1200px;
+  margin:auto;
+  padding:60px 20px;
+}
+.section h2{
+  font-size:26px;
+  margin-bottom:26px;
 }
 
 /* GRID */
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:22px}
-
-/* CARD */
-.card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;position:relative}
-.card img{width:100%;height:180px;object-fit:cover}
-.card .info{padding:14px}
-.card h4{font-size:14px}
-.card p{font-size:12px;color:#64748b}
-.card b{display:block;margin:6px 0;color:#2563eb}
-.card button{
-  background:#2563eb;color:#fff;border:none;
-  padding:7px 14px;border-radius:6px;font-size:12px
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:22px;
 }
 
-/* BADGE */
-.badge{
-  position:absolute;top:10px;left:10px;
-  background:#16a34a;color:#fff;
-  font-size:11px;font-weight:700;
-  padding:4px 8px;border-radius:999px
+/* CARD */
+.card{
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  overflow:hidden;
+  opacity:0;
+  transform:translateY(20px);
+  transition:.4s;
+}
+.card.show{
+  opacity:1;
+  transform:translateY(0);
+}
+.card:hover{
+  box-shadow:0 12px 28px rgba(0,0,0,.08);
+  transform:translateY(-4px);
+}
+.card img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+}
+.card .info{
+  padding:14px;
+}
+.card h4{
+  font-size:14px;
+}
+.card p{
+  font-size:12px;
+  color:#64748b;
+}
+.card b{
+  display:block;
+  margin:6px 0;
+  color:#2563eb;
+}
+.card button{
+  background:#2563eb;
+  color:#fff;
+  border:none;
+  padding:7px 14px;
+  border-radius:6px;
+  font-size:12px;
+  cursor:pointer;
 }
 
 /* OTT */
-.ott{object-fit:contain;padding:20px;background:#fff}
+.ott{
+  object-fit:contain;
+  padding:20px;
+  background:#fff;
+}
 
 /* FOOTER */
-footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px;text-align:center;font-size:13px;color:#64748b}
+footer{
+  background:#fff;
+  border-top:1px solid #e5e7eb;
+  padding:25px 15px;
+  text-align:center;
+  font-size:13px;
+  color:#64748b;
+}
 
-@media(max-width:900px){.hero{grid-template-columns:1fr}}
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr}
+}
 </style>
 </head>
 
 <body>
 
 <header>
-<div class="header-wrap">
-  <div class="logo">
-    <img src="favicon.ico">
-    <div>
-      <div class="name">PlayWithEase</div>
-      <div class="tag">Trusted Games & OTT Store</div>
+  <div class="header-wrap">
+    <div class="logo">
+      <img src="favicon.ico" alt="PlayWithEase Logo">
+      <div>
+        <span class="name">PlayWithEase</span>
+        <span class="tag">Trusted Games & OTT Store</span>
+      </div>
     </div>
+    <nav>
+      <a href="#games">Games</a>
+      <a href="#ott">OTT</a>
+      <a href="cart.html">Cart <span id="cartCount" class="cart-count">0</span></a>
+    </nav>
   </div>
-  <nav>
-    <a href="#games">Games</a>
-    <a href="#ott">OTT</a>
-    <a href="cart.html">Cart <span id="cartCount" class="cart-count">0</span></a>
-    <a href="login.html" id="loginBtn">Login</a>
-    <a href="#" onclick="logout()" id="logoutBtn" style="display:none">Logout</a>
-  </nav>
-</div>
 </header>
 
 <section class="hero">
-<div>
-  <h1>Buy Premium Games & OTT<br><span>Safely & Easily</span></h1>
-  <p>Manual verification • WhatsApp support • Trusted delivery</p>
-  <div class="actions">
-    <a class="btn primary" href="https://wa.me/917001568884">Order on WhatsApp</a>
-    <a class="btn secondary" href="cart.html">View Cart</a>
+  <div>
+    <h1>Buy Premium Games & OTT<br><span>Safely & Easily</span></h1>
+    <p>Manual verification • WhatsApp support • Trusted delivery</p>
+    <div class="actions">
+      <a class="btn primary" href="https://wa.me/917001568884">Order on WhatsApp</a>
+      <a class="btn secondary" href="cart.html">View Cart</a>
+    </div>
   </div>
-  <div class="trust-bar">
-    <span>✔ Instant Delivery</span>
-    <span>✔ Genuine Accounts</span>
-    <span>✔ WhatsApp Support</span>
-  </div>
-</div>
-<img src="https://images.unsplash.com/photo-1605902711622-cfb43c44367f" style="width:100%;border-radius:18px">
+  <img src="https://images.unsplash.com/photo-1605902711622-cfb43c44367f"
+       style="width:100%;border-radius:18px">
 </section>
 
 <section class="section" id="games">
 <h2>🎮 Premium PC Games</h2>
-
-<div class="category-tabs">
-  <button class="cat-btn active" data-cat="all">All</button>
-  <button class="cat-btn" data-cat="action">Action</button>
-  <button class="cat-btn" data-cat="rpg">RPG</button>
-  <button class="cat-btn" data-cat="racing">Racing</button>
-  <button class="cat-btn" data-cat="horror">Horror</button>
-</div>
-
-<div class="search-wrap">
-  <input id="searchInput" placeholder="Search games like GTA, RDR2, Cyberpunk...">
-</div>
-
 <div class="grid" id="gameGrid"></div>
 </section>
 
 <section class="section" id="ott">
 <h2>📺 OTT Subscriptions</h2>
 <div class="grid">
-  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"><div class="info"><h4>Netflix</h4><b>From ₹149</b><button onclick="add('Netflix',149)">Add</button></div></div>
-  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png"><div class="info"><h4>Amazon Prime</h4><b>From ₹129</b><button onclick="add('Prime Video',129)">Add</button></div></div>
-  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg"><div class="info"><h4>Disney+ Hotstar</h4><b>From ₹99</b><button onclick="add('Hotstar',99)">Add</button></div></div>
-  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Youtube_Premium_logo.svg"><div class="info"><h4>YouTube Premium</h4><b>From ₹79</b><button onclick="add('YouTube Premium',79)">Add</button></div></div>
-  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/7/76/Crunchyroll_Logo.svg"><div class="info"><h4>Crunchyroll</h4><b>From ₹129</b><button onclick="add('Crunchyroll',129)">Add</button></div></div>
+  <div class="card">
+    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg">
+    <div class="info">
+      <h4>Netflix</h4>
+      <p>All Plans Available</p>
+      <b>From ₹149</b>
+      <button onclick="add('Netflix Subscription',149)">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png">
+    <div class="info">
+      <h4>Amazon Prime Video</h4>
+      <p>Subscription</p>
+      <b>From ₹129</b>
+      <button onclick="add('Amazon Prime Video',129)">Add to Cart</button>
+    </div>
+  </div>
 </div>
 </section>
 
 <footer>
-📞 7001568884 • 📧 shayanakhtar1910@gmail.com<br>
-© 2026 PlayWithEase
+📞 7001568884 • 📧 shayanakhtar1910@gmail.com  
+<br>© 2026 PlayWithEase
 </footer>
 
 <script>
 const games=[
-["GTA V",199,"271590","action","best"],
-["Red Dead Redemption 2",249,"1174180","action","best"],
-["Cyberpunk 2077",179,"1091500","rpg","best"],
-["God of War",199,"1593500","action","best"],
-["Elden Ring",229,"1245620","rpg","best"],
-["Forza Horizon 5",219,"1551360","racing"],
-["Resident Evil 4",229,"2050650","horror","best"],
-["Dying Light 2",219,"534380","horror"],
-["Baldur’s Gate 3",249,"1086940","rpg","best"],
-["Alan Wake 2",259,"1087100","horror","best"]
+["GTA V",199,"271590"],["Red Dead Redemption 2",249,"1174180"],
+["Cyberpunk 2077",179,"1091500"],["God of War",199,"1593500"],
+["Elden Ring",229,"1245620"],["Spider-Man Remastered",219,"1817070"],
+["Hogwarts Legacy",239,"990080"],["Forza Horizon 5",219,"1551360"],
+["The Witcher 3",149,"292030"],["Assassin’s Creed Mirage",229,"3035570"],
+["Far Cry 6",179,"2369390"],["Resident Evil 4",229,"2050650"],
+["Sekiro",219,"814380"],["Days Gone",199,"1259420"],
+["Mafia Definitive",179,"1030840"],["Watch Dogs Legion",189,"2239550"],
+["Hitman 3",219,"1659040"],["Starfield",249,"1716740"],
+["Alan Wake 2",259,"1087100"],["The Last of Us Part I",249,"1888930"],
+["Uncharted 4",219,"1659420"],["FIFA 23",199,"1811260"],
+["NFS Unbound",189,"1846380"],["Metro Exodus",159,"412020"],
+["Control Ultimate",179,"870780"],["Death Stranding",199,"1190460"],
+["Call of Duty MW2",249,"1938090"],["Assassin’s Creed Valhalla",199,"2208920"],
+["Horizon Zero Dawn",199,"1151640"],["Dying Light 2",219,"534380"],
+["Ghostwire Tokyo",179,"1475810"],["Lies of P",229,"1627720"],
+["Atomic Heart",219,"668580"],["Remnant II",229,"1282100"],
+["Baldur’s Gate 3",249,"1086940"]
 ];
 
 const grid=document.getElementById("gameGrid");
-function render(list){
-  grid.innerHTML="";
-  list.forEach(g=>{
-    grid.innerHTML+=`
-    <div class="card">
-      ${g[4]==="best" ? '<div class="badge">BEST SELLER</div>' : ''}
-      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
-      <div class="info">
-        <h4>${g[0]}</h4>
-        <b>₹${g[1]}</b>
-        <button onclick="add('${g[0]}',${g[1]})">Add</button>
-      </div>
-    </div>`;
-  });
-}
-render(games);
+let cart=JSON.parse(localStorage.getItem("cart")||"[]");
 
-document.querySelectorAll(".cat-btn").forEach(b=>{
-  b.onclick=()=>{
-    document.querySelectorAll(".cat-btn").forEach(x=>x.classList.remove("active"));
-    b.classList.add("active");
-    const c=b.dataset.cat;
-    render(c==="all"?games:games.filter(g=>g[3]===c));
-  }
+function updateCart(){
+  document.getElementById("cartCount").innerText=cart.length;
+  localStorage.setItem("cart",JSON.stringify(cart));
+}
+
+games.forEach(g=>{
+  const d=document.createElement("div");
+  d.className="card";
+  d.innerHTML=`
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
+    <div class="info">
+      <h4>${g[0]}</h4>
+      <p>Steam Account</p>
+      <b>₹${g[1]}</b>
+      <button onclick="add('${g[0]}',${g[1]})">Add to Cart</button>
+    </div>`;
+  grid.appendChild(d);
 });
 
-document.getElementById("searchInput").oninput=e=>{
-  render(games.filter(g=>g[0].toLowerCase().includes(e.target.value.toLowerCase())));
+function add(name,price){
+  cart.push({name,price});
+  updateCart();
+  alert(name+" added to cart");
 }
 
-let cart=[];
-function add(n,p){cart.push({n,p});document.getElementById("cartCount").innerText=cart.length}
+/* SCROLL ANIMATION */
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add("show")}
+  })
+},{threshold:.15});
+
+document.querySelectorAll(".card").forEach(c=>observer.observe(c));
+
+updateCart();
 </script>
 
-<script type="module" src="firebase.js"></script>
 </body>
 </html>
