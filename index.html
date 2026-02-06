@@ -9,43 +9,66 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial,sans-serif}
 body{background:#0b0e1a;color:#fff}
 
+/* LOGO */
+.logo{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+}
+.logo-icon{
+  width:42px;height:42px;
+  border-radius:10px;
+  background:linear-gradient(135deg,#00eaff,#0077ff);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  color:#000;
+}
+.logo-text{
+  font-size:34px;
+  font-weight:800;
+  letter-spacing:1px;
+}
+.logo-text span{color:#00eaff}
+
 /* HEADER */
 header{
-  padding:25px;
+  padding:20px;
   text-align:center;
   background:linear-gradient(90deg,#0f2027,#203a43,#2c5364);
 }
-header h1{font-size:42px;color:#00eaff}
-header p{color:#ccc;margin-top:5px}
+header p{color:#ccc;margin-top:6px}
 
 /* NAV */
 nav{
-  margin-top:15px;
+  margin-top:12px;
   display:flex;
   justify-content:center;
-  gap:25px;
+  gap:20px;
   flex-wrap:wrap;
 }
-nav a{color:#fff;text-decoration:none;font-weight:600}
+nav a{color:#fff;text-decoration:none;font-weight:600;font-size:14px}
 nav a:hover{color:#00eaff}
 
 /* HERO */
 .hero{
-  padding:90px 20px;
+  padding:70px 15px;
   text-align:center;
   background:radial-gradient(circle at top,#1a2a3a,#02040a);
 }
-.hero h2{font-size:48px;margin-bottom:15px}
+.hero h2{font-size:38px}
 .hero span{color:#00eaff}
-.hero p{font-size:18px;color:#ccc}
+.hero p{margin-top:10px;color:#ccc}
 .hero a{
   display:inline-block;
-  margin-top:30px;
-  padding:16px 40px;
+  margin-top:22px;
+  padding:14px 32px;
   background:#00eaff;
   color:#000;
   font-weight:700;
-  border-radius:10px;
+  border-radius:8px;
   text-decoration:none;
 }
 
@@ -53,72 +76,71 @@ nav a:hover{color:#00eaff}
 .section{
   max-width:1300px;
   margin:auto;
-  padding:70px 20px;
+  padding:55px 15px;
 }
 .section h3{
-  font-size:36px;
+  font-size:30px;
   text-align:center;
-  margin-bottom:45px;
+  margin-bottom:30px;
   color:#00eaff;
 }
 
-/* GRID */
+/* GRID (COMPACT) */
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:30px;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:18px;
 }
 
-/* CARD */
+/* CARD (SMALL STORE STYLE) */
 .card{
   background:#12182a;
-  border-radius:16px;
+  border-radius:12px;
   overflow:hidden;
-  box-shadow:0 0 25px rgba(0,0,0,.6);
-  transition:.3s;
+  box-shadow:0 0 18px rgba(0,0,0,.6);
+  transition:.25s;
 }
-.card:hover{transform:translateY(-10px)}
+.card:hover{transform:translateY(-6px)}
 .card img{
   width:100%;
-  height:320px;
+  height:200px;
   object-fit:cover;
 }
-.card .info{
-  padding:18px;
+.info{
+  padding:10px;
   text-align:center;
 }
-.card h4{font-size:18px;margin-bottom:5px}
-.card p{color:#aaa;font-size:13px}
+.info h4{font-size:14px;margin-bottom:3px}
+.info p{font-size:12px;color:#aaa}
 .price{
-  font-size:22px;
+  font-size:16px;
   color:#00eaff;
-  margin:10px 0;
+  margin:6px 0;
   font-weight:700;
 }
-.card a{
+.info a{
   display:inline-block;
-  margin-top:8px;
-  padding:10px 22px;
+  margin-top:4px;
+  padding:6px 14px;
   background:#00eaff;
   color:#000;
-  border-radius:8px;
-  text-decoration:none;
+  border-radius:6px;
+  font-size:12px;
   font-weight:700;
+  text-decoration:none;
 }
 
 /* CONTACT */
-.contact{
-  text-align:center;
-  background:#070a14;
-}
-.contact p{margin:10px 0;font-size:16px}
+.contact{text-align:center;background:#070a14}
+.contact p{margin:8px 0}
 
 /* FOOTER */
 footer{
-  padding:20px;
+  padding:15px;
   text-align:center;
   background:#000;
   color:#888;
+  font-size:13px;
 }
 footer span{color:#00eaff}
 </style>
@@ -127,8 +149,12 @@ footer span{color:#00eaff}
 <body>
 
 <header>
-  <h1>PlayWithEase</h1>
+  <div class="logo">
+    <div class="logo-icon">PW</div>
+    <div class="logo-text">Play<span>With</span>Ease</div>
+  </div>
   <p>Games & OTT Subscriptions at Best Prices</p>
+
   <nav>
     <a href="#steam">Steam</a>
     <a href="#rockstar">Rockstar</a>
@@ -140,96 +166,68 @@ footer span{color:#00eaff}
 
 <section class="hero">
   <h2>Buy Games & OTT at <span>Lowest Prices</span></h2>
-  <p>Instant Delivery • Trusted Store • Gamer Approved</p>
+  <p>Instant delivery • Trusted store • Gamer approved</p>
   <a href="https://wa.me/917001568884">Buy on WhatsApp</a>
 </section>
 
 <!-- STEAM -->
 <section class="section" id="steam">
-<h3>🎮 Steam Games</h3>
+<h3>🎮 Steam Accounts</h3>
 <div class="grid">
 
 <div class="card">
 <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg">
 <div class="info">
 <h4>GTA V</h4>
-<p>Steam Key</p>
+<p>Steam Account</p>
 <div class="price">₹199</div>
-<a href="https://wa.me/917001568884">Buy Now</a>
-</div>
-</div>
+<a href="https://wa.me/917001568884">Buy</a>
+</div></div>
 
 <div class="card">
 <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg">
 <div class="info">
-<h4>Red Dead Redemption 2</h4>
-<p>Steam Key</p>
+<h4>RDR 2</h4>
+<p>Steam Account</p>
 <div class="price">₹249</div>
-<a href="https://wa.me/917001568884">Buy Now</a>
-</div>
-</div>
+<a href="https://wa.me/917001568884">Buy</a>
+</div></div>
 
 <div class="card">
 <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg">
 <div class="info">
 <h4>Cyberpunk 2077</h4>
-<p>Steam Key</p>
+<p>Steam Account</p>
 <div class="price">₹179</div>
-<a href="https://wa.me/917001568884">Buy Now</a>
-</div>
-</div>
-
-</div>
-</section>
-
-<!-- ROCKSTAR -->
-<section class="section" id="rockstar">
-<h3>⭐ Rockstar Games</h3>
-<div class="grid">
+<a href="https://wa.me/917001568884">Buy</a>
+</div></div>
 
 <div class="card">
-<img src="https://wallpaperaccess.com/full/203912.jpg">
+<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/578080/header.jpg">
 <div class="info">
-<h4>GTA V Premium</h4>
-<div class="price">₹199</div>
-<a href="https://wa.me/917001568884">Buy Now</a>
-</div>
-</div>
+<h4>PUBG</h4>
+<p>Steam Account</p>
+<div class="price">₹149</div>
+<a href="https://wa.me/917001568884">Buy</a>
+</div></div>
 
 <div class="card">
-<img src="https://wallpaperaccess.com/full/1123011.jpg">
+<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg">
 <div class="info">
-<h4>RDR 2 Ultimate</h4>
-<div class="price">₹249</div>
-<a href="https://wa.me/917001568884">Buy Now</a>
-</div>
-</div>
-
-</div>
-</section>
-
-<!-- UBISOFT -->
-<section class="section" id="ubisoft">
-<h3>🟢 Ubisoft Games</h3>
-<div class="grid">
+<h4>CS2</h4>
+<p>Steam Account</p>
+<div class="price">₹129</div>
+<a href="https://wa.me/917001568884">Buy</a>
+</div></div>
 
 <div class="card">
-<img src="https://wallpaperaccess.com/full/2548365.jpg">
+<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/570/header.jpg">
 <div class="info">
-<h4>Assassin’s Creed Valhalla</h4>
-<div class="price">₹199</div>
-<a href="https://wa.me/917001568884">Buy Now</a>
-</div>
-</div>
-
-<div class="card">
-<img src="https://wallpaperaccess.com/full/2331393.jpg">
-<div class="info">
-<h4>Far Cry 6</h4>
-<div class="price">₹179</div>
-<a href="https://wa.me/917001568884">Buy Now</a>
-</div>
-</div>
+<h4>Dota 2</h4>
+<p>Steam Account</p>
+<div class="price">₹99</div>
+<a href="https://wa.me/917001568884">Buy</a>
+</div></div>
 
 </div>
 </section>
@@ -240,22 +238,22 @@ footer span{color:#00eaff}
 <div class="grid">
 
 <div class="card">
-<img src="https://wallpaperaccess.com/full/2703652.png">
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg">
 <div class="info">
 <h4>Netflix</h4>
+<p>Subscription</p>
 <div class="price">From ₹149</div>
-<a href="https://wa.me/917001568884">Buy Now</a>
-</div>
-</div>
+<a href="https://wa.me/917001568884">Buy</a>
+</div></div>
 
 <div class="card">
-<img src="https://wallpaperaccess.com/full/1715475.jpg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png">
 <div class="info">
-<h4>Amazon Prime Video</h4>
+<h4>Amazon Prime</h4>
+<p>Subscription</p>
 <div class="price">From ₹129</div>
-<a href="https://wa.me/917001568884">Buy Now</a>
-</div>
-</div>
+<a href="https://wa.me/917001568884">Buy</a>
+</div></div>
 
 </div>
 </section>
@@ -264,7 +262,6 @@ footer span{color:#00eaff}
 <h3>📞 Contact & Orders</h3>
 <p>💬 WhatsApp: <b>7001568884</b></p>
 <p>📧 Email: <b>shayanakhtar1910@gmail.com</b></p>
-<p>Fast delivery • Genuine service • Trusted by gamers</p>
 </section>
 
 <footer>
