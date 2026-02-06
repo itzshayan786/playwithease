@@ -10,58 +10,39 @@
 <!-- TRUSTPILOT DOMAIN VERIFICATION -->
 <meta name="trustpilot-one-time-domain-verification-id" content="9813f6e5-27fa-4e5f-8f0f-428c4a46632a">
 
+<!-- TRUSTPILOT REVIEW COLLECTOR SCRIPT -->
+<script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
 body{background:#f8fafc;color:#0f172a}
 
 /* HEADER */
-header{
-  background:#fff;
-  border-bottom:1px solid #e5e7eb;
-  position:sticky;top:0;z-index:100
-}
-.header-wrap{
-  max-width:1200px;margin:auto;padding:16px 20px;
-  display:flex;justify-content:space-between;align-items:center
-}
+header{background:#fff;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:100}
+.header-wrap{max-width:1200px;margin:auto;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
 .logo{display:flex;align-items:center;gap:12px}
 .logo img{width:42px;height:42px;border-radius:10px}
 .logo .name{font-size:20px;font-weight:800}
 .logo .tag{display:block;font-size:11px;color:#64748b}
 
-nav a{
-  margin-left:18px;text-decoration:none;color:#334155;font-size:14px
-}
+/* NAV */
+nav a{margin-left:18px;text-decoration:none;color:#334155;font-size:14px}
 nav a:hover{color:#2563eb}
-.cart-count{
-  background:#2563eb;color:#fff;border-radius:999px;
-  padding:2px 7px;font-size:11px;margin-left:4px
-}
+.cart-count{background:#2563eb;color:#fff;border-radius:999px;padding:2px 7px;font-size:11px;margin-left:4px}
 
 /* HERO */
-.hero{
-  max-width:1200px;margin:50px auto;padding:0 20px;
-  display:grid;grid-template-columns:1.2fr 1fr;
-  gap:40px;align-items:center
-}
+.hero{max-width:1200px;margin:50px auto;padding:0 20px;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
 .hero h1{font-size:42px;line-height:1.2}
 .hero h1 span{color:#2563eb}
 .hero p{margin-top:14px;color:#475569}
 .actions{margin-top:22px}
-.btn{
-  display:inline-block;padding:12px 24px;border-radius:8px;
-  font-weight:600;text-decoration:none;margin-right:10px;transition:.25s
-}
+.btn{display:inline-block;padding:12px 24px;border-radius:8px;font-weight:600;text-decoration:none;margin-right:10px;transition:.25s}
 .btn.primary{background:#2563eb;color:#fff}
 .btn.primary:hover{transform:translateY(-2px)}
-.btn.secondary{
-  border:1px solid #cbd5f5;color:#2563eb;background:#fff
-}
+.btn.secondary{border:1px solid #cbd5f5;color:#2563eb;background:#fff}
 
-/* TRUSTPILOT FREE SECTION */
-.trust-wrap{
-  max-width:1200px;margin:auto;padding:0 20px 30px
-}
+/* TRUST SECTION (FREE & SAFE) */
+.trust-wrap{max-width:1200px;margin:auto;padding:0 20px 30px}
 .trust-box{
   background:#fff;border:1px solid #e5e7eb;border-radius:16px;
   padding:18px;display:flex;align-items:center;
@@ -80,23 +61,15 @@ nav a:hover{color:#2563eb}
 .section h2{font-size:26px;margin-bottom:26px}
 
 /* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:22px
-}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:22px}
 
 /* CARD */
 .card{
   background:#fff;border:1px solid #e5e7eb;border-radius:16px;
-  overflow:hidden;opacity:0;transform:translateY(20px);
-  transition:.4s
+  overflow:hidden;opacity:0;transform:translateY(20px);transition:.4s
 }
 .card.show{opacity:1;transform:translateY(0)}
-.card:hover{
-  box-shadow:0 12px 28px rgba(0,0,0,.08);
-  transform:translateY(-4px)
-}
+.card:hover{box-shadow:0 12px 28px rgba(0,0,0,.08);transform:translateY(-4px)}
 .card img{width:100%;height:180px;object-fit:cover}
 .card .info{padding:14px}
 .card h4{font-size:14px}
@@ -118,9 +91,7 @@ footer{
   font-size:13px;color:#64748b
 }
 
-@media(max-width:900px){
-  .hero{grid-template-columns:1fr}
-}
+@media(max-width:900px){.hero{grid-template-columns:1fr}}
 </style>
 </head>
 
@@ -152,8 +123,7 @@ footer{
       <a class="btn secondary" href="cart.html">View Cart</a>
     </div>
   </div>
-  <img src="https://images.unsplash.com/photo-1605902711622-cfb43c44367f"
-       style="width:100%;border-radius:18px">
+  <img src="https://images.unsplash.com/photo-1605902711622-cfb43c44367f" style="width:100%;border-radius:18px">
 </section>
 
 <!-- TRUSTPILOT FREE TRUST SECTION -->
@@ -199,6 +169,21 @@ footer{
 </div>
 </section>
 
+<!-- TRUSTPILOT REVIEW COLLECTOR -->
+<section class="section" style="padding-top:0">
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:18px;text-align:center">
+    <div class="trustpilot-widget"
+      data-locale="en-US"
+      data-template-id="56278e9abfbbba0bdcd568bc"
+      data-businessunit-id="6985c274abb8a0a2645265ef"
+      data-style-height="52px"
+      data-style-width="100%"
+      data-token="a477a086-1058-42cf-b9cf-3fb76971ec72">
+      <a href="https://www.trustpilot.com/review/playwithease.in" target="_blank" rel="noopener">Trustpilot</a>
+    </div>
+  </div>
+</section>
+
 <footer>
 📞 7001568884 • 📧 shayanakhtar1910@gmail.com  
 <br>© 2026 PlayWithEase  
@@ -215,8 +200,7 @@ const games=[
 ["Far Cry 6",179,"2369390"],["Resident Evil 4",229,"2050650"],
 ["Sekiro",219,"814380"],["Days Gone",199,"1259420"],
 ["Mafia Definitive",179,"1030840"],["Watch Dogs Legion",189,"2239550"],
-["Hitman 3",219,"1659040"],["Starfield",249,"1716740"],
-["Alan Wake 2",259,"1087100"],["The Last of Us Part I",249,"1888930"]
+["Hitman 3",219,"1659040"],["Starfield",249,"1716740"]
 ];
 
 const grid=document.getElementById("gameGrid");
