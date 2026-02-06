@@ -6,106 +6,116 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-body{background:#0b0f1a;color:#fff;line-height:1.6}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial,sans-serif}
+body{background:#0b0e1a;color:#fff}
 
 /* HEADER */
 header{
-  background:linear-gradient(90deg,#0f2027,#203a43,#2c5364);
-  padding:20px;
+  padding:25px;
   text-align:center;
+  background:linear-gradient(90deg,#0f2027,#203a43,#2c5364);
 }
-header h1{color:#00f7ff;font-size:38px}
-header p{color:#ccc}
+header h1{font-size:42px;color:#00eaff}
+header p{color:#ccc;margin-top:5px}
 
 /* NAV */
 nav{
   margin-top:15px;
   display:flex;
   justify-content:center;
-  gap:20px;
+  gap:25px;
 }
 nav a{
   color:#fff;
   text-decoration:none;
   font-weight:600;
 }
-nav a:hover{color:#00f7ff}
+nav a:hover{color:#00eaff}
 
 /* HERO */
 .hero{
-  padding:80px 20px;
+  padding:90px 20px;
   text-align:center;
-  background:url("https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf") center/cover no-repeat;
+  background:radial-gradient(circle at top,#1a2a3a,#02040a);
 }
-.hero h2{font-size:46px;text-shadow:0 0 15px #000}
-.hero p{margin:15px 0 30px;font-size:18px}
-.btn{
-  background:#00f7ff;
+.hero h2{font-size:48px;margin-bottom:15px}
+.hero span{color:#00eaff}
+.hero p{font-size:18px;color:#ccc}
+.hero a{
+  display:inline-block;
+  margin-top:30px;
+  padding:16px 40px;
+  background:#00eaff;
   color:#000;
-  padding:14px 30px;
-  border-radius:8px;
-  text-decoration:none;
   font-weight:700;
+  border-radius:10px;
+  text-decoration:none;
 }
-.btn:hover{background:#00c9d4}
+.hero a:hover{background:#00c7d4}
 
-/* SECTIONS */
+/* SECTION */
 .section{
-  max-width:1200px;
+  max-width:1300px;
   margin:auto;
-  padding:60px 20px;
+  padding:70px 20px;
 }
 .section h3{
+  font-size:36px;
   text-align:center;
-  margin-bottom:40px;
-  font-size:34px;
-  color:#00f7ff;
+  margin-bottom:45px;
+  color:#00eaff;
 }
 
-/* CARDS */
+/* GRID */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:25px;
+  gap:30px;
 }
+
+/* CARD */
 .card{
-  background:#131a2a;
-  border-radius:12px;
+  background:#12182a;
   padding:25px;
+  border-radius:14px;
   text-align:center;
-  box-shadow:0 0 20px rgba(0,0,0,0.6);
-  transition:0.3s;
+  box-shadow:0 0 25px rgba(0,0,0,.6);
+  transition:.3s;
 }
-.card:hover{transform:translateY(-8px)}
-.card h4{margin-bottom:10px}
-.card p{color:#bbb;font-size:14px}
+.card:hover{transform:translateY(-10px)}
+.card h4{font-size:20px;margin-bottom:10px}
+.card p{color:#aaa;font-size:14px}
+.price{
+  font-size:22px;
+  color:#00eaff;
+  margin:15px 0;
+  font-weight:700;
+}
 .card a{
   display:inline-block;
-  margin-top:15px;
-  background:#00f7ff;
+  padding:12px 25px;
+  background:#00eaff;
   color:#000;
-  padding:10px 20px;
-  border-radius:6px;
-  font-weight:700;
+  border-radius:8px;
   text-decoration:none;
+  font-weight:700;
 }
 
 /* CONTACT */
 .contact{
   text-align:center;
+  background:#070a14;
 }
-.contact p{margin:10px 0}
+.contact p{margin:10px 0;font-size:16px}
 
 /* FOOTER */
 footer{
-  background:#000;
   padding:20px;
   text-align:center;
-  font-size:14px;
+  background:#000;
   color:#888;
 }
-footer span{color:#00f7ff}
+footer span{color:#00eaff}
 </style>
 </head>
 
@@ -113,43 +123,77 @@ footer span{color:#00f7ff}
 
 <header>
   <h1>PlayWithEase</h1>
-  <p>Games & OTT Subscriptions at Best Prices</p>
+  <p>Trusted Store for Games & OTT Subscriptions</p>
   <nav>
-    <a href="#games">Games</a>
+    <a href="#steam">Steam</a>
+    <a href="#rockstar">Rockstar</a>
+    <a href="#ubisoft">Ubisoft</a>
     <a href="#ott">OTT</a>
     <a href="#contact">Contact</a>
   </nav>
 </header>
 
 <section class="hero">
-  <h2>Level Up Your Entertainment</h2>
-  <p>Buy PC Games, Console Games & OTT Subscriptions Instantly</p>
-  <a class="btn" href="#contact">Buy Now</a>
+  <h2>Buy Games & OTT at <span>Best Prices</span></h2>
+  <p>Instant delivery • Trusted service • Lowest rates</p>
+  <a href="https://wa.me/917001568884">Buy on WhatsApp</a>
 </section>
 
-<!-- GAMES -->
-<section class="section" id="games">
-<h3>🎮 Games Store</h3>
+<!-- STEAM -->
+<section class="section" id="steam">
+<h3>🎮 Steam Games</h3>
 <div class="grid">
   <div class="card">
     <h4>GTA V</h4>
-    <p>PC / Console</p>
-    <a href="https://wa.me/917001568884">Buy on WhatsApp</a>
+    <p>Steam Key</p>
+    <div class="price">₹199</div>
+    <a href="https://wa.me/917001568884">Buy Now</a>
   </div>
   <div class="card">
-    <h4>FIFA / FC Series</h4>
-    <p>Latest Editions</p>
-    <a href="https://wa.me/917001568884">Buy on WhatsApp</a>
+    <h4>Red Dead Redemption 2</h4>
+    <p>Steam Key</p>
+    <div class="price">₹249</div>
+    <a href="https://wa.me/917001568884">Buy Now</a>
   </div>
   <div class="card">
-    <h4>Call of Duty</h4>
-    <p>Action FPS</p>
-    <a href="https://wa.me/917001568884">Buy on WhatsApp</a>
+    <h4>Cyberpunk 2077</h4>
+    <p>Steam Key</p>
+    <div class="price">₹179</div>
+    <a href="https://wa.me/917001568884">Buy Now</a>
+  </div>
+</div>
+</section>
+
+<!-- ROCKSTAR -->
+<section class="section" id="rockstar">
+<h3>⭐ Rockstar Games</h3>
+<div class="grid">
+  <div class="card">
+    <h4>GTA V Premium</h4>
+    <div class="price">₹199</div>
+    <a href="https://wa.me/917001568884">Buy Now</a>
   </div>
   <div class="card">
-    <h4>Valorant Points</h4>
-    <p>Instant Top-Up</p>
-    <a href="https://wa.me/917001568884">Buy on WhatsApp</a>
+    <h4>RDR 2 Ultimate</h4>
+    <div class="price">₹249</div>
+    <a href="https://wa.me/917001568884">Buy Now</a>
+  </div>
+</div>
+</section>
+
+<!-- UBISOFT -->
+<section class="section" id="ubisoft">
+<h3>🟢 Ubisoft Games</h3>
+<div class="grid">
+  <div class="card">
+    <h4>Assassin’s Creed Valhalla</h4>
+    <div class="price">₹199</div>
+    <a href="https://wa.me/917001568884">Buy Now</a>
+  </div>
+  <div class="card">
+    <h4>Far Cry 6</h4>
+    <div class="price">₹179</div>
+    <a href="https://wa.me/917001568884">Buy Now</a>
   </div>
 </div>
 </section>
@@ -161,21 +205,12 @@ footer span{color:#00f7ff}
   <div class="card">
     <h4>Netflix</h4>
     <p>1 / 3 / 6 / 12 Months</p>
+    <div class="price">From ₹149</div>
     <a href="https://wa.me/917001568884">Buy Now</a>
   </div>
   <div class="card">
     <h4>Amazon Prime Video</h4>
-    <p>Full HD Streaming</p>
-    <a href="https://wa.me/917001568884">Buy Now</a>
-  </div>
-  <div class="card">
-    <h4>Disney+ Hotstar</h4>
-    <p>Movies & Sports</p>
-    <a href="https://wa.me/917001568884">Buy Now</a>
-  </div>
-  <div class="card">
-    <h4>Spotify Premium</h4>
-    <p>Ad-Free Music</p>
+    <div class="price">From ₹129</div>
     <a href="https://wa.me/917001568884">Buy Now</a>
   </div>
 </div>
@@ -184,9 +219,9 @@ footer span{color:#00f7ff}
 <!-- CONTACT -->
 <section class="section contact" id="contact">
 <h3>📞 Contact & Orders</h3>
-<p>💬 WhatsApp: <b>+91-7001568884</b></p>
-<p>📧 Email: support@playwithease.in</p>
-<p>Fast delivery • Trusted service • Best prices</p>
+<p>💬 WhatsApp: <b>7001568884</b></p>
+<p>📧 Email: <b>shayanakhtar1910@gmail.com</b></p>
+<p>Fast delivery • Genuine service • Trusted by gamers</p>
 </section>
 
 <footer>
