@@ -4,44 +4,35 @@
 <title>PlayWithEase | Cart</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body{
-  background:#000;
-  color:#fff;
-  font-family:Poppins,Arial,sans-serif;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-}
-.box{
-  background:#050505;
-  border:1px solid #003a66;
-  padding:30px;
-  border-radius:14px;
-  max-width:420px;
-  text-align:center;
-}
-.box h2{margin-bottom:10px}
-.box p{color:#aaa;font-size:14px}
-a{
-  display:block;
-  margin-top:20px;
-  padding:14px;
-  background:#00aaff;
-  color:#000;
-  border-radius:8px;
-  text-decoration:none;
-  font-weight:700;
-}
+body{background:#0b1020;color:#fff;font-family:Poppins;text-align:center;padding:40px}
+.box{max-width:500px;margin:auto;background:#0f172a;padding:25px;border-radius:16px}
+.item{display:flex;justify-content:space-between;font-size:14px;margin:8px 0}
+.total{margin-top:15px;font-size:18px;color:#4cc9f0}
+a{display:block;margin-top:20px;padding:14px;background:#4cc9f0;color:#000;border-radius:25px;font-weight:700;text-decoration:none}
 </style>
 </head>
 <body>
 
 <div class="box">
-  <h2>🛒 Your Cart</h2>
-  <p>Orders are confirmed personally via WhatsApp for safety.</p>
-  <a href="https://wa.me/917001568884">Continue on WhatsApp</a>
+<h2>🛒 Your Cart</h2>
+<div id="items"></div>
+<div class="total" id="total"></div>
+<a id="orderBtn" href="#">Order on WhatsApp</a>
 </div>
+
+<script>
+const cart=JSON.parse(localStorage.getItem("cart")||"[]");
+let text="Hello PlayWithEase,%0AI want to order:%0A";
+let sum=0;
+cart.forEach(i=>{
+  document.getElementById("items").innerHTML+=`<div class="item"><span>${i.name}</span><span>₹${i.price}</span></div>`;
+  text+=`- ${i.name} (₹${i.price})%0A`;
+  sum+=i.price;
+});
+document.getElementById("total").innerText="Total: ₹"+sum;
+text+=`Total: ₹${sum}`;
+document.getElementById("orderBtn").href=`https://wa.me/917001568884?text=${text}`;
+</script>
 
 </body>
 </html>
