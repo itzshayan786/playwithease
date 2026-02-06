@@ -12,190 +12,112 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
-body{
-  background:#f8fafc;
-  color:#0f172a;
-}
+body{background:#f8fafc;color:#0f172a}
 
 /* HEADER */
 header{
   background:#fff;
   border-bottom:1px solid #e5e7eb;
-  position:sticky;
-  top:0;
-  z-index:100;
+  position:sticky;top:0;z-index:100
 }
 .header-wrap{
-  max-width:1200px;
-  margin:auto;
-  padding:16px 20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+  max-width:1200px;margin:auto;padding:16px 20px;
+  display:flex;justify-content:space-between;align-items:center
 }
+.logo{display:flex;align-items:center;gap:12px}
+.logo img{width:42px;height:42px;border-radius:10px}
+.logo .name{font-size:20px;font-weight:800}
+.logo .tag{display:block;font-size:11px;color:#64748b}
 
-/* LOGO (FAVICON AS LOGO) */
-.logo{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-.logo img{
-  width:42px;
-  height:42px;
-  border-radius:10px;
-}
-.logo .name{
-  font-size:20px;
-  font-weight:800;
-}
-.logo .tag{
-  display:block;
-  font-size:11px;
-  color:#64748b;
-}
-
-/* NAV */
 nav a{
-  margin-left:18px;
-  text-decoration:none;
-  color:#334155;
-  font-size:14px;
+  margin-left:18px;text-decoration:none;color:#334155;font-size:14px
 }
 nav a:hover{color:#2563eb}
 .cart-count{
-  background:#2563eb;
-  color:#fff;
-  border-radius:999px;
-  padding:2px 7px;
-  font-size:11px;
-  margin-left:4px;
+  background:#2563eb;color:#fff;border-radius:999px;
+  padding:2px 7px;font-size:11px;margin-left:4px
 }
 
 /* HERO */
 .hero{
-  max-width:1200px;
-  margin:50px auto;
-  padding:0 20px;
-  display:grid;
-  grid-template-columns:1.2fr 1fr;
-  gap:40px;
-  align-items:center;
+  max-width:1200px;margin:50px auto;padding:0 20px;
+  display:grid;grid-template-columns:1.2fr 1fr;
+  gap:40px;align-items:center
 }
-.hero h1{
-  font-size:42px;
-  line-height:1.2;
-}
+.hero h1{font-size:42px;line-height:1.2}
 .hero h1 span{color:#2563eb}
-.hero p{
-  margin-top:14px;
-  color:#475569;
-}
+.hero p{margin-top:14px;color:#475569}
 .actions{margin-top:22px}
 .btn{
-  display:inline-block;
-  padding:12px 24px;
-  border-radius:8px;
-  font-weight:600;
-  text-decoration:none;
-  margin-right:10px;
-  transition:.25s;
+  display:inline-block;padding:12px 24px;border-radius:8px;
+  font-weight:600;text-decoration:none;margin-right:10px;transition:.25s
 }
-.btn.primary{
-  background:#2563eb;
-  color:#fff;
-}
+.btn.primary{background:#2563eb;color:#fff}
 .btn.primary:hover{transform:translateY(-2px)}
 .btn.secondary{
-  border:1px solid #cbd5f5;
-  color:#2563eb;
-  background:#fff;
+  border:1px solid #cbd5f5;color:#2563eb;background:#fff
+}
+
+/* TRUSTPILOT FREE SECTION */
+.trust-wrap{
+  max-width:1200px;margin:auto;padding:0 20px 30px
+}
+.trust-box{
+  background:#fff;border:1px solid #e5e7eb;border-radius:16px;
+  padding:18px;display:flex;align-items:center;
+  justify-content:space-between;gap:16px;flex-wrap:wrap
+}
+.trust-box p{font-size:14px;font-weight:600}
+.trust-box span{font-size:12px;color:#64748b}
+.trust-box a{
+  background:#2563eb;color:#fff;padding:10px 16px;
+  border-radius:8px;font-size:13px;font-weight:600;
+  text-decoration:none;white-space:nowrap
 }
 
 /* SECTION */
-.section{
-  max-width:1200px;
-  margin:auto;
-  padding:60px 20px;
-}
-.section h2{
-  font-size:26px;
-  margin-bottom:26px;
-}
+.section{max-width:1200px;margin:auto;padding:60px 20px}
+.section h2{font-size:26px;margin-bottom:26px}
 
 /* GRID */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:22px;
+  gap:22px
 }
 
 /* CARD */
 .card{
-  background:#fff;
-  border:1px solid #e5e7eb;
-  border-radius:16px;
-  overflow:hidden;
-  opacity:0;
-  transform:translateY(20px);
-  transition:.4s;
+  background:#fff;border:1px solid #e5e7eb;border-radius:16px;
+  overflow:hidden;opacity:0;transform:translateY(20px);
+  transition:.4s
 }
-.card.show{
-  opacity:1;
-  transform:translateY(0);
-}
+.card.show{opacity:1;transform:translateY(0)}
 .card:hover{
   box-shadow:0 12px 28px rgba(0,0,0,.08);
-  transform:translateY(-4px);
+  transform:translateY(-4px)
 }
-.card img{
-  width:100%;
-  height:180px;
-  object-fit:cover;
-}
-.card .info{
-  padding:14px;
-}
-.card h4{
-  font-size:14px;
-}
-.card p{
-  font-size:12px;
-  color:#64748b;
-}
-.card b{
-  display:block;
-  margin:6px 0;
-  color:#2563eb;
-}
+.card img{width:100%;height:180px;object-fit:cover}
+.card .info{padding:14px}
+.card h4{font-size:14px}
+.card p{font-size:12px;color:#64748b}
+.card b{display:block;margin:6px 0;color:#2563eb}
 .card button{
-  background:#2563eb;
-  color:#fff;
-  border:none;
-  padding:7px 14px;
-  border-radius:6px;
-  font-size:12px;
-  cursor:pointer;
+  background:#2563eb;color:#fff;border:none;
+  padding:7px 14px;border-radius:6px;
+  font-size:12px;cursor:pointer
 }
 
 /* OTT */
-.ott{
-  object-fit:contain;
-  padding:20px;
-  background:#fff;
-}
+.ott{object-fit:contain;padding:20px;background:#fff}
 
 /* FOOTER */
 footer{
-  background:#fff;
-  border-top:1px solid #e5e7eb;
-  padding:25px 15px;
-  text-align:center;
-  font-size:13px;
-  color:#64748b;
+  background:#fff;border-top:1px solid #e5e7eb;
+  padding:25px 15px;text-align:center;
+  font-size:13px;color:#64748b
 }
 
-/* RESPONSIVE */
 @media(max-width:900px){
   .hero{grid-template-columns:1fr}
 }
@@ -207,7 +129,7 @@ footer{
 <header>
   <div class="header-wrap">
     <div class="logo">
-      <img src="favicon.ico" alt="PlayWithEase Logo">
+      <img src="favicon.ico">
       <div>
         <span class="name">PlayWithEase</span>
         <span class="tag">Trusted Games & OTT Store</span>
@@ -233,6 +155,19 @@ footer{
   <img src="https://images.unsplash.com/photo-1605902711622-cfb43c44367f"
        style="width:100%;border-radius:18px">
 </section>
+
+<!-- TRUSTPILOT FREE TRUST SECTION -->
+<div class="trust-wrap">
+  <div class="trust-box">
+    <div>
+      <p>Customer reviews available on Trustpilot</p>
+      <span>See what customers say about PlayWithEase</span>
+    </div>
+    <a href="https://www.trustpilot.com/review/playwithease.in" target="_blank">
+      View on Trustpilot →
+    </a>
+  </div>
+</div>
 
 <section class="section" id="games">
 <h2>🎮 Premium PC Games</h2>
@@ -266,7 +201,8 @@ footer{
 
 <footer>
 📞 7001568884 • 📧 shayanakhtar1910@gmail.com  
-<br>© 2026 PlayWithEase
+<br>© 2026 PlayWithEase  
+<br><span style="font-size:12px">Reviews powered by Trustpilot</span>
 </footer>
 
 <script>
@@ -280,15 +216,7 @@ const games=[
 ["Sekiro",219,"814380"],["Days Gone",199,"1259420"],
 ["Mafia Definitive",179,"1030840"],["Watch Dogs Legion",189,"2239550"],
 ["Hitman 3",219,"1659040"],["Starfield",249,"1716740"],
-["Alan Wake 2",259,"1087100"],["The Last of Us Part I",249,"1888930"],
-["Uncharted 4",219,"1659420"],["FIFA 23",199,"1811260"],
-["NFS Unbound",189,"1846380"],["Metro Exodus",159,"412020"],
-["Control Ultimate",179,"870780"],["Death Stranding",199,"1190460"],
-["Call of Duty MW2",249,"1938090"],["Assassin’s Creed Valhalla",199,"2208920"],
-["Horizon Zero Dawn",199,"1151640"],["Dying Light 2",219,"534380"],
-["Ghostwire Tokyo",179,"1475810"],["Lies of P",229,"1627720"],
-["Atomic Heart",219,"668580"],["Remnant II",229,"1282100"],
-["Baldur’s Gate 3",249,"1086940"]
+["Alan Wake 2",259,"1087100"],["The Last of Us Part I",249,"1888930"]
 ];
 
 const grid=document.getElementById("gameGrid");
@@ -319,18 +247,12 @@ function add(name,price){
   alert(name+" added to cart");
 }
 
-/* SCROLL ANIMATION */
 const observer=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){e.target.classList.add("show")}
-  })
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("show")})
 },{threshold:.15});
-
 document.querySelectorAll(".card").forEach(c=>observer.observe(c));
-
 updateCart();
 </script>
 
 </body>
 </html>
-
