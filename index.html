@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="favicon.ico">
 
-<!-- TRUSTPILOT DOMAIN VERIFICATION -->
+<!-- TRUSTPILOT DOMAIN VERIFICATION (DO NOT TOUCH) -->
 <meta name="trustpilot-one-time-domain-verification-id" content="9813f6e5-27fa-4e5f-8f0f-428c4a46632a">
 <script src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
 
@@ -24,12 +24,7 @@ header{background:#fff;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-i
 .logo .tag{display:block;font-size:11px;color:#64748b}
 
 nav{display:flex;align-items:center}
-nav a, nav span{
-  margin-left:18px;
-  text-decoration:none;
-  color:#334155;
-  font-size:14px;
-}
+nav a, nav span{margin-left:18px;text-decoration:none;color:#334155;font-size:14px}
 nav a:hover{color:#2563eb}
 .cart-count{background:#2563eb;color:#fff;border-radius:999px;padding:2px 7px;font-size:11px;margin-left:4px}
 
@@ -43,61 +38,42 @@ nav a:hover{color:#2563eb}
 .hero h1{font-size:42px;line-height:1.2}
 .hero h1 span{color:#2563eb}
 .hero p{margin-top:14px;color:#475569}
-.actions{margin-top:22px}
-.btn{display:inline-block;padding:12px 24px;border-radius:8px;font-weight:600;text-decoration:none;margin-right:10px}
-.btn.primary{background:#2563eb;color:#fff}
-.btn.secondary{border:1px solid #cbd5f5;color:#2563eb;background:#fff}
 
 /* TRUST BAR */
 .trust-bar{margin-top:18px;display:flex;gap:18px;flex-wrap:wrap;font-size:13px}
 .trust-bar span{background:#fff;padding:6px 12px;border-radius:999px;border:1px solid #e5e7eb}
 
-/* TRUSTPILOT BOX */
-.trust-wrap{max-width:1200px;margin:auto;padding:0 20px 30px}
-.trust-box{
-  background:#fff;border:1px solid #e5e7eb;border-radius:16px;
-  padding:18px;display:flex;align-items:center;
-  justify-content:space-between;gap:16px;flex-wrap:wrap
-}
-.trust-box p{font-size:14px;font-weight:600}
-.trust-box span{font-size:12px;color:#64748b}
-.trust-box a{
-  background:#2563eb;color:#fff;padding:10px 16px;
-  border-radius:8px;font-size:13px;font-weight:600;
-  text-decoration:none
-}
-
 /* SECTION */
 .section{max-width:1200px;margin:auto;padding:60px 20px}
 .section h2{font-size:26px;margin-bottom:18px}
-
-/* SEARCH */
-.search-wrap{max-width:420px;margin-bottom:20px}
-.search-wrap input{
-  width:100%;padding:14px 18px;border-radius:999px;
-  border:1px solid #cbd5e1;font-size:14px;
-  outline:none
-}
 
 /* GRID */
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:22px}
 
 /* CARD */
-.card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden}
+.card{
+  background:#fff;border:1px solid #e5e7eb;border-radius:16px;
+  overflow:hidden;
+  transition:.35s;
+  opacity:0;
+  transform:translateY(20px)
+}
+.card.show{opacity:1;transform:translateY(0)}
+.card:hover{box-shadow:0 14px 30px rgba(0,0,0,.1);transform:translateY(-6px)}
 .card img{width:100%;height:180px;object-fit:cover}
 .card .info{padding:14px}
 .card h4{font-size:14px}
 .card p{font-size:12px;color:#64748b}
 .card b{display:block;margin:6px 0;color:#2563eb}
+.card button{
+  margin-top:6px;
+  background:#2563eb;color:#fff;border:none;
+  padding:7px 14px;border-radius:6px;
+  font-size:12px;cursor:pointer
+}
 
 /* OTT */
-.card .ott{
-  width:100%;
-  height:120px;
-  object-fit:contain;
-  padding:18px;
-  background:#fff
-}
+.card .ott{height:120px;object-fit:contain;padding:18px}
 
 /* SHOW MORE */
 .show-more-wrap{text-align:center;margin-top:30px}
@@ -127,7 +103,7 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
     <a href="#games">Games</a>
     <a href="#ott">OTT</a>
     <a href="cart.html">Cart <span id="cartCount" class="cart-count">0</span></a>
-    <span id="userEmail" style="font-weight:600"></span>
+    <span id="userEmail"></span>
     <a href="login.html" id="loginBtn">Login</a>
     <a href="#" id="logoutBtn" style="display:none">Logout</a>
   </nav>
@@ -138,10 +114,6 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
 <div>
   <h1>Buy Premium Games & OTT<br><span>Safely & Easily</span></h1>
   <p>Manual verification • WhatsApp support • Trusted delivery</p>
-  <div class="actions">
-    <a class="btn primary" href="https://wa.me/917001568884">Order on WhatsApp</a>
-    <a class="btn secondary" href="cart.html">View Cart</a>
-  </div>
   <div class="trust-bar">
     <span>✔ Instant Delivery</span>
     <span>✔ Genuine Accounts</span>
@@ -151,59 +123,8 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
 <img src="https://images.unsplash.com/photo-1605902711622-cfb43c44367f" style="width:100%;border-radius:18px">
 </section>
 
-<!-- TRUSTPILOT -->
-<div class="trust-wrap">
-  <div class="trust-box">
-    <div>
-      <p>Customer reviews on Trustpilot</p>
-      <span>See what customers say about PlayWithEase</span>
-    </div>
-    <a href="https://www.trustpilot.com/review/playwithease.in" target="_blank">
-      View on Trustpilot →
-    </a>
-  </div>
-</div>
-
-<section class="section" id="games">
-<h2>🎮 Premium PC Games Vault</h2>
-<div class="search-wrap">
-  <input id="searchInput" placeholder="Search games...">
-</div>
-<div class="grid" id="gameGrid"></div>
-<div class="show-more-wrap">
-  <button id="toggleBtn">Show More Games</button>
-</div>
-</section>
-
-<section class="section" id="ott">
-<h2>📺 OTT Subscriptions</h2>
-<div class="grid">
-  <div class="card">
-    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg">
-    <div class="info"><h4>Netflix</h4><b>From ₹149</b></div>
-  </div>
-  <div class="card">
-    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png">
-    <div class="info"><h4>Amazon Prime</h4><b>From ₹129</b></div>
-  </div>
-  <div class="card">
-    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg">
-    <div class="info"><h4>Disney+ Hotstar</h4><b>From ₹99</b></div>
-  </div>
-  <div class="card">
-    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/6/62/YouTube_social_white_square_%282024%29.svg">
-    <div class="info"><h4>YouTube Premium</h4><b>From ₹79</b></div>
-  </div>
-  <div class="card">
-    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/8/85/Crunchyroll_2024_stacked.svg">
-    <div class="info"><h4>Crunchyroll</h4><b>From ₹129</b></div>
-  </div>
-</div>
-</section>
-
-<!-- TRUSTPILOT WIDGET -->
-<section class="section" style="padding-top:0">
-<div style="background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:18px;text-align:center">
+<!-- TRUSTPILOT (UNTOUCHED) -->
+<div class="section">
 <div class="trustpilot-widget"
 data-locale="en-US"
 data-template-id="56278e9abfbbba0bdcd568bc"
@@ -213,54 +134,114 @@ data-style-width="100%">
 <a href="https://www.trustpilot.com/review/playwithease.in" target="_blank">Trustpilot</a>
 </div>
 </div>
+
+<section class="section" id="games">
+<h2>🎮 Premium PC Games Vault</h2>
+<div class="grid" id="gameGrid"></div>
+<div class="show-more-wrap">
+<button id="toggleBtn">Show More Games</button>
+</div>
+</section>
+
+<section class="section" id="ott">
+<h2>📺 OTT Subscriptions</h2>
+<div class="grid">
+
+  <div class="card show">
+    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg">
+    <div class="info">
+      <h4>Netflix</h4>
+      <b>From ₹149</b>
+      <button onclick="addItem('Netflix',149)">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="card show">
+    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png">
+    <div class="info">
+      <h4>Amazon Prime Video</h4>
+      <b>From ₹129</b>
+      <button onclick="addItem('Amazon Prime Video',129)">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="card show">
+    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg">
+    <div class="info">
+      <h4>Disney+ Hotstar</h4>
+      <b>From ₹99</b>
+      <button onclick="addItem('Disney+ Hotstar',99)">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="card show">
+    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/6/62/YouTube_social_white_square_%282024%29.svg">
+    <div class="info">
+      <h4>YouTube Premium</h4>
+      <b>From ₹79</b>
+      <button onclick="addItem('YouTube Premium',79)">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="card show">
+    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/8/85/Crunchyroll_2024_stacked.svg">
+    <div class="info">
+      <h4>Crunchyroll</h4>
+      <b>From ₹129</b>
+      <button onclick="addItem('Crunchyroll',129)">Add to Cart</button>
+    </div>
+  </div>
+
+</div>
+
 </section>
 
 <footer>
 📞 7001568884 • 📧 shayanakhtar1910@gmail.com<br>
-© 2026 PlayWithEase<br>
-<span style="font-size:12px">Reviews powered by Trustpilot</span>
+© 2026 PlayWithEase
 </footer>
 
 <script>
 const games=[
 ["GTA V",199,"271590"],
 ["Red Dead Redemption 2",249,"1174180"],
-["GTA V PREMIUM EDITION – ROCKSTAR KEY",1000,"gta5-rockstar-key"],
+["GTA V PREMIUM EDITION – ROCKSTAR KEY",1000,"rockstar"],
 ["Cyberpunk 2077 – Ultimate Edition (Phantom Liberty DLC)",179,"1091500"],
-["God of War",199,"1593500"],
-["Elden Ring",229,"1245620"],
-["Spider-Man Remastered",219,"1817070"],
-["Hogwarts Legacy",239,"990080"],
-["Forza Horizon 5",219,"1551360"],
-["The Witcher 3",149,"292030"],
-["Assassin’s Creed Mirage",229,"3035570"]
+["God of War",199,"1593500"]
 ];
 
 const grid=document.getElementById("gameGrid");
 const toggleBtn=document.getElementById("toggleBtn");
-let visible=6, expanded=false;
+let cart=JSON.parse(localStorage.getItem("cart")||"[]");
+let expanded=false;
 
 function render(){
   grid.innerHTML="";
-  games.slice(0,expanded?games.length:visible).forEach(g=>{
+  games.slice(0,expanded?games.length:4).forEach(g=>{
     const d=document.createElement("div");
     d.className="card";
     d.innerHTML=`
-      <img src="${
-        g[2]==="gta5-rockstar-key"
-        ? "https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_V.png"
-        : "https://cdn.cloudflare.steamstatic.com/steam/apps/"+g[2]+"/header.jpg"
-      }">
+      <img src="${g[2]==="rockstar"?"https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_V.png":"https://cdn.cloudflare.steamstatic.com/steam/apps/"+g[2]+"/header.jpg"}">
       <div class="info">
         <h4>${g[0]}</h4>
-        <p>${g[2]==="gta5-rockstar-key"?"Rockstar Activation Key":"Steam Account"}</p>
+        <p>${g[2]==="rockstar"?"Rockstar Activation Key":"Steam Account"}</p>
         <b>₹${g[1]}</b>
+        <button onclick="addItem('${g[0]}',${g[1]})">Add to Cart</button>
       </div>`;
     grid.appendChild(d);
+    setTimeout(()=>d.classList.add("show"),50);
   });
-  toggleBtn.innerText=expanded?"Show Less":"Show More Games";
 }
-toggleBtn.onclick=()=>{expanded=!expanded;render()};
+toggleBtn.onclick=()=>{expanded=!expanded;toggleBtn.innerText=expanded?"Show Less":"Show More Games";render()};
+
+function addItem(name,price){
+  cart.push({name,price});
+  localStorage.setItem("cart",JSON.stringify(cart));
+  document.getElementById("cartCount").innerText=cart.length;
+  alert(name+" added to cart");
+}
+
+document.getElementById("cartCount").innerText=cart.length;
 render();
 </script>
 
