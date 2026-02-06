@@ -119,7 +119,6 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
   </div>
   <nav>
     <a href="#games">Games</a>
-    <a href="#ott">OTT</a>
     <a href="cart.html">Cart <span id="cartCount" class="cart-count">0</span></a>
     <span id="userEmail"></span>
     <a href="login.html" id="loginBtn">Login</a>
@@ -145,7 +144,7 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
 <img src="https://images.unsplash.com/photo-1605902711622-cfb43c44367f" style="width:100%;border-radius:18px">
 </section>
 
-<!-- TRUSTPILOT LINK BOX -->
+<!-- TRUSTPILOT LINK -->
 <div class="trust-wrap">
   <div class="trust-box">
     <div>
@@ -166,7 +165,7 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
 <div class="grid" id="gameGrid"></div>
 </section>
 
-<!-- TRUSTPILOT REVIEW WIDGET -->
+<!-- TRUSTPILOT WIDGET -->
 <section class="section" style="padding-top:0">
   <div style="background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:18px;text-align:center">
     <div class="trustpilot-widget"
@@ -188,24 +187,42 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
 
 <script>
 const games = [
-["GTA V",199,"271590"],["Red Dead Redemption 2",249,"1174180"],
-["Cyberpunk 2077",179,"1091500"],["God of War",199,"1593500"],
-["Elden Ring",229,"1245620"],["Spider-Man Remastered",219,"1817070"],
-["Hogwarts Legacy",239,"990080"],["Forza Horizon 5",219,"1551360"],
-["The Witcher 3",149,"292030"],["Assassin’s Creed Mirage",229,"3035570"],
-["Far Cry 6",179,"2369390"],["Resident Evil 4",229,"2050650"],
-["Sekiro",219,"814380"],["Days Gone",199,"1259420"],
-["Mafia Definitive Edition",179,"1030840"],["Watch Dogs Legion",189,"2239550"],
-["Hitman 3",219,"1659040"],["Starfield",249,"1716740"],
-["Alan Wake 2",259,"1087100"],["The Last of Us Part I",249,"1888930"],
-["Uncharted 4",219,"1659420"],["FIFA 23",199,"1811260"],
-["NFS Unbound",189,"1846380"],["Metro Exodus",159,"412020"],
-["Control Ultimate",179,"870780"],["Death Stranding",199,"1190460"],
-["Assassin’s Creed Valhalla",199,"2208920"],["Horizon Zero Dawn",199,"1151640"],
-["Dying Light 2",219,"534380"],["Ghostwire Tokyo",179,"1475810"],
-["Lies of P",229,"1627720"],["Atomic Heart",219,"668580"],
-["Baldur’s Gate 3",249,"1086940"],["DOOM Eternal",179,"782330"],
-["Batman Arkham Knight",149,"208650"],["Max Payne 3",149,"204100"]
+["GTA V",199,"271590"],
+["Red Dead Redemption 2",249,"1174180"],
+["Cyberpunk 2077 – Ultimate Edition (Phantom Liberty DLC)",179,"1091500"],
+["God of War",199,"1593500"],
+["Elden Ring",229,"1245620"],
+["Spider-Man Remastered",219,"1817070"],
+["Hogwarts Legacy",239,"990080"],
+["Forza Horizon 5",219,"1551360"],
+["The Witcher 3",149,"292030"],
+["Assassin’s Creed Mirage",229,"3035570"],
+["Far Cry 6",179,"2369390"],
+["Resident Evil 4",229,"2050650"],
+["Sekiro",219,"814380"],
+["Days Gone",199,"1259420"],
+["Mafia Definitive Edition",179,"1030840"],
+["Watch Dogs Legion",189,"2239550"],
+["Hitman 3",219,"1659040"],
+["Starfield",249,"1716740"],
+["Alan Wake 2",259,"1087100"],
+["The Last of Us Part I",249,"1888930"],
+["Uncharted 4",219,"1659420"],
+["FIFA 23",199,"1811260"],
+["NFS Unbound",189,"1846380"],
+["Metro Exodus",159,"412020"],
+["Control Ultimate",179,"870780"],
+["Death Stranding",199,"1190460"],
+["Assassin’s Creed Valhalla",199,"2208920"],
+["Horizon Zero Dawn",199,"1151640"],
+["Dying Light 2",219,"534380"],
+["Ghostwire Tokyo",179,"1475810"],
+["Lies of P",229,"1627720"],
+["Atomic Heart",219,"668580"],
+["Baldur’s Gate 3",249,"1086940"],
+["DOOM Eternal",179,"782330"],
+["Batman Arkham Knight",149,"208650"],
+["Max Payne 3",149,"204100"]
 ];
 
 const grid=document.getElementById("gameGrid");
@@ -225,12 +242,19 @@ games.forEach(g=>{
       <h4>${g[0]}</h4>
       <p>Steam Account</p>
       <b>₹${g[1]}</b>
-      <button onclick="add('${g[0]}',${g[1]})">Add to Cart</button>
+      <button onclick="add(this)">Add to Cart</button>
     </div>`;
   grid.appendChild(d);
 });
 
-function add(n,p){cart.push({n,p});updateCart();alert(n+" added to cart")}
+function add(btn){
+  const card = btn.closest(".card");
+  const name = card.querySelector("h4").innerText;
+  const price = card.querySelector("b").innerText.replace("₹","");
+  cart.push({name,price});
+  updateCart();
+  alert(name+" added to cart");
+}
 
 document.getElementById("searchInput").addEventListener("input",e=>{
   const v=e.target.value.toLowerCase();
