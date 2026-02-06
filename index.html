@@ -2,177 +2,176 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>PlayWithEase | Games & OTT Store</title>
+<title>PlayWithEase | Premium Games & OTT Store</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial,sans-serif}
-body{background:#0b0e1a;color:#fff}
+body{background:#000;color:#fff}
 
-/* LOGO */
-.logo{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:10px;
-}
-.logo-icon{
-  width:42px;height:42px;
-  border-radius:10px;
-  background:linear-gradient(135deg,#00eaff,#0077ff);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:800;
-  color:#000;
-}
-.logo-text{
-  font-size:34px;
-  font-weight:800;
-  letter-spacing:1px;
-}
-.logo-text span{color:#00eaff}
-
-/* HEADER */
+/* BRAND */
 header{
   padding:20px;
-  text-align:center;
-  background:linear-gradient(90deg,#0f2027,#203a43,#2c5364);
+  border-bottom:1px solid #111;
 }
-header p{color:#ccc;margin-top:6px}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.brand svg{flex-shrink:0}
+.brand-text b{font-size:26px}
+.brand-text span{display:block;font-size:12px;color:#aaa}
 
 /* NAV */
 nav{
   margin-top:12px;
   display:flex;
-  justify-content:center;
-  gap:20px;
+  gap:18px;
   flex-wrap:wrap;
 }
-nav a{color:#fff;text-decoration:none;font-weight:600;font-size:14px}
-nav a:hover{color:#00eaff}
+nav a{
+  color:#aaa;
+  text-decoration:none;
+  font-size:14px;
+}
+nav a:hover{color:#00aaff}
 
 /* HERO */
 .hero{
-  padding:70px 15px;
+  padding:60px 20px;
   text-align:center;
-  background:radial-gradient(circle at top,#1a2a3a,#02040a);
+  border-bottom:1px solid #111;
 }
-.hero h2{font-size:38px}
-.hero span{color:#00eaff}
-.hero p{margin-top:10px;color:#ccc}
-.hero a{
-  display:inline-block;
-  margin-top:22px;
-  padding:14px 32px;
-  background:#00eaff;
+.hero h1{font-size:38px}
+.hero h1 span{color:#00aaff}
+.hero p{margin-top:10px;color:#aaa}
+.hero .actions{
+  margin-top:25px;
+}
+.btn{
+  padding:12px 26px;
+  background:#00aaff;
   color:#000;
-  font-weight:700;
   border-radius:8px;
   text-decoration:none;
+  font-weight:700;
+  margin:5px;
+  display:inline-block;
+}
+.btn.outline{
+  background:transparent;
+  border:1px solid #00aaff;
+  color:#00aaff;
 }
 
 /* SECTION */
 .section{
   max-width:1300px;
   margin:auto;
-  padding:55px 15px;
+  padding:50px 15px;
 }
-.section h3{
-  font-size:30px;
-  text-align:center;
-  margin-bottom:30px;
-  color:#00eaff;
+.section h2{
+  font-size:28px;
+  margin-bottom:25px;
 }
 
-/* GRID (COMPACT) */
+/* GRID */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  gap:18px;
+  gap:16px;
 }
 
-/* CARD (SMALL STORE STYLE) */
+/* CARD */
 .card{
-  background:#12182a;
-  border-radius:12px;
+  background:#050505;
+  border:1px solid #003a66;
+  border-radius:10px;
   overflow:hidden;
-  box-shadow:0 0 18px rgba(0,0,0,.6);
-  transition:.25s;
 }
-.card:hover{transform:translateY(-6px)}
 .card img{
   width:100%;
   height:200px;
   object-fit:cover;
 }
-.info{
+.card .info{
   padding:10px;
-  text-align:center;
 }
-.info h4{font-size:14px;margin-bottom:3px}
-.info p{font-size:12px;color:#aaa}
-.price{
-  font-size:16px;
-  color:#00eaff;
+.card h4{font-size:14px}
+.card p{font-size:12px;color:#aaa}
+.card b{
+  display:block;
   margin:6px 0;
-  font-weight:700;
+  color:#00aaff;
 }
-.info a{
-  display:inline-block;
-  margin-top:4px;
-  padding:6px 14px;
-  background:#00eaff;
-  color:#000;
-  border-radius:6px;
+.card a{
   font-size:12px;
-  font-weight:700;
   text-decoration:none;
+  color:#000;
+  background:#00aaff;
+  padding:6px 12px;
+  border-radius:6px;
+  display:inline-block;
 }
 
-/* CONTACT */
-.contact{text-align:center;background:#070a14}
-.contact p{margin:8px 0}
+/* OTT IMAGE FIX */
+.ott{
+  object-fit:contain;
+  background:#000;
+  padding:18px;
+}
 
 /* FOOTER */
 footer{
-  padding:15px;
+  border-top:1px solid #111;
+  padding:20px;
   text-align:center;
-  background:#000;
-  color:#888;
+  color:#777;
   font-size:13px;
 }
-footer span{color:#00eaff}
 </style>
 </head>
 
 <body>
 
 <header>
-  <div class="logo">
-    <div class="logo-icon">PW</div>
-    <div class="logo-text">Play<span>With</span>Ease</div>
+  <div class="brand">
+    <svg width="44" height="44" viewBox="0 0 100 100">
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#00aaff"/>
+          <stop offset="100%" stop-color="#0055ff"/>
+        </linearGradient>
+      </defs>
+      <rect x="6" y="6" width="88" height="88" rx="18" fill="url(#g)"/>
+      <text x="50%" y="62%" text-anchor="middle" font-size="40" font-weight="800" fill="#000">PW</text>
+    </svg>
+    <div class="brand-text">
+      <b>PlayWithEase</b>
+      <span>Premium Games & OTT Store</span>
+    </div>
   </div>
-  <p>Games & OTT Subscriptions at Best Prices</p>
 
   <nav>
     <a href="#steam">Steam</a>
-    <a href="#rockstar">Rockstar</a>
-    <a href="#ubisoft">Ubisoft</a>
     <a href="#ott">OTT</a>
-    <a href="#contact">Contact</a>
+    <a href="cart.html">🛒 Cart</a>
   </nav>
 </header>
 
 <section class="hero">
-  <h2>Buy Games & OTT at <span>Lowest Prices</span></h2>
-  <p>Instant delivery • Trusted store • Gamer approved</p>
-  <a href="https://wa.me/917001568884">Buy on WhatsApp</a>
+  <h1>Buy Premium Games & OTT at <span>Best Prices</span></h1>
+  <p>Instant delivery • Trusted seller • WhatsApp support</p>
+  <div class="actions">
+    <a class="btn" href="https://wa.me/917001568884">Buy on WhatsApp</a>
+    <a class="btn outline" href="cart.html">View Cart</a>
+  </div>
 </section>
 
 <!-- STEAM -->
 <section class="section" id="steam">
-<h3>🎮 Steam Accounts</h3>
+<h2>🎮 Steam Accounts</h2>
 <div class="grid">
 
 <div class="card">
@@ -180,17 +179,17 @@ footer span{color:#00eaff}
 <div class="info">
 <h4>GTA V</h4>
 <p>Steam Account</p>
-<div class="price">₹199</div>
-<a href="https://wa.me/917001568884">Buy</a>
+<b>₹199</b>
+<a href="cart.html">Add to Cart</a>
 </div></div>
 
 <div class="card">
 <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg">
 <div class="info">
-<h4>RDR 2</h4>
+<h4>Red Dead Redemption 2</h4>
 <p>Steam Account</p>
-<div class="price">₹249</div>
-<a href="https://wa.me/917001568884">Buy</a>
+<b>₹249</b>
+<a href="cart.html">Add to Cart</a>
 </div></div>
 
 <div class="card">
@@ -198,35 +197,35 @@ footer span{color:#00eaff}
 <div class="info">
 <h4>Cyberpunk 2077</h4>
 <p>Steam Account</p>
-<div class="price">₹179</div>
-<a href="https://wa.me/917001568884">Buy</a>
+<b>₹179</b>
+<a href="cart.html">Add to Cart</a>
 </div></div>
 
 <div class="card">
-<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/578080/header.jpg">
+<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/header.jpg">
 <div class="info">
-<h4>PUBG</h4>
+<h4>God of War</h4>
 <p>Steam Account</p>
-<div class="price">₹149</div>
-<a href="https://wa.me/917001568884">Buy</a>
+<b>₹199</b>
+<a href="cart.html">Add to Cart</a>
 </div></div>
 
 <div class="card">
-<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg">
+<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg">
 <div class="info">
-<h4>CS2</h4>
+<h4>Elden Ring</h4>
 <p>Steam Account</p>
-<div class="price">₹129</div>
-<a href="https://wa.me/917001568884">Buy</a>
+<b>₹229</b>
+<a href="cart.html">Add to Cart</a>
 </div></div>
 
 <div class="card">
-<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/570/header.jpg">
+<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1817070/header.jpg">
 <div class="info">
-<h4>Dota 2</h4>
+<h4>Spider-Man Remastered</h4>
 <p>Steam Account</p>
-<div class="price">₹99</div>
-<a href="https://wa.me/917001568884">Buy</a>
+<b>₹219</b>
+<a href="cart.html">Add to Cart</a>
 </div></div>
 
 </div>
@@ -234,38 +233,33 @@ footer span{color:#00eaff}
 
 <!-- OTT -->
 <section class="section" id="ott">
-<h3>📺 OTT Subscriptions</h3>
+<h2>📺 OTT Subscriptions</h2>
 <div class="grid">
 
 <div class="card">
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg">
+<img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg">
 <div class="info">
 <h4>Netflix</h4>
-<p>Subscription</p>
-<div class="price">From ₹149</div>
-<a href="https://wa.me/917001568884">Buy</a>
+<p>1 / 3 / 6 / 12 Months</p>
+<b>From ₹149</b>
+<a href="cart.html">Add to Cart</a>
 </div></div>
 
 <div class="card">
-<img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png">
+<img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png">
 <div class="info">
-<h4>Amazon Prime</h4>
+<h4>Amazon Prime Video</h4>
 <p>Subscription</p>
-<div class="price">From ₹129</div>
-<a href="https://wa.me/917001568884">Buy</a>
+<b>From ₹129</b>
+<a href="cart.html">Add to Cart</a>
 </div></div>
 
 </div>
 </section>
 
-<section class="section contact" id="contact">
-<h3>📞 Contact & Orders</h3>
-<p>💬 WhatsApp: <b>7001568884</b></p>
-<p>📧 Email: <b>shayanakhtar1910@gmail.com</b></p>
-</section>
-
 <footer>
-© 2026 <span>PlayWithEase</span>. All Rights Reserved.
+📞 7001568884 • 📧 shayanakhtar1910@gmail.com  
+<br>© 2026 PlayWithEase
 </footer>
 
 </body>
