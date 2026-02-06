@@ -22,7 +22,14 @@ header{background:#fff;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-i
 .logo img{width:42px;height:42px;border-radius:10px}
 .logo .name{font-size:20px;font-weight:800}
 .logo .tag{display:block;font-size:11px;color:#64748b}
-nav a{margin-left:18px;text-decoration:none;color:#334155;font-size:14px}
+
+nav{display:flex;align-items:center}
+nav a, nav span{
+  margin-left:18px;
+  text-decoration:none;
+  color:#334155;
+  font-size:14px;
+}
 nav a:hover{color:#2563eb}
 .cart-count{background:#2563eb;color:#fff;border-radius:999px;padding:2px 7px;font-size:11px;margin-left:4px}
 
@@ -88,7 +95,7 @@ nav a:hover{color:#2563eb}
   font-size:12px;cursor:pointer
 }
 
-/* OTT LOGOS */
+/* OTT */
 .card .ott{
   width:100%;height:120px;
   object-fit:contain;padding:18px;background:#fff
@@ -122,6 +129,11 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
     <a href="#games">Games</a>
     <a href="#ott">OTT</a>
     <a href="cart.html">Cart <span id="cartCount" class="cart-count">0</span></a>
+
+    <!-- LOGIN SYSTEM -->
+    <span id="userEmail" style="font-weight:600"></span>
+    <a href="login.html" id="loginBtn">Login</a>
+    <a href="#" id="logoutBtn" style="display:none">Logout</a>
   </nav>
 </div>
 </header>
@@ -173,8 +185,8 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
   <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg"><div class="info"><h4>Netflix</h4><b>From ₹149</b><button onclick="add(this)">Add to Cart</button></div></div>
   <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png"><div class="info"><h4>Amazon Prime Video</h4><b>From ₹129</b><button onclick="add(this)">Add to Cart</button></div></div>
   <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg"><div class="info"><h4>Disney+ Hotstar</h4><b>From ₹99</b><button onclick="add(this)">Add to Cart</button></div></div>
-  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/f/fd/YouTube_full-color_icon_%282024%29.svg"><div class="info"><h4>YouTube Premium</h4><b>From ₹79</b><button onclick="add(this)">Add to Cart</button></div></div>
-  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/8/85/Crunchyroll_2024_stacked.svg"><div class="info"><h4>Crunchyroll</h4><b>From ₹129</b><button onclick="add(this)">Add to Cart</button></div></div>
+  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Premium_logo.svg"><div class="info"><h4>YouTube Premium</h4><b>From ₹79</b><button onclick="add(this)">Add to Cart</button></div></div>
+  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/7/76/Crunchyroll_Logo.svg"><div class="info"><h4>Crunchyroll</h4><b>From ₹129</b><button onclick="add(this)">Add to Cart</button></div></div>
 </div>
 </section>
 
@@ -205,25 +217,12 @@ const games=[
 ["God of War",199,"1593500"],["Elden Ring",229,"1245620"],
 ["Spider-Man Remastered",219,"1817070"],["Hogwarts Legacy",239,"990080"],
 ["Forza Horizon 5",219,"1551360"],["The Witcher 3",149,"292030"],
-["Assassin’s Creed Mirage",229,"3035570"],["Far Cry 6",179,"2369390"],
-["Resident Evil 4",229,"2050650"],["Sekiro",219,"814380"],
-["Days Gone",199,"1259420"],["Mafia Definitive Edition",179,"1030840"],
-["Watch Dogs Legion",189,"2239550"],["Hitman 3",219,"1659040"],
-["Starfield",249,"1716740"],["Alan Wake 2",259,"1087100"],
-["The Last of Us Part I",249,"1888930"],["Uncharted 4",219,"1659420"],
-["FIFA 23",199,"1811260"],["NFS Unbound",189,"1846380"],
-["Metro Exodus",159,"412020"],["Control Ultimate",179,"870780"],
-["Death Stranding",199,"1190460"],["Assassin’s Creed Valhalla",199,"2208920"],
-["Horizon Zero Dawn",199,"1151640"],["Dying Light 2",219,"534380"],
-["Ghostwire Tokyo",179,"1475810"],["Lies of P",229,"1627720"],
-["Atomic Heart",219,"668580"],["Baldur’s Gate 3",249,"1086940"],
-["DOOM Eternal",179,"782330"],["Batman Arkham Knight",149,"208650"],
-["Max Payne 3",149,"204100"]
+["Assassin’s Creed Mirage",229,"3035570"]
 ];
 
 const grid=document.getElementById("gameGrid");
 const toggleBtn=document.getElementById("toggleBtn");
-let visible=12, expanded=false;
+let visible=8, expanded=false;
 let cart=JSON.parse(localStorage.getItem("cart")||"[]");
 
 function render(){
@@ -243,7 +242,6 @@ grid.appendChild(d);
 });
 toggleBtn.innerText=expanded?"Show Less":"Show More Games";
 }
-
 toggleBtn.onclick=()=>{expanded=!expanded;render()};
 
 function add(btn){
@@ -260,6 +258,37 @@ document.getElementById("cartCount").innerText=cart.length;
 render();
 </script>
 
+<!-- FIREBASE AUTH HANDLER -->
+<script type="module">
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const userEmail=document.getElementById("userEmail");
+const loginBtn=document.getElementById("loginBtn");
+const logoutBtn=document.getElementById("logoutBtn");
+
+onAuthStateChanged(auth,user=>{
+  if(user){
+    userEmail.innerText=user.email;
+    loginBtn.style.display="none";
+    logoutBtn.style.display="inline";
+  }else{
+    userEmail.innerText="";
+    loginBtn.style.display="inline";
+    logoutBtn.style.display="none";
+  }
+});
+
+logoutBtn.onclick=()=>signOut(auth);
+</script>
+
 </body>
 </html>
-
