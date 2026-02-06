@@ -107,10 +107,13 @@ footer{
       </div>
     </div>
     <nav>
-      <a href="#games">Games</a>
-      <a href="#ott">OTT</a>
-      <a href="cart.html">Cart <span id="cartCount" class="cart-count">0</span></a>
-    </nav>
+  <a href="#games">Games</a>
+  <a href="#ott">OTT</a>
+  <a href="cart.html">Cart <span id="cartCount" class="cart-count">0</span></a>
+
+  <a href="login.html" id="loginBtn">Login</a>
+  <a href="#" onclick="logout()" id="logoutBtn" style="display:none">Logout</a>
+</nav>
   </div>
 </header>
 
@@ -238,5 +241,20 @@ document.querySelectorAll(".card").forEach(c=>observer.observe(c));
 updateCart();
 </script>
 
+<!-- AUTH SYSTEM -->
+<script src="auth.js"></script>
+<script>
+const user = JSON.parse(localStorage.getItem("loggedUser"));
+if(user){
+  const loginBtn = document.getElementById("loginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+  if(loginBtn && logoutBtn){
+    loginBtn.style.display="none";
+    logoutBtn.style.display="inline";
+  }
+}
+</script>
+  
 </body>
 </html>
+
