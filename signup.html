@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sign Up | PlayWithEase</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.ico">
+<style>
+body{
+  background:#f8fafc;
+  font-family:Poppins,Arial;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100vh;
+}
+.box{
+  background:#fff;
+  padding:30px;
+  width:100%;
+  max-width:360px;
+  border-radius:16px;
+  border:1px solid #e5e7eb;
+}
+h2{text-align:center;margin-bottom:20px}
+input{
+  width:100%;
+  padding:12px;
+  margin-bottom:12px;
+  border-radius:8px;
+  border:1px solid #cbd5e1;
+}
+button{
+  width:100%;
+  padding:12px;
+  background:#2563eb;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+}
+p{text-align:center;font-size:13px;margin-top:14px}
+a{color:#2563eb;text-decoration:none}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Create Account</h2>
+  <input id="name" placeholder="Full Name">
+  <input id="email" type="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="signup()">Sign Up</button>
+  <p>Already have an account? <a href="login.html">Login</a></p>
+</div>
+
+<script src="auth.js"></script>
+</body>
+</html>
