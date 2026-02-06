@@ -15,8 +15,11 @@ body{
 
 /* HEADER */
 header{
-  background:#ffffff;
+  background:#fff;
   border-bottom:1px solid #e5e7eb;
+  position:sticky;
+  top:0;
+  z-index:100;
 }
 .header-wrap{
   max-width:1200px;
@@ -27,13 +30,17 @@ header{
   align-items:center;
 }
 
-/* LOGO */
+/* LOGO (FAVICON AS LOGO) */
 .logo{
   display:flex;
   align-items:center;
   gap:12px;
 }
-.logo svg{width:40px;height:40px}
+.logo img{
+  width:42px;
+  height:42px;
+  border-radius:10px;
+}
 .logo .name{
   font-size:20px;
   font-weight:800;
@@ -64,7 +71,7 @@ nav a:hover{color:#2563eb}
 /* HERO */
 .hero{
   max-width:1200px;
-  margin:40px auto;
+  margin:50px auto;
   padding:0 20px;
   display:grid;
   grid-template-columns:1.2fr 1fr;
@@ -79,11 +86,8 @@ nav a:hover{color:#2563eb}
 .hero p{
   margin-top:14px;
   color:#475569;
-  font-size:16px;
 }
-.hero .actions{
-  margin-top:22px;
-}
+.actions{margin-top:22px}
 .btn{
   display:inline-block;
   padding:12px 24px;
@@ -91,11 +95,13 @@ nav a:hover{color:#2563eb}
   font-weight:600;
   text-decoration:none;
   margin-right:10px;
+  transition:.25s;
 }
 .btn.primary{
   background:#2563eb;
   color:#fff;
 }
+.btn.primary:hover{transform:translateY(-2px)}
 .btn.secondary{
   border:1px solid #cbd5f5;
   color:#2563eb;
@@ -106,30 +112,37 @@ nav a:hover{color:#2563eb}
 .section{
   max-width:1200px;
   margin:auto;
-  padding:50px 20px;
+  padding:60px 20px;
 }
 .section h2{
   font-size:26px;
-  margin-bottom:24px;
+  margin-bottom:26px;
 }
 
 /* GRID */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:20px;
+  gap:22px;
 }
 
 /* CARD */
 .card{
-  background:#ffffff;
+  background:#fff;
   border:1px solid #e5e7eb;
-  border-radius:14px;
+  border-radius:16px;
   overflow:hidden;
-  transition:.25s;
+  opacity:0;
+  transform:translateY(20px);
+  transition:.4s;
+}
+.card.show{
+  opacity:1;
+  transform:translateY(0);
 }
 .card:hover{
-  box-shadow:0 10px 25px rgba(0,0,0,.08);
+  box-shadow:0 12px 28px rgba(0,0,0,.08);
+  transform:translateY(-4px);
 }
 .card img{
   width:100%;
@@ -141,7 +154,6 @@ nav a:hover{color:#2563eb}
 }
 .card h4{
   font-size:14px;
-  margin-bottom:4px;
 }
 .card p{
   font-size:12px;
@@ -171,7 +183,7 @@ nav a:hover{color:#2563eb}
 
 /* FOOTER */
 footer{
-  background:#ffffff;
+  background:#fff;
   border-top:1px solid #e5e7eb;
   padding:25px 15px;
   text-align:center;
@@ -191,17 +203,12 @@ footer{
 <header>
   <div class="header-wrap">
     <div class="logo">
-      <svg viewBox="0 0 100 100">
-        <rect x="6" y="6" width="88" height="88" rx="20" fill="#2563eb"/>
-        <text x="50%" y="62%" text-anchor="middle"
-              font-size="38" font-weight="800" fill="#fff">PW</text>
-      </svg>
+      <img src="favicon.ico" alt="PlayWithEase Logo">
       <div>
         <span class="name">PlayWithEase</span>
         <span class="tag">Trusted Games & OTT Store</span>
       </div>
     </div>
-
     <nav>
       <a href="#games">Games</a>
       <a href="#ott">OTT</a>
@@ -212,8 +219,8 @@ footer{
 
 <section class="hero">
   <div>
-    <h1>Buy Premium PC Games & OTT<br><span>Safely & Easily</span></h1>
-    <p>Trusted store • Manual verification • WhatsApp support • No shady payments</p>
+    <h1>Buy Premium Games & OTT<br><span>Safely & Easily</span></h1>
+    <p>Manual verification • WhatsApp support • Trusted delivery</p>
     <div class="actions">
       <a class="btn primary" href="https://wa.me/917001568884">Order on WhatsApp</a>
       <a class="btn secondary" href="cart.html">View Cart</a>
@@ -224,7 +231,7 @@ footer{
 </section>
 
 <section class="section" id="games">
-<h2>🎮 Steam Accounts</h2>
+<h2>🎮 Premium PC Games</h2>
 <div class="grid" id="gameGrid"></div>
 </section>
 
@@ -273,14 +280,10 @@ const games=[
 ["Uncharted 4",219,"1659420"],["FIFA 23",199,"1811260"],
 ["NFS Unbound",189,"1846380"],["Metro Exodus",159,"412020"],
 ["Control Ultimate",179,"870780"],["Death Stranding",199,"1190460"],
-["Battlefield V",149,"1238810"],["Call of Duty MW2",249,"1938090"],
-["Assassin’s Creed Valhalla",199,"2208920"],
-["Horizon Zero Dawn",199,"1151640"],
-["Dying Light 2",219,"534380"],
-["Ghostwire Tokyo",179,"1475810"],
-["Lies of P",229,"1627720"],
-["Atomic Heart",219,"668580"],
-["Remnant II",229,"1282100"],
+["Call of Duty MW2",249,"1938090"],["Assassin’s Creed Valhalla",199,"2208920"],
+["Horizon Zero Dawn",199,"1151640"],["Dying Light 2",219,"534380"],
+["Ghostwire Tokyo",179,"1475810"],["Lies of P",229,"1627720"],
+["Atomic Heart",219,"668580"],["Remnant II",229,"1282100"],
 ["Baldur’s Gate 3",249,"1086940"]
 ];
 
@@ -311,6 +314,16 @@ function add(name,price){
   updateCart();
   alert(name+" added to cart");
 }
+
+/* SCROLL ANIMATION */
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add("show")}
+  })
+},{threshold:.15});
+
+document.querySelectorAll(".card").forEach(c=>observer.observe(c));
+
 updateCart();
 </script>
 
