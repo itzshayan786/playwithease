@@ -2,303 +2,106 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>PlayWithEase | Premium Games & OTT Store</title>
+<title>PlayWithEase | Premium Games Store</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-
+<link rel="icon" href="favicon.ico">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial,sans-serif}
-
-/* BACKGROUND */
-body{
-  background:radial-gradient(1200px 600px at top left,#0f1c2f,#05070d);
-  color:#fff;
-}
-
-/* HEADER */
-header{
-  max-width:1300px;
-  margin:auto;
-  padding:28px 20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-/* LOGO */
-.brand{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-.brand svg{
-  width:44px;height:44px;
-}
-.brand b{
-  font-size:24px;
-}
-.brand span{
-  display:block;
-  font-size:12px;
-  color:#9aa4b2;
-}
-
-/* NAV */
-nav a{
-  margin-left:22px;
-  color:#cbd5e1;
-  text-decoration:none;
-  font-size:14px;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
+body{background:#0b1020;color:#fff}
+header{max-width:1300px;margin:auto;padding:20px;display:flex;justify-content:space-between;align-items:center}
+nav a{margin-left:20px;color:#cbd5e1;text-decoration:none}
 nav a:hover{color:#4cc9f0}
+.cart-count{background:#4cc9f0;color:#000;border-radius:50%;padding:2px 7px;font-size:12px;margin-left:5px}
 
-/* HERO */
-.hero{
-  max-width:1100px;
-  margin:80px auto 40px;
-  text-align:center;
-  padding:0 20px;
-}
-.hero h1{
-  font-size:52px;
-  line-height:1.1;
-  font-weight:800;
-}
-.hero h1 span{
-  background:linear-gradient(90deg,#4cc9f0,#4895ef);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
-.hero p{
-  margin-top:16px;
-  color:#9aa4b2;
-  font-size:18px;
-}
-.hero .actions{
-  margin-top:32px;
-}
-.btn{
-  padding:14px 34px;
-  border-radius:999px;
-  font-weight:700;
-  text-decoration:none;
-  margin:8px;
-  display:inline-block;
-}
-.btn.primary{
-  background:linear-gradient(90deg,#4cc9f0,#4895ef);
-  color:#000;
-}
-.btn.secondary{
-  border:1px solid #334155;
-  color:#cbd5e1;
-}
+.hero{text-align:center;padding:60px 20px}
+.hero h1{font-size:48px}
+.hero span{color:#4cc9f0}
+.section{max-width:1300px;margin:auto;padding:40px 20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px}
 
-/* SECTION */
-.section{
-  max-width:1300px;
-  margin:auto;
-  padding:70px 20px;
-}
-.section h2{
-  font-size:30px;
-  margin-bottom:30px;
-}
+.card{background:#0f172a;border-radius:16px;overflow:hidden}
+.card img{width:100%;height:220px;object-fit:cover}
+.card .info{padding:14px}
+.card h4{font-size:15px}
+.card p{font-size:12px;color:#94a3b8}
+.card b{color:#4cc9f0;display:block;margin:6px 0}
+.card button{background:#4cc9f0;color:#000;border:none;padding:8px 14px;border-radius:20px;font-weight:700;cursor:pointer}
 
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
-  gap:24px;
-}
-
-/* CARD */
-.card{
-  background:linear-gradient(180deg,#0c1322,#080c16);
-  border-radius:20px;
-  overflow:hidden;
-  box-shadow:0 30px 60px rgba(0,0,0,.6);
-  transition:.35s;
-}
-.card:hover{
-  transform:translateY(-8px);
-}
-.card img{
-  width:100%;
-  height:220px;
-  object-fit:cover;
-}
-.card .info{
-  padding:16px;
-}
-.card h4{
-  font-size:15px;
-}
-.card p{
-  font-size:12px;
-  color:#94a3b8;
-}
-.card b{
-  display:block;
-  margin:8px 0;
-  color:#4cc9f0;
-}
-.card a{
-  display:inline-block;
-  margin-top:6px;
-  padding:8px 18px;
-  background:linear-gradient(90deg,#4cc9f0,#4895ef);
-  color:#000;
-  font-size:12px;
-  border-radius:999px;
-  text-decoration:none;
-  font-weight:700;
-}
-
-/* OTT FIX */
-.ott{
-  object-fit:contain;
-  padding:26px;
-  background:#000;
-}
-
-/* FOOTER */
-footer{
-  border-top:1px solid #111827;
-  text-align:center;
-  padding:30px 15px;
-  color:#64748b;
-  font-size:13px;
-}
+footer{text-align:center;padding:20px;color:#64748b;font-size:13px}
 </style>
 </head>
 
 <body>
 
 <header>
-  <div class="brand">
-    <svg viewBox="0 0 100 100">
-      <defs>
-        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#4cc9f0"/>
-          <stop offset="100%" stop-color="#4895ef"/>
-        </linearGradient>
-      </defs>
-      <rect x="6" y="6" width="88" height="88" rx="22" fill="url(#g)"/>
-      <text x="50%" y="62%" text-anchor="middle" font-size="40" font-weight="800" fill="#000">PW</text>
-    </svg>
-    <div>
-      <b>PlayWithEase</b>
-      <span>Games & OTT Store</span>
-    </div>
-  </div>
-
+  <b>PlayWithEase</b>
   <nav>
     <a href="#games">Games</a>
-    <a href="#ott">OTT</a>
-    <a href="cart.html">Cart</a>
+    <a href="cart.html">🛒 Cart <span id="cartCount" class="cart-count">0</span></a>
   </nav>
 </header>
 
 <section class="hero">
-  <h1>Premium Games & OTT<br><span>Designed for Gamers</span></h1>
-  <p>Instant delivery • Trusted store • Smooth experience</p>
-  <div class="actions">
-    <a class="btn primary" href="https://wa.me/917001568884">Buy on WhatsApp</a>
-    <a class="btn secondary" href="cart.html">View Cart</a>
-  </div>
+  <h1>Premium PC Games<br><span>Best Prices Guaranteed</span></h1>
 </section>
 
 <section class="section" id="games">
 <h2>🎮 Steam Accounts</h2>
-<div class="grid">
-
-<div class="card">
-<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg">
-<div class="info">
-<h4>GTA V</h4>
-<p>Steam Account</p>
-<b>₹199</b>
-<a href="cart.html">Add to Cart</a>
-</div></div>
-
-<div class="card">
-<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg">
-<div class="info">
-<h4>Red Dead Redemption 2</h4>
-<p>Steam Account</p>
-<b>₹249</b>
-<a href="cart.html">Add to Cart</a>
-</div></div>
-
-<div class="card">
-<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg">
-<div class="info">
-<h4>Cyberpunk 2077</h4>
-<p>Steam Account</p>
-<b>₹179</b>
-<a href="cart.html">Add to Cart</a>
-</div></div>
-
-<div class="card">
-<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/header.jpg">
-<div class="info">
-<h4>God of War</h4>
-<p>Steam Account</p>
-<b>₹199</b>
-<a href="cart.html">Add to Cart</a>
-</div></div>
-
-<div class="card">
-<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg">
-<div class="info">
-<h4>Elden Ring</h4>
-<p>Steam Account</p>
-<b>₹229</b>
-<a href="cart.html">Add to Cart</a>
-</div></div>
-
-<div class="card">
-<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1817070/header.jpg">
-<div class="info">
-<h4>Spider-Man Remastered</h4>
-<p>Steam Account</p>
-<b>₹219</b>
-<a href="cart.html">Add to Cart</a>
-</div></div>
-
-</div>
-</section>
-
-<section class="section" id="ott">
-<h2>📺 OTT Subscriptions</h2>
-<div class="grid">
-
-<div class="card">
-<img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg">
-<div class="info">
-<h4>Netflix</h4>
-<p>All Plans</p>
-<b>From ₹149</b>
-<a href="cart.html">Add to Cart</a>
-</div></div>
-
-<div class="card">
-<img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png">
-<div class="info">
-<h4>Amazon Prime Video</h4>
-<p>Subscription</p>
-<b>From ₹129</b>
-<a href="cart.html">Add to Cart</a>
-</div></div>
-
-</div>
+<div class="grid" id="gameGrid"></div>
 </section>
 
 <footer>
-📞 7001568884 • 📧 shayanakhtar1910@gmail.com  
-<br>© 2026 PlayWithEase
+📞 7001568884 • 📧 shayanakhtar1910@gmail.com<br>
+© 2026 PlayWithEase
 </footer>
+
+<script>
+const games = [
+["GTA V",199,"271590"],["RDR 2",249,"1174180"],["Cyberpunk 2077",179,"1091500"],
+["God of War",199,"1593500"],["Elden Ring",229,"1245620"],["Spider-Man Remastered",219,"1817070"],
+["Hogwarts Legacy",239,"990080"],["Forza Horizon 5",219,"1551360"],
+["The Witcher 3",149,"292030"],["Assassin’s Creed Valhalla",199,"2208920"],
+["Far Cry 6",179,"2369390"],["Resident Evil 4",229,"2050650"],
+["Sekiro",219,"814380"],["Battlefield V",149,"1238810"],
+["Days Gone",199,"1259420"],["Mafia Definitive",179,"1030840"],
+["Watch Dogs Legion",189,"2239550"],["Hitman 3",219,"1659040"],
+["Red Dead Online",149,"1404210"],["Starfield",249,"1716740"],
+["Alan Wake 2",259,"1087100"],["The Last of Us Part I",249,"1888930"],
+["Uncharted 4",219,"1659420"],["FIFA 23",199,"1811260"],
+["Call of Duty MW2",249,"1938090"],["NFS Unbound",189,"1846380"],
+["Metro Exodus",159,"412020"],["Control Ultimate",179,"870780"],
+["Death Stranding",199,"1190460"],["Assassin’s Creed Mirage",229,"3035570"]
+];
+
+const grid=document.getElementById("gameGrid");
+const cart=JSON.parse(localStorage.getItem("cart")||"[]");
+
+function updateCart(){
+  document.getElementById("cartCount").innerText=cart.length;
+  localStorage.setItem("cart",JSON.stringify(cart));
+}
+
+games.forEach(g=>{
+  const div=document.createElement("div");
+  div.className="card";
+  div.innerHTML=`
+  <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
+  <div class="info">
+    <h4>${g[0]}</h4>
+    <p>Steam Account</p>
+    <b>₹${g[1]}</b>
+    <button onclick='add("${g[0]}",${g[1]})'>Add to Cart</button>
+  </div>`;
+  grid.appendChild(div);
+});
+
+function add(name,price){
+  cart.push({name,price});
+  updateCart();
+  alert(name+" added to cart");
+}
+updateCart();
+</script>
 
 </body>
 </html>
