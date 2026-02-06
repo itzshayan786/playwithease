@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="favicon.ico">
 
+<!-- TRUSTPILOT DOMAIN VERIFICATION -->
 <meta name="trustpilot-one-time-domain-verification-id" content="9813f6e5-27fa-4e5f-8f0f-428c4a46632a">
 <script src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
 
@@ -36,9 +37,8 @@ nav a:hover{color:#2563eb}
 .hero h1 span{color:#2563eb}
 .hero p{margin-top:14px;color:#475569}
 .actions{margin-top:22px}
-.btn{display:inline-block;padding:12px 24px;border-radius:8px;font-weight:600;text-decoration:none;margin-right:10px;transition:.25s}
+.btn{display:inline-block;padding:12px 24px;border-radius:8px;font-weight:600;text-decoration:none;margin-right:10px}
 .btn.primary{background:#2563eb;color:#fff}
-.btn.primary:hover{transform:translateY(-2px)}
 .btn.secondary{border:1px solid #cbd5f5;color:#2563eb;background:#fff}
 
 /* TRUST BAR */
@@ -69,21 +69,14 @@ nav a:hover{color:#2563eb}
 .search-wrap input{
   width:100%;padding:14px 18px;border-radius:999px;
   border:1px solid #cbd5e1;font-size:14px;
-  outline:none;transition:.25s
-}
-.search-wrap input:focus{
-  border-color:#2563eb;
-  box-shadow:0 0 0 4px rgba(37,99,235,.12)
+  outline:none
 }
 
 /* GRID */
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:22px}
 
 /* CARD */
-.card{
-  background:#fff;border:1px solid #e5e7eb;border-radius:16px;
-  overflow:hidden
-}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden}
 .card img{width:100%;height:180px;object-fit:cover}
 .card .info{padding:14px}
 .card h4{font-size:14px}
@@ -95,18 +88,17 @@ nav a:hover{color:#2563eb}
   font-size:12px;cursor:pointer
 }
 
+/* OTT LOGOS */
+.card .ott{
+  width:100%;height:120px;
+  object-fit:contain;padding:18px;background:#fff
+}
+
 /* SHOW MORE */
 .show-more-wrap{text-align:center;margin-top:30px}
 .show-more-wrap button{
   padding:12px 26px;border-radius:999px;
-  background:#2563eb;color:#fff;
-  border:none;font-weight:600;cursor:pointer
-}
-
-/* OTT */
-.card .ott{
-  width:100%;height:120px;object-fit:contain;
-  padding:18px;background:#fff
+  background:#2563eb;color:#fff;border:none;font-weight:600;cursor:pointer
 }
 
 /* FOOTER */
@@ -151,6 +143,7 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
 <img src="https://images.unsplash.com/photo-1605902711622-cfb43c44367f" style="width:100%;border-radius:18px">
 </section>
 
+<!-- TRUSTPILOT LINK -->
 <div class="trust-wrap">
   <div class="trust-box">
     <div>
@@ -165,13 +158,10 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
 
 <section class="section" id="games">
 <h2>🎮 Premium PC Games Vault</h2>
-
 <div class="search-wrap">
   <input id="searchInput" placeholder="Search games...">
 </div>
-
 <div class="grid" id="gameGrid"></div>
-
 <div class="show-more-wrap">
   <button id="toggleBtn">Show More Games</button>
 </div>
@@ -185,6 +175,20 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
   <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg"><div class="info"><h4>Disney+ Hotstar</h4><b>From ₹99</b><button onclick="add(this)">Add to Cart</button></div></div>
   <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/f/fd/YouTube_full-color_icon_%282024%29.svg"><div class="info"><h4>YouTube Premium</h4><b>From ₹79</b><button onclick="add(this)">Add to Cart</button></div></div>
   <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/7/76/Crunchyroll_Logo.svg"><div class="info"><h4>Crunchyroll</h4><b>From ₹129</b><button onclick="add(this)">Add to Cart</button></div></div>
+</div>
+</section>
+
+<!-- TRUSTPILOT WIDGET -->
+<section class="section" style="padding-top:0">
+<div style="background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:18px;text-align:center">
+<div class="trustpilot-widget"
+data-locale="en-US"
+data-template-id="56278e9abfbbba0bdcd568bc"
+data-businessunit-id="6985c274abb8a0a2645265ef"
+data-style-height="52px"
+data-style-width="100%">
+<a href="https://www.trustpilot.com/review/playwithease.in" target="_blank">Trustpilot</a>
+</div>
 </div>
 </section>
 
@@ -219,45 +223,38 @@ const games=[
 
 const grid=document.getElementById("gameGrid");
 const toggleBtn=document.getElementById("toggleBtn");
-let visibleCount=12, expanded=false;
+let visible=12, expanded=false;
 let cart=JSON.parse(localStorage.getItem("cart")||"[]");
 
 function render(){
-  grid.innerHTML="";
-  games.slice(0,expanded?games.length:visibleCount).forEach(g=>{
-    const d=document.createElement("div");
-    d.className="card";
-    d.innerHTML=`
-      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
-      <div class="info">
-        <h4>${g[0]}</h4>
-        <p>Steam Account</p>
-        <b>₹${g[1]}</b>
-        <button onclick="add(this)">Add to Cart</button>
-      </div>`;
-    grid.appendChild(d);
-  });
-  toggleBtn.innerText=expanded?"Show Less":"Show More Games";
+grid.innerHTML="";
+games.slice(0,expanded?games.length:visible).forEach(g=>{
+const d=document.createElement("div");
+d.className="card";
+d.innerHTML=`
+<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
+<div class="info">
+<h4>${g[0]}</h4>
+<p>Steam Account</p>
+<b>₹${g[1]}</b>
+<button onclick="add(this)">Add to Cart</button>
+</div>`;
+grid.appendChild(d);
+});
+toggleBtn.innerText=expanded?"Show Less":"Show More Games";
 }
 
 toggleBtn.onclick=()=>{expanded=!expanded;render()};
 
 function add(btn){
-  const card=btn.closest(".card");
-  const name=card.querySelector("h4").innerText;
-  const price=card.querySelector("b").innerText.replace("₹","");
-  cart.push({name,price});
-  document.getElementById("cartCount").innerText=cart.length;
-  localStorage.setItem("cart",JSON.stringify(cart));
-  alert(name+" added to cart");
+const card=btn.closest(".card");
+const name=card.querySelector("h4").innerText;
+const price=card.querySelector("b").innerText.replace("₹","");
+cart.push({name,price});
+document.getElementById("cartCount").innerText=cart.length;
+localStorage.setItem("cart",JSON.stringify(cart));
+alert(name+" added to cart");
 }
-
-document.getElementById("searchInput").addEventListener("input",e=>{
-  const v=e.target.value.toLowerCase();
-  document.querySelectorAll(".card").forEach(c=>{
-    c.style.display=c.innerText.toLowerCase().includes(v)?"block":"none";
-  });
-});
 
 document.getElementById("cartCount").innerText=cart.length;
 render();
