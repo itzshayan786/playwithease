@@ -167,10 +167,10 @@ function renderCart(){
 
     <div class="cart-actions">
       <a href="index.html" class="back">← Continue Shopping</a>
-      <a href="https://wa.me/917001568884?text=Hello%20PlayWithEase%20Support%20👋%0A%0AI’d%20like%20to%20place%20an%20order%20from%20my%20cart.%0A%0A📦%20Order%20Type:%20Digital%20Delivery%0A🎮%20Products:%20(as%20shown%20in%20cart)%0A%0APlease%20let%20me%20know:%0A•%20Final%20price%0A•%20Availability%0A•%20Delivery%20time%0A%0AThank%20you!"
-   class="checkout">
-        Checkout on WhatsApp
-      </a>
+      <button class="checkout" onclick="checkoutWhatsApp()">
+  Checkout on WhatsApp
+</button>
+
     </div>
   `;
 }
@@ -183,7 +183,38 @@ function removeItem(i){
 
 renderCart();
 </script>
+<script>
+function checkoutWhatsApp(){
+  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+  if(cart.length === 0){
+    alert("Your cart is empty");
+    return;
+  }
+
+  let msg = "Hello PlayWithEase Support 👋\n\n";
+  msg += "I’d like to place an order:\n\n";
+
+  let total = 0;
+
+  cart.forEach((item, i) => {
+    msg += `${i+1}. ${item.name} - ₹${item.price}\n`;
+    total += Number(item.price);
+  });
+
+  msg += `\n💰 Total: ₹${total}`;
+  msg += `\n📦 Digital Delivery`;
+  msg += `\n\nPlease confirm availability & delivery time.\n\nThank you!`;
+
+  const url =
+    "https://wa.me/917001568884?text=" +
+    encodeURIComponent(msg);
+
+  window.open(url, "_blank");
+}
+</script>
 
 </body>
 </html>
+
 
