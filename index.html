@@ -14,6 +14,47 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
 body{background:#f8fafc;color:#0f172a}
 
+/* ===== ADD TO CART ANIMATION (SAFE) ===== */
+.card button{
+  position:relative;
+  overflow:hidden;
+  transition:.25s ease;
+}
+
+.card button:active{
+  transform:scale(.95);
+}
+
+.card button.added{
+  background:#16a34a !important;
+  color:#fff;
+}
+
+.card button.added span{
+  visibility:hidden;
+}
+
+.card button.added::after{
+  content:"✔ Added";
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:600;
+}
+
+/* cart count bounce */
+.cart-bounce{
+  animation:bounce .4s ease;
+}
+@keyframes bounce{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.3)}
+  100%{transform:scale(1)}
+}
+</style>
+
 /* HEADER */
 header{background:#fff;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:100}
 .header-wrap{max-width:1200px;margin:auto;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
@@ -547,3 +588,4 @@ function sendMessage(){
 
 </body>
 </html>
+
