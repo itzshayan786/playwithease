@@ -314,6 +314,7 @@ onAuthStateChanged(auth,user=>{
 logoutBtn.onclick=e=>{e.preventDefault();signOut(auth)};
 </script>
 
+<!-- ===== AI CHAT SUPPORT ===== -->
 <div id="ai-chat-btn">💬</div>
 
 <div id="ai-chat-box">
@@ -322,7 +323,9 @@ logoutBtn.onclick=e=>{e.preventDefault();signOut(auth)};
     <button onclick="toggleChat()">✕</button>
   </div>
 
-  <div id="ai-messages"></div>
+  <div id="ai-messages">
+    <div class="ai-msg ai">👋 Hi! Welcome to PlayWithEase. How can I help you?</div>
+  </div>
 
   <div class="ai-input">
     <input id="aiInput" placeholder="Type your message..." />
@@ -331,7 +334,6 @@ logoutBtn.onclick=e=>{e.preventDefault();signOut(auth)};
 </div>
 
 <script>
-/* AI CHAT JS */
 const chatBtn = document.getElementById("ai-chat-btn");
 const chatBox = document.getElementById("ai-chat-box");
 const messages = document.getElementById("ai-messages");
@@ -353,7 +355,7 @@ function sendMessage(){
 
   setTimeout(()=>{
     messages.innerHTML +=
-      `<div class="ai-msg ai">🤖 Thanks for contacting PlayWithEase! How can I help you?</div>`;
+      `<div class="ai-msg ai">🤖 Thanks for contacting PlayWithEase! Please share the game or OTT service you want.</div>`;
     messages.scrollTop = messages.scrollHeight;
   },600);
 }
