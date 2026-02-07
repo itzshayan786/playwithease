@@ -881,23 +881,6 @@ window.addToCart = function(name, price, btn){
 </script>
   
 <script>
-function toggleProfile(){
-  document.getElementById("profileMenu")
-    .classList.toggle("show");
-}
-
-/* click outside close */
-document.addEventListener("click", e=>{
-  const wrap=document.getElementById("profileWrap");
-  if(!wrap.contains(e.target)){
-    document.getElementById("profileMenu")
-      .classList.remove("show");
-  }
-});
-</script>
-  
-<script>
-/* ===== PROFILE DROPDOWN FIX ===== */
 
 function toggleProfile(){
   const menu = document.getElementById("profileMenu");
@@ -924,6 +907,7 @@ function firebaseLogout(){
 
 </body>
 </html>
+
 
 
 
