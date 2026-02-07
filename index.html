@@ -341,11 +341,11 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
 <section class="section" id="ott">
 <h2>📺 OTT Subscriptions</h2>
 <div class="grid">
-  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg"><div class="info"><h4>Netflix</h4><b>From ₹149</b><button onclick="addToCart('Netflix',149)">Add to Cart</button></div></div>
-  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png"><div class="info"><h4>Amazon Prime</h4><b>From ₹129</b><button onclick="addToCart('Amazon Prime',129)">Add to Cart</button></div></div>
-  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg"><div class="info"><h4>Disney+ Hotstar</h4><b>From ₹99</b><button onclick="addToCart('Disney+ Hotstar',99)">Add to Cart</button></div></div>
-  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/6/62/YouTube_social_white_square_%282024%29.svg"><div class="info"><h4>YouTube Premium</h4><b>From ₹79</b><button onclick="addToCart('YouTube Premium',79)">Add to Cart</button></div></div>
-  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/8/85/Crunchyroll_2024_stacked.svg"><div class="info"><h4>Crunchyroll</h4><b>From ₹129</b><button onclick="addToCart('Crunchyroll',129)">Add to Cart</button></div></div>
+  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg"><div class="info"><h4>Netflix</h4><b>From ₹149</b><button data-name="Netflix" data-price="149"> <span>Add to Cart</span> </button></div></div>
+  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png"><div class="info"><h4>Amazon Prime</h4><b>From ₹129</b><button data-name="Amazon Prime" data-price="129"> <span>Add to Cart</span> </button></div></div>
+  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg"><div class="info"><h4>Disney+ Hotstar</h4><b>From ₹99</b><button data-name="Disney+ Hotstar" data-price="99"> <span>Add to Cart</span> </button></div></div>
+  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/6/62/YouTube_social_white_square_%282024%29.svg"><div class="info"><h4>YouTube Premium</h4><b>From ₹79</b><button data-name="YouTube Premium" data-price="79"> <span>Add to Cart</span> </button></div></div>
+  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/8/85/Crunchyroll_2024_stacked.svg"><div class="info"><h4>Crunchyroll</h4><b>From ₹129</b><button data-name="Crunchyroll" data-price="129"> <span>Add to Cart</span> </button></div></div>
 </div>
 </section>
 
@@ -459,16 +459,16 @@ function render(){
     const d=document.createElement("div");
     d.className="card";
     d.innerHTML=`
-      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
-      <div class="info">
-        <h4>${g[0]}</h4>
-        <p>${g[0].toLowerCase().includes("rockstar") ? "Rockstar Activation Key (Global)" : "Steam Account"}</p>
-        <b>₹${g[1]}</b>
-        <button onclick="addToCart('${g[0]}',${g[1]},this)">
-  <span>Add to Cart</span>
-</button>
-
-      </div>`;
+  <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
+  <div class="info">
+    <h4>${g[0]}</h4>
+    <p>${g[0].toLowerCase().includes("rockstar") ? "Rockstar Activation Key (Global)" : "Steam Account"}</p>
+    <b>₹${g[1]}</b>
+    <button data-name="${g[0]}" data-price="${g[1]}">
+      <span>Add to Cart</span>
+    </button>
+  </div>`;
+    
     grid.appendChild(d);
   });
   toggleBtn.innerText=expanded?"Show Less":"Show More Games";
@@ -609,10 +609,24 @@ function sendMessage(){
     messages.scrollTop = messages.scrollHeight;
   },700);
 }
-</script>
+<script>
+document.addEventListener("click", function(e){
+  const btn = e.target.closest("button");
+  if(!btn) return;
 
+  if(btn.dataset.name && btn.dataset.price){
+    addToCart(
+      btn.dataset.name,
+      parseInt(btn.dataset.price),
+      btn
+    );
+  }
+});
+</script>
+  
 </body>
 </html>
+
 
 
 
