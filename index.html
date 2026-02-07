@@ -544,6 +544,54 @@ function sendMessage(){
   },700);
 }
 </script>
+  /* ===== ADD TO CART ANIMATION (SAFE) ===== */
+.card button{
+  position:relative;
+  overflow:hidden;
+  transition:.25s ease;
+}
+
+.card button:active{
+  transform:scale(.95);
+}
+
+.card button.added{
+  background:#16a34a !important;
+  color:#fff;
+}
+
+.card button.added span{
+  visibility:hidden;
+}
+
+.card button.added::after{
+  content:"✔ Added";
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:600;
+}
+
+<script>
+window.addToCart = function(name, price, btn){
+  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  cart.push({ name, price });
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  const cartCount = document.getElementById("cartCount");
+  if(cartCount){
+    cartCount.innerText = cart.length;
+  }
+
+  if(btn){
+    btn.classList.add("added");
+    setTimeout(()=>btn.classList.remove("added"),1200);
+  }
+};
+</script>
 
 </body>
 </html>
+
