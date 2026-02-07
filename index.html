@@ -410,6 +410,65 @@ nav a[href="#ott"]{
   background:#f1f5f9;
   color:#2563eb;
 }
+/* ===== PROFILE DROPDOWN ===== */
+.profile-wrap{
+  position:relative;
+  margin-left:14px;
+}
+
+.profile-btn{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:#2563eb;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  box-shadow:0 6px 18px rgba(37,99,235,.4);
+}
+
+.profile-btn .avatar{
+  color:#fff;
+  font-size:18px;
+}
+
+.profile-menu{
+  position:absolute;
+  top:48px;
+  right:0;
+  background:#fff;
+  border-radius:14px;
+  width:190px;
+  box-shadow:0 20px 40px rgba(0,0,0,.18);
+  padding:8px;
+  opacity:0;
+  transform:translateY(-10px) scale(.95);
+  pointer-events:none;
+  transition:.25s ease;
+  z-index:9999;
+}
+
+.profile-menu.show{
+  opacity:1;
+  transform:translateY(0) scale(1);
+  pointer-events:auto;
+}
+
+.profile-menu a{
+  display:block;
+  padding:10px 12px;
+  border-radius:10px;
+  font-size:13px;
+  color:#0f172a;
+  text-decoration:none;
+  transition:.2s;
+}
+
+.profile-menu a:hover{
+  background:#f1f5ff;
+  color:#2563eb;
+}
 
 </style>
 </head>
@@ -435,16 +494,17 @@ nav a[href="#ott"]{
     <span id="cartCount" class="cart-count">0</span>
   </a>
 
-  <!-- PROFILE DROPDOWN -->
-  <div class="profile-wrap">
-    <div class="profile-btn" onclick="toggleProfile()">👤</div>
-
-    <div class="profile-menu" id="profileMenu">
-      <a href="account.html">My Account</a>
-      <a href="orders.html">Order History</a>
-      <a href="#" onclick="logout()">Logout</a>
-    </div>
+  <div class="profile-wrap" id="profileWrap">
+  <div class="profile-btn" onclick="toggleProfile()">
+    <div class="avatar">👤</div>
   </div>
+
+  <div class="profile-menu" id="profileMenu">
+    <a href="#" onclick="alert('My Account coming soon 🚀')">My Account</a>
+    <a href="#" onclick="alert('Order history will appear here 📦')">Order History</a>
+    <a href="#" onclick="firebaseLogout()">Logout</a>
+  </div>
+</div>
 
   <!-- LOGIN SYSTEM -->
   <span id="userEmail" style="font-weight:600"></span>
@@ -821,20 +881,23 @@ window.addToCart = function(name, price, btn){
 </script>
 <script>
 function toggleProfile(){
-  const menu = document.getElementById("profileMenu");
-  menu.style.display = menu.style.display === "block" ? "none" : "block";
+  document.getElementById("profileMenu")
+    .classList.toggle("show");
 }
 
-document.addEventListener("click", function(e){
-  const profile = document.querySelector(".profile-wrap");
-  if(profile && !profile.contains(e.target)){
-    document.getElementById("profileMenu").style.display = "none";
+/* click outside close */
+document.addEventListener("click", e=>{
+  const wrap=document.getElementById("profileWrap");
+  if(!wrap.contains(e.target)){
+    document.getElementById("profileMenu")
+      .classList.remove("show");
   }
 });
 </script>
 
 </body>
 </html>
+
 
 
 
