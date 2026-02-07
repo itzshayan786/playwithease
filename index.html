@@ -442,11 +442,24 @@ function render(){
 }
 toggleBtn.onclick=()=>{expanded=!expanded;render()};
 
-function addToCart(name,price){
+function addToCart(name,price,btn){
+  if(cart.some(i=>i.name===name)) return;
+
   cart.push({name,price});
   localStorage.setItem("cart",JSON.stringify(cart));
-  document.getElementById("cartCount").innerText=cart.length;
-  alert(name+" added to cart");
+
+  const count=document.getElementById("cartCount");
+  count.innerText=cart.length;
+  count.classList.add("cart-bounce");
+  setTimeout(()=>count.classList.remove("cart-bounce"),400);
+
+  btn.classList.add("added");
+  btn.disabled=true;
+
+  setTimeout(()=>{
+    btn.classList.remove("added");
+    btn.disabled=false;
+  },1200);
 }
 
 /* ANIMATION OBSERVER */
@@ -565,6 +578,7 @@ function sendMessage(){
 
 </body>
 </html>
+
 
 
 
