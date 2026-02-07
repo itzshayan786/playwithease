@@ -314,7 +314,54 @@ onAuthStateChanged(auth,user=>{
 logoutBtn.onclick=e=>{e.preventDefault();signOut(auth)};
 </script>
 
+<div id="ai-chat-btn">💬</div>
+
+<div id="ai-chat-box">
+  <div class="ai-header">
+    <span>PlayWithEase Support 🤖</span>
+    <button onclick="toggleChat()">✕</button>
+  </div>
+
+  <div id="ai-messages"></div>
+
+  <div class="ai-input">
+    <input id="aiInput" placeholder="Type your message..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+/* AI CHAT JS */
+const chatBtn = document.getElementById("ai-chat-btn");
+const chatBox = document.getElementById("ai-chat-box");
+const messages = document.getElementById("ai-messages");
+
+chatBtn.onclick = toggleChat;
+
+function toggleChat(){
+  chatBox.style.display =
+    chatBox.style.display === "flex" ? "none" : "flex";
+}
+
+function sendMessage(){
+  const input = document.getElementById("aiInput");
+  const text = input.value.trim();
+  if(!text) return;
+
+  messages.innerHTML += `<div class="ai-msg user">${text}</div>`;
+  input.value="";
+
+  setTimeout(()=>{
+    messages.innerHTML +=
+      `<div class="ai-msg ai">🤖 Thanks for contacting PlayWithEase! How can I help you?</div>`;
+    messages.scrollTop = messages.scrollHeight;
+  },600);
+}
+</script>
+
 </body>
 </html>
+
+
 
 
