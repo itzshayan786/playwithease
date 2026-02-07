@@ -179,20 +179,55 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
 .ai-input input{flex:1;border:none;padding:12px;font-size:13px;outline:none}
 .ai-input button{background:#2563eb;color:#fff;border:none;padding:0 16px;font-size:13px}
 
-  @media (max-width: 768px){
+@media (max-width: 768px){
+
+  /* Header container */
+  .header-wrap{
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* Navbar */
+  nav{
+    width:100%;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+    row-gap:8px;
+  }
+
+  nav a,
+  nav span{
+    margin-left:12px;
+    font-size:13px;
+    white-space:nowrap;
+  }
+
+  #userEmail{
+    max-width:140px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:inline-block;
+    vertical-align:middle;
+  }
+}
+
+@media (max-width: 768px){
   #ai-chat-btn{
     bottom:16px;
     right:16px;
     width:54px;
     height:54px;
     font-size:24px;
+    z-index:9999;
   }
 
   #ai-chat-box{
-    right:12px;
+    right:10px;
     bottom:80px;
     width:92vw;
     max-height:70vh;
+    z-index:9999;
   }
 }
 </style>
@@ -448,6 +483,7 @@ function sendMessage(){
 
 </body>
 </html>
+
 
 
 
