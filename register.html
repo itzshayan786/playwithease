@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Create Account | PlayWithEase</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.ico">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#eef2ff,#f8fafc);
+}
+
+.auth-wrap{
+  width:100%;
+  max-width:420px;
+  background:#fff;
+  border-radius:18px;
+  padding:32px;
+  box-shadow:0 20px 45px rgba(0,0,0,.12);
+}
+
+.logo{
+  text-align:center;
+  margin-bottom:20px;
+}
+.logo h1{
+  color:#2563eb;
+  font-size:28px;
+  font-weight:800;
+}
+.logo p{
+  font-size:13px;
+  color:#64748b;
+}
+
+.auth-wrap h2{
+  font-size:22px;
+  margin-bottom:6px;
+}
+.auth-wrap span{
+  font-size:13px;
+  color:#64748b;
+}
+
+form{
+  margin-top:20px;
+}
+
+input{
+  width:100%;
+  padding:14px 16px;
+  margin-bottom:14px;
+  border-radius:10px;
+  border:1px solid #cbd5e1;
+  font-size:14px;
+  outline:none;
+}
+input:focus{
+  border-color:#2563eb;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:10px;
+  background:#2563eb;
+  color:#fff;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.25s;
+}
+button:hover{
+  background:#1e40af;
+}
+
+.extra{
+  margin-top:18px;
+  text-align:center;
+  font-size:13px;
+}
+.extra a{
+  color:#2563eb;
+  font-weight:600;
+  text-decoration:none;
+}
+.extra a:hover{text-decoration:underline}
+</style>
+</head>
+
+<body>
+
+<div class="auth-wrap">
+  <div class="logo">
+    <h1>PlayWithEase</h1>
+    <p>Trusted Games & OTT Store</p>
+  </div>
+
+  <h2>Create Account</h2>
+  <span>Join PlayWithEase to buy premium games & OTT</span>
+
+  <form>
+    <input type="email" placeholder="Email address" required>
+    <input type="password" placeholder="Password" required>
+    <input type="password" placeholder="Confirm password" required>
+
+    <button type="submit">Create Account</button>
+  </form>
+
+  <div class="extra">
+    Already have an account?
+    <a href="login.html">Login</a>
+  </div>
+</div>
+
+</body>
+</html>
