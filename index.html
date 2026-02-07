@@ -233,8 +233,6 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
   *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
   body{background:#f8fafc;color:#0f172a}
 
-  /* bahut saara CSS yahan hoga */
-
   footer{
     background:#fff;
     border-top:1px solid #e5e7eb;
@@ -247,7 +245,7 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
   @media(max-width:900px){
     .hero{grid-template-columns:1fr}
   }
-  /* ADD TO CART – PRO STYLE */
+ 
 .card button{
   position:relative;
   overflow:hidden;
@@ -262,14 +260,13 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
   background:#16a34a !important;
 }
 
-.card button.added::after{
-  content:"✔ Added";
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:600;
+.card button.added{
+  background:#16a34a !important;
+  color:#fff;
+}
+
+.card button.added span{
+  display:none;
 }
 
 .cart-bounce{
@@ -612,6 +609,7 @@ function sendMessage(){
 
 </body>
 </html>
+
 
 
 
