@@ -667,11 +667,38 @@ function sendMessage(){
     messages.scrollTop = messages.scrollHeight;
   },700);
 }
-
 <script>
+/* ===== GLOBAL CART FUNCTION (DO NOT MOVE) ===== */
+window.addToCart = function(name, price, btn){
+  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+  cart.push({ name, price });
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  // update cart count
+  const cartCount = document.getElementById("cartCount");
+  if(cartCount){
+    cartCount.innerText = cart.length;
+  }
+
+  // button animation (if button exists)
+  if(btn){
+    btn.classList.add("added");
+    btn.querySelector("span").innerText = "Added ✓";
+
+    setTimeout(()=>{
+      btn.classList.remove("added");
+      btn.querySelector("span").innerText = "Add to Cart";
+    },1200);
+  }
+
+  alert(name + " added to cart");
+};
+</script>
   
 </body>
 </html>
+
 
 
 
