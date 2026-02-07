@@ -229,6 +229,40 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
     z-index:9999;
   }
 }
+  /* ADD TO CART ANIMATION (FINAL) */
+.card button{
+  position:relative;
+  overflow:hidden;
+  transition:all .25s ease;
+}
+
+.card button.added{
+  background:#16a34a !important;
+  transform:scale(0.96);
+}
+
+.card button.added span{
+  opacity:0;
+}
+
+.card button.added::after{
+  content:"✓ Added";
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:600;
+  color:#fff;
+  animation:fadeIn .25s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:scale(.8)}
+  to{opacity:1;transform:scale(1)}
+}
+
 </style>
 </head>
 
@@ -591,6 +625,7 @@ function sendMessage(){
 
 <script>
 window.addToCart = function(name, price, btn){
+
   let cart = JSON.parse(localStorage.getItem("cart") || "[]");
   cart.push({ name, price });
   localStorage.setItem("cart", JSON.stringify(cart));
@@ -613,6 +648,7 @@ window.addToCart = function(name, price, btn){
 
 </body>
 </html>
+
 
 
 
