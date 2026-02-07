@@ -421,6 +421,70 @@ nav a[href="#ott"]{
 .profile-dropdown a:hover{
   background:#f1f5f9;
 }
+/* ===== PROFILE DROPDOWN (PROFESSIONAL) ===== */
+.profile-wrap{
+  position:relative;
+  margin-left:16px;
+}
+
+.profile-btn{
+  width:38px;
+  height:38px;
+  background:#ffffff;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  box-shadow:0 6px 16px rgba(0,0,0,.15);
+  transition:.25s ease;
+}
+
+.profile-btn:hover{
+  transform:translateY(-1px);
+}
+
+.profile-btn .avatar{
+  font-size:18px;
+}
+
+.profile-menu{
+  position:absolute;
+  top:48px;
+  right:0;
+  min-width:180px;
+  background:#ffffff;
+  border-radius:12px;
+  box-shadow:0 18px 40px rgba(0,0,0,.18);
+  overflow:hidden;
+
+  opacity:0;
+  transform:translateY(-10px);
+  pointer-events:none;
+  transition:.25s ease;
+  z-index:9999;
+}
+
+.profile-menu a{
+  display:block;
+  padding:12px 14px;
+  font-size:14px;
+  text-decoration:none;
+  color:#0f172a;
+  transition:.2s;
+}
+
+.profile-menu a:hover{
+  background:#f1f5ff;
+  color:#2563eb;
+}
+
+/* active state */
+.profile-wrap.active .profile-menu{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
 
 </style>
 </head>
@@ -884,8 +948,30 @@ if(logoutBtn2){
   });
 }
 </script>
+  <script>
+/* ===== PROFILE DROPDOWN TOGGLE ===== */
+function toggleProfile(){
+  const wrap = document.getElementById("profileWrap");
+  wrap.classList.toggle("active");
+}
+
+/* close when clicking outside */
+document.addEventListener("click", (e)=>{
+  const wrap = document.getElementById("profileWrap");
+  if(!wrap.contains(e.target)){
+    wrap.classList.remove("active");
+  }
+});
+
+/* firebase logout bridge */
+function firebaseLogout(){
+  document.getElementById("logoutBtn")?.click();
+}
+</script>
+
 </body>
 </html>
+
 
 
 
