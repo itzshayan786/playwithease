@@ -414,7 +414,7 @@ function render(){
       <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
       <div class="info">
         <h4>${g[0]}</h4>
-        <p>Steam Account</p>
+        <p>${g[0].toLowerCase().includes("rockstar") ? "Rockstar Activation Key (Global)" : "Steam Account"}</p>
         <b>₹${g[1]}</b>
         <button onclick="addToCart('${g[0]}',${g[1]})">Add to Cart</button>
       </div>`;
@@ -548,6 +548,7 @@ function sendMessage(){
 
 </body>
 </html>
+
 
 
 
