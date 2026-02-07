@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -12,156 +11,538 @@
 <script src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
 
 <style>
-/* ===== EXISTING CSS (UNCHANGED) ===== */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
 body{background:#f8fafc;color:#0f172a}
+
+/* HEADER */
 header{background:#fff;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:100}
 .header-wrap{max-width:1200px;margin:auto;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
 .logo{display:flex;align-items:center;gap:12px}
 .logo img{width:42px;height:42px;border-radius:10px}
 .logo .name{font-size:20px;font-weight:800}
 .logo .tag{display:block;font-size:11px;color:#64748b}
+
 nav{display:flex;align-items:center}
 nav a, nav span{margin-left:18px;text-decoration:none;color:#334155;font-size:14px}
-.cart-count{background:#2563eb;color:#fff;border-radius:999px;padding:2px 7px;font-size:11px}
+nav a:hover{color:#2563eb}
+.cart-count{background:#2563eb;color:#fff;border-radius:999px;padding:2px 7px;font-size:11px;margin-left:4px}
+
+/* HERO */
+.hero{
+  max-width:1200px;margin:40px auto 20px;padding:40px 30px;
+  display:grid;grid-template-columns:1.2fr 1fr;gap:40px;
+  align-items:center;background:linear-gradient(180deg,#f8fafc,#eef2ff);
+  border-radius:28px
+}
+.hero h1{font-size:42px;line-height:1.2}
+.hero h1 span{color:#2563eb}
+.hero p{margin-top:14px;color:#475569}
+.actions{margin-top:22px}
+.btn{display:inline-block;padding:12px 24px;border-radius:8px;font-weight:600;text-decoration:none;margin-right:10px}
+.btn.primary{background:#2563eb;color:#fff}
+.btn.secondary{border:1px solid #cbd5f5;color:#2563eb;background:#fff}
+
+/* TRUST BAR */
+.trust-bar{margin-top:18px;display:flex;gap:18px;flex-wrap:wrap;font-size:13px}
+.trust-bar span{background:#fff;padding:6px 12px;border-radius:999px;border:1px solid #e5e7eb}
+
+/* SECTION */
 .section{max-width:1200px;margin:auto;padding:60px 20px}
+.section h2{font-size:26px;margin-bottom:18px}
+
+/* SEARCH */
+.search-wrap{max-width:420px;margin-bottom:20px}
+.search-wrap input{
+  width:100%;padding:14px 18px;border-radius:999px;
+  border:1px solid #cbd5e1;font-size:14px;outline:none
+}
+
+/* GRID */
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:22px}
-.card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;opacity:0;transform:translateY(20px);transition:.4s}
+
+/* CARD + ANIMATION */
+.card{
+  background:#fff;border:1px solid #e5e7eb;border-radius:16px;
+  overflow:hidden;
+  opacity:0;
+  transform:translateY(20px);
+  transition:.4s;
+}
 .card.show{opacity:1;transform:translateY(0)}
+.card:hover{transform:translateY(-6px);box-shadow:0 14px 30px rgba(0,0,0,.1)}
 .card img{width:100%;height:180px;object-fit:cover}
 .card .info{padding:14px}
-.card button{margin-top:6px;background:#2563eb;color:#fff;border:none;padding:7px 14px;border-radius:6px;cursor:pointer}
-.card button.added{background:#16a34a}
-.cart-bounce{animation:bounce .4s}
-@keyframes bounce{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+.card h4{font-size:14px}
+.card p{font-size:12px;color:#64748b}
+.card b{display:block;margin:6px 0;color:#2563eb}
+.card button{
+  margin-top:6px;
+  background:#2563eb;color:#fff;border:none;
+  padding:7px 14px;border-radius:6px;
+  font-size:12px;cursor:pointer
+}
+
+/* OTT */
+.card .ott{width:100%;height:120px;object-fit:contain;padding:18px;background:#fff}
+
+/* SHOW MORE */
+.show-more-wrap{text-align:center;margin-top:30px}
+.show-more-wrap button{
+  padding:12px 26px;border-radius:999px;
+  background:#2563eb;color:#fff;border:none;font-weight:600;cursor:pointer
+}
+
+/* FOOTER */
+footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align:center;font-size:13px;color:#64748b}
+@media(max-width:900px){.hero{grid-template-columns:1fr}}
+
+  /* TRUSTPILOT REVIEW BADGE STYLE */
+.trustpilot-review{
+  max-width:1200px;
+  margin:18px auto 30px;
+  padding:0 20px;
+}
+
+.trustpilot-review a{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:#ffffff;
+  border:1px solid #e5e7eb;
+  padding:10px 18px;
+  border-radius:999px;
+  font-size:14px;
+  font-weight:600;
+  color:#0f172a;
+  text-decoration:none;
+  box-shadow:0 6px 18px rgba(0,0,0,.06);
+  transition:.25s;
+}
+
+.trustpilot-review a:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 26px rgba(0,0,0,.1);
+  color:#2563eb;
+}
+#ai-chat-btn{
+  position:fixed;
+  bottom:22px;
+  right:22px;
+  width:58px;
+  height:58px;
+  background:#2563eb;
+  color:#fff;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+  cursor:pointer;
+  box-shadow:0 14px 34px rgba(37,99,235,.45);
+  z-index:9999;
+}
+#ai-chat-box{
+  position:fixed;
+  bottom:90px;
+  right:22px;
+  width:320px;
+  max-height:440px;
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 18px 40px rgba(0,0,0,.18);
+  display:none;
+  flex-direction:column;
+  overflow:hidden;
+  z-index:9999;
+}
+.ai-header{
+  background:#2563eb;
+  color:#fff;
+  padding:12px 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:14px;
+  font-weight:600;
+}
+.ai-header button{
+  background:none;border:none;color:#fff;font-size:18px;cursor:pointer
+}
+#ai-messages{
+  flex:1;padding:14px;overflow-y:auto;background:#f8fafc
+}
+.ai-msg{margin-bottom:10px;font-size:13px;max-width:85%;padding:8px 12px;border-radius:12px}
+.ai-msg.ai{background:#e0e7ff}
+.ai-msg.user{background:#2563eb;color:#fff;margin-left:auto}
+.ai-input{display:flex;border-top:1px solid #e5e7eb}
+.ai-input input{flex:1;border:none;padding:12px;font-size:13px;outline:none}
+.ai-input button{background:#2563eb;color:#fff;border:none;padding:0 16px;font-size:13px}
+
+@media (max-width: 768px){
+
+  /* Header container */
+  .header-wrap{
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* Navbar */
+  nav{
+    width:100%;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+    row-gap:8px;
+  }
+
+  nav a,
+  nav span{
+    margin-left:12px;
+    font-size:13px;
+    white-space:nowrap;
+  }
+
+  #userEmail{
+    max-width:140px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:inline-block;
+    vertical-align:middle;
+  }
+}
+
+@media (max-width: 768px){
+  #ai-chat-btn{
+    bottom:16px;
+    right:16px;
+    width:54px;
+    height:54px;
+    font-size:24px;
+    z-index:9999;
+  }
+
+  #ai-chat-box{
+    right:10px;
+    bottom:80px;
+    width:92vw;
+    max-height:70vh;
+    z-index:9999;
+  }
+}
 </style>
 </head>
 
 <body>
 
 <header>
-  <div class="header-wrap">
-    <div class="logo">
-      <img src="favicon.ico">
-      <div>
-        <span class="name">PlayWithEase</span>
-        <span class="tag">Trusted Games & OTT Store</span>
-      </div>
+<div class="header-wrap">
+  <div class="logo">
+    <img src="favicon.ico">
+    <div>
+      <span class="name">PlayWithEase</span>
+      <span class="tag">Trusted Games & OTT Store</span>
     </div>
-    <nav>
-      <a href="#games">Games</a>
-      <a href="#ott">OTT</a>
-      <a href="cart.html">Cart <span id="cartCount" class="cart-count">0</span></a>
-      <span id="userEmail"></span>
-      <a href="login.html" id="loginBtn" style="display:none">Login</a>
-      <a href="#" id="logoutBtn" style="display:none">Logout</a>
-    </nav>
   </div>
+  <nav>
+    <a href="#games">Games</a>
+    <a href="#ott">OTT</a>
+    <a href="cart.html">Cart <span id="cartCount" class="cart-count">0</span></a>
+    <span id="userEmail" style="font-weight:600"></span>
+    <a href="login.html" id="loginBtn" style="display:none">Login</a>
+    <a href="#" id="logoutBtn" style="display:none">Logout</a>
+  </nav>
+</div>
 </header>
+
+<section class="hero">
+<div>
+  <h1>Buy Premium Games & OTT<br><span>Safely & Easily</span></h1>
+  <p>Manual verification • WhatsApp support • Trusted delivery</p>
+  <div class="actions">
+    <a class="btn primary" href="https://wa.me/917001568884">Order on WhatsApp</a>
+    <a class="btn secondary" href="cart.html">View Cart</a>
+  </div>
+  <div class="trust-bar">
+    <span>✔ Instant Delivery</span>
+    <span>✔ Genuine Accounts</span>
+    <span>✔ WhatsApp Support</span>
+  </div>
+</div>
+<img src="https://images.unsplash.com/photo-1605902711622-cfb43c44367f" style="width:100%;border-radius:18px">
+</section>
+
+<!-- TRUSTPILOT REVIEW BADGE -->
+<div class="trustpilot-review">
+  <a href="https://www.trustpilot.com/review/playwithease.in" target="_blank">
+    ⭐ Rated on <b>Trustpilot</b> — Review us →
+  </a>
+</div>
 
 <section class="section" id="games">
 <h2>🎮 Premium PC Games Vault</h2>
+<div class="search-wrap">
+  <input id="searchInput" placeholder="Search games...">
+</div>
 <div class="grid" id="gameGrid"></div>
-<button id="toggleBtn">Show More Games</button>
+<div class="show-more-wrap">
+  <button id="toggleBtn">Show More Games</button>
+</div>
 </section>
 
 <section class="section" id="ott">
 <h2>📺 OTT Subscriptions</h2>
 <div class="grid">
-
-<div class="card">
-<img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg">
-<div class="info">
-<h4>Netflix</h4>
-<b>₹149</b>
-<button onclick="addToCart('Netflix',149,this)"><span>Add to Cart</span></button>
-</div>
-</div>
-
-<div class="card">
-<img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png">
-<div class="info">
-<h4>Amazon Prime</h4>
-<b>₹129</b>
-<button onclick="addToCart('Amazon Prime',129,this)"><span>Add to Cart</span></button>
-</div>
-</div>
-
+  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg"><div class="info"><h4>Netflix</h4><b>From ₹149</b><button onclick="addToCart('Netflix',149)">Add to Cart</button></div></div>
+  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png"><div class="info"><h4>Amazon Prime</h4><b>From ₹129</b><button onclick="addToCart('Amazon Prime',129)">Add to Cart</button></div></div>
+  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg"><div class="info"><h4>Disney+ Hotstar</h4><b>From ₹99</b><button onclick="addToCart('Disney+ Hotstar',99)">Add to Cart</button></div></div>
+  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/6/62/YouTube_social_white_square_%282024%29.svg"><div class="info"><h4>YouTube Premium</h4><b>From ₹79</b><button onclick="addToCart('YouTube Premium',79)">Add to Cart</button></div></div>
+  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/8/85/Crunchyroll_2024_stacked.svg"><div class="info"><h4>Crunchyroll</h4><b>From ₹129</b><button onclick="addToCart('Crunchyroll',129)">Add to Cart</button></div></div>
 </div>
 </section>
 
-<!-- TRUSTPILOT WIDGET (UNCHANGED) -->
+<!-- TRUSTPILOT WIDGET (UNTOUCHED) -->
+<section class="section" style="padding-top:0">
+<div style="background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:18px;text-align:center">
 <div class="trustpilot-widget"
 data-locale="en-US"
 data-template-id="56278e9abfbbba0bdcd568bc"
 data-businessunit-id="6985c274abb8a0a2645265ef"
 data-style-height="52px"
 data-style-width="100%">
+<a href="https://www.trustpilot.com/review/playwithease.in" target="_blank">Trustpilot</a>
 </div>
+</div>
+</section>
 
-<footer style="text-align:center;padding:20px">
-© 2026 PlayWithEase
+<footer>
+📞 7001568884 • 📧 shayanakhtar1910@gmail.com<br>
+© 2026 PlayWithEase<br>
+<span style="font-size:12px">Reviews powered by Trustpilot</span>
 </footer>
 
 <script>
-/* ===== GAMES DATA ===== */
-const games=[
+const games = [
+/* GTA / ROCKSTAR */
 ["GTA V",199,"271590"],
-["GTA V Premium Edition 🔑 Rockstar Activation Key (Global)",1000,"271590"],
+["GTA V Premium Edition 🔑 Rockstar Activation Key (Global)",1000,"271590","Rockstar Key"],
 ["Red Dead Redemption 2",249,"1174180"],
+["Max Payne 3",149,"204100"],
+
+/* CYBERPUNK */
+["Cyberpunk 2077 – Ultimate Edition (Phantom Liberty DLC)",179,"1091500"],
+
+/* ACTION / RPG */
+["God of War",199,"1593500"],
+["God of War Ragnarök",249,"2322010"],
+["Elden Ring",229,"1245620"],
+["Sekiro Shadows Die Twice",219,"814380"],
+["Dark Souls III",199,"374320"],
+["Baldur’s Gate 3",249,"1086940"],
+["Hogwarts Legacy",239,"990080"],
+["Starfield",249,"1716740"],
+["The Witcher 3",149,"292030"],
+["Lies of P",229,"1627720"],
+["Atomic Heart",219,"668580"],
+
+/* SONY / PLAYSTATION PORTS */
+["Spider-Man Remastered",219,"1817070"],
+["Spider-Man Miles Morales",229,"1817190"],
+["The Last of Us Part I",249,"1888930"],
+["Uncharted Legacy of Thieves",219,"1659420"],
+["Days Gone",199,"1259420"],
+["Horizon Zero Dawn",199,"1151640"],
+
+/* FPS / SHOOTERS */
+["Call of Duty Modern Warfare II",249,"1938090"],
+["Call of Duty Modern Warfare III",269,"2519060"],
+["DOOM Eternal",179,"782330"],
+["Battlefield V",149,"1238810"],
+["Battlefield 2042",199,"1517290"],
+["Metro Exodus",159,"412020"],
+["Far Cry 5",149,"552520"],
+["Far Cry 6",179,"2369390"],
+
+/* UBISOFT */
+["Assassin’s Creed Mirage",229,"3035570"],
+["Assassin’s Creed Valhalla",199,"2208920"],
+["Assassin’s Creed Origins",179,"582160"],
+["Watch Dogs Legion",189,"2239550"],
+["The Division 2",179,"2221490"],
+
+/* RACING */
+["Forza Horizon 5",219,"1551360"],
+["Forza Horizon 4",199,"1293830"],
+["Need for Speed Unbound",189,"1846380"],
+["Need for Speed Heat",149,"1222680"],
+["F1 23",219,"2108330"],
+
+/* SPORTS */
+["FIFA 23",199,"1811260"],
+["EA Sports FC 24",229,"2195250"],
 ["Cricket 24",199,"2358260"],
-["Cricket 26",249,"2600010"]
+["Cricket 26",249,"2600010"],
+["WWE 2K23",199,"1942660"],
+["NBA 2K23",179,"1919590"],
+
+/* HORROR */
+["Resident Evil 4 Remake",229,"2050650"],
+["Resident Evil Village",199,"1196590"],
+["Alan Wake 2",259,"1087100"],
+["Outlast 2",129,"414700"],
+
+/* MISC */
+["Mafia Definitive Edition",179,"1030840"],
+["Hitman World of Assassination",219,"1659040"],
+["Control Ultimate Edition",179,"870780"],
+["Death Stranding",199,"1190460"],
+["Ghostwire Tokyo",179,"1475810"],
+["Remnant II",229,"1282100"]
 ];
 
 const grid=document.getElementById("gameGrid");
 const toggleBtn=document.getElementById("toggleBtn");
-let visible=4,expanded=false;
+let visible=6, expanded=false;
+let cart=JSON.parse(localStorage.getItem("cart")||"[]");
 
 function render(){
-grid.innerHTML="";
-games.slice(0,expanded?games.length:visible).forEach(g=>{
-const d=document.createElement("div");
-d.className="card";
-d.innerHTML=`
-<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
-<div class="info">
-<h4>${g[0]}</h4>
-<p>${g[0].toLowerCase().includes("rockstar")?"Rockstar Activation Key (Global)":"Steam Account"}</p>
-<b>₹${g[1]}</b>
-<button onclick="addToCart('${g[0]}',${g[1]},this)"><span>Add to Cart</span></button>
-</div>`;
-grid.appendChild(d);
-});
-observe();
+  grid.innerHTML="";
+  games.slice(0,expanded?games.length:visible).forEach(g=>{
+    const d=document.createElement("div");
+    d.className="card";
+    d.innerHTML=`
+      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
+      <div class="info">
+        <h4>${g[0]}</h4>
+        <p>${g[0].toLowerCase().includes("rockstar") ? "Rockstar Activation Key (Global)" : "Steam Account"}</p>
+        <b>₹${g[1]}</b>
+        <button onclick="addToCart('${g[0]}',${g[1]})">Add to Cart</button>
+      </div>`;
+    grid.appendChild(d);
+  });
+  toggleBtn.innerText=expanded?"Show Less":"Show More Games";
+  observeCards();
 }
-toggleBtn.onclick=()=>{expanded=!expanded;render()}
+toggleBtn.onclick=()=>{expanded=!expanded;render()};
 
-/* ===== SINGLE CART FUNCTION ===== */
-window.addToCart=function(name,price,btn){
-let cart=JSON.parse(localStorage.getItem("cart")||"[]");
-cart.push({name,price});
-localStorage.setItem("cart",JSON.stringify(cart));
-const c=document.getElementById("cartCount");
-c.innerText=cart.length;
-c.classList.add("cart-bounce");
-setTimeout(()=>c.classList.remove("cart-bounce"),400);
-if(btn){
-btn.classList.add("added");
-btn.innerText="Added ✓";
-setTimeout(()=>btn.innerText="Add to Cart",1200);
-}
+function addToCart(name,price){
+  cart.push({name,price});
+  localStorage.setItem("cart",JSON.stringify(cart));
+  document.getElementById("cartCount").innerText=cart.length;
+  alert(name+" added to cart");
 }
 
-/* ===== CARD ANIMATION ===== */
-function observe(){
-const o=new IntersectionObserver(e=>e.forEach(x=>x.isIntersecting&&x.target.classList.add("show")));
-document.querySelectorAll(".card").forEach(c=>o.observe(c));
+/* ANIMATION OBSERVER */
+function observeCards(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>e.isIntersecting && e.target.classList.add("show"));
+  },{threshold:.15});
+  document.querySelectorAll(".card").forEach(c=>obs.observe(c));
 }
 
-document.getElementById("cartCount").innerText=
-JSON.parse(localStorage.getItem("cart")||"[]").length;
-
+document.getElementById("cartCount").innerText=cart.length;
 render();
+</script>
+
+<!-- FIREBASE AUTH (UNCHANGED LOGIC) -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+  setPersistence,
+  browserLocalPersistence
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+  authDomain: "playwithease.firebaseapp.com"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+await setPersistence(auth, browserLocalPersistence);
+
+const userEmail=document.getElementById("userEmail");
+const loginBtn=document.getElementById("loginBtn");
+const logoutBtn=document.getElementById("logoutBtn");
+
+onAuthStateChanged(auth,user=>{
+  if(user){
+    userEmail.textContent=user.email;
+    loginBtn.style.display="none";
+    logoutBtn.style.display="inline";
+  }else{
+    userEmail.textContent="";
+    loginBtn.style.display="inline";
+    logoutBtn.style.display="none";
+  }
+});
+
+logoutBtn.onclick = e => { 
+  e.preventDefault(); 
+  signOut(auth); 
+};
+</script>
+
+<div id="ai-chat-btn" title="Support">💬</div>
+
+<div id="ai-chat-box">
+  <div class="ai-header">
+    <span>PlayWithEase Support 🤖</span>
+    <button onclick="toggleChat()">✕</button>
+  </div>
+
+  <div id="ai-messages">
+    <div class="ai-msg ai">
+      👋 Hi! Welcome to PlayWithEase.<br>
+      How can I help you today?
+    </div>
+  </div>
+
+  <div class="ai-input">
+    <input id="aiInput" placeholder="Type your message..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+/* ===== AI CHAT JS ===== */
+const chatBtn = document.getElementById("ai-chat-btn");
+const chatBox = document.getElementById("ai-chat-box");
+const messages = document.getElementById("ai-messages");
+
+/* default closed */
+chatBox.style.display = "none";
+
+/* toggle open / close */
+function toggleChat(){
+  chatBox.style.display =
+    chatBox.style.display === "flex" ? "none" : "flex";
+}
+
+/* button click */
+chatBtn.addEventListener("click", toggleChat);
+
+/* send message */
+function sendMessage(){
+  const input = document.getElementById("aiInput");
+  const text = input.value.trim();
+  if(!text) return;
+
+  messages.innerHTML += `<div class="ai-msg user">${text}</div>`;
+  input.value = "";
+  messages.scrollTop = messages.scrollHeight;
+
+  setTimeout(()=>{
+    messages.innerHTML += `
+      <div class="ai-msg ai">
+        🤖 Thanks for contacting PlayWithEase!  
+        Please tell me which game or OTT service you need.
+      </div>`;
+    messages.scrollTop = messages.scrollHeight;
+  },700);
+}
 </script>
 
 </body>
