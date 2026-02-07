@@ -508,38 +508,6 @@ nav a[href="#ott"]{
   line-height:1;
 }
 
-/* DROPDOWN */
-.profile-menu{
-  position:absolute;
-  top:46px;
-  right:0;
-  background:#fff;
-  border:1px solid #e5e7eb;
-  border-radius:12px;
-  min-width:170px;
-  box-shadow:0 14px 30px rgba(0,0,0,.12);
-  display:none;
-  flex-direction:column;
-  overflow:hidden;
-  z-index:9999;
-}
-
-.profile-menu a{
-  padding:12px 14px;
-  font-size:14px;
-  text-decoration:none;
-  color:#0f172a;
-  border-bottom:1px solid #f1f5f9;
-}
-
-.profile-menu a:hover{
-  background:#f8fafc;
-}
-
-.profile-menu a:last-child{
-  border-bottom:none;
-}
-
 </style>
 </head>
 
@@ -578,6 +546,7 @@ nav a[href="#ott"]{
   <div class="profile-menu" id="profileMenu">
     <a href="#" onclick="alert('My Account coming soon 🚀')">My Account</a>
     <a href="#" onclick="alert('Order history coming soon 📦')">Order History</a>
+    <a href="#" onclick="firebaseLogout()">Logout</a>
   </div>
 </div>
 
@@ -1077,6 +1046,7 @@ logoutBtn.addEventListener("click", (e) => {
   
 </body>
 </html>
+
 
 
 
