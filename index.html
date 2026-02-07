@@ -459,13 +459,18 @@ function render(){
     const d=document.createElement("div");
     d.className="card";
     d.innerHTML=`
-      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
-      <div class="info">
-        <h4>${g[0]}</h4>
-        <p>${g[0].toLowerCase().includes("rockstar") ? "Rockstar Activation Key (Global)" : "Steam Account"}</p>
-        <b>₹${g[1]}</b>
-        <button onclick="addToCart('${g[0]}',${g[1]})">Add to Cart</button>
-      </div>`;
+  <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
+  <div class="info">
+    <h4>${g[0]}</h4>
+    <p>${g[0].toLowerCase().includes("rockstar")
+      ? "Rockstar Activation Key (Global)"
+      : "Steam Account"}</p>
+    <b>₹${g[1]}</b>
+    <button onclick="addToCart('${g[0]}',${g[1]},this)">
+      <span>Add to Cart</span>
+    </button>
+  </div>`;
+
     grid.appendChild(d);
   });
   toggleBtn.innerText=expanded?"Show Less":"Show More Games";
@@ -648,6 +653,7 @@ window.addToCart = function(name, price, btn){
 
 </body>
 </html>
+
 
 
 
