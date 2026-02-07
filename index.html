@@ -14,47 +14,6 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
 body{background:#f8fafc;color:#0f172a}
 
-/* ===== ADD TO CART ANIMATION (SAFE) ===== */
-.card button{
-  position:relative;
-  overflow:hidden;
-  transition:.25s ease;
-}
-
-.card button:active{
-  transform:scale(.95);
-}
-
-.card button.added{
-  background:#16a34a !important;
-  color:#fff;
-}
-
-.card button.added span{
-  visibility:hidden;
-}
-
-.card button.added::after{
-  content:"✔ Added";
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:600;
-}
-
-/* cart count bounce */
-.cart-bounce{
-  animation:bounce .4s ease;
-}
-@keyframes bounce{
-  0%{transform:scale(1)}
-  50%{transform:scale(1.3)}
-  100%{transform:scale(1)}
-}
-</style>
-
 /* HEADER */
 header{background:#fff;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:100}
 .header-wrap{max-width:1200px;margin:auto;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
@@ -585,39 +544,6 @@ function sendMessage(){
   },700);
 }
 </script>
-  <script>
-/* ===== SINGLE SAFE ADD TO CART (FINAL) ===== */
-window.addToCart = function(name, price, btn){
-
-  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-
-  // allow multiple adds
-  cart.push({ name, price });
-  localStorage.setItem("cart", JSON.stringify(cart));
-
-  // update cart count
-  const cartCount = document.getElementById("cartCount");
-  if(cartCount){
-    cartCount.innerText = cart.length;
-    cartCount.classList.add("cart-bounce");
-    setTimeout(()=>cartCount.classList.remove("cart-bounce"),400);
-  }
-
-  // button animation
-  if(btn){
-    const span = btn.querySelector("span");
-    btn.classList.add("added");
-    if(span) span.innerText = "Added";
-
-    setTimeout(()=>{
-      btn.classList.remove("added");
-      if(span) span.innerText = "Add to Cart";
-    },1200);
-  }
-};
-</script>
 
 </body>
 </html>
-
-
