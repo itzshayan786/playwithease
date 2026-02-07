@@ -263,6 +263,36 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
   to{opacity:1;transform:scale(1)}
 }
 
+  /* ===== ADD TO CART ANIMATION (SAFE) ===== */
+.card button{
+  position:relative;
+  overflow:hidden;
+  transition:.25s ease;
+}
+
+.card button:active{
+  transform:scale(.95);
+}
+
+.card button.added{
+  background:#16a34a !important;
+  color:#fff;
+}
+
+.card button.added span{
+  visibility:hidden;
+}
+
+.card button.added::after{
+  content:"✓ Added";
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:600;
+}
+
 </style>
 </head>
 
@@ -630,21 +660,7 @@ function sendMessage(){
   },700);
 }
 </script>
-  /* ===== ADD TO CART ANIMATION (SAFE) ===== */
-.card button{
-  position:relative;
-  overflow:hidden;
-  transition:.25s ease;
-}
-
-.card button:active{
-  transform:scale(.95);
-}
-
-.card button.added{
-  background:#16a34a !important;
-  color:#fff;
-}
+  
 
 .card button.added span{
   visibility:hidden;
@@ -685,6 +701,7 @@ window.addToCart = function(name, price, btn){
 
 </body>
 </html>
+
 
 
 
