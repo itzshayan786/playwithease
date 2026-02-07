@@ -598,16 +598,21 @@ window.addToCart = function(name, price, btn){
   const cartCount = document.getElementById("cartCount");
   if(cartCount){
     cartCount.innerText = cart.length;
+    cartCount.classList.add("cart-bounce");
+    setTimeout(()=>cartCount.classList.remove("cart-bounce"),400);
   }
 
   if(btn){
     btn.classList.add("added");
-    setTimeout(()=>btn.classList.remove("added"),1200);
+    setTimeout(()=>{
+      btn.classList.remove("added");
+    },1200);
   }
 };
 </script>
 
 </body>
 </html>
+
 
 
