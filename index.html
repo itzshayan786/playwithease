@@ -247,6 +247,40 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
   @media(max-width:900px){
     .hero{grid-template-columns:1fr}
   }
+  /* ADD TO CART – PRO STYLE */
+.card button{
+  position:relative;
+  overflow:hidden;
+  transition:.25s ease;
+}
+
+.card button:active{
+  transform:scale(.95);
+}
+
+.card button.added{
+  background:#16a34a !important;
+}
+
+.card button.added::after{
+  content:"✔ Added";
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:600;
+}
+
+.cart-bounce{
+  animation:bounce .4s ease;
+}
+@keyframes bounce{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.3)}
+  100%{transform:scale(1)}
+}
+
 </style>
 </head>
 
@@ -578,6 +612,7 @@ function sendMessage(){
 
 </body>
 </html>
+
 
 
 
