@@ -504,23 +504,19 @@ nav a[href="#ott"]{
   <a href="#games">Games</a>
   <a href="#ott">OTT</a>
 
-  <a href="cart.html" class="cart-link">
-  <i class="fa-solid fa-cart-shopping"></i>
-  Cart
-  <span id="cartCount" class="cart-count">0</span>
-</a>
+  <a href="cart.html">
+    🛒 Cart <span id="cartCount" class="cart-count">0</span>
+  </a>
 
-<div class="profile-wrap" id="profileWrap">
-  <div class="profile-btn" onclick="toggleProfile()">
-    <div class="avatar">👤</div>
-  </div>
+  <!-- USER EMAIL -->
+  <span id="userEmail" style="font-weight:600; display:none"></span>
 
-  <div class="profile-menu" id="profileMenu">
-    <a href="#" onclick="alert('My Account coming soon 🚀')">My Account</a>
-    <a href="#" onclick="alert('Order history will appear here 📦')">Order History</a>
-    <a href="#" onclick="firebaseLogout()">Logout</a>
-  </div>
-</div>
+  <!-- LOGIN -->
+  <a href="login.html" id="loginBtn">Login</a>
+
+  <!-- LOGOUT -->
+  <a href="#" id="logoutBtn" style="display:none">Logout</a>
+</nav>
 
   <!-- LOGIN SYSTEM -->
   <span id="userEmail" style="font-weight:600"></span>
@@ -968,9 +964,55 @@ function firebaseLogout(){
   document.getElementById("logoutBtn")?.click();
 }
 </script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+  authDomain: "playwithease.firebaseapp.com"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const loginBtn  = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const userEmail = document.getElementById("userEmail");
+
+/* AUTH STATE */
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // logged in
+    loginBtn.style.display = "none";
+    logoutBtn.style.display = "inline";
+    userEmail.style.display = "inline";
+    userEmail.textContent = user.email;
+  } else {
+    // not logged in
+    loginBtn.style.display = "inline";
+    logoutBtn.style.display = "none";
+    userEmail.style.display = "none";
+    userEmail.textContent = "";
+  }
+});
+
+/* LOGOUT */
+logoutBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  signOut(auth).then(() => {
+    window.location.reload();
+  });
+});
+</script>
+  
 </body>
 </html>
+
 
 
 
