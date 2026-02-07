@@ -13,148 +13,135 @@ body{background:#f8fafc;color:#0f172a}
 header{
   background:#2563eb;
   color:#fff;
-  padding:18px;
-  text-align:center;
-  font-size:20px;
+  padding:18px 20px;
+}
+header h1{
+  font-size:22px;
   font-weight:700;
 }
 
-/* CART CONTAINER */
-.cart-wrap{
+/* CONTAINER */
+.container{
   max-width:900px;
-  margin:40px auto;
-  padding:0 20px;
+  margin:30px auto;
+  padding:0 16px;
 }
 
+/* CART BOX */
 .cart-box{
   background:#fff;
   border-radius:18px;
-  box-shadow:0 20px 50px rgba(0,0,0,.08);
-  padding:24px;
+  box-shadow:0 20px 40px rgba(0,0,0,.08);
+  padding:22px;
 }
 
-/* CART ITEM */
-.cart-item{
+/* ITEM */
+.item{
   display:flex;
   justify-content:space-between;
   align-items:center;
   padding:14px 0;
   border-bottom:1px solid #e5e7eb;
-  animation:fadeIn .4s ease;
 }
+.item:last-child{border-bottom:none}
 
-.cart-item:last-child{border-bottom:none}
-
-.cart-left h4{font-size:15px}
-.cart-left span{font-size:12px;color:#64748b}
-
-.cart-right{
-  display:flex;
-  align-items:center;
-  gap:14px;
+.item-name{
+  font-weight:600;
+  font-size:14px;
 }
-
-.price{font-weight:700;color:#2563eb}
-
-.remove{
-  background:#ef4444;
-  color:#fff;
-  border:none;
-  border-radius:6px;
-  padding:6px 10px;
-  cursor:pointer;
-  font-size:12px;
+.item-price{
+  color:#2563eb;
+  font-weight:600;
 }
 
 /* TOTAL */
 .total{
-  margin-top:20px;
   display:flex;
   justify-content:space-between;
-  font-size:18px;
+  margin-top:20px;
+  font-size:16px;
   font-weight:700;
 }
 
-/* BUTTONS */
+/* ACTIONS */
 .cart-actions{
-  margin-top:26px;
   display:flex;
   gap:14px;
+  margin-top:24px;
+  flex-wrap:wrap;
 }
 
-.cart-actions a{
-  flex:1;
-  text-align:center;
-  padding:14px;
-  border-radius:10px;
+.back{
   text-decoration:none;
+  padding:12px 20px;
+  border-radius:10px;
+  border:1px solid #cbd5f5;
+  color:#2563eb;
   font-weight:600;
 }
 
 .checkout{
-  background:#2563eb;
+  flex:1;
+  background:#16a34a;
   color:#fff;
+  border:none;
+  padding:14px 22px;
+  border-radius:12px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 12px 28px rgba(22,163,74,.35);
+  transition:.25s;
 }
-
-.back{
-  border:1px solid #2563eb;
-  color:#2563eb;
-}
+.checkout:hover{transform:translateY(-2px)}
+.checkout:active{transform:scale(.97)}
 
 /* EMPTY */
 .empty{
   text-align:center;
-  padding:40px;
+  padding:40px 10px;
   color:#64748b;
 }
 
-/* ANIMATION */
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:none}
-}
-
+/* MOBILE */
 @media(max-width:600px){
-  .cart-item{flex-direction:column;align-items:flex-start;gap:8px}
-  .cart-right{width:100%;justify-content:space-between}
+  .item{flex-direction:column;align-items:flex-start;gap:6px}
 }
 </style>
 </head>
 
 <body>
 
-<header>🛒 Your Cart</header>
+<header>
+  <h1>🛒 Your Cart – PlayWithEase</h1>
+</header>
 
-<div class="cart-wrap">
+<div class="container">
   <div class="cart-box" id="cartBox"></div>
 </div>
 
 <script>
-let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 const box = document.getElementById("cartBox");
+let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-function renderCart(){
-  if(cart.length === 0){
-    box.innerHTML = `<div class="empty">Your cart is empty 😔</div>`;
-    return;
-  }
-
+if(cart.length === 0){
+  box.innerHTML = `
+    <div class="empty">
+      <h3>Your cart is empty</h3>
+      <p>Add games or OTT subscriptions to continue</p>
+    </div>
+    <div class="cart-actions">
+      <a href="index.html" class="back">← Continue Shopping</a>
+    </div>
+  `;
+}else{
   let total = 0;
-  box.innerHTML = "";
-
-  cart.forEach((item,i)=>{
+  cart.forEach(item=>{
     total += Number(item.price);
-
     box.innerHTML += `
-      <div class="cart-item">
-        <div class="cart-left">
-          <h4>${item.name}</h4>
-          <span>Digital Delivery</span>
-        </div>
-        <div class="cart-right">
-          <div class="price">₹${item.price}</div>
-          <button class="remove" onclick="removeItem(${i})">Remove</button>
-        </div>
+      <div class="item">
+        <span class="item-name">${item.name}</span>
+        <span class="item-price">₹${item.price}</span>
       </div>
     `;
   });
@@ -168,37 +155,22 @@ function renderCart(){
     <div class="cart-actions">
       <a href="index.html" class="back">← Continue Shopping</a>
       <button class="checkout" onclick="checkoutWhatsApp()">
-  Checkout on WhatsApp
-</button>
-
+        Checkout on WhatsApp
+      </button>
     </div>
   `;
 }
 
-function removeItem(i){
-  cart.splice(i,1);
-  localStorage.setItem("cart", JSON.stringify(cart));
-  renderCart();
-}
-
-renderCart();
-</script>
-<script>
+/* WHATSAPP CHECKOUT */
 function checkoutWhatsApp(){
   let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-
-  if(cart.length === 0){
-    alert("Your cart is empty");
-    return;
-  }
 
   let msg = "Hello PlayWithEase Support 👋\n\n";
   msg += "I’d like to place an order:\n\n";
 
   let total = 0;
-
-  cart.forEach((item, i) => {
-    msg += `${i+1}. ${item.name} - ₹${item.price}\n`;
+  cart.forEach((item,i)=>{
+    msg += `${i+1}. ${item.name} – ₹${item.price}\n`;
     total += Number(item.price);
   });
 
@@ -206,15 +178,12 @@ function checkoutWhatsApp(){
   msg += `\n📦 Digital Delivery`;
   msg += `\n\nPlease confirm availability & delivery time.\n\nThank you!`;
 
-  const url =
-    "https://wa.me/917001568884?text=" +
-    encodeURIComponent(msg);
-
-  window.open(url, "_blank");
+  window.open(
+    "https://wa.me/917001568884?text=" + encodeURIComponent(msg),
+    "_blank"
+  );
 }
 </script>
 
 </body>
 </html>
-
-
