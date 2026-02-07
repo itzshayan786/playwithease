@@ -879,6 +879,7 @@ window.addToCart = function(name, price, btn){
   }
 };
 </script>
+  
 <script>
 function toggleProfile(){
   document.getElementById("profileMenu")
@@ -894,9 +895,36 @@ document.addEventListener("click", e=>{
   }
 });
 </script>
+  
+<script>
+/* ===== PROFILE DROPDOWN FIX ===== */
+
+function toggleProfile(){
+  const menu = document.getElementById("profileMenu");
+  if(!menu) return;
+  menu.classList.toggle("show");
+}
+
+/* click outside close */
+document.addEventListener("click", function(e){
+  const wrap = document.getElementById("profileWrap");
+  const menu = document.getElementById("profileMenu");
+  if(!wrap || !menu) return;
+
+  if(!wrap.contains(e.target)){
+    menu.classList.remove("show");
+  }
+});
+
+/* logout bridge */
+function firebaseLogout(){
+  document.getElementById("logoutBtn")?.click();
+}
+</script>
 
 </body>
 </html>
+
 
 
 
