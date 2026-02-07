@@ -313,6 +313,58 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
   justify-content:center;
   font-weight:600;
 }
+/* ===== HEADER TEXT VISIBILITY FIX ===== */
+
+/* Brand text */
+.logo .name{
+  color:#ffffff;
+}
+
+.logo .tag{
+  color:#e0e7ff;   /* soft white-blue */
+  opacity:.95;
+}
+
+/* Navbar links */
+nav a{
+  color:#f8fafc;
+  font-weight:500;
+}
+
+nav a:hover{
+  color:#ffffff;
+}
+
+/* Cart count badge */
+.cart-count{
+  background:#ffffff;
+  color:#2563eb;
+  font-weight:700;
+}
+
+/* User email */
+#userEmail{
+  color:#e0e7ff;
+  font-weight:500;
+}
+
+/* Login / Logout */
+#loginBtn,
+#logoutBtn{
+  color:#ffffff;
+  font-weight:600;
+}
+
+#loginBtn:hover,
+#logoutBtn:hover{
+  text-decoration:underline;
+}
+
+/* Games / OTT text clarity */
+nav a[href="#games"],
+nav a[href="#ott"]{
+  color:#ffffff;
+}
 
 </style>
 </head>
@@ -712,6 +764,7 @@ window.addToCart = function(name, price, btn){
 
 </body>
 </html>
+
 
 
 
