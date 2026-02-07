@@ -2,116 +2,181 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>PlayWithEase | Cart</title>
+<title>Your Cart | PlayWithEase</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-*{box-sizing:border-box;font-family:Poppins,Arial}
-body{
-  background:#0b1020;
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
+body{background:#f8fafc;color:#0f172a}
+
+/* HEADER */
+header{
+  background:#2563eb;
   color:#fff;
-  padding:40px 15px;
+  padding:18px;
+  text-align:center;
+  font-size:20px;
+  font-weight:700;
 }
-.box{
-  max-width:520px;
-  margin:auto;
-  background:#0f172a;
-  padding:25px;
+
+/* CART CONTAINER */
+.cart-wrap{
+  max-width:900px;
+  margin:40px auto;
+  padding:0 20px;
+}
+
+.cart-box{
+  background:#fff;
   border-radius:18px;
+  box-shadow:0 20px 50px rgba(0,0,0,.08);
+  padding:24px;
 }
-h2{text-align:center;margin-bottom:10px}
-.item{
+
+/* CART ITEM */
+.cart-item{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin:10px 0;
-  font-size:14px;
+  padding:14px 0;
+  border-bottom:1px solid #e5e7eb;
+  animation:fadeIn .4s ease;
 }
-.item span{color:#cbd5e1}
+
+.cart-item:last-child{border-bottom:none}
+
+.cart-left h4{font-size:15px}
+.cart-left span{font-size:12px;color:#64748b}
+
+.cart-right{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.price{font-weight:700;color:#2563eb}
+
 .remove{
   background:#ef4444;
   color:#fff;
   border:none;
-  padding:4px 10px;
   border-radius:6px;
-  font-size:12px;
+  padding:6px 10px;
   cursor:pointer;
+  font-size:12px;
 }
+
+/* TOTAL */
 .total{
-  margin-top:15px;
-  font-size:18px;
-  color:#4cc9f0;
-  text-align:center;
-}
-.order{
-  display:block;
   margin-top:20px;
-  padding:14px;
-  background:#4cc9f0;
-  color:#000;
-  border-radius:999px;
+  display:flex;
+  justify-content:space-between;
+  font-size:18px;
   font-weight:700;
-  text-align:center;
-  text-decoration:none;
 }
-.back{
-  display:block;
-  margin-top:12px;
+
+/* BUTTONS */
+.cart-actions{
+  margin-top:26px;
+  display:flex;
+  gap:14px;
+}
+
+.cart-actions a{
+  flex:1;
   text-align:center;
-  color:#94a3b8;
-  font-size:13px;
+  padding:14px;
+  border-radius:10px;
   text-decoration:none;
+  font-weight:600;
+}
+
+.checkout{
+  background:#2563eb;
+  color:#fff;
+}
+
+.back{
+  border:1px solid #2563eb;
+  color:#2563eb;
+}
+
+/* EMPTY */
+.empty{
+  text-align:center;
+  padding:40px;
+  color:#64748b;
+}
+
+/* ANIMATION */
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:none}
+}
+
+@media(max-width:600px){
+  .cart-item{flex-direction:column;align-items:flex-start;gap:8px}
+  .cart-right{width:100%;justify-content:space-between}
 }
 </style>
 </head>
 
 <body>
 
-<div class="box">
-  <h2>🛒 Your Cart</h2>
-  <div id="items"></div>
-  <div class="total" id="total"></div>
-  <a id="orderBtn" class="order" href="#">Order on WhatsApp</a>
-  <a class="back" href="index.html">← Continue Shopping</a>
+<header>🛒 Your Cart</header>
+
+<div class="cart-wrap">
+  <div class="cart-box" id="cartBox"></div>
 </div>
 
 <script>
 let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-const itemsDiv = document.getElementById("items");
-const totalDiv = document.getElementById("total");
-const orderBtn = document.getElementById("orderBtn");
+const box = document.getElementById("cartBox");
 
 function renderCart(){
-  itemsDiv.innerHTML="";
-  let sum = 0;
-  let text = "Hello PlayWithEase,%0AI want to order:%0A";
-
-  if(cart.length===0){
-    itemsDiv.innerHTML="<p style='text-align:center;color:#94a3b8'>Cart is empty</p>";
-    totalDiv.innerText="";
-    orderBtn.style.display="none";
+  if(cart.length === 0){
+    box.innerHTML = `<div class="empty">Your cart is empty 😔</div>`;
     return;
   }
 
+  let total = 0;
+  box.innerHTML = "";
+
   cart.forEach((item,i)=>{
-    sum += item.price;
-    itemsDiv.innerHTML += `
-      <div class="item">
-        <span>${item.name} — ₹${item.price}</span>
-        <button class="remove" onclick="removeItem(${i})">Remove</button>
-      </div>`;
-    text += `- ${item.name} (₹${item.price})%0A`;
+    total += Number(item.price);
+
+    box.innerHTML += `
+      <div class="cart-item">
+        <div class="cart-left">
+          <h4>${item.name}</h4>
+          <span>Digital Delivery</span>
+        </div>
+        <div class="cart-right">
+          <div class="price">₹${item.price}</div>
+          <button class="remove" onclick="removeItem(${i})">Remove</button>
+        </div>
+      </div>
+    `;
   });
 
-  totalDiv.innerText = "Total: ₹" + sum;
-  text += "Total: ₹" + sum;
-  orderBtn.href = "https://wa.me/917001568884?text=" + text;
-  orderBtn.style.display="block";
+  box.innerHTML += `
+    <div class="total">
+      <span>Total</span>
+      <span>₹${total}</span>
+    </div>
+
+    <div class="cart-actions">
+      <a href="index.html" class="back">← Continue Shopping</a>
+      <a href="https://wa.me/917001568884?text=Hi%20I%20want%20to%20checkout" class="checkout">
+        Checkout on WhatsApp
+      </a>
+    </div>
+  `;
 }
 
-function removeItem(index){
-  cart.splice(index,1);
-  localStorage.setItem("cart",JSON.stringify(cart));
+function removeItem(i){
+  cart.splice(i,1);
+  localStorage.setItem("cart", JSON.stringify(cart));
   renderCart();
 }
 
