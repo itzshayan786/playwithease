@@ -368,37 +368,49 @@ nav a[href="#ott"]{
 /* PROFILE DROPDOWN */
 .profile-wrap{
   position:relative;
-  margin-left:14px;
+  margin-left:18px;
 }
 
 .profile-btn{
-  width:38px;
-  height:38px;
+  cursor:pointer;
+}
+
+.profile-circle{
+  width:36px;
+  height:36px;
   background:#2563eb;
   color:#fff;
   border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
-  cursor:pointer;
   font-size:18px;
 }
 
-.profile-menu{
+.profile-dropdown{
   position:absolute;
+  top:48px;
   right:0;
-  top:46px;
   background:#fff;
   border:1px solid #e5e7eb;
   border-radius:12px;
-  min-width:160px;
-  box-shadow:0 12px 30px rgba(0,0,0,.12);
-  display:none;
+  min-width:170px;
+  box-shadow:0 14px 30px rgba(0,0,0,.15);
   overflow:hidden;
+  opacity:0;
+  transform:translateY(-10px);
+  pointer-events:none;
+  transition:.25s ease;
   z-index:9999;
 }
 
-.profile-menu a{
+.profile-dropdown.show{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+
+.profile-dropdown a{
   display:block;
   padding:12px 14px;
   font-size:14px;
@@ -406,68 +418,8 @@ nav a[href="#ott"]{
   text-decoration:none;
 }
 
-.profile-menu a:hover{
+.profile-dropdown a:hover{
   background:#f1f5f9;
-  color:#2563eb;
-}
-/* ===== PROFILE DROPDOWN ===== */
-.profile-wrap{
-  position:relative;
-  margin-left:14px;
-}
-
-.profile-btn{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  background:#2563eb;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  box-shadow:0 6px 18px rgba(37,99,235,.4);
-}
-
-.profile-btn .avatar{
-  color:#fff;
-  font-size:18px;
-}
-
-.profile-menu{
-  position:absolute;
-  top:48px;
-  right:0;
-  background:#fff;
-  border-radius:14px;
-  width:190px;
-  box-shadow:0 20px 40px rgba(0,0,0,.18);
-  padding:8px;
-  opacity:0;
-  transform:translateY(-10px) scale(.95);
-  pointer-events:none;
-  transition:.25s ease;
-  z-index:9999;
-}
-
-.profile-menu.show{
-  opacity:1;
-  transform:translateY(0) scale(1);
-  pointer-events:auto;
-}
-
-.profile-menu a{
-  display:block;
-  padding:10px 12px;
-  border-radius:10px;
-  font-size:13px;
-  color:#0f172a;
-  text-decoration:none;
-  transition:.2s;
-}
-
-.profile-menu a:hover{
-  background:#f1f5ff;
-  color:#2563eb;
 }
 
 </style>
@@ -488,13 +440,13 @@ nav a[href="#ott"]{
   <a href="#games">Games</a>
   <a href="#ott">OTT</a>
 
-  <a href="cart.html">
-    <i class="fa-solid fa-cart-shopping"></i>
-    Cart
-    <span id="cartCount" class="cart-count">0</span>
-  </a>
+  <a href="cart.html" class="cart-link">
+  <i class="fa-solid fa-cart-shopping"></i>
+  Cart
+  <span id="cartCount" class="cart-count">0</span>
+</a>
 
-  <div class="profile-wrap" id="profileWrap">
+<div class="profile-wrap" id="profileWrap" style="display:none">
   <div class="profile-btn" onclick="toggleProfile()">
     <div class="avatar">👤</div>
   </div>
@@ -780,14 +732,15 @@ const logoutBtn=document.getElementById("logoutBtn");
 
 onAuthStateChanged(auth,user=>{
   if(user){
-    userEmail.textContent=user.email;
-    loginBtn.style.display="none";
-    logoutBtn.style.display="inline";
-  }else{
-    userEmail.textContent="";
-    loginBtn.style.display="inline";
-    logoutBtn.style.display="none";
-  }
+  userEmail.textContent = user.email;
+  loginBtn.style.display="none";
+  logoutBtn.style.display="none";
+  profileWrap.style.display="inline-block";
+}else{
+  userEmail.textContent="";
+  loginBtn.style.display="inline";
+  profileWrap.style.display="none";
+}
 });
 
 logoutBtn.onclick = e => { 
@@ -905,10 +858,35 @@ function firebaseLogout(){
 }
 </script>
 <script>
-alert("JS working");
+const profileBtn = document.getElementById("profileBtn");
+const profileDropdown = document.getElementById("profileDropdown");
+const profileWrap = document.getElementById("profileWrap");
+const logoutBtn2 = document.getElementById("logoutBtn2");
+
+/* TOGGLE DROPDOWN */
+if(profileBtn){
+  profileBtn.addEventListener("click", (e)=>{
+    e.stopPropagation();
+    profileDropdown.classList.toggle("show");
+  });
+}
+
+/* CLOSE ON OUTSIDE CLICK */
+document.addEventListener("click", ()=>{
+  profileDropdown.classList.remove("show");
+});
+
+/* FIREBASE LOGOUT HOOK */
+if(logoutBtn2){
+  logoutBtn2.addEventListener("click", (e)=>{
+    e.preventDefault();
+    document.getElementById("logoutBtn")?.click();
+  });
+}
 </script>
 </body>
 </html>
+
 
 
 
