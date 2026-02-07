@@ -488,6 +488,7 @@ function addToCart(name,price,btn){
   setTimeout(()=>count.classList.remove("cart-bounce"),400);
 
   btn.classList.add("added");
+  btn.innerHTML = "✔ Added";
   btn.disabled=true;
 
   setTimeout(()=>{
@@ -612,6 +613,7 @@ function sendMessage(){
 
 </body>
 </html>
+
 
 
 
