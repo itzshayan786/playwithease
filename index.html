@@ -96,6 +96,36 @@ nav a:hover{color:#2563eb}
 /* FOOTER */
 footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align:center;font-size:13px;color:#64748b}
 @media(max-width:900px){.hero{grid-template-columns:1fr}}
+
+  /* TRUSTPILOT REVIEW BADGE STYLE */
+.trustpilot-review{
+  max-width:1200px;
+  margin:18px auto 30px;
+  padding:0 20px;
+}
+
+.trustpilot-review a{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:#ffffff;
+  border:1px solid #e5e7eb;
+  padding:10px 18px;
+  border-radius:999px;
+  font-size:14px;
+  font-weight:600;
+  color:#0f172a;
+  text-decoration:none;
+  box-shadow:0 6px 18px rgba(0,0,0,.06);
+  transition:.25s;
+}
+
+.trustpilot-review a:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 26px rgba(0,0,0,.1);
+  color:#2563eb;
+}
+
 </style>
 </head>
 
@@ -138,18 +168,11 @@ footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align
 <img src="https://images.unsplash.com/photo-1605902711622-cfb43c44367f" style="width:100%;border-radius:18px">
 </section>
 
-<!-- TRUSTPILOT (UNTOUCHED) -->
-<!-- TRUSTPILOT -->
-<div class="trust-wrap">
-  <div class="trust-box trust-fix">
-    <div>
-      <p>⭐ Rated & Reviewed on Trustpilot</p>
-      <span>Real customer feedback • Trusted by gamers</span>
-    </div>
-    <a href="https://www.trustpilot.com/review/playwithease.in" target="_blank">
-      View Reviews →
-    </a>
-  </div>
+<!-- TRUSTPILOT REVIEW BADGE -->
+<div class="trustpilot-review">
+  <a href="https://www.trustpilot.com/review/playwithease.in" target="_blank">
+    ⭐ Rated on <b>Trustpilot</b> — Review us →
+  </a>
 </div>
 
 <section class="section" id="games">
@@ -293,4 +316,5 @@ logoutBtn.onclick=e=>{e.preventDefault();signOut(auth)};
 
 </body>
 </html>
+
 
