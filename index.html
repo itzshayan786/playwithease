@@ -516,6 +516,17 @@ nav a[href="#ott"]{
 
   <!-- LOGOUT -->
   <a href="#" id="logoutBtn" style="display:none">Logout</a>
+<div class="profile-wrap" id="profileWrap" style="display:none">
+  <div class="profile-btn" onclick="toggleProfile()">
+    <span class="avatar">👤</span>
+  </div>
+
+  <div class="profile-menu" id="profileMenu">
+    <a href="#" onclick="alert('My Account coming soon 🚀')">My Account</a>
+    <a href="#" onclick="alert('Order history coming soon 📦')">Order History</a>
+  </div>
+</div>
+
 </nav>
 
   <!-- LOGIN SYSTEM -->
@@ -1012,6 +1023,7 @@ logoutBtn.addEventListener("click", (e) => {
   
 </body>
 </html>
+
 
 
 
