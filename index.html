@@ -522,9 +522,9 @@ function render(){
     <h4>${g[0]}</h4>
     <p>${g[0].toLowerCase().includes("rockstar") ? "Rockstar Activation Key (Global)" : "Steam Account"}</p>
     <b>₹${g[1]}</b>
-    <button data-name="${g[0]}" data-price="${g[1]}">
-      <span>Add to Cart</span>
-    </button>
+    <button onclick="addToCart('${g[0]}',${g[1]},this)">
+  <span>Add to Cart</span>
+</button>
   </div>`;
     
     grid.appendChild(d);
@@ -533,9 +533,6 @@ function render(){
   observeCards();
 }
 toggleBtn.onclick=()=>{expanded=!expanded;render()};
-
-function addToCart(name,price,btn){
-  if(cart.some(i=>i.name===name)) return;
 
   cart.push({name,price});
   localStorage.setItem("cart",JSON.stringify(cart));
@@ -694,10 +691,42 @@ window.addToCart = function(name, price, btn){
 
   alert(name + " added to cart");
 };
+<script>
+/* ===== SINGLE SOURCE ADD TO CART (FINAL) ===== */
+window.addToCart = function(name, price, btn){
+
+  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+  // allow multiple same items
+  cart.push({ name, price });
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  // update cart count
+  const cartCount = document.getElementById("cartCount");
+  if(cartCount){
+    cartCount.innerText = cart.length;
+    cartCount.classList.add("cart-bounce");
+    setTimeout(()=>cartCount.classList.remove("cart-bounce"),400);
+  }
+
+  // button animation (optional)
+  if(btn){
+    const span = btn.querySelector("span");
+    btn.classList.add("added");
+    if(span) span.innerText = "Added ✓";
+
+    setTimeout(()=>{
+      btn.classList.remove("added");
+      if(span) span.innerText = "Add to Cart";
+    },1200);
+  }
+};
 </script>
   
 </body>
 </html>
+
 
 
 
