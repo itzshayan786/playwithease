@@ -433,7 +433,7 @@ function render(){
         <h4>${g[0]}</h4>
         <p>${g[0].toLowerCase().includes("rockstar") ? "Rockstar Activation Key (Global)" : "Steam Account"}</p>
         <b>₹${g[1]}</b>
-        <button onclick="addToCart('${g[0]}',${g[1]})">Add to Cart</button>
+        <button onclick="addToCart('${g[0]}',${g[1]},this)">Add to Cart</button>
       </div>`;
     grid.appendChild(d);
   });
@@ -565,6 +565,7 @@ function sendMessage(){
 
 </body>
 </html>
+
 
 
 
