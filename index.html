@@ -311,10 +311,15 @@ onAuthStateChanged(auth,user=>{
   }
 });
 
-logoutBtn.onclick=e=>{e.preventDefault();signOut(auth)};
+logoutBtn.onclick = e => { 
+  e.preventDefault(); 
+  signOut(auth); 
+};
 </script>
-  
-<div id="ai-chat-btn">💬</div>
+
+<!-- ===== AI SUPPORT CHAT (PROFESSIONAL) ===== -->
+
+<div id="ai-chat-btn" title="Support">💬</div>
 
 <div id="ai-chat-box">
   <div class="ai-header">
@@ -322,7 +327,12 @@ logoutBtn.onclick=e=>{e.preventDefault();signOut(auth)};
     <button onclick="toggleChat()">✕</button>
   </div>
 
-  <div id="ai-messages"></div>
+  <div id="ai-messages">
+    <div class="ai-msg ai">
+      👋 Hi! Welcome to PlayWithEase.<br>
+      How can I help you today?
+    </div>
+  </div>
 
   <div class="ai-input">
     <input id="aiInput" placeholder="Type your message..." />
@@ -331,35 +341,48 @@ logoutBtn.onclick=e=>{e.preventDefault();signOut(auth)};
 </div>
 
 <script>
+/* ===== AI CHAT JS ===== */
 const chatBtn = document.getElementById("ai-chat-btn");
 const chatBox = document.getElementById("ai-chat-box");
 const messages = document.getElementById("ai-messages");
 
-chatBtn.onclick = toggleChat;
+/* default closed */
+chatBox.style.display = "none";
 
+/* toggle open / close */
 function toggleChat(){
   chatBox.style.display =
     chatBox.style.display === "flex" ? "none" : "flex";
 }
 
+/* button click */
+chatBtn.addEventListener("click", toggleChat);
+
+/* send message */
 function sendMessage(){
   const input = document.getElementById("aiInput");
   const text = input.value.trim();
   if(!text) return;
 
   messages.innerHTML += `<div class="ai-msg user">${text}</div>`;
-  input.value="";
+  input.value = "";
+  messages.scrollTop = messages.scrollHeight;
 
   setTimeout(()=>{
-    messages.innerHTML +=
-      `<div class="ai-msg ai">🤖 Thanks for contacting PlayWithEase! How can I help you?</div>`;
+    messages.innerHTML += `
+      <div class="ai-msg ai">
+        🤖 Thanks for contacting PlayWithEase!  
+        Please tell me which game or OTT service you need.
+      </div>`;
     messages.scrollTop = messages.scrollHeight;
-  },600);
+  },700);
 }
 </script>
 
 </body>
 </html>
+
+
 
 
 
