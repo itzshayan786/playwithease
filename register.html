@@ -107,12 +107,13 @@ button:hover{
   <h2>Create Account</h2>
   <span>Join PlayWithEase to buy premium games & OTT</span>
 
-  <form>
+  <form id="registerForm">
     <input type="email" placeholder="Email address" required>
     <input type="password" placeholder="Password" required>
     <input type="password" placeholder="Confirm password" required>
 
     <button type="submit">Create Account</button>
+    <p id="errorMsg" style="color:red;font-size:13px;margin-top:10px"></p>
   </form>
 
   <div class="extra">
@@ -120,6 +121,42 @@ button:hover{
     <a href="login.html">Login</a>
   </div>
 </div>
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+  authDomain: "playwithease.firebaseapp.com"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const form = document.getElementById("registerForm");
+const errorMsg = document.getElementById("errorMsg");
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const confirm = document.getElementById("confirm").value;
+
+  if(password !== confirm){
+    errorMsg.innerText = "Passwords do not match";
+    return;
+  }
+
+  createUserWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      window.location.href = "login.html";
+    })
+    .catch(err => {
+      errorMsg.innerText = err.message;
+    });
+});
+</script>
 
 </body>
 </html>
