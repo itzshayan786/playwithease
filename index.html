@@ -1070,69 +1070,83 @@ logoutBtn.addEventListener("click", (e) => {
   });
 });
 </script>
-  <script>
 <script>
-<script>
-<script>
-/* ===== PS5 & XBOX GAMES RENDER FIX ===== */
+/* ===============================
+   PS5 & XBOX – CLEAN START
+================================ */
 
+/* DATA */
 const ps5Games = [
-  {name:"Spider-Man 2", price:3499, img:"https://i.imgur.com/0FJYp9T.jpg"},
-  {name:"God of War Ragnarök", price:3299, img:"https://i.imgur.com/0XcH2xE.jpg"},
-  {name:"Horizon Forbidden West", price:2999, img:"https://i.imgur.com/1y8WQ0s.jpg"},
-  {name:"The Last of Us Part I", price:2799, img:"https://i.imgur.com/9r7Jm8Z.jpg"}
+  ["Spider-Man 2", 3499, "https://i.imgur.com/0FJYp9T.jpg"],
+  ["God of War Ragnarök", 3299, "https://i.imgur.com/0XcH2xE.jpg"],
+  ["Horizon Forbidden West", 2999, "https://i.imgur.com/1y8WQ0s.jpg"],
+  ["The Last of Us Part I", 2799, "https://i.imgur.com/9r7Jm8Z.jpg"],
+  ["Gran Turismo 7", 2499, "https://i.imgur.com/r7kP9mL.jpg"],
+  ["Ghost of Tsushima", 2699, "https://i.imgur.com/Hn5kqZf.jpg"]
 ];
 
 const xboxGames = [
-  {name:"Forza Horizon 5", price:2499, img:"https://i.imgur.com/lF2VnPv.jpg"},
-  {name:"Halo Infinite", price:1999, img:"https://i.imgur.com/6UO2C3S.jpg"},
-  {name:"Starfield", price:2999, img:"https://i.imgur.com/2G6X0fQ.jpg"},
-  {name:"Microsoft Flight Simulator", price:2799, img:"https://i.imgur.com/7pZQJ0R.jpg"}
+  ["Forza Horizon 5", 2499, "https://i.imgur.com/lF2VnPv.jpg"],
+  ["Halo Infinite", 1999, "https://i.imgur.com/6UO2C3S.jpg"],
+  ["Starfield", 2999, "https://i.imgur.com/2G6X0fQ.jpg"],
+  ["Microsoft Flight Simulator", 2799, "https://i.imgur.com/7pZQJ0R.jpg"],
+  ["Forza Motorsport", 2599, "https://i.imgur.com/6J0rWwH.jpg"],
+  ["Gears 5", 1799, "https://i.imgur.com/1E9Qz0E.jpg"]
 ];
 
-function renderConsoleGames(gridId, games){
+/* STATE */
+let ps5Expanded = false;
+let xboxExpanded = false;
+
+/* RENDER FUNCTION */
+function renderConsoleGames(gridId, games, expanded){
   const grid = document.getElementById(gridId);
   if(!grid) return;
 
   grid.innerHTML = "";
-  games.forEach(g=>{
+
+  const visibleGames = expanded ? games : games.slice(0,4);
+
+  visibleGames.forEach(g => {
     const card = document.createElement("div");
     card.className = "card show";
     card.innerHTML = `
-      <img src="${g.img}" style="width:100%;height:180px;object-fit:cover">
+      <img src="${g[2]}" class="game-poster">
       <div class="info">
-        <h4>${g.name}</h4>
-        <b>₹${g.price}</b>
-        <button onclick="addToCart('${g.name}',${g.price},this)">
+        <h4>${g[0]}</h4>
+        <b>₹${g[1]}</b>
+        <button onclick="addToCart('${g[0]}', ${g[1]}, this)">
           <span>Add to Cart</span>
         </button>
-
-        </div>
       </div>
     `;
+    grid.appendChild(card);
   });
 }
 
-/* ===== TOGGLES ===== */
-function togglePS5(){
+/* INITIAL LOAD */
+renderConsoleGames("ps5Grid", ps5Games, false);
+renderConsoleGames("xboxGrid", xboxGames, false);
+
+/* SHOW MORE BUTTONS */
+document.getElementById("ps5Toggle").onclick = () => {
   ps5Expanded = !ps5Expanded;
-  renderPS5();
-}
+  document.getElementById("ps5Toggle").innerText =
+    ps5Expanded ? "Show Less Games" : "Show More Games";
+  renderConsoleGames("ps5Grid", ps5Games, ps5Expanded);
+};
 
-function toggleXbox(){
+document.getElementById("xboxToggle").onclick = () => {
   xboxExpanded = !xboxExpanded;
-  renderXbox();
-}
-
-/* ===== AUTO LOAD AFTER PAGE LOAD ===== */
-window.addEventListener("DOMContentLoaded",()=>{
-  renderPS5();
-  renderXbox();
-});
+  document.getElementById("xboxToggle").innerText =
+    xboxExpanded ? "Show Less Games" : "Show More Games";
+  renderConsoleGames("xboxGrid", xboxGames, xboxExpanded);
+};
 </script>
 
 </body>
 </html>
+
 
 
 
