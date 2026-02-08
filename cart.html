@@ -232,9 +232,9 @@ function loadCart(){
 
   <div class="cart-actions">
     <a href="index.html" class="back">← Continue Shopping</a>
-    <button class="checkout" onclick="checkoutWhatsApp()">
-      Checkout on WhatsApp
-    </button>
+    <button class="checkout" onclick="openUPIQR()">
+  Pay Now
+</button>
   </div>
 `;
 }
@@ -273,10 +273,149 @@ function checkoutWhatsApp(){
 
 /* INIT */
 loadCart();
+/* ===== UPI QR LOGIC ===== */
+
+let countdown;
+
+function openUPIQR(){
+  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  if(cart.length === 0) return;
+
+  let total = 0;
+  cart.forEach(i => total += Number(i.price));
+
+  document.getElementById("qrAmount").innerText = total;
+
+  const upiId = "shayanff98@okhdfcbank"; // 🔴 CHANGE TO YOUR REAL UPI
+  const name  = "PlayWithEase";
+
+  const upiString =
+    `upi://pay?pa=${upiId}&pn=${name}&am=${total}&cu=INR`;
+
+  const qrURL =
+    "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
+    encodeURIComponent(upiString);
+
+  document.getElementById("upiQR").src = qrURL;
+
+  document.getElementById("upiModal").style.display = "flex";
+
+  startTimer(5 * 60);
+}
+
+function closeUPIQR(){
+  document.getElementById("upiModal").style.display = "none";
+  clearInterval(countdown);
+}
+
+/* TIMER (VISUAL ONLY) */
+function startTimer(seconds){
+  const el = document.getElementById("timer");
+  let time = seconds;
+
+  countdown = setInterval(()=>{
+    let m = Math.floor(time / 60);
+    let s = time % 60;
+    el.innerText =
+      `Time left: 0${m}:${s < 10 ? "0"+s : s}`;
+    time--;
+
+    if(time < 0){
+      clearInterval(countdown);
+      el.innerText = "Session expired. Please reopen QR.";
+    }
+  },1000);
+}
+
+/* AFTER PAYMENT → WHATSAPP */
+function paidWhatsApp(){
+  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  let total = 0;
+  let msg = "Hi PlayWithEase 👋\n\nI have completed UPI payment.\n\nOrder details:\n";
+
+  cart.forEach((i,idx)=>{
+    msg += `${idx+1}. ${i.name} – ₹${i.price}\n`;
+    total += Number(i.price);
+  });
+
+  msg += `\n💰 Amount Paid: ₹${total}`;
+  msg += `\n📸 Screenshot attached`;
+
+  window.open(
+    "https://wa.me/917001568884?text=" + encodeURIComponent(msg),
+    "_blank"
+  );
+}
 </script>
+<!-- ===== UPI QR MODAL ===== -->
+<div id="upiModal" style="
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+">
+
+  <div style="
+    background:#fff;
+    width:90%;
+    max-width:360px;
+    border-radius:18px;
+    padding:20px;
+    text-align:center;
+  ">
+
+    <h3 style="margin-bottom:8px">Scan & Pay via UPI</h3>
+    <p style="font-size:13px;color:#475569">
+      Amount is fixed. Please complete payment within time.
+    </p>
+
+    <img id="upiQR"
+         style="width:220px;height:220px;margin:14px auto;display:block">
+
+    <h2 style="margin:6px 0">₹<span id="qrAmount">0</span></h2>
+
+    <p id="timer"
+       style="font-size:13px;color:#dc2626;font-weight:600">
+       Time left: 05:00
+    </p>
+
+    <button onclick="paidWhatsApp()"
+      style="
+        width:100%;
+        margin-top:12px;
+        padding:12px;
+        background:#16a34a;
+        color:#fff;
+        border:none;
+        border-radius:10px;
+        font-weight:700;
+        font-size:14px;
+      ">
+      I’ve Paid
+    </button>
+
+    <button onclick="closeUPIQR()"
+      style="
+        width:100%;
+        margin-top:8px;
+        padding:10px;
+        background:#f1f5f9;
+        border:none;
+        border-radius:10px;
+        font-weight:600;
+      ">
+      Cancel
+    </button>
+
+  </div>
+</div>
 
 </body>
 </html>
+
 
 
 
