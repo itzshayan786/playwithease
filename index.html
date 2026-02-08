@@ -617,19 +617,16 @@ nav a[href="#ott"]{
   <!-- LOGIN BUTTON -->
   <a href="login.html" id="loginBtn">Login</a>
 
-  <!-- PROFILE -->
-  <div class="profile-wrap" id="profileWrap" style="display:none">
-    <div class="profile-btn" onclick="toggleProfile()">
-      <span class="avatar">👤</span>
-    </div>
-
-    <div class="profile-menu" id="profileMenu">
-      <a href="my-account.html">My Account</a>
-      <a href="order-history.html">Order History</a>
-      <a href="#" onclick="firebaseLogout()">Logout</a>
-    </div>
+<div class="profile-wrap" id="profileWrap" style="display:none">
+  <div class="profile-btn" onclick="toggleProfile()">
+    <span class="avatar">👤</span>
   </div>
 
+  <div class="profile-menu" id="profileMenu">
+    <a href="my-account.html">My Account</a>
+    <a href="order-history.html">Order History</a>
+    <a href="#" onclick="firebaseLogout()">Logout</a>
+  </div>
 </div>
 
     
@@ -899,31 +896,32 @@ const auth = getAuth(app);
 await setPersistence(auth, browserLocalPersistence);
 
 /* ELEMENTS */
-const userEmail   = document.getElementById("userEmail");
-const loginBtn    = document.getElementById("loginBtn");
-const logoutBtn   = document.getElementById("logoutBtn");
+const userEmail = document.getElementById("userEmail");
+const loginBtn = document.getElementById("loginBtn");
 const profileWrap = document.getElementById("profileWrap");
 
-/* AUTH STATE */
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(auth, (user) => {
   if (user) {
-    userEmail.textContent = user.email;
-    loginBtn.style.display = "none";
-    logoutBtn.style.display = "none";
-    profileWrap.style.display = "inline-block";
+    // USER LOGGED IN
+    if(userEmail) userEmail.textContent = user.email;
+
+    if(loginBtn) loginBtn.style.display = "none";
+    if(profileWrap) profileWrap.style.display = "inline-block";
+
   } else {
-    userEmail.textContent = "";
-    loginBtn.style.display = "inline";
-    logoutBtn.style.display = "none";
-    profileWrap.style.display = "none";
+    // USER LOGGED OUT
+    if(userEmail) userEmail.textContent = "";
+
+    if(loginBtn) loginBtn.style.display = "inline";
+    if(profileWrap) profileWrap.style.display = "none";
   }
 });
-
-/* LOGOUT */
-logoutBtn.addEventListener("click", e => {
-  e.preventDefault();
-  signOut(auth);
-});
+window.firebaseLogout = function(){
+  signOut(auth).then(() => {
+    window.location.reload();
+  });
+};
+  
 </script>
 
 
@@ -1159,6 +1157,7 @@ document.addEventListener("click", e=>{
 
 </body>
 </html>
+
 
 
 
