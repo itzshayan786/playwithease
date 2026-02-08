@@ -536,6 +536,13 @@ nav a[href="#ott"]{
   pointer-events:none;
   box-shadow:0 6px 18px rgba(0,0,0,.35);
 }
+  
+ .card:hover img{
+  transform:scale(1.05);
+}
+.card img{
+  transition:.35s ease;
+}
 
 </style>
 </head>
@@ -1212,9 +1219,9 @@ document.getElementById("xboxToggle").onclick = () => {
   renderConsoleGames("xboxGrid", xboxGames, xboxExpanded);
 };
 </script>
-
 </body>
 </html>
+
 
 
 
