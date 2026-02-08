@@ -1,3 +1,4 @@
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -494,86 +495,40 @@ nav a[href="#ott"]{
 }
 .profile-wrap{
   position:relative;
-  margin-left:16px;
+  margin-left:10px;
 }
 
 .profile-btn{
   width:36px;
   height:36px;
-  background:#2563eb;
   border-radius:50%;
+  background:#2563eb;
+  color:#ffffff;
   display:flex;
   align-items:center;
   justify-content:center;
   cursor:pointer;
-}
-
-.avatar{
-  color:#fff;
   font-size:18px;
 }
-
+.avatar{
+  color:#ffffff;
+}
 .profile-menu{
   position:absolute;
+  right:0;
   top:44px;
-  right:0;
-  background:#fff;
-  border-radius:12px;
-  box-shadow:0 12px 30px rgba(0,0,0,.15);
-  min-width:180px;
-  display:none;
-  flex-direction:column;
-  overflow:hidden;
-  z-index:9999;
-}
-
-.profile-menu a{
-  padding:12px 14px;
-  font-size:14px;
-  color:#0f172a;
-  text-decoration:none;
-}
-
-.profile-menu a:hover{
-  background:#f1f5f9;
-}
-.profile-wrap{
-  position:relative;
-  margin-left:14px;
-}
-
-.profile-btn{
-  cursor:pointer;
-}
-
-.avatar{
-  width:36px;
-  height:36px;
-  border-radius:50%;
-  background:#2563eb;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:18px;
-}
-
-.profile-menu{
-  position:absolute;
-  right:0;
-  top:46px;
   background:#fff;
   border:1px solid #e5e7eb;
-  border-radius:10px;
-  min-width:180px;
-  box-shadow:0 14px 30px rgba(0,0,0,.15);
+  border-radius:12px;
+  min-width:160px;
   display:none;
   flex-direction:column;
-  z-index:9999;
+  box-shadow:0 12px 30px rgba(0,0,0,.15);
+  z-index:999;
 }
 
 .profile-menu a{
-  padding:12px 14px;
+  padding:10px 14px;
   text-decoration:none;
   color:#0f172a;
   font-size:14px;
@@ -582,7 +537,7 @@ nav a[href="#ott"]{
 .profile-menu a:hover{
   background:#f1f5f9;
 }
-
+  
 </style>
 </head>
 
@@ -602,34 +557,27 @@ nav a[href="#ott"]{
   <a href="#ott">OTT</a>
 
   <a href="cart.html">
-  <i class="fa-solid fa-cart-shopping"></i>
-  Cart
-  <span id="cartCount" class="cart-count">0</span>
-</a>
+    🛒 Cart <span id="cartCount" class="cart-count">0</span>
+  </a>
 
-<span id="userEmail" class="user-email"></span>
+  <!-- USER EMAIL -->
+  <span id="userEmail" style="font-weight:600; display:none"></span>
 
-<a href="login.html" id="loginBtn" style="display:none">Login</a>
-
-<!-- AUTH AREA -->
-<div id="authArea" style="display:flex;align-items:center;gap:12px">
-
-  <!-- LOGIN BUTTON -->
+  <!-- LOGIN -->
   <a href="login.html" id="loginBtn">Login</a>
 
+  <!-- LOGOUT -->
+  <a href="#" id="logoutBtn" style="display:none">Logout</a>
 <div class="profile-wrap" id="profileWrap" style="display:none">
   <div class="profile-btn" onclick="toggleProfile()">
     <span class="avatar">👤</span>
   </div>
 
   <div class="profile-menu" id="profileMenu">
-    <a href="my-account.html">My Account</a>
-    <a href="order-history.html">Order History</a>
-    <a href="#" onclick="firebaseLogout()">Logout</a>
-  </div>
+  <a href="my-account.html">My Account</a>
+  <a href="order-history.html">Order History</a>
+  <a href="#" onclick="firebaseLogout()">Logout</a>
 </div>
-
-    
 </nav>
 
   <!-- LOGIN SYSTEM -->
@@ -891,39 +839,37 @@ import {
   browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+  authDomain: "playwithease.firebaseapp.com"
+};
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 await setPersistence(auth, browserLocalPersistence);
 
-/* ELEMENTS */
-const userEmail = document.getElementById("userEmail");
-const loginBtn = document.getElementById("loginBtn");
-const profileWrap = document.getElementById("profileWrap");
+const userEmail=document.getElementById("userEmail");
+const loginBtn=document.getElementById("loginBtn");
+const logoutBtn=document.getElementById("logoutBtn");
 
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // USER LOGGED IN
-    if(userEmail) userEmail.textContent = user.email;
-
-    if(loginBtn) loginBtn.style.display = "none";
-    if(profileWrap) profileWrap.style.display = "inline-block";
-
-  } else {
-    // USER LOGGED OUT
-    if(userEmail) userEmail.textContent = "";
-
-    if(loginBtn) loginBtn.style.display = "inline";
-    if(profileWrap) profileWrap.style.display = "none";
-  }
+onAuthStateChanged(auth,user=>{
+  if(user){
+  userEmail.textContent = user.email;
+  loginBtn.style.display="none";
+  logoutBtn.style.display="none";
+  profileWrap.style.display="inline-block";
+}else{
+  userEmail.textContent="";
+  loginBtn.style.display="inline";
+  profileWrap.style.display="none";
+}
 });
-window.firebaseLogout = function(){
-  signOut(auth).then(() => {
-    window.location.reload();
-  });
-};
-  
-</script>
 
+logoutBtn.onclick = e => { 
+  e.preventDefault(); 
+  signOut(auth); 
+};
+</script>
 
 <div id="ai-chat-btn" title="Support">💬</div>
 
@@ -1125,75 +1071,6 @@ logoutBtn.addEventListener("click", (e) => {
   });
 });
 </script>
-  <script>
-const profileBtn = document.getElementById("profileBtn");
-const profileMenu = document.getElementById("profileMenu");
-
-profileBtn.addEventListener("click", (e)=>{
-  e.stopPropagation();
-  profileMenu.style.display =
-    profileMenu.style.display === "flex" ? "none" : "flex";
-});
-
-document.addEventListener("click", ()=>{
-  profileMenu.style.display = "none";
-});
-</script>
-<script>
-function toggleProfile(){
-  const menu = document.getElementById("profileMenu");
-  menu.style.display = menu.style.display === "flex" ? "none" : "flex";
-}
-
-/* click outside to close */
-document.addEventListener("click", e=>{
-  const wrap = document.getElementById("profileWrap");
-  const menu = document.getElementById("profileMenu");
-  if(!wrap.contains(e.target)){
-    menu.style.display = "none";
-  }
-});
-</script>
-
+  
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
