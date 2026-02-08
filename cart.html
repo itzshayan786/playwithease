@@ -327,9 +327,11 @@ function startTimer(seconds){
   },1000);
 }
 
-/* AFTER PAYMENT → WHATSAPP */
+/* AFTER PAYMENT → SAVE ORDER + WHATSAPP */
 function paidWhatsApp(){
   let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  if(cart.length === 0) return;
+
   let total = 0;
   let msg = "Hi PlayWithEase 👋\n\nI have completed UPI payment.\n\nOrder details:\n";
 
@@ -339,13 +341,32 @@ function paidWhatsApp(){
   });
 
   msg += `\n💰 Amount Paid: ₹${total}`;
+  msg += `\n📦 Digital Delivery`;
   msg += `\n📸 Screenshot attached`;
 
+  /* ===== STEP 1: SAVE ORDER (IN PROGRESS) ===== */
+  let orders = JSON.parse(localStorage.getItem("orders") || "[]");
+
+  orders.push({
+    id: "PWE" + Date.now(),
+    items: cart,
+    total: total,
+    status: "in-progress",     // ⏳ default
+    time: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("orders", JSON.stringify(orders));
+
+  /* OPTIONAL: clear cart after order created */
+  localStorage.removeItem("cart");
+
+  /* ===== STEP 2: OPEN WHATSAPP ===== */
   window.open(
     "https://wa.me/917001568884?text=" + encodeURIComponent(msg),
     "_blank"
   );
 }
+
 </script>
 <!-- ===== UPI QR MODAL ===== -->
 <div id="upiModal" style="
@@ -415,6 +436,7 @@ function paidWhatsApp(){
 
 </body>
 </html>
+
 
 
 
