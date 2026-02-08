@@ -666,6 +666,7 @@ nav a[href="#ott"]{
     <button onclick="togglePS5()">Show More Games</button>
   </div>
 </section>
+
 <section class="section" id="xbox">
   <h2>🎮 Xbox Series Games</h2>
 
@@ -675,7 +676,7 @@ nav a[href="#ott"]{
     <button onclick="toggleXbox()">Show More Games</button>
   </div>
 </section>
-
+  
 <!-- TRUSTPILOT WIDGET (UNTOUCHED) -->
 <section class="section" style="padding-top:0">
 <div style="background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:18px;text-align:center">
@@ -1069,44 +1070,37 @@ logoutBtn.addEventListener("click", (e) => {
 </script>
   <script>
 <script>
-/* ================= PS5 DATA ================= */
+<script>
+/* ===== PS5 GAMES ===== */
 const ps5Games = [
-  ["GTA V PS5",2999,"https://i.imgur.com/4ZQZ4ZP.jpg"],
+  ["GTA V (PS5)",2999,"https://i.imgur.com/4ZQZ4ZP.jpg"],
   ["Spider-Man 2",3499,"https://i.imgur.com/0FJYp9T.jpg"],
   ["God of War Ragnarök",3299,"https://i.imgur.com/0XcH2xE.jpg"],
-  ["Horizon Forbidden West",2899,"https://i.imgur.com/BzQK0M9.jpg"],
-  ["The Last of Us Part I",2999,"https://i.imgur.com/8kNqKkN.jpg"],
-  ["Resident Evil 4 Remake",2799,"https://i.imgur.com/ozx3h7T.jpg"],
-  ["FIFA 24 PS5",2499,"https://i.imgur.com/y4uL0rU.jpg"],
-  ["Call of Duty MW III",3499,"https://i.imgur.com/fX4zE0p.jpg"]
+  ["Horizon Forbidden West",2899,"https://i.imgur.com/BzQK0M9.jpg"]
 ];
 
-let ps5Visible = 4, ps5Expanded = false;
+let ps5Expanded = false;
 
-/* ================= XBOX DATA ================= */
+/* ===== XBOX GAMES ===== */
 const xboxGames = [
   ["Forza Horizon 5",2499,"https://i.imgur.com/lF2VnPv.jpg"],
   ["Halo Infinite",1999,"https://i.imgur.com/6UO2C3S.jpg"],
-  ["Red Dead Redemption 2",2499,"https://i.imgur.com/4cTgJzY.jpg"],
   ["Starfield",2999,"https://i.imgur.com/2T0KjN3.jpg"],
-  ["Assassin’s Creed Mirage",2699,"https://i.imgur.com/ql6lZHT.jpg"],
-  ["Cyberpunk 2077",2499,"https://i.imgur.com/wX9QGQK.jpg"]
+  ["Red Dead Redemption 2",2499,"https://i.imgur.com/4cTgJzY.jpg"]
 ];
 
-let xboxVisible = 4, xboxExpanded = false;
+let xboxExpanded = false;
 
-/* ================= RENDER FUNCTIONS ================= */
-
+/* ===== RENDER ===== */
 function renderPS5(){
   const grid = document.getElementById("ps5Grid");
-  grid.innerHTML = "";
+  if(!grid) return;
 
-  ps5Games
-    .slice(0, ps5Expanded ? ps5Games.length : ps5Visible)
-    .forEach(g=>{
-      grid.innerHTML += `
+  grid.innerHTML = "";
+  ps5Games.forEach(g=>{
+    grid.innerHTML += `
       <div class="card show">
-        <img class="game-poster" src="${g[2]}" alt="${g[0]}">
+        <img class="game-poster" src="${g[2]}">
         <div class="info">
           <h4>${g[0]}</h4>
           <p>PS5 Digital</p>
@@ -1115,20 +1109,20 @@ function renderPS5(){
             <span>Add to Cart</span>
           </button>
         </div>
-      </div>`;
-    });
+      </div>
+    `;
+  });
 }
 
 function renderXbox(){
   const grid = document.getElementById("xboxGrid");
-  grid.innerHTML = "";
+  if(!grid) return;
 
-  xboxGames
-    .slice(0, xboxExpanded ? xboxGames.length : xboxVisible)
-    .forEach(g=>{
-      grid.innerHTML += `
+  grid.innerHTML = "";
+  xboxGames.forEach(g=>{
+    grid.innerHTML += `
       <div class="card show">
-        <img class="game-poster" src="${g[2]}" alt="${g[0]}">
+        <img class="game-poster" src="${g[2]}">
         <div class="info">
           <h4>${g[0]}</h4>
           <p>Xbox Digital</p>
@@ -1137,12 +1131,12 @@ function renderXbox(){
             <span>Add to Cart</span>
           </button>
         </div>
-      </div>`;
-    });
+      </div>
+    `;
+  });
 }
 
-/* ================= TOGGLES ================= */
-
+/* ===== TOGGLES ===== */
 function togglePS5(){
   ps5Expanded = !ps5Expanded;
   renderPS5();
@@ -1153,13 +1147,16 @@ function toggleXbox(){
   renderXbox();
 }
 
-/* INIT */
-renderPS5();
-renderXbox();
+/* ===== AUTO LOAD AFTER PAGE LOAD ===== */
+window.addEventListener("DOMContentLoaded",()=>{
+  renderPS5();
+  renderXbox();
+});
 </script>
 
 </body>
 </html>
+
 
 
 
