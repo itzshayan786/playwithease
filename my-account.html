@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Account | PlayWithEase</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.ico">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
+body{background:#f8fafc;color:#0f172a}
+
+/* HEADER */
+header{
+  background:#2563eb;
+  color:#fff;
+  padding:18px 20px;
+}
+.header-wrap{
+  max-width:1100px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.header-wrap a{
+  color:#fff;
+  text-decoration:none;
+  font-weight:600;
+  font-size:14px;
+}
+
+/* PAGE */
+.page{
+  max-width:1100px;
+  margin:40px auto;
+  padding:0 20px;
+}
+.card{
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  padding:24px;
+  box-shadow:0 10px 25px rgba(0,0,0,.06);
+}
+.card h2{
+  font-size:22px;
+  margin-bottom:14px;
+}
+.info{
+  font-size:14px;
+  color:#475569;
+  margin-bottom:22px;
+}
+.badge{
+  display:inline-block;
+  padding:6px 14px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:600;
+  background:#e0e7ff;
+  color:#1e3a8a;
+}
+
+/* ACTIONS */
+.actions{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.btn{
+  padding:12px 20px;
+  border-radius:10px;
+  font-weight:600;
+  border:none;
+  cursor:pointer;
+  font-size:14px;
+}
+.btn.primary{
+  background:#2563eb;
+  color:#fff;
+}
+.btn.secondary{
+  background:#f1f5f9;
+  color:#0f172a;
+}
+.btn.danger{
+  background:#dc2626;
+  color:#fff;
+}
+
+/* ORDER BOX */
+.orders{
+  margin-top:30px;
+  background:#f8fafc;
+  border:1px dashed #cbd5e1;
+  border-radius:14px;
+  padding:20px;
+  font-size:14px;
+  color:#475569;
+}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  font-size:13px;
+  color:#64748b;
+  padding:30px 10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-wrap">
+    <div>
+      <strong>PlayWithEase</strong><br>
+      <span style="font-size:12px;opacity:.9">My Account</span>
+    </div>
+    <a href="index.html">← Back to Store</a>
+  </div>
+</header>
+
+<div class="page">
+  <div class="card">
+    <h2>👤 Account Overview</h2>
+
+    <div class="info">
+      Logged in as: <strong id="userEmail">Loading...</strong><br><br>
+      Status: <span class="badge">Verified User</span>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" onclick="alert('Order history coming soon 📦')">
+        📦 View Order History
+      </button>
+
+      <button class="btn secondary" onclick="location.href='cart.html'">
+        🛒 Go to Cart
+      </button>
+
+      <button class="btn danger" onclick="logout()">
+        🚪 Logout
+      </button>
+    </div>
+
+    <div class="orders">
+      <strong>Order History</strong><br><br>
+      No orders found yet.<br>
+      Once you place an order, it will appear here automatically.
+    </div>
+  </div>
+</div>
+
+<footer>
+© 2026 PlayWithEase • Secure account powered by Firebase 🔒
+</footer>
+
+<!-- FIREBASE AUTH -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+  authDomain: "playwithease.firebaseapp.com"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const emailBox = document.getElementById("userEmail");
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    emailBox.innerText = user.email;
+  } else {
+    // not logged in
+    window.location.href = "login.html";
+  }
+});
+
+window.logout = function(){
+  signOut(auth).then(()=>{
+    window.location.href = "login.html";
+  });
+};
+</script>
+
+</body>
+</html>
