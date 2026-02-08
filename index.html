@@ -520,6 +520,23 @@ nav a[href="#ott"]{
   display:block;
 }
 
+  .badge{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  background:rgba(37,99,235,0.9);
+  color:#fff;
+  font-size:13px;
+  font-weight:700;
+  padding:8px 16px;
+  border-radius:999px;
+  white-space:nowrap;
+  z-index:10;
+  pointer-events:none;
+  box-shadow:0 6px 18px rgba(0,0,0,.35);
+}
+
 </style>
 </head>
 
@@ -1195,25 +1212,10 @@ document.getElementById("xboxToggle").onclick = () => {
   renderConsoleGames("xboxGrid", xboxGames, xboxExpanded);
 };
 </script>
-.badge{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%, -50%);
-  background:rgba(37,99,235,0.9);
-  color:#fff;
-  font-size:13px;
-  font-weight:700;
-  padding:8px 16px;
-  border-radius:999px;
-  white-space:nowrap;
-  z-index:10;
-  pointer-events:none;
-  box-shadow:0 6px 18px rgba(0,0,0,.35);
-}
 
 </body>
 </html>
+
 
 
 
