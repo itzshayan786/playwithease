@@ -43,7 +43,13 @@ nav a:hover{
 .logo .name{font-size:20px;font-weight:800}
 .logo .tag{display:block;font-size:11px;color:#64748b}
 
-nav{display:flex;align-items:center}
+nav{
+  display:flex;
+  align-items:center;
+  margin-left:auto;
+  gap:18px;
+}
+
 nav a, nav span{margin-left:18px;text-decoration:none;color:#334155;font-size:14px}
 nav a:hover{color:#2563eb}
 .cart-count{background:#2563eb;color:#fff;border-radius:999px;padding:2px 7px;font-size:11px;margin-left:4px}
@@ -485,29 +491,48 @@ nav a[href="#ott"]{
   transform:translateY(0);
   pointer-events:auto;
 }
-/* PROFILE DROPDOWN FIX */
 .profile-wrap{
   position:relative;
-  margin-left:14px;
+  margin-left:10px;
 }
 
 .profile-btn{
-  width:38px;
-  height:38px;
-  background:#2563eb;
+  width:36px;
+  height:36px;
   border-radius:50%;
+  background:#2563eb;
+  color:#fff;
   display:flex;
   align-items:center;
   justify-content:center;
   cursor:pointer;
 }
 
-.profile-btn .avatar{
-  color:#fff;
-  font-size:18px;
-  line-height:1;
+.profile-menu{
+  position:absolute;
+  right:0;
+  top:44px;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+  min-width:160px;
+  display:none;
+  flex-direction:column;
+  box-shadow:0 12px 30px rgba(0,0,0,.15);
+  z-index:999;
 }
 
+.profile-menu a{
+  padding:10px 14px;
+  text-decoration:none;
+  color:#0f172a;
+  font-size:14px;
+}
+
+.profile-menu a:hover{
+  background:#f1f5f9;
+}
+  
 </style>
 </head>
 
@@ -1044,6 +1069,7 @@ logoutBtn.addEventListener("click", (e) => {
   
 </body>
 </html>
+
 
 
 
