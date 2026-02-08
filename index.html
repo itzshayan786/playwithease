@@ -611,17 +611,27 @@ nav a[href="#ott"]{
 
 <a href="login.html" id="loginBtn" style="display:none">Login</a>
 
-<div class="profile-wrap" id="profileWrap" style="display:none">
-  <div class="profile-btn" onclick="toggleProfile()">
-    <span class="avatar">👤</span>
+<!-- AUTH AREA -->
+<div id="authArea" style="display:flex;align-items:center;gap:12px">
+
+  <!-- LOGIN BUTTON -->
+  <a href="login.html" id="loginBtn">Login</a>
+
+  <!-- PROFILE -->
+  <div class="profile-wrap" id="profileWrap" style="display:none">
+    <div class="profile-btn" onclick="toggleProfile()">
+      <span class="avatar">👤</span>
+    </div>
+
+    <div class="profile-menu" id="profileMenu">
+      <a href="my-account.html">My Account</a>
+      <a href="order-history.html">Order History</a>
+      <a href="#" onclick="firebaseLogout()">Logout</a>
+    </div>
   </div>
 
-  <div class="profile-menu" id="profileMenu">
-    <a href="my-account.html">My Account</a>
-    <a href="order-history.html">Order History</a>
-    <a href="#" id="logoutBtn">Logout</a>
-  </div>
 </div>
+
     
 </nav>
 
@@ -1149,6 +1159,7 @@ document.addEventListener("click", e=>{
 
 </body>
 </html>
+
 
 
 
