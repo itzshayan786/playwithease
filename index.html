@@ -691,6 +691,67 @@ nav a[href="#ott"]{
   }
 
 }
+/* ===== MOBILE HEADER COMPACT (AMAZON STYLE) ===== */
+@media (max-width: 768px){
+
+  /* Header height kam */
+  header{
+    position:sticky;
+    top:0;
+  }
+
+  .header-wrap{
+    padding:10px 12px;
+  }
+
+  /* Logo size chhota */
+  .logo img{
+    width:32px;
+    height:32px;
+  }
+
+  .logo .name{
+    font-size:15px;
+  }
+
+  .logo .tag{
+    display:none;
+  }
+
+  /* NAV CLEANUP */
+  nav{
+    width:auto;
+  }
+
+  /* Games / OTT links hide on mobile */
+  nav a[href="#games"],
+  nav a[href="#ott"]{
+    display:none;
+  }
+
+  /* Email hide (Amazon bhi email nahi dikhata) */
+  #userEmail{
+    display:none !important;
+  }
+
+  /* Login / Logout compact */
+  #loginBtn,
+  #logoutBtn{
+    font-size:13px;
+  }
+
+  /* Cart icon focus */
+  nav a[href="cart.html"]{
+    font-size:15px;
+  }
+
+  /* Profile icon clean */
+  .profile-btn{
+    width:34px;
+    height:34px;
+  }
+
+}
 
 </style>
 </head>
@@ -1370,6 +1431,7 @@ document.getElementById("xboxToggle").onclick = () => {
 </script>
 </body>
 </html>
+
 
 
 
