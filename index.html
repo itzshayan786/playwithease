@@ -83,6 +83,7 @@ nav a:hover{color:#2563eb}
 
 /* CARD + ANIMATION */
 .card{
+  position:relative;
   background:#fff;border:1px solid #e5e7eb;border-radius:16px;
   overflow:hidden;
   opacity:0;
@@ -621,6 +622,29 @@ nav a[href="#ott"]{
   </a>
 </div>
   
+  <section class="section" style="padding-top:30px">
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+    <div class="card show">
+      <div class="info">
+        <h4>🛒 Choose Product</h4>
+        <p>Select your game or OTT subscription</p>
+      </div>
+    </div>
+    <div class="card show">
+      <div class="info">
+        <h4>💬 Manual Verification</h4>
+        <p>We verify & guide you on WhatsApp</p>
+      </div>
+    </div>
+    <div class="card show">
+      <div class="info">
+        <h4>⚡ Instant Access</h4>
+        <p>Get login details within minutes</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="section" id="games">
 <h2>🎮 Premium PC Games Vault</h2>
 <div class="search-wrap">
@@ -1135,6 +1159,7 @@ function renderConsoleGames(gridId, games, expanded){
     const card = document.createElement("div");
     card.className = "card show";
     card.innerHTML = `
+    <div class="badge">Instant</div>
       <img src="${g[2]}" class="game-poster">
       <div class="info">
         <h4>${g[0]}</h4>
@@ -1167,9 +1192,20 @@ document.getElementById("xboxToggle").onclick = () => {
   renderConsoleGames("xboxGrid", xboxGames, xboxExpanded);
 };
 </script>
+.badge{
+  position:absolute;
+  top:10px;
+  left:10px;
+  background:#2563eb;
+  color:#fff;
+  font-size:11px;
+  padding:4px 8px;
+  border-radius:999px;
+}
 
 </body>
 </html>
+
 
 
 
