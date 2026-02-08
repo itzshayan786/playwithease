@@ -537,6 +537,51 @@ nav a[href="#ott"]{
 .profile-menu a:hover{
   background:#f1f5f9;
 }
+.profile-wrap{
+  position:relative;
+  margin-left:14px;
+}
+
+.profile-btn{
+  cursor:pointer;
+}
+
+.avatar{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:#2563eb;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+}
+
+.profile-menu{
+  position:absolute;
+  right:0;
+  top:46px;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:10px;
+  min-width:180px;
+  box-shadow:0 14px 30px rgba(0,0,0,.15);
+  display:none;
+  flex-direction:column;
+  z-index:9999;
+}
+
+.profile-menu a{
+  padding:12px 14px;
+  text-decoration:none;
+  color:#0f172a;
+  font-size:14px;
+}
+
+.profile-menu a:hover{
+  background:#f1f5f9;
+}
 
 </style>
 </head>
@@ -557,19 +602,17 @@ nav a[href="#ott"]{
   <a href="#ott">OTT</a>
 
   <a href="cart.html">
-    🛒 Cart <span id="cartCount" class="cart-count">0</span>
-  </a>
+  <i class="fa-solid fa-cart-shopping"></i>
+  Cart
+  <span id="cartCount" class="cart-count">0</span>
+</a>
 
-  <!-- USER EMAIL -->
-  <span id="userEmail" style="font-weight:600; display:none"></span>
+<span id="userEmail" class="user-email"></span>
 
-  <!-- LOGIN -->
-  <a href="login.html" id="loginBtn">Login</a>
+<a href="login.html" id="loginBtn" style="display:none">Login</a>
 
-  <!-- LOGOUT -->
-  <a href="#" id="logoutBtn" style="display:none">Logout</a>
-<div class="profile-wrap" id="profileWrap">
-  <div class="profile-btn" id="profileBtn">
+<div class="profile-wrap" id="profileWrap" style="display:none">
+  <div class="profile-btn" onclick="toggleProfile()">
     <span class="avatar">👤</span>
   </div>
 
@@ -1088,9 +1131,25 @@ document.addEventListener("click", ()=>{
   profileMenu.style.display = "none";
 });
 </script>
+<script>
+function toggleProfile(){
+  const menu = document.getElementById("profileMenu");
+  menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+}
+
+/* click outside to close */
+document.addEventListener("click", e=>{
+  const wrap = document.getElementById("profileWrap");
+  const menu = document.getElementById("profileMenu");
+  if(!wrap.contains(e.target)){
+    menu.style.display = "none";
+  }
+});
+</script>
 
 </body>
 </html>
+
 
 
 
