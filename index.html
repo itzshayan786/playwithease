@@ -652,44 +652,19 @@ nav a[href="#ott"]{
 <section class="section" id="ps5">
   <h2>🎮 PS5 Games</h2>
 
-  <div class="grid">
+  <div class="grid" id="ps5Grid"></div>
 
-    <div class="card">
-      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/header.jpg">
-      <div class="info">
-        <h4>God of War Ragnarök (PS5)</h4>
-        <p>PS5 Digital Account</p>
-        <b>₹249</b>
-        <button onclick="addToCart('God of War Ragnarök PS5',249,this)">
-          <span>Add to Cart</span>
-        </button>
-      </div>
-    </div>
+  <div class="show-more-wrap">
+    <button id="ps5Toggle">Show More PS5 Games</button>
+  </div>
+</section>
+<section class="section" id="xbox">
+  <h2>🎮 Xbox Games</h2>
 
-    <div class="card">
-      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1817070/header.jpg">
-      <div class="info">
-        <h4>Spider-Man 2 (PS5)</h4>
-        <p>PS5 Digital Account</p>
-        <b>₹299</b>
-        <button onclick="addToCart('Spider-Man 2 PS5',299,this)">
-          <span>Add to Cart</span>
-        </button>
-      </div>
-    </div>
+  <div class="grid" id="xboxGrid"></div>
 
-    <div class="card">
-      <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1888930/header.jpg">
-      <div class="info">
-        <h4>The Last of Us Part I (PS5)</h4>
-        <p>PS5 Digital Account</p>
-        <b>₹269</b>
-        <button onclick="addToCart('The Last of Us Part I PS5',269,this)">
-          <span>Add to Cart</span>
-        </button>
-      </div>
-    </div>
-
+  <div class="show-more-wrap">
+    <button id="xboxToggle">Show More Xbox Games</button>
   </div>
 </section>
 
@@ -1084,7 +1059,138 @@ logoutBtn.addEventListener("click", (e) => {
   });
 });
 </script>
-  
+  <script>
+/* ================= PS5 GAMES ================= */
+const ps5Games = [
+  ["God of War Ragnarök PS5",249],
+  ["Spider-Man 2 PS5",299],
+  ["The Last of Us Part I PS5",269],
+  ["Horizon Forbidden West PS5",259],
+  ["Gran Turismo 7 PS5",239],
+  ["Demon’s Souls PS5",249],
+  ["Ghost of Tsushima PS5",229],
+  ["Ratchet & Clank Rift Apart PS5",249],
+  ["Final Fantasy XVI PS5",279],
+  ["Resident Evil 4 Remake PS5",259],
+  ["Assassin’s Creed Mirage PS5",229],
+  ["Assassin’s Creed Valhalla PS5",239],
+  ["Call of Duty MW III PS5",289],
+  ["FIFA 24 PS5",249],
+  ["EA FC 24 PS5",259],
+  ["NBA 2K24 PS5",239],
+  ["WWE 2K24 PS5",249],
+  ["Cyberpunk 2077 PS5",239],
+  ["Elden Ring PS5",259],
+  ["Sekiro PS5",229],
+  ["Red Dead Redemption 2 PS5",239],
+  ["GTA V PS5",219],
+  ["Alan Wake 2 PS5",279],
+  ["Days Gone PS5",199],
+  ["Uncharted Collection PS5",229],
+  ["Returnal PS5",239],
+  ["Dead Space Remake PS5",249],
+  ["Star Wars Jedi Survivor PS5",269],
+  ["Far Cry 6 PS5",219],
+  ["Hogwarts Legacy PS5",259],
+  ["Control Ultimate PS5",219],
+  ["The Witcher 3 PS5",199],
+  ["Mortal Kombat 1 PS5",259],
+  ["Tekken 8 PS5",279],
+  ["Street Fighter 6 PS5",249],
+  ["Avatar Frontiers PS5",269],
+  ["Lies of P PS5",239],
+  ["Atomic Heart PS5",229],
+  ["Metro Exodus PS5",219]
+];
+
+/* ================= XBOX GAMES ================= */
+const xboxGames = [
+  ["Forza Horizon 5 Xbox",229],
+  ["Starfield Xbox",269],
+  ["Halo Infinite Xbox",219],
+  ["Gears 5 Xbox",199],
+  ["Microsoft Flight Simulator Xbox",249],
+  ["Red Dead Redemption 2 Xbox",239],
+  ["GTA V Xbox",219],
+  ["Elden Ring Xbox",259],
+  ["Cyberpunk 2077 Xbox",239],
+  ["Call of Duty MW III Xbox",289],
+  ["FIFA 24 Xbox",249],
+  ["EA FC 24 Xbox",259],
+  ["NBA 2K24 Xbox",239],
+  ["WWE 2K24 Xbox",249],
+  ["Assassin’s Creed Mirage Xbox",229],
+  ["Assassin’s Creed Valhalla Xbox",239],
+  ["Far Cry 6 Xbox",219],
+  ["Watch Dogs Legion Xbox",219],
+  ["Forza Motorsport Xbox",249],
+  ["Alan Wake 2 Xbox",279],
+  ["Dead Space Remake Xbox",249],
+  ["Resident Evil 4 Remake Xbox",259],
+  ["Star Wars Jedi Survivor Xbox",269],
+  ["Hogwarts Legacy Xbox",259],
+  ["Metro Exodus Xbox",219],
+  ["The Witcher 3 Xbox",199],
+  ["Control Ultimate Xbox",219],
+  ["Battlefield 2042 Xbox",219],
+  ["DOOM Eternal Xbox",199],
+  ["Sekiro Xbox",229],
+  ["Mortal Kombat 1 Xbox",259],
+  ["Tekken 8 Xbox",279],
+  ["Street Fighter 6 Xbox",249],
+  ["Lies of P Xbox",239],
+  ["Atomic Heart Xbox",229],
+  ["Avatar Frontiers Xbox",269],
+  ["Need for Speed Unbound Xbox",219],
+  ["F1 23 Xbox",229],
+  ["Cricket 24 Xbox",219],
+  ["Cricket 26 Xbox",249]
+];
+
+/* ================= RENDER FUNCTION ================= */
+function renderConsoleGames(list, gridId, toggleId){
+  const grid = document.getElementById(gridId);
+  const toggle = document.getElementById(toggleId);
+  let expanded = false;
+  const visible = 8;
+
+  function render(){
+    grid.innerHTML = "";
+    list.slice(0, expanded ? list.length : visible).forEach(g=>{
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <img src="https://images.unsplash.com/photo-1605902711622-cfb43c44367f">
+        <div class="info">
+          <h4>${g[0]}</h4>
+          <p>Console Digital Account</p>
+          <b>₹${g[1]}</b>
+          <button onclick="addToCart('${g[0]}',${g[1]},this)">
+            <span>Add to Cart</span>
+          </button>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    toggle.innerText = expanded ? "Show Less" : "Show More";
+    observeCards();
+  }
+
+  toggle.onclick = () => {
+    expanded = !expanded;
+    render();
+  };
+
+  render();
+}
+
+/* INIT */
+renderConsoleGames(ps5Games,"ps5Grid","ps5Toggle");
+renderConsoleGames(xboxGames,"xboxGrid","xboxToggle");
+</script>
+
 </body>
 </html>
+
 
