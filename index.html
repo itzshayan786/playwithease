@@ -551,6 +551,77 @@ nav a[href="#ott"]{
     padding:10px 16px;
   }
 }
+/* ===== AMAZON-STYLE MOBILE LAYOUT ===== */
+@media (max-width: 768px){
+
+  /* PAGE PADDING */
+  body{
+    background:#f1f5f9;
+  }
+
+  .section{
+    padding:30px 12px;
+  }
+
+  /* GRID → 2 ITEMS PER ROW */
+  .grid{
+    grid-template-columns:repeat(2, 1fr);
+    gap:12px;
+  }
+
+  /* CARD COMPACT */
+  .card{
+    border-radius:14px;
+  }
+
+  /* IMAGE */
+  .game-poster{
+    height:140px;          /* compact like Amazon */
+  }
+
+  /* INFO SECTION */
+  .card .info{
+    padding:10px;
+  }
+
+  .card h4{
+    font-size:13px;
+    line-height:1.3;
+    margin-bottom:4px;
+  }
+
+  .card p{
+    font-size:11px;
+  }
+
+  .card b{
+    font-size:14px;
+    margin:6px 0;
+    display:block;
+  }
+
+  /* ADD TO CART BUTTON */
+  .card button{
+    width:100%;
+    padding:9px 0;
+    font-size:13px;
+    border-radius:8px;
+  }
+
+  /* BADGE (Instant) */
+  .badge{
+    top:-10px;
+    font-size:10px;
+    padding:4px 10px;
+  }
+
+  /* SHOW MORE BUTTON */
+  .show-more-wrap button{
+    width:100%;
+    font-size:14px;
+  }
+
+}
 
 </style>
 </head>
@@ -1230,6 +1301,7 @@ document.getElementById("xboxToggle").onclick = () => {
 </script>
 </body>
 </html>
+
 
 
 
