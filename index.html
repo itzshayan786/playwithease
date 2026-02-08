@@ -84,12 +84,15 @@ nav a:hover{color:#2563eb}
 /* CARD + ANIMATION */
 .card{
   position:relative;
-  background:#fff;border:1px solid #e5e7eb;border-radius:16px;
   overflow:hidden;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
   opacity:0;
   transform:translateY(20px);
   transition:.4s;
 }
+
 .card.show{opacity:1;transform:translateY(0)}
 .card:hover{transform:translateY(-6px);box-shadow:0 14px 30px rgba(0,0,0,.1)}
 .card img{width:100%;height:180px;object-fit:cover}
@@ -1194,17 +1197,22 @@ document.getElementById("xboxToggle").onclick = () => {
 </script>
 .badge{
   position:absolute;
-  top:10px;
-  left:10px;
+  top:12px;
+  left:12px;
   background:#2563eb;
-  color:#fff;
+  color:#ffffff;
   font-size:11px;
-  padding:4px 8px;
+  font-weight:600;
+  padding:5px 10px;
   border-radius:999px;
+  z-index:5;
+  white-space:nowrap;
+  box-shadow:0 4px 12px rgba(0,0,0,.25);
 }
 
 </body>
 </html>
+
 
 
 
