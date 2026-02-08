@@ -1074,65 +1074,40 @@ logoutBtn.addEventListener("click", (e) => {
   <script>
 <script>
 <script>
-/* ===== PS5 GAMES ===== */
+<script>
+/* ===== PS5 & XBOX GAMES RENDER FIX ===== */
+
 const ps5Games = [
-  ["GTA V (PS5)",2999,"https://i.imgur.com/4ZQZ4ZP.jpg"],
-  ["Spider-Man 2",3499,"https://i.imgur.com/0FJYp9T.jpg"],
-  ["God of War Ragnarök",3299,"https://i.imgur.com/0XcH2xE.jpg"],
-  ["Horizon Forbidden West",2899,"https://i.imgur.com/BzQK0M9.jpg"]
+  {name:"Spider-Man 2", price:3499, img:"https://i.imgur.com/0FJYp9T.jpg"},
+  {name:"God of War Ragnarök", price:3299, img:"https://i.imgur.com/0XcH2xE.jpg"},
+  {name:"Horizon Forbidden West", price:2999, img:"https://i.imgur.com/1y8WQ0s.jpg"},
+  {name:"The Last of Us Part I", price:2799, img:"https://i.imgur.com/9r7Jm8Z.jpg"}
 ];
 
-let ps5Expanded = false;
-
-/* ===== XBOX GAMES ===== */
 const xboxGames = [
-  ["Forza Horizon 5",2499,"https://i.imgur.com/lF2VnPv.jpg"],
-  ["Halo Infinite",1999,"https://i.imgur.com/6UO2C3S.jpg"],
-  ["Starfield",2999,"https://i.imgur.com/2T0KjN3.jpg"],
-  ["Red Dead Redemption 2",2499,"https://i.imgur.com/4cTgJzY.jpg"]
+  {name:"Forza Horizon 5", price:2499, img:"https://i.imgur.com/lF2VnPv.jpg"},
+  {name:"Halo Infinite", price:1999, img:"https://i.imgur.com/6UO2C3S.jpg"},
+  {name:"Starfield", price:2999, img:"https://i.imgur.com/2G6X0fQ.jpg"},
+  {name:"Microsoft Flight Simulator", price:2799, img:"https://i.imgur.com/7pZQJ0R.jpg"}
 ];
 
-let xboxExpanded = false;
-
-/* ===== RENDER ===== */
-function renderPS5(){
-  const grid = document.getElementById("ps5Grid");
+function renderConsoleGames(gridId, games){
+  const grid = document.getElementById(gridId);
   if(!grid) return;
 
   grid.innerHTML = "";
-  ps5Games.forEach(g=>{
-    grid.innerHTML += `
-      <div class="card show">
-        <img class="game-poster" src="${g[2]}">
-        <div class="info">
-          <h4>${g[0]}</h4>
-          <p>PS5 Digital</p>
-          <b>₹${g[1]}</b>
-          <button onclick="addToCart('${g[0]}',${g[1]},this)">
-            <span>Add to Cart</span>
-          </button>
-        </div>
-      </div>
-    `;
-  });
-}
+  games.forEach(g=>{
+    const card = document.createElement("div");
+    card.className = "card show";
+    card.innerHTML = `
+      <img src="${g.img}" style="width:100%;height:180px;object-fit:cover">
+      <div class="info">
+        <h4>${g.name}</h4>
+        <b>₹${g.price}</b>
+        <button onclick="addToCart('${g.name}',${g.price},this)">
+          <span>Add to Cart</span>
+        </button>
 
-function renderXbox(){
-  const grid = document.getElementById("xboxGrid");
-  if(!grid) return;
-
-  grid.innerHTML = "";
-  xboxGames.forEach(g=>{
-    grid.innerHTML += `
-      <div class="card show">
-        <img class="game-poster" src="${g[2]}">
-        <div class="info">
-          <h4>${g[0]}</h4>
-          <p>Xbox Digital</p>
-          <b>₹${g[1]}</b>
-          <button onclick="addToCart('${g[0]}',${g[1]},this)">
-            <span>Add to Cart</span>
-          </button>
         </div>
       </div>
     `;
@@ -1159,6 +1134,7 @@ window.addEventListener("DOMContentLoaded",()=>{
 
 </body>
 </html>
+
 
 
 
