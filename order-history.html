@@ -7,37 +7,62 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
+
 body{
   background:linear-gradient(180deg,#f8fafc,#eef2ff);
   color:#0f172a;
   min-height:100vh;
 }
 
-/* HEADER */
-header{
+/* ===== HEADER ===== */
+.order-header{
   background:#2563eb;
   color:#fff;
   padding:16px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
 }
-header h1{
+
+.header-left h1{
   font-size:18px;
   font-weight:800;
 }
-header p{
+
+.header-left p{
   font-size:12px;
   opacity:.9;
 }
 
-/* CONTAINER */
+/* Back to store button (right corner) */
+.back-store{
+  background:#ffffff;
+  color:#2563eb;
+  padding:10px 14px;
+  border-radius:10px;
+  text-decoration:none;
+  font-weight:600;
+  font-size:13px;
+  white-space:nowrap;
+  box-shadow:0 6px 18px rgba(0,0,0,.18);
+  transition:.25s ease;
+}
+.back-store:hover{
+  transform:translateY(-1px);
+  box-shadow:0 10px 26px rgba(0,0,0,.25);
+}
+
+/* ===== CONTAINER ===== */
 .container{
   max-width:900px;
   margin:24px auto;
   padding:0 14px;
 }
 
-/* ORDER CARD */
+/* ===== ORDER CARD ===== */
 .order{
-  background:#fff;
+  background:#ffffff;
   border-radius:18px;
   padding:16px;
   margin-bottom:16px;
@@ -50,7 +75,7 @@ header p{
   to{opacity:1;transform:translateY(0)}
 }
 
-/* TOP ROW */
+/* Top row */
 .order-top{
   display:flex;
   justify-content:space-between;
@@ -64,7 +89,7 @@ header p{
   color:#2563eb;
 }
 
-/* STATUS PILL */
+/* Status pill */
 .status{
   font-size:11px;
   font-weight:700;
@@ -87,7 +112,7 @@ header p{
   border:1px solid #bbf7d0;
 }
 
-/* ITEMS */
+/* Items */
 .items{
   font-size:13px;
   color:#334155;
@@ -97,12 +122,11 @@ header p{
   margin-bottom:4px;
 }
 
-/* FOOTER ROW */
+/* Bottom row */
 .order-bottom{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-top:12px;
   gap:10px;
   flex-wrap:wrap;
 }
@@ -118,7 +142,7 @@ header p{
   color:#64748b;
 }
 
-/* EMPTY */
+/* Empty state */
 .empty{
   text-align:center;
   padding:60px 10px;
@@ -128,9 +152,13 @@ header p{
   margin-bottom:6px;
 }
 
-/* MOBILE */
+/* Mobile tweaks */
 @media(max-width:600px){
-  header h1{font-size:17px}
+  .header-left h1{font-size:17px}
+  .back-store{
+    padding:8px 12px;
+    font-size:12px;
+  }
   .order{padding:14px}
 }
 </style>
@@ -138,28 +166,15 @@ header p{
 
 <body>
 
-<header>
-</div>
-  <h1>📦 My Orders</h1>
-  <p>Track your order status & delivery progress</p>
-  <div style="max-width:900px;margin:14px auto 0;padding:0 14px">
-  <a href="index.html"
-     style="
-       display:inline-flex;
-       align-items:center;
-       gap:6px;
-       padding:10px 14px;
-       background:#ffffff;
-       color:#2563eb;
-       border-radius:10px;
-       text-decoration:none;
-       font-weight:600;
-       font-size:13px;
-       box-shadow:0 6px 18px rgba(0,0,0,.08);
-     ">
+<header class="order-header">
+  <div class="header-left">
+    <h1>📦 My Orders</h1>
+    <p>Track your order status & delivery progress</p>
+  </div>
+
+  <a href="index.html" class="back-store">
     ← Back to Store
   </a>
-</div>
 </header>
 
 <div class="container" id="ordersBox"></div>
