@@ -1,87 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Order History | PlayWithEase</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<title>My Orders | PlayWithEase</title>
 <style>
-body{
-  margin:0;
-  font-family:Poppins,Arial;
-  background:#f8fafc;
-  color:#0f172a;
-}
-
-.wrapper{
-  max-width:900px;
-  margin:60px auto;
-  padding:20px;
-}
-
-h1{
-  font-size:28px;
-  margin-bottom:10px;
-}
-
-.sub{
-  color:#64748b;
-  margin-bottom:30px;
-}
-
-.order-box{
+body{font-family:Poppins;background:#f8fafc;padding:20px}
+.order{
   background:#fff;
-  border:1px solid #e5e7eb;
   border-radius:14px;
-  padding:20px;
-  margin-bottom:18px;
+  padding:14px;
+  margin-bottom:12px;
+  box-shadow:0 6px 18px rgba(0,0,0,.08)
 }
-
-.order-box h3{
-  margin:0 0 6px;
-  font-size:16px;
+.status{
+  font-weight:700;
 }
-
-.order-box p{
-  margin:4px 0;
-  font-size:13px;
-  color:#475569;
-}
-
-.empty{
-  text-align:center;
-  padding:60px 20px;
-  background:#fff;
-  border:1px dashed #cbd5e1;
-  border-radius:14px;
-}
-
-.back{
-  display:inline-block;
-  margin-top:25px;
-  text-decoration:none;
-  color:#2563eb;
-  font-weight:600;
-}
+.in-progress{color:#f59e0b}
+.success{color:#16a34a}
 </style>
 </head>
-
 <body>
 
-<div class="wrapper">
-  <h1>📦 Order History</h1>
-  <div class="sub">All your past orders will appear here</div>
+<h2>📦 My Orders</h2>
 
-  <!-- EMPTY STATE (for now) -->
-  <div class="empty">
-    <p>No orders found yet.</p>
-    <p style="font-size:13px;color:#64748b">
-      Orders placed via WhatsApp will be synced here soon.
-    </p>
-  </div>
+<div id="orders"></div>
 
-  <a href="index.html" class="back">← Back to Store</a>
-</div>
+<script>
+let orders = JSON.parse(localStorage.getItem("orders") || "[]");
+const box = document.getElementById("orders");
+
+if(orders.length === 0){
+  box.innerHTML = "<p>No orders yet.</p>";
+}
+
+orders.forEach(o=>{
+  box.innerHTML += `
+    <div class="order">
+      <p><b>Order ID:</b> ${o.id}</p>
+      <p><b>Amount:</b> ₹${o.total}</p>
+      <p class="status ${o.status}">
+        ${o.status === "success" ? "✅ Success" : "⏳ In Progress"}
+      </p>
+      <p style="font-size:12px">${o.time}</p>
+    </div>
+  `;
+});
+</script>
 
 </body>
 </html>
