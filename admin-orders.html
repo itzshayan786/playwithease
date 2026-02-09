@@ -50,30 +50,34 @@ function render(){
   }
 
   orders.forEach((o,i)=>{
-    box.innerHTML += `
-      <div class="order">
-        <p><b>Order ID:</b> ${o.id}</p>
-        <p><b>Amount:</b> ₹${o.total}</p>
-        <p><b>Status:</b> ${o.status}</p>
+  box.innerHTML += `
+    <div class="order">
+      <p><b>Order ID:</b> ${o.id}</p>
+      <p><b>Amount:</b> ₹${o.total}</p>
+      <p><b>Status:</b> ${o.status}</p>
 
-        <button class="progress" onclick="setStatus(${i}, 'in-progress')">
-          In Progress
-        </button>
+      <button class="progress" onclick="setStatus(${i}, 'in-progress')">
+        In Progress
+      </button>
 
-        <button class="success" onclick="setStatus(${i}, 'success')">
-          Success
-        </button>
+      <button class="success" onclick="setStatus(${i}, 'success')">
+        Success
+      </button>
 
-        <button class="cancel" onclick="setStatus(${i}, 'cancelled')">
-          Cancel
-        </button>
+      <button class="cancel" onclick="setStatus(${i}, 'cancelled')">
+        Cancel
+      </button>
 
-        <button class="delete" onclick="deleteOrder(${i})">
-          Delete
-        </button>
-      </div>
-    `;
-  });
+      <button class="delete" onclick="deleteOrder(${i})">
+        Delete
+      </button>
+
+      <button onclick="addCredentials(${i})">
+        🔐 Add Login Details
+      </button>
+    </div>
+  `;
+});
 }
 
 function setStatus(index, status){
