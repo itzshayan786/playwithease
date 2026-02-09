@@ -93,6 +93,35 @@ button:hover{
   text-decoration:none;
 }
 .extra a:hover{text-decoration:underline}
+  /* SUCCESS TOAST */
+.toast{
+  position:fixed;
+  top:20px;
+  right:20px;
+  background:#16a34a;
+  color:#fff;
+  padding:14px 18px;
+  border-radius:12px;
+  font-size:14px;
+  font-weight:600;
+  box-shadow:0 12px 30px rgba(22,163,74,.45);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  opacity:0;
+  transform:translateY(-20px);
+  pointer-events:none;
+  transition:.35s ease;
+  z-index:9999;
+}
+.toast.show{
+  opacity:1;
+  transform:translateY(0);
+}
+.toast span{
+  font-size:18px;
+}
+
 </style>
 </head>
 
@@ -161,14 +190,24 @@ window.signupUser = async function () {
 
   try{
     await createUserWithEmailAndPassword(auth, email, password);
-    alert("Account created successfully 🎉");
-    window.location.href = "index.html";
+    const toast = document.getElementById("successToast");
+toast.classList.add("show");
+
+setTimeout(()=>{
+  toast.classList.remove("show");
+  window.location.href = "index.html";
+},2500);
+
   }catch(err){
     errorBox.innerText = err.message;
     console.error(err);
   }
 };
 </script>
-
+<div id="successToast" class="toast">
+  <span>✅</span>
+  Account created successfully
+</div>
+  
 </body>
 </html>
