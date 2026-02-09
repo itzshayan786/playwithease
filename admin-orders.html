@@ -7,28 +7,27 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
-
 body{
   background:#f1f5f9;
-  padding:20px;
   color:#0f172a;
+  padding:20px;
 }
 
 /* HEADER */
-header{
+.header{
   display:flex;
   justify-content:space-between;
   align-items:center;
   margin-bottom:18px;
 }
-header h2{
+.header h1{
   font-size:20px;
   font-weight:800;
 }
 
 /* ORDER CARD */
 .order{
-  background:#ffffff;
+  background:#fff;
   padding:16px;
   border-radius:16px;
   margin-bottom:16px;
@@ -36,11 +35,11 @@ header h2{
 }
 
 .order p{
-  margin-bottom:6px;
   font-size:14px;
+  margin-bottom:6px;
 }
 
-/* STATUS BADGE */
+/* STATUS */
 .badge{
   display:inline-block;
   padding:4px 10px;
@@ -48,19 +47,17 @@ header h2{
   font-size:11px;
   font-weight:700;
 }
-
 .in-progress{background:#fff7ed;color:#c2410c}
 .success{background:#ecfdf5;color:#166534}
 .cancelled{background:#fef2f2;color:#b91c1c}
 
 /* BUTTONS */
 .actions{
-  margin-top:10px;
   display:flex;
   flex-wrap:wrap;
   gap:8px;
+  margin-top:10px;
 }
-
 button{
   border:none;
   padding:7px 12px;
@@ -69,18 +66,14 @@ button{
   font-weight:600;
   cursor:pointer;
 }
-
 .btn-progress{background:#f59e0b;color:#fff}
 .btn-success{background:#16a34a;color:#fff}
 .btn-cancel{background:#dc2626;color:#fff}
-.btn-delete{background:#475569;color:#fff}
 .btn-cred{background:#2563eb;color:#fff}
-
-button:hover{opacity:.9}
 
 /* EMPTY */
 .empty{
-  background:#ffffff;
+  background:#fff;
   padding:40px;
   border-radius:16px;
   text-align:center;
@@ -91,71 +84,110 @@ button:hover{opacity:.9}
 
 <body>
 
-<header>
-  <h2>🛠 Admin Orders</h2>
-</header>
+<div class="header">
+  <h1>🛠 Admin Orders</h1>
+</div>
 
-<div id="adminOrders"></div>
+<div id="ordersBox"></div>
 
-<script>
-/* ===== LOAD ORDERS ===== */
-let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-const box = document.getElementById("adminOrders");
+<script type="module">
+/* ===== FIREBASE + AUTH ===== */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  updateDoc,
+  doc,
+  orderBy,
+  query
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-/* ===== RENDER ===== */
-function render(){
-  box.innerHTML = "";
+/* 🔴 SAME CONFIG AS LOGIN */
+const firebaseConfig = {
+  apiKey: "XXXX",
+  authDomain: "XXXX",
+  projectId: "XXXX"
+};
 
-  if(!orders || orders.length === 0){
+const ADMIN_EMAIL = "shayanakhtar1910@gmail.com";
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const box = document.getElementById("ordersBox");
+
+/* ===== AUTH GUARD ===== */
+onAuthStateChanged(auth, async (user)=>{
+  if(!user || user.email !== ADMIN_EMAIL){
     box.innerHTML = `
       <div class="empty">
-        <h3>No orders yet</h3>
-        <p>Orders will appear here once customers place them.</p>
+        <h3>Access Denied</h3>
+        <p>Admin only page</p>
       </div>
     `;
     return;
   }
 
-  orders.slice().reverse().forEach((o,reverseIndex)=>{
-    const index = orders.length - 1 - reverseIndex;
+  loadOrders();
+});
+
+/* ===== LOAD ALL ORDERS ===== */
+async function loadOrders(){
+  box.innerHTML = "";
+
+  const q = query(
+    collection(db,"orders"),
+    orderBy("createdAt","desc")
+  );
+
+  const snap = await getDocs(q);
+
+  if(snap.empty){
+    box.innerHTML = `
+      <div class="empty">
+        <h3>No orders yet</h3>
+      </div>
+    `;
+    return;
+  }
+
+  snap.forEach(docSnap=>{
+    const o = docSnap.data();
+    const id = docSnap.id;
 
     box.innerHTML += `
       <div class="order">
-        <p><b>Order ID:</b> ${o.id}</p>
+        <p><b>Order ID:</b> ${id}</p>
+        <p><b>User:</b> ${o.userEmail || "—"}</p>
         <p><b>Amount:</b> ₹${o.total}</p>
         <p>
           <b>Status:</b>
           <span class="badge ${o.status}">
             ${
               o.status === "success"
-                ? "✅ Success"
+                ? "Success"
                 : o.status === "cancelled"
-                ? "❌ Cancelled"
-                : "⏳ In Progress"
+                ? "Cancelled"
+                : "In Progress"
             }
           </span>
         </p>
-        <p style="font-size:12px;color:#64748b">${o.time}</p>
 
         <div class="actions">
-          <button class="btn-progress" onclick="setStatus(${index}, 'in-progress')">
+          <button class="btn-progress" onclick="setStatus('${id}','in-progress')">
             In Progress
           </button>
-
-          <button class="btn-success" onclick="setStatus(${index}, 'success')">
+          <button class="btn-success" onclick="setStatus('${id}','success')">
             Success
           </button>
-
-          <button class="btn-cancel" onclick="setStatus(${index}, 'cancelled')">
+          <button class="btn-cancel" onclick="setStatus('${id}','cancelled')">
             Cancel
           </button>
-
-          <button class="btn-cred" onclick="addCredentials(${index})">
-            🔐 Add Login Details
-          </button>
-
-          <button class="btn-delete" onclick="deleteOrder(${index})">
-            Delete
+          <button class="btn-cred" onclick="addCred('${id}')">
+            🔐 Add Credentials
           </button>
         </div>
       </div>
@@ -163,45 +195,35 @@ function render(){
   });
 }
 
-/* ===== STATUS UPDATE ===== */
-function setStatus(index,status){
-  orders[index].status = status;
-  localStorage.setItem("orders", JSON.stringify(orders));
-  render();
-}
+/* ===== UPDATE STATUS ===== */
+window.setStatus = async function(id,status){
+  await updateDoc(doc(db,"orders",id),{
+    status: status
+  });
+  loadOrders();
+};
 
-/* ===== ADD CREDENTIALS ===== */
-function addCredentials(index){
-  let email = prompt("Enter game account Email / ID:");
+/* ===== ADD GAME CREDENTIALS ===== */
+window.addCred = async function(id){
+  const email = prompt("Game Account Email / ID:");
   if(!email) return;
 
-  let password = prompt("Enter game account Password:");
+  const password = prompt("Game Account Password:");
   if(!password) return;
 
-  let note = prompt("Extra note (optional):") || "";
+  const note = prompt("Extra note (optional):") || "";
 
-  orders[index].credentials = {
-    email,
-    password,
-    note
-  };
+  await updateDoc(doc(db,"orders",id),{
+    credentials:{
+      email,
+      password,
+      note
+    },
+    status:"success"
+  });
 
-  orders[index].status = "success";
-
-  localStorage.setItem("orders", JSON.stringify(orders));
-  render();
-}
-
-/* ===== DELETE ===== */
-function deleteOrder(index){
-  if(!confirm("Are you sure you want to permanently delete this order?")) return;
-  orders.splice(index,1);
-  localStorage.setItem("orders", JSON.stringify(orders));
-  render();
-}
-
-/* INIT */
-render();
+  loadOrders();
+};
 </script>
 
 </body>
