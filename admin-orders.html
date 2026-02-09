@@ -6,43 +6,47 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
+*{box-sizing:border-box;font-family:Poppins,Arial}
 body{
-  background:#f1f5f9;
+  margin:0;
+  background:#f8fafc;
   color:#0f172a;
-  padding:20px;
 }
 
 /* HEADER */
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:18px;
-}
-.header h1{
-  font-size:20px;
+header{
+  background:#2563eb;
+  color:#fff;
+  padding:16px;
+  font-size:18px;
   font-weight:800;
+  text-align:center;
+}
+
+/* CONTAINER */
+.container{
+  max-width:900px;
+  margin:24px auto;
+  padding:0 14px;
 }
 
 /* ORDER CARD */
 .order{
   background:#fff;
-  padding:16px;
   border-radius:16px;
+  padding:16px;
   margin-bottom:16px;
-  box-shadow:0 10px 30px rgba(0,0,0,.1);
+  box-shadow:0 14px 34px rgba(0,0,0,.12);
 }
 
-.order p{
-  font-size:14px;
-  margin-bottom:6px;
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
 }
-
-/* STATUS */
-.badge{
-  display:inline-block;
-  padding:4px 10px;
+.status{
+  padding:6px 12px;
   border-radius:999px;
   font-size:11px;
   font-weight:700;
@@ -51,60 +55,58 @@ body{
 .success{background:#ecfdf5;color:#166534}
 .cancelled{background:#fef2f2;color:#b91c1c}
 
-/* BUTTONS */
+.items{font-size:13px;margin:10px 0}
+.items li{margin-bottom:4px}
+
 .actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
   margin-top:10px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
 }
 button{
   border:none;
-  padding:7px 12px;
+  padding:8px 12px;
   border-radius:8px;
   font-size:12px;
-  font-weight:600;
+  font-weight:700;
   cursor:pointer;
 }
-.btn-progress{background:#f59e0b;color:#fff}
-.btn-success{background:#16a34a;color:#fff}
-.btn-cancel{background:#dc2626;color:#fff}
-.btn-cred{background:#2563eb;color:#fff}
+.success-btn{background:#16a34a;color:#fff}
+.cancel-btn{background:#dc2626;color:#fff}
 
-/* EMPTY */
-.empty{
-  background:#fff;
-  padding:40px;
-  border-radius:16px;
-  text-align:center;
-  color:#64748b;
+/* ACCESS DENIED */
+.denied{
+  min-height:80vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  font-weight:800;
+  color:#dc2626;
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <h1>🛠 Admin Orders</h1>
-</div>
+<header>🛠 Admin Orders Panel</header>
 
-<div id="ordersBox"></div>
+<div class="container" id="box"></div>
 
 <script type="module">
-/* ===== FIREBASE + AUTH ===== */
+/* 🔥 FIREBASE INIT */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
   getFirestore,
   collection,
   getDocs,
-  updateDoc,
   doc,
-  orderBy,
-  query
+  updateDoc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-/* 🔴 SAME CONFIG AS LOGIN */
+/* 🔴 SAME CONFIG AS OTHER PAGES */
 const firebaseConfig = {
   apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
   authDomain: "playwithease.firebaseapp.com",
@@ -117,42 +119,43 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const box = document.getElementById("ordersBox");
+const box = document.getElementById("box");
 
-/* ===== AUTH GUARD ===== */
+/* 🔥 ADMIN CHECK — ONLY HERE */
 onAuthStateChanged(auth, async (user)=>{
-  if(!user || user.email !== ADMIN_EMAIL){
+
+  /* NOT LOGGED IN */
+  if(!user){
     box.innerHTML = `
-      <div class="empty">
-        <h3>Access Denied</h3>
-        <p>Admin only page</p>
+      <div class="denied">
+        Please login as admin
       </div>
     `;
     return;
   }
 
-  loadOrders();
-});
+  /* DEBUG (optional) */
+  console.log("Logged in as:", user.email);
 
-/* ===== LOAD ALL ORDERS ===== */
-async function loadOrders(){
-  box.innerHTML = "";
+  /* ADMIN EMAIL CHECK */
+  if(user.email.toLowerCase().trim() !== ADMIN_EMAIL){
+    box.innerHTML = `
+      <div class="denied">
+        🚫 Access Denied – Admin Only
+      </div>
+    `;
+    return;
+  }
 
-  const q = query(
-    collection(db,"orders"),
-    orderBy("createdAt","desc")
-  );
-
-  const snap = await getDocs(q);
+  /* ✅ ADMIN VERIFIED — LOAD ORDERS */
+  const snap = await getDocs(collection(db,"orders"));
 
   if(snap.empty){
-    box.innerHTML = `
-      <div class="empty">
-        <h3>No orders yet</h3>
-      </div>
-    `;
+    box.innerHTML = "<p>No orders yet</p>";
     return;
   }
+
+  box.innerHTML = "";
 
   snap.forEach(docSnap=>{
     const o = docSnap.data();
@@ -160,69 +163,39 @@ async function loadOrders(){
 
     box.innerHTML += `
       <div class="order">
-        <p><b>Order ID:</b> ${id}</p>
-        <p><b>User:</b> ${o.userEmail || "—"}</p>
-        <p><b>Amount:</b> ₹${o.total}</p>
-        <p>
-          <b>Status:</b>
-          <span class="badge ${o.status}">
-            ${
-              o.status === "success"
-                ? "Success"
-                : o.status === "cancelled"
-                ? "Cancelled"
-                : "In Progress"
-            }
+        <div class="top">
+          <b>Order ID: ${id}</b>
+          <span class="status ${o.status}">
+            ${o.status}
           </span>
-        </p>
+        </div>
+
+        <ul class="items">
+          ${o.items.map(i=>`<li>• ${i.name}</li>`).join("")}
+        </ul>
+
+        <b>Total: ₹${o.total}</b>
 
         <div class="actions">
-          <button class="btn-progress" onclick="setStatus('${id}','in-progress')">
-            In Progress
+          <button class="success-btn" onclick="markStatus('${id}','success')">
+            Mark Success
           </button>
-          <button class="btn-success" onclick="setStatus('${id}','success')">
-            Success
-          </button>
-          <button class="btn-cancel" onclick="setStatus('${id}','cancelled')">
+          <button class="cancel-btn" onclick="markStatus('${id}','cancelled')">
             Cancel
-          </button>
-          <button class="btn-cred" onclick="addCred('${id}')">
-            🔐 Add Credentials
           </button>
         </div>
       </div>
     `;
   });
-}
+});
 
-/* ===== UPDATE STATUS ===== */
-window.setStatus = async function(id,status){
+/* 🔥 STATUS UPDATE */
+window.markStatus = async function(id,status){
   await updateDoc(doc(db,"orders",id),{
     status: status
   });
-  loadOrders();
-};
-
-/* ===== ADD GAME CREDENTIALS ===== */
-window.addCred = async function(id){
-  const email = prompt("Game Account Email / ID:");
-  if(!email) return;
-
-  const password = prompt("Game Account Password:");
-  if(!password) return;
-
-  const note = prompt("Extra note (optional):") || "";
-
-  await updateDoc(doc(db,"orders",id),{
-    credentials:{
-      email,
-      password,
-      note
-    },
-    status:"success"
-  });
-
-  loadOrders();
+  alert("Status updated");
+  location.reload();
 };
 </script>
 
