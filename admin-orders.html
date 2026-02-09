@@ -7,13 +7,8 @@
 
 <style>
 *{box-sizing:border-box;font-family:Poppins,Arial}
-body{
-  margin:0;
-  background:#f8fafc;
-  color:#0f172a;
-}
+body{margin:0;background:#f8fafc;color:#0f172a}
 
-/* HEADER */
 header{
   background:#2563eb;
   color:#fff;
@@ -23,14 +18,12 @@ header{
   text-align:center;
 }
 
-/* CONTAINER */
 .container{
   max-width:900px;
   margin:24px auto;
   padding:0 14px;
 }
 
-/* ORDER CARD */
 .order{
   background:#fff;
   border-radius:16px;
@@ -48,7 +41,6 @@ header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:10px;
 }
 
 .status{
@@ -61,10 +53,7 @@ header{
 .success{background:#ecfdf5;color:#166534}
 .cancelled{background:#fef2f2;color:#b91c1c}
 
-.items{
-  font-size:13px;
-  margin:10px 0;
-}
+.items{font-size:13px;margin:10px 0}
 .items li{margin-bottom:4px}
 
 .actions{
@@ -82,31 +71,29 @@ button{
   cursor:pointer;
 }
 .success-btn{background:#16a34a;color:#fff}
+.progress-btn{background:#f59e0b;color:#fff}
 .cancel-btn{background:#dc2626;color:#fff}
+.cred-btn{background:#2563eb;color:#fff}
+.delete-btn{background:#475569;color:#fff}
 
-/* STATES */
 .center{
-  min-height:70vh;
+  min-height:60vh;
   display:flex;
   align-items:center;
   justify-content:center;
   font-size:16px;
   font-weight:700;
+  color:#dc2626;
 }
-.error{color:#dc2626}
 </style>
 </head>
 
 <body>
 
 <header>🛠 Admin Orders Panel</header>
-
 <div class="container" id="box"></div>
 
 <script type="module">
-/* ===============================
-   FIREBASE IMPORTS
-   =============================== */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
@@ -114,133 +101,118 @@ import {
   collection,
   getDocs,
   doc,
-  updateDoc
+  updateDoc,
+  deleteDoc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-/* ===============================
-   FIREBASE CONFIG (SAME AS OTHER PAGES)
-   =============================== */
+/* 🔴 SAME FIREBASE CONFIG AS OTHER PAGES */
 const firebaseConfig = {
   apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
   authDomain: "playwithease.firebaseapp.com",
   projectId: "playwithease"
 };
 
-/* 🔐 ADMIN UID (PASTE YOUR UID HERE) */
+/* 🔐 ADMIN UID */
 const ADMIN_UID = "SPQjoJ6d7LOPaIEJrReLuWv3y2E2";
 
-/* INIT */
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 const box = document.getElementById("box");
 
-/* ===============================
-   AUTH + ADMIN CHECK
-   =============================== */
 onAuthStateChanged(auth, async (user)=>{
+  if(!user){
+    box.innerHTML = `<div class="center">Please login as admin</div>`;
+    return;
+  }
+
+  if(user.uid !== ADMIN_UID){
+    box.innerHTML = `<div class="center">🚫 Admin only page</div>`;
+    return;
+  }
+
+  const snap = await getDocs(collection(db,"orders"));
+  if(snap.empty){
+    box.innerHTML = "<p>No orders yet</p>";
+    return;
+  }
 
   box.innerHTML = "";
+  snap.forEach(docSnap=>{
+    const o = docSnap.data();
+    const id = docSnap.id;
 
-  /* NOT LOGGED IN */
-  if(!user){
-    box.innerHTML = `
-      <div class="center error">
-        Please login as admin
-      </div>
-    `;
-    return;
-  }
-
-  /* DEBUG (safe to keep) */
-  console.log("ADMIN EMAIL:", user.email);
-  console.log("ADMIN UID:", user.uid);
-
-  /* ADMIN UID CHECK */
-  if(user.uid !== ADMIN_UID){
-    box.innerHTML = `
-      <div class="center error">
-        🚫 Access Denied – Admin Only
-      </div>
-    `;
-    return;
-  }
-
-  /* ===============================
-     LOAD ORDERS
-     =============================== */
-  try{
-    const snap = await getDocs(collection(db,"orders"));
-
-    if(snap.empty){
-      box.innerHTML = "<p>No orders yet</p>";
-      return;
-    }
-
-    box.innerHTML = "";
-
-    snap.forEach(docSnap=>{
-      const o = docSnap.data();
-      const id = docSnap.id;
-
-      box.innerHTML += `
-        <div class="order">
-          <div class="top">
-            <b>Order ID: ${id}</b>
-            <span class="status ${o.status}">
-              ${o.status}
-            </span>
-          </div>
-
-          <ul class="items">
-            ${o.items.map(i=>`<li>• ${i.name}</li>`).join("")}
-          </ul>
-
-          <b>Total: ₹${o.total}</b>
-
-          <div class="actions">
-            <button class="success-btn"
-              onclick="markStatus('${id}','success')">
-              Mark Success
-            </button>
-
-            <button class="cancel-btn"
-              onclick="markStatus('${id}','cancelled')">
-              Cancel
-            </button>
-          </div>
+    box.innerHTML += `
+      <div class="order">
+        <div class="top">
+          <b>Order ID: ${id}</b>
+          <span class="status ${o.status}">${o.status}</span>
         </div>
-      `;
-    });
 
-  }catch(err){
-    console.error("LOAD ORDERS ERROR:", err);
-    box.innerHTML = `
-      <div class="center error">
-        Failed to load orders
+        <ul class="items">
+          ${o.items.map(i=>`<li>• ${i.name}</li>`).join("")}
+        </ul>
+
+        <b>Total: ₹${o.total}</b>
+
+        <div class="actions">
+          <button class="success-btn" onclick="markStatus('${id}','success')">Success</button>
+          <button class="progress-btn" onclick="markStatus('${id}','in-progress')">In Progress</button>
+          <button class="cancel-btn" onclick="markStatus('${id}','cancelled')">Cancel</button>
+          <button class="cred-btn" onclick="addCredentials('${id}')">Add Credentials</button>
+          <button class="delete-btn" onclick="deleteOrder('${id}')">Delete</button>
+        </div>
       </div>
     `;
-  }
+  });
 });
 
-/* ===============================
-   STATUS UPDATE (GLOBAL)
-   =============================== */
-window.markStatus = async function(orderId, status){
+/* STATUS UPDATE */
+window.markStatus = async function(id,status){
   try{
-    const ref = doc(db,"orders",orderId);
-
-    await updateDoc(ref,{
-      status: status
-    });
-
-    alert("✅ Status updated to " + status);
+    await updateDoc(doc(db,"orders",id),{ status });
+    alert("Status updated");
     location.reload();
-
   }catch(err){
-    console.error("STATUS UPDATE ERROR:", err);
-    alert("❌ Failed to update status. Check console.");
+    alert("Failed to update status");
+    console.error(err);
+  }
+};
+
+/* ADD CREDENTIALS */
+window.addCredentials = async function(id){
+  const email = prompt("Enter Account Email / ID:");
+  if(!email) return;
+
+  const password = prompt("Enter Password / Activation Key:");
+  if(!password) return;
+
+  const note = prompt("Optional note (Steam / Rockstar / Key type):") || "";
+
+  try{
+    await updateDoc(doc(db,"orders",id),{
+      credentials:{ email, password, note },
+      status:"success"
+    });
+    alert("Credentials added");
+    location.reload();
+  }catch(err){
+    alert("Failed to add credentials");
+    console.error(err);
+  }
+};
+
+/* DELETE ORDER */
+window.deleteOrder = async function(id){
+  if(!confirm("Delete this order permanently?")) return;
+  try{
+    await deleteDoc(doc(db,"orders",id));
+    alert("Order deleted");
+    location.reload();
+  }catch(err){
+    alert("Failed to delete order");
+    console.error(err);
   }
 };
 </script>
