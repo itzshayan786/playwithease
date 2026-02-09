@@ -15,163 +15,92 @@ header{
   color:#fff;
   padding:18px 20px;
 }
-header h1{
-  font-size:22px;
-  font-weight:700;
-}
+header h1{font-size:22px;font-weight:700}
 
 /* CONTAINER */
-.container{
-  max-width:900px;
-  margin:30px auto;
-  padding:0 16px;
-}
+.container{max-width:900px;margin:30px auto;padding:0 16px}
 
 /* FILTERS */
-.filters{
-  display:flex;
-  gap:10px;
-  margin-bottom:16px;
-  flex-wrap:wrap;
-}
+.filters{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
 .filters button{
-  padding:8px 14px;
-  border-radius:999px;
-  border:1px solid #cbd5f5;
-  background:#fff;
-  color:#2563eb;
-  font-size:13px;
-  font-weight:600;
-  cursor:pointer;
+  padding:8px 14px;border-radius:999px;border:1px solid #cbd5f5;
+  background:#fff;color:#2563eb;font-size:13px;font-weight:600;cursor:pointer
 }
-.filters button.active{
-  background:#2563eb;
-  color:#fff;
-}
+.filters button.active{background:#2563eb;color:#fff}
 
 /* CART BOX */
 .cart-box{
-  background:#fff;
-  border-radius:18px;
+  background:#fff;border-radius:18px;
   box-shadow:0 20px 40px rgba(0,0,0,.08);
-  padding:22px;
+  padding:22px
 }
 
 /* ITEM */
 .item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  padding:14px 0;
-  border-bottom:1px solid #e5e7eb;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;padding:14px 0;border-bottom:1px solid #e5e7eb
 }
 .item:last-child{border-bottom:none}
-
-.item-left{
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-}
-
-.item-name{
-  font-weight:600;
-  font-size:14px;
-}
-.item-type{
-  font-size:11px;
-  color:#64748b;
-}
-.item-price{
-  color:#2563eb;
-  font-weight:600;
-  font-size:14px;
-}
+.item-left{display:flex;flex-direction:column;gap:4px}
+.item-name{font-weight:600;font-size:14px}
+.item-type{font-size:11px;color:#64748b}
+.item-price{color:#2563eb;font-weight:600;font-size:14px}
 
 /* REMOVE */
 .remove-btn{
-  background:#fee2e2;
-  color:#b91c1c;
-  border:none;
-  padding:6px 12px;
-  border-radius:8px;
-  font-size:12px;
-  font-weight:700;
-  cursor:pointer;
+  background:#fee2e2;color:#b91c1c;border:none;
+  padding:6px 12px;border-radius:8px;
+  font-size:12px;font-weight:700;cursor:pointer
 }
 .remove-btn:hover{background:#fecaca}
 
+/* SUMMARY */
+.summary{
+  background:#f8fafc;border:1px solid #e5e7eb;
+  border-radius:14px;padding:14px;margin-top:18px
+}
+.summary h3{font-size:15px;margin-bottom:8px}
+.summary ul{font-size:13px;padding-left:18px}
+.summary li{margin-bottom:4px}
+
 /* TOTAL */
 .total{
-  display:flex;
-  justify-content:space-between;
-  margin-top:20px;
-  font-size:16px;
-  font-weight:700;
+  display:flex;justify-content:space-between;
+  margin-top:20px;font-size:16px;font-weight:700
 }
 
 /* ACTIONS */
 .actions{
-  display:flex;
-  gap:14px;
-  margin-top:26px;
-  flex-wrap:wrap;
+  display:flex;gap:14px;margin-top:26px;flex-wrap:wrap
 }
-
 .back{
-  text-decoration:none;
-  padding:12px 20px;
-  border-radius:10px;
-  border:1px solid #cbd5f5;
-  color:#2563eb;
-  font-weight:600;
+  text-decoration:none;padding:12px 20px;border-radius:10px;
+  border:1px solid #cbd5f5;color:#2563eb;font-weight:600
 }
-
 .pay,.upi{
-  flex:1;
-  background:#16a34a;
-  color:#fff;
-  border:none;
-  padding:14px 22px;
-  border-radius:12px;
-  font-size:15px;
-  font-weight:700;
-  cursor:pointer;
+  flex:1;border:none;padding:14px 22px;border-radius:12px;
+  font-size:15px;font-weight:700;cursor:pointer;color:#fff
 }
 .upi{background:#2563eb}
+.pay{background:#16a34a}
 
-/* ORDER SUMMARY */
-.summary{
-  background:#f8fafc;
-  border:1px solid #e5e7eb;
-  border-radius:14px;
-  padding:14px;
-  margin-top:18px;
-}
-.summary h3{
-  font-size:15px;
-  margin-bottom:8px;
-}
-.summary ul{
-  font-size:13px;
-  padding-left:18px;
-}
-.summary li{margin-bottom:4px}
-
-/* PAY BOX */
+/* PAY BOX (FIXED ALIGNMENT) */
 .pay-box{
-  display:none;
-  margin-top:22px;
-  text-align:center;
+  display:none;margin-top:22px;
+  background:#f8fafc;border:1px solid #e5e7eb;
+  border-radius:16px;padding:18px;
+  text-align:center
 }
-.pay-box img{max-width:220px}
+.pay-box h3{margin-bottom:12px}
+.pay-box .qr-wrap{
+  display:flex;flex-direction:column;
+  align-items:center;gap:14px
+}
+.pay-box img{width:220px;height:220px}
+.pay-box button{width:100%}
 
 /* EMPTY */
-.empty{
-  text-align:center;
-  padding:40px 10px;
-  color:#64748b;
-}
+.empty{text-align:center;padding:40px 10px;color:#64748b}
 </style>
 </head>
 
@@ -183,7 +112,6 @@ header h1{
 
 <div class="container">
 
-  <!-- FILTERS -->
   <div class="filters">
     <button class="active" onclick="setFilter('all',event)">All</button>
     <button onclick="setFilter('pc',event)">PC Games</button>
@@ -197,45 +125,36 @@ header h1{
 
 <script>
 const UPI_ID = "shayanff98@okhdfcbank";
+const WHATSAPP = "917001568884";
 let currentFilter = "all";
 
 function detectType(name){
-  const n = name.toLowerCase();
-  if(n.includes("netflix")||n.includes("prime")||n.includes("hotstar")||n.includes("youtube")||n.includes("crunchy"))
-    return "ott";
+  const n=name.toLowerCase();
+  if(n.includes("netflix")||n.includes("prime")||n.includes("hotstar")||n.includes("youtube")||n.includes("crunchy")) return "ott";
   if(n.includes("ps5")) return "ps5";
   if(n.includes("xbox")) return "xbox";
   return "pc";
 }
 
 function setFilter(type,e){
-  currentFilter = type;
+  currentFilter=type;
   document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
   e.target.classList.add("active");
   renderCart();
 }
 
 function renderCart(){
-  const box = document.getElementById("cartBox");
-  const cart = JSON.parse(localStorage.getItem("cart")||"[]");
+  const box=document.getElementById("cartBox");
+  const cart=JSON.parse(localStorage.getItem("cart")||"[]");
   box.innerHTML="";
 
-  const filtered = currentFilter==="all"
-    ? cart
-    : cart.filter(i=>detectType(i.name)===currentFilter);
+  const filtered=currentFilter==="all"?cart:cart.filter(i=>detectType(i.name)===currentFilter);
+  if(filtered.length===0){box.innerHTML=`<div class="empty">Your cart is empty</div>`;return;}
 
-  if(filtered.length===0){
-    box.innerHTML=`<div class="empty">Your cart is empty</div>`;
-    return;
-  }
-
-  let total=0;
-  let summaryHTML = "<ul>";
-
+  let total=0, summary="<ul>";
   filtered.forEach((i,idx)=>{
     total+=Number(i.price);
-    summaryHTML += `<li>${i.name} – ₹${i.price}</li>`;
-
+    summary+=`<li>${i.name} – ₹${i.price}</li>`;
     box.innerHTML+=`
       <div class="item">
         <div class="item-left">
@@ -244,54 +163,64 @@ function renderCart(){
           <span class="item-price">₹${i.price}</span>
         </div>
         <button class="remove-btn" onclick="removeItem(${idx})">Remove</button>
-      </div>
-    `;
+      </div>`;
   });
-
-  summaryHTML += "</ul>";
+  summary+="</ul>";
 
   box.innerHTML+=`
-    <div class="summary">
-      <h3>Order Summary</h3>
-      ${summaryHTML}
-      <b>Total: ₹${total}</b>
-    </div>
-
-    <div class="total">
-      <span>Total</span>
-      <span>₹${total}</span>
-    </div>
-
+    <div class="summary"><h3>Order Summary</h3>${summary}<b>Total: ₹${total}</b></div>
+    <div class="total"><span>Total</span><span>₹${total}</span></div>
     <div class="actions">
-      <button class="upi" onclick="showUPI(${total})">Pay via UPI</button>
-      <button class="pay" onclick="showUPI(${total})">Pay Now</button>
+      <button class="upi" onclick="startPayment(${total})">Pay via UPI</button>
+      <button class="pay" onclick="startPayment(${total})">Pay Now</button>
       <a class="back" href="index.html">Continue Shopping</a>
     </div>
 
     <div class="pay-box" id="payBox">
       <h3>Scan & Pay via UPI</h3>
-      <img id="qrImg">
-      <button class="pay" onclick="paid(${total})">I’ve Paid</button>
-    </div>
-  `;
+      <div class="qr-wrap">
+        <img id="qrImg">
+        <button class="pay" onclick="paid(${total})">I’ve Paid</button>
+      </div>
+    </div>`;
 }
 
-function removeItem(index){
-  let cart = JSON.parse(localStorage.getItem("cart")||"[]");
-  cart.splice(index,1);
+function removeItem(i){
+  let cart=JSON.parse(localStorage.getItem("cart")||"[]");
+  cart.splice(i,1);
   localStorage.setItem("cart",JSON.stringify(cart));
   renderCart();
 }
 
-function showUPI(total){
-  const upiURL =
-    `upi://pay?pa=${UPI_ID}&pn=PlayWithEase&am=${total}&cu=INR&tn=Order Payment`;
+/* START PAYMENT (ORDER CREATED HERE) */
+function startPayment(total){
+  const cart=JSON.parse(localStorage.getItem("cart")||"[]");
 
-  document.getElementById("qrImg").src =
-    "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" +
-    encodeURIComponent(upiURL);
+  let orders=JSON.parse(localStorage.getItem("orders")||"[]");
+  orders.push({
+    id:"PWE"+Date.now(),
+    items:cart,
+    total:total,
+    status:"in-progress",
+    time:new Date().toLocaleString()
+  });
+  localStorage.setItem("orders",JSON.stringify(orders));
 
+  const upiURL=`upi://pay?pa=${UPI_ID}&pn=PlayWithEase&am=${total}&cu=INR&tn=Order Payment`;
+  document.getElementById("qrImg").src=
+    "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data="+encodeURIComponent(upiURL);
   document.getElementById("payBox").style.display="block";
+}
+
+/* AFTER PAYMENT → WHATSAPP */
+function paid(total){
+  const cart=JSON.parse(localStorage.getItem("cart")||"[]");
+  let msg="Hi PlayWithEase 👋\n\nI’ve completed UPI payment.\n\nOrder details:\n";
+  cart.forEach((i,idx)=>msg+=`${idx+1}. ${i.name} – ₹${i.price}\n`);
+  msg+=`\n💰 Amount Paid: ₹${total}\n📸 Screenshot attached`;
+
+  localStorage.removeItem("cart");
+  window.open("https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent(msg),"_blank");
 }
 
 renderCart();
