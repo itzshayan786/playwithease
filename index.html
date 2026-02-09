@@ -1122,19 +1122,25 @@ function render(){
   grid.innerHTML="";
   games.slice(0,expanded?games.length:visible).forEach(g=>{
     const d = document.createElement("a");
+const d = document.createElement("a");
 d.className = "card";
-d.href = `product.html?id=${g[2]}`;`
+d.href = `product.html?id=${g[2]}`;
+
+d.innerHTML = `
   <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
   <div class="info">
     <h4>${g[0]}</h4>
-    <p>${g[0].toLowerCase().includes("rockstar")
-      ? "Rockstar Activation Key (Global)"
-      : "Steam Account"}</p>
+    <p>${
+      g[0].toLowerCase().includes("rockstar")
+        ? "Rockstar Activation Key (Global)"
+        : "Steam Account"
+    }</p>
     <b>₹${g[1]}</b>
-    <button onclick="addToCart('${g[0]}',${g[1]},this)">
+    <button onclick="event.preventDefault(); addToCart('${g[0]}',${g[1]},this)">
       <span>Add to Cart</span>
     </button>
-  </div>`;
+  </div>
+`;
 
     grid.appendChild(d);
   });
@@ -1505,4 +1511,5 @@ document.getElementById("xboxToggle").onclick = () => {
 </script>
 </body>
 </html>
+
 
