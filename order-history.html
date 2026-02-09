@@ -202,7 +202,13 @@ if(orders.length === 0){
         <div class="order-top">
           <span class="order-id">Order ID: ${o.id}</span>
           <span class="status ${o.status}">
-            ${o.status === "success" ? "✅ Success" : "⏳ In Progress"}
+            ${
+  o.status === "success"
+    ? "✅ Success"
+    : o.status === "cancelled"
+    ? "❌ Cancelled"
+    : "⏳ In Progress"
+}
           </span>
         </div>
 
