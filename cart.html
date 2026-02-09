@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Checkout | PlayWithEase</title>
+<title>Your Cart | PlayWithEase</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -14,87 +14,122 @@ header{
   background:#2563eb;
   color:#fff;
   padding:16px;
-  text-align:center;
   font-weight:800;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+header a{
+  color:#fff;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:600;
 }
 
 /* CONTAINER */
 .container{
-  max-width:420px;
+  max-width:900px;
   margin:20px auto;
-  padding:16px;
+  padding:0 16px;
 }
 
-/* CARD */
-.card{
+/* CART BOX */
+.cart-box{
   background:#fff;
   border-radius:18px;
-  padding:18px;
+  padding:20px;
   box-shadow:0 14px 34px rgba(0,0,0,.12);
-  text-align:center;
 }
 
-/* QR */
-.qr{
-  margin:16px auto;
+/* ITEM */
+.item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 0;
+  border-bottom:1px solid #e5e7eb;
 }
-.qr img{
-  width:220px;
-  height:220px;
-}
+.item:last-child{border-bottom:none}
 
-/* AMOUNT */
-.amount{
-  font-size:22px;
+.item b{font-size:14px}
+.price{font-weight:700;color:#2563eb}
+
+/* TOTAL */
+.total{
+  display:flex;
+  justify-content:space-between;
+  margin-top:18px;
+  font-size:18px;
   font-weight:800;
-  color:#16a34a;
-  margin:10px 0;
 }
 
-/* TIMER */
-.timer{
-  margin:10px 0;
-  font-size:13px;
-  font-weight:600;
-  color:#dc2626;
+/* ACTIONS */
+.actions{
+  display:flex;
+  gap:12px;
+  margin-top:20px;
+  flex-wrap:wrap;
 }
-
-/* BUTTON */
-button{
-  width:100%;
+.actions button,
+.actions a{
+  flex:1;
+  text-align:center;
   border:none;
   padding:14px;
   border-radius:12px;
-  font-size:15px;
+  font-size:14px;
   font-weight:700;
   cursor:pointer;
-  margin-top:12px;
+  text-decoration:none;
 }
 .pay{
   background:#16a34a;
   color:#fff;
 }
-.pay:active{transform:scale(.97)}
+.upi{
+  background:#2563eb;
+  color:#fff;
+}
+.back{
+  border:1px solid #cbd5f5;
+  color:#2563eb;
+  background:#fff;
+}
 
-/* INFO */
-.info{
-  font-size:13px;
-  color:#475569;
+/* PAYMENT BOX */
+.pay-box{
+  display:none;
+  margin-top:24px;
+  background:#f8fafc;
+  border-radius:16px;
+  padding:18px;
+  text-align:center;
+  border:1px dashed #cbd5e1;
+}
+.qr img{
+  width:220px;
+  height:220px;
+}
+.timer{
   margin-top:10px;
-  line-height:1.5;
+  font-size:13px;
+  font-weight:700;
+  color:#dc2626;
 }
 </style>
 </head>
 
 <body>
 
-<header>💳 Complete Your Payment</header>
+<header>
+  <span>🛒 Your Cart</span>
+  <a href="index.html">Continue Shopping</a>
+</header>
 
 <div class="container">
-  <div class="card" id="box"></div>
+  <div class="cart-box" id="box"></div>
 </div>
 
-<!-- 🔥 FIREBASE + LOGIC -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -105,11 +140,11 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-/* 🔴 YOUR REAL FIREBASE CONFIG (PASTE SAME AS LOGIN PAGE) */
+/* 🔴 SAME FIREBASE CONFIG AS LOGIN */
 const firebaseConfig = {
-  apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
-  authDomain: "playwithease.firebaseapp.com",
-  projectId: "playwithease"
+  apiKey: "XXXX",
+  authDomain: "XXXX",
+  projectId: "XXXX"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -117,75 +152,81 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const box = document.getElementById("box");
-
-/* ===== LOAD CART ===== */
 const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
 if(cart.length === 0){
   box.innerHTML = "<p>Your cart is empty</p>";
 }else{
+  let total = 0;
+  cart.forEach(i=>{
+    total += Number(i.price);
+    box.innerHTML += `
+      <div class="item">
+        <b>${i.name}</b>
+        <span class="price">₹${i.price}</span>
+      </div>
+    `;
+  });
 
-  const total = cart.reduce((s,i)=>s+Number(i.price),0);
+  box.innerHTML += `
+    <div class="total">
+      <span>Total</span>
+      <span>₹${total}</span>
+    </div>
 
-  /* 🔥 UPI QR */
+    <div class="actions">
+      <button class="upi" onclick="showUPI(${total})">Pay via UPI</button>
+      <button class="pay" onclick="showUPI(${total})">Pay Now</button>
+      <a class="back" href="index.html">Continue Shopping</a>
+    </div>
+
+    <div class="pay-box" id="payBox">
+      <h3>Scan & Pay via UPI</h3>
+      <div class="qr">
+        <img id="qrImg">
+      </div>
+      <div class="timer" id="timer"></div>
+      <button class="pay" onclick="paid(${total})">I’ve Paid</button>
+    </div>
+  `;
+}
+
+/* SHOW UPI */
+window.showUPI = function(total){
   const upiId = "shayanff98@okhdfcbank";
   const upiUrl = `upi://pay?pa=${upiId}&pn=PlayWithEase&am=${total}&cu=INR`;
 
-  const qrImg =
+  document.getElementById("qrImg").src =
     "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
     encodeURIComponent(upiUrl);
 
-  box.innerHTML = `
-    <h3>Scan & Pay via UPI</h3>
+  document.getElementById("payBox").style.display = "block";
+  startTimer(15*60);
+};
 
-    <div class="qr">
-      <img src="${qrImg}">
-    </div>
-
-    <div class="amount">₹${total}</div>
-
-    <div class="timer" id="timer">
-      ⏳ Complete payment within 15:00
-    </div>
-
-    <button class="pay" onclick="paid(${total})">
-      I’ve Paid
-    </button>
-
-    <div class="info">
-      ✔ UPI / GPay / PhonePe / Paytm<br>
-      ✔ Instant confirmation on WhatsApp
-    </div>
-  `;
-
-  startTimer(15 * 60);
-}
-
-/* ===== TIMER ===== */
-function startTimer(seconds){
+/* TIMER */
+function startTimer(sec){
   const t = document.getElementById("timer");
   const i = setInterval(()=>{
-    const m = Math.floor(seconds/60);
-    const s = seconds%60;
+    const m = Math.floor(sec/60);
+    const s = sec%60;
     t.textContent = `⏳ Complete payment within ${m}:${s.toString().padStart(2,"0")}`;
-    seconds--;
-    if(seconds < 0){
+    sec--;
+    if(sec<0){
       clearInterval(i);
-      t.textContent = "⛔ Time expired. Please refresh page.";
+      t.textContent = "⛔ Time expired. Refresh page.";
     }
   },1000);
 }
 
-/* ===== I’VE PAID ===== */
+/* I’VE PAID */
 window.paid = function(total){
-
   onAuthStateChanged(auth, async (user)=>{
     if(!user){
       alert("Please login first");
       return;
     }
 
-    /* SAVE ORDER */
     await addDoc(collection(db,"orders"),{
       userId: user.uid,
       userEmail: user.email,
@@ -197,8 +238,7 @@ window.paid = function(total){
 
     localStorage.removeItem("cart");
 
-    /* WHATSAPP */
-    let msg = "Hi PlayWithEase 👋\n\nI have completed UPI payment.\n\nOrder details:\n";
+    let msg = "Hi PlayWithEase 👋\n\nI have completed UPI payment.\n\n";
     cart.forEach((i,idx)=>{
       msg += `${idx+1}. ${i.name} – ₹${i.price}\n`;
     });
@@ -214,4 +254,3 @@ window.paid = function(total){
 
 </body>
 </html>
-
