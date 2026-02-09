@@ -147,9 +147,12 @@ const auth = getAuth(app);
 window.signupUser = async function () {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
+  const errorBox = document.getElementById("errorMsg");
+
+  errorBox.innerText = "";
 
   if (!email || !password) {
-    alert("Please enter email and password");
+    errorBox.innerText = "Please enter email and password";
     return;
   }
 
@@ -157,9 +160,9 @@ window.signupUser = async function () {
     await createUserWithEmailAndPassword(auth, email, password);
     alert("Account created successfully 🎉");
     window.location.href = "index.html";
-  } catch (error) {
-    alert(error.message);
-    console.error(error);
+  } catch (err) {
+    errorBox.innerText = err.message;
+    console.error(err);
   }
 };
 </script>
