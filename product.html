@@ -172,9 +172,9 @@ const products = {
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
-const g = games[id];
+const p = products[id];
 
-if(!g){
+if(!p){
   document.body.innerHTML = "Product not found";
 }else{
   document.getElementById("gameImg").src = p.img;
@@ -186,14 +186,14 @@ document.getElementById("gameDesc").textContent = p.desc;
 /* CART */
 function addToCart(){
   let cart = JSON.parse(localStorage.getItem("cart")||"[]");
-  cart.push({name:g.name, price:g.price});
+  cart.push({name:p.name, price:p.price});
   localStorage.setItem("cart",JSON.stringify(cart));
   alert("Added to cart");
 }
 
 /* WHATSAPP */
 function orderWhatsApp(){
-  const msg = `Hi PlayWithEase 👋\nI want to buy ${g.name} for ₹${g.price}`;
+  const msg = `Hi PlayWithEase 👋\nI want to buy ${p.name} for ₹${p.price}`;
   window.open("https://wa.me/917001568884?text="+encodeURIComponent(msg));
 }
 </script>
