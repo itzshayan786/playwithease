@@ -8,19 +8,10 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
 body{background:#f8fafc;color:#0f172a}
-
-/* HEADER */
-header{
-  background:#2563eb;
-  color:#fff;
-  padding:18px 20px;
-}
+header{background:#2563eb;color:#fff;padding:18px 20px}
 header h1{font-size:22px;font-weight:700}
-
-/* CONTAINER */
 .container{max-width:900px;margin:30px auto;padding:0 16px}
 
-/* FILTERS */
 .filters{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
 .filters button{
   padding:8px 14px;border-radius:999px;border:1px solid #cbd5f5;
@@ -28,14 +19,12 @@ header h1{font-size:22px;font-weight:700}
 }
 .filters button.active{background:#2563eb;color:#fff}
 
-/* CART BOX */
 .cart-box{
   background:#fff;border-radius:18px;
   box-shadow:0 20px 40px rgba(0,0,0,.08);
   padding:22px
 }
 
-/* ITEM */
 .item{
   display:flex;justify-content:space-between;align-items:center;
   gap:12px;padding:14px 0;border-bottom:1px solid #e5e7eb
@@ -46,30 +35,22 @@ header h1{font-size:22px;font-weight:700}
 .item-type{font-size:11px;color:#64748b}
 .item-price{color:#2563eb;font-weight:600;font-size:14px}
 
-/* REMOVE */
 .remove-btn{
   background:#fee2e2;color:#b91c1c;border:none;
   padding:6px 12px;border-radius:8px;
   font-size:12px;font-weight:700;cursor:pointer
 }
-.remove-btn:hover{background:#fecaca}
 
-/* SUMMARY */
 .summary{
   background:#f8fafc;border:1px solid #e5e7eb;
   border-radius:14px;padding:14px;margin-top:18px
 }
-.summary h3{font-size:15px;margin-bottom:8px}
-.summary ul{font-size:13px;padding-left:18px}
-.summary li{margin-bottom:4px}
 
-/* TOTAL */
 .total{
   display:flex;justify-content:space-between;
   margin-top:20px;font-size:16px;font-weight:700
 }
 
-/* ACTIONS */
 .actions{
   display:flex;gap:14px;margin-top:26px;flex-wrap:wrap
 }
@@ -84,23 +65,12 @@ header h1{font-size:22px;font-weight:700}
 .upi{background:#2563eb}
 .pay{background:#16a34a}
 
-/* PAY BOX (FIXED ALIGNMENT) */
 .pay-box{
   display:none;margin-top:22px;
   background:#f8fafc;border:1px solid #e5e7eb;
-  border-radius:16px;padding:18px;
-  text-align:center
+  border-radius:16px;padding:18px;text-align:center
 }
-.pay-box h3{margin-bottom:12px}
-.pay-box .qr-wrap{
-  display:flex;flex-direction:column;
-  align-items:center;gap:14px
-}
-.pay-box img{width:220px;height:220px}
-.pay-box button{width:100%}
-
-/* EMPTY */
-.empty{text-align:center;padding:40px 10px;color:#64748b}
+.pay-box img{width:220px;height:220px;margin-bottom:14px}
 </style>
 </head>
 
@@ -111,65 +81,77 @@ header h1{font-size:22px;font-weight:700}
 </header>
 
 <div class="container">
-
   <div class="filters">
-    <button class="active" onclick="setFilter('all',event)">All</button>
-    <button onclick="setFilter('pc',event)">PC Games</button>
-    <button onclick="setFilter('ott',event)">OTT</button>
-    <button onclick="setFilter('ps5',event)">PS5</button>
-    <button onclick="setFilter('xbox',event)">Xbox</button>
+    <button class="active">All</button>
   </div>
 
   <div class="cart-box" id="cartBox"></div>
 </div>
 
-<script>
+<!-- 🔥 FIREBASE + CART LOGIC -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+/* 🔥 FIREBASE CONFIG (AS YOU GAVE) */
+const firebaseConfig = {
+  apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+  authDomain: "playwithease.firebaseapp.com",
+  projectId: "playwithease",
+  storageBucket: "playwithease.firebasestorage.app",
+  messagingSenderId: "189729941006",
+  appId: "1:189729941006:web:362653774b92416c357e5f",
+  measurementId: "G-1C3B31KQ7C"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const box = document.getElementById("cartBox");
 const UPI_ID = "shayanff98@okhdfcbank";
 const WHATSAPP = "917001568884";
-let currentFilter = "all";
-
-function detectType(name){
-  const n=name.toLowerCase();
-  if(n.includes("netflix")||n.includes("prime")||n.includes("hotstar")||n.includes("youtube")||n.includes("crunchy")) return "ott";
-  if(n.includes("ps5")) return "ps5";
-  if(n.includes("xbox")) return "xbox";
-  return "pc";
-}
-
-function setFilter(type,e){
-  currentFilter=type;
-  document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
-  e.target.classList.add("active");
-  renderCart();
-}
 
 function renderCart(){
-  const box=document.getElementById("cartBox");
-  const cart=JSON.parse(localStorage.getItem("cart")||"[]");
-  box.innerHTML="";
+  const cart = JSON.parse(localStorage.getItem("cart")||"[]");
+  box.innerHTML = "";
 
-  const filtered=currentFilter==="all"?cart:cart.filter(i=>detectType(i.name)===currentFilter);
-  if(filtered.length===0){box.innerHTML=`<div class="empty">Your cart is empty</div>`;return;}
+  if(cart.length === 0){
+    box.innerHTML = "<p>Your cart is empty</p>";
+    return;
+  }
 
-  let total=0, summary="<ul>";
-  filtered.forEach((i,idx)=>{
-    total+=Number(i.price);
-    summary+=`<li>${i.name} – ₹${i.price}</li>`;
-    box.innerHTML+=`
+  let total = 0;
+  cart.forEach((i,idx)=>{
+    total += Number(i.price);
+    box.innerHTML += `
       <div class="item">
         <div class="item-left">
           <span class="item-name">${i.name}</span>
-          <span class="item-type">${detectType(i.name).toUpperCase()}</span>
           <span class="item-price">₹${i.price}</span>
         </div>
         <button class="remove-btn" onclick="removeItem(${idx})">Remove</button>
-      </div>`;
+      </div>
+    `;
   });
-  summary+="</ul>";
 
-  box.innerHTML+=`
-    <div class="summary"><h3>Order Summary</h3>${summary}<b>Total: ₹${total}</b></div>
-    <div class="total"><span>Total</span><span>₹${total}</span></div>
+  box.innerHTML += `
+    <div class="summary">
+      <b>Order Summary</b>
+      <p>Total items: ${cart.length}</p>
+    </div>
+
+    <div class="total">
+      <span>Total</span>
+      <span>₹${total}</span>
+    </div>
+
     <div class="actions">
       <button class="upi" onclick="startPayment(${total})">Pay via UPI</button>
       <button class="pay" onclick="startPayment(${total})">Pay Now</button>
@@ -178,50 +160,53 @@ function renderCart(){
 
     <div class="pay-box" id="payBox">
       <h3>Scan & Pay via UPI</h3>
-      <div class="qr-wrap">
-        <img id="qrImg">
-        <button class="pay" onclick="paid(${total})">I’ve Paid</button>
-      </div>
-    </div>`;
+      <img id="qrImg">
+      <button class="pay" onclick="paid(${total})">I’ve Paid</button>
+    </div>
+  `;
 }
 
-function removeItem(i){
-  let cart=JSON.parse(localStorage.getItem("cart")||"[]");
+window.removeItem = function(i){
+  let cart = JSON.parse(localStorage.getItem("cart")||"[]");
   cart.splice(i,1);
   localStorage.setItem("cart",JSON.stringify(cart));
   renderCart();
-}
+};
 
-/* START PAYMENT (ORDER CREATED HERE) */
-function startPayment(total){
-  const cart=JSON.parse(localStorage.getItem("cart")||"[]");
+window.startPayment = function(total){
+  const upiURL = `upi://pay?pa=${UPI_ID}&pn=PlayWithEase&am=${total}&cu=INR`;
+  document.getElementById("qrImg").src =
+    "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" +
+    encodeURIComponent(upiURL);
+  document.getElementById("payBox").style.display = "block";
+};
 
-  let orders=JSON.parse(localStorage.getItem("orders")||"[]");
-  orders.push({
-    id:"PWE"+Date.now(),
-    items:cart,
-    total:total,
-    status:"in-progress",
-    time:new Date().toLocaleString()
+window.paid = async function(total){
+  const user = auth.currentUser;
+  const cart = JSON.parse(localStorage.getItem("cart")||"[]");
+
+  if(!user){
+    alert("Please login first");
+    return;
+  }
+
+  await addDoc(collection(db,"orders"),{
+    userId: user.uid,
+    email: user.email,
+    items: cart,
+    total: total,
+    status: "in-progress",
+    credentials: null,
+    createdAt: serverTimestamp()
   });
-  localStorage.setItem("orders",JSON.stringify(orders));
 
-  const upiURL=`upi://pay?pa=${UPI_ID}&pn=PlayWithEase&am=${total}&cu=INR&tn=Order Payment`;
-  document.getElementById("qrImg").src=
-    "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data="+encodeURIComponent(upiURL);
-  document.getElementById("payBox").style.display="block";
-}
-
-/* AFTER PAYMENT → WHATSAPP */
-function paid(total){
-  const cart=JSON.parse(localStorage.getItem("cart")||"[]");
-  let msg="Hi PlayWithEase 👋\n\nI’ve completed UPI payment.\n\nOrder details:\n";
+  let msg = "Hi PlayWithEase 👋\n\nI’ve completed UPI payment.\n\nOrder details:\n";
   cart.forEach((i,idx)=>msg+=`${idx+1}. ${i.name} – ₹${i.price}\n`);
-  msg+=`\n💰 Amount Paid: ₹${total}\n📸 Screenshot attached`;
+  msg += `\n💰 Amount Paid: ₹${total}\n📸 Screenshot attached`;
 
   localStorage.removeItem("cart");
   window.open("https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent(msg),"_blank");
-}
+};
 
 renderCart();
 </script>
