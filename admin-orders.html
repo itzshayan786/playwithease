@@ -92,9 +92,7 @@ function deleteOrder(index){
   localStorage.setItem("orders", JSON.stringify(orders));
   render();
 }
-
-render();
-  function addCredentials(index){
+function addCredentials(index){
   let email = prompt("Enter game account Email / ID:");
   if(!email) return;
 
