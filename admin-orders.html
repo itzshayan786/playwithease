@@ -72,6 +72,13 @@ function setStatus(index, status){
 }
 
 render();
+  function deleteOrder(index){
+  if(!confirm("Are you sure you want to delete this order?")) return;
+
+  orders.splice(index,1);
+  localStorage.setItem("orders", JSON.stringify(orders));
+  render();
+}
 </script>
 
 </body>
