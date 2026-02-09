@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Product | PlayWithEase</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{box-sizing:border-box;font-family:Poppins,Arial}
+body{margin:0;background:#f8fafc;color:#0f172a}
+
+header{
+  background:#2563eb;
+  color:#fff;
+  padding:16px;
+  font-weight:800;
+}
+
+.container{
+  max-width:1100px;
+  margin:30px auto;
+  padding:0 16px;
+  display:grid;
+  grid-template-columns:1fr 1.2fr;
+  gap:30px;
+}
+
+.img-box img{
+  width:100%;
+  border-radius:18px;
+  box-shadow:0 14px 34px rgba(0,0,0,.15);
+}
+
+h1{margin:0;font-size:28px}
+.price{
+  font-size:26px;
+  font-weight:800;
+  color:#16a34a;
+  margin:10px 0;
+}
+
+.badges span{
+  display:inline-block;
+  background:#e0e7ff;
+  color:#2563eb;
+  padding:6px 12px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  margin-right:6px;
+}
+
+.desc{
+  margin:16px 0;
+  line-height:1.6;
+  color:#475569;
+}
+
+.actions{
+  display:flex;
+  gap:12px;
+  margin-top:20px;
+}
+button{
+  border:none;
+  padding:14px 22px;
+  border-radius:12px;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+}
+.cart{background:#2563eb;color:#fff}
+.whatsapp{background:#16a34a;color:#fff}
+
+@media(max-width:800px){
+  .container{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="index.html" style="color:#fff;text-decoration:none">← Back</a>
+</header>
+
+<div class="container">
+  <div class="img-box">
+    <img id="gameImg">
+  </div>
+
+  <div>
+    <h1 id="gameName"></h1>
+    <div class="price" id="gamePrice"></div>
+
+    <div class="badges">
+      <span>Instant Delivery</span>
+      <span>Trusted</span>
+      <span>WhatsApp Support</span>
+    </div>
+
+    <div class="desc" id="gameDesc"></div>
+
+    <div class="actions">
+      <button class="cart" onclick="addToCart()">Add to Cart</button>
+      <button class="whatsapp" onclick="orderWhatsApp()">Order on WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* SAME GAMES DATA (central source) */
+const games = {
+  "271590":{
+    name:"GTA V",
+    price:199,
+    desc:"Grand Theft Auto V for PC. Steam account delivery with instant access.",
+    img:"https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg"
+  },
+  "1091500":{
+    name:"Cyberpunk 2077",
+    price:179,
+    desc:"Cyberpunk 2077 Ultimate Edition with Phantom Liberty DLC.",
+    img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg"
+  }
+};
+
+/* GET ID FROM URL */
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+const g = games[id];
+
+if(!g){
+  document.body.innerHTML = "Product not found";
+}else{
+  document.getElementById("gameImg").src = g.img;
+  document.getElementById("gameName").textContent = g.name;
+  document.getElementById("gamePrice").textContent = "₹"+g.price;
+  document.getElementById("gameDesc").textContent = g.desc;
+}
+
+/* CART */
+function addToCart(){
+  let cart = JSON.parse(localStorage.getItem("cart")||"[]");
+  cart.push({name:g.name, price:g.price});
+  localStorage.setItem("cart",JSON.stringify(cart));
+  alert("Added to cart");
+}
+
+/* WHATSAPP */
+function orderWhatsApp(){
+  const msg = `Hi PlayWithEase 👋\nI want to buy ${g.name} for ₹${g.price}`;
+  window.open("https://wa.me/917001568884?text="+encodeURIComponent(msg));
+}
+</script>
+
+</body>
+</html>
