@@ -113,7 +113,7 @@ const firebaseConfig = {
   projectId: "playwithease"
 };
 
-const ADMIN_EMAIL = "shayanakhtar1910@gmail.com";
+// const ADMIN_EMAIL = "shayanakhtar1910@gmail.com";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -138,14 +138,10 @@ onAuthStateChanged(auth, async (user)=>{
   console.log("Logged in as:", user.email);
 
   /* ADMIN EMAIL CHECK */
-  if(user.email.toLowerCase().trim() !== ADMIN_EMAIL){
-    box.innerHTML = `
-      <div class="denied">
-        🚫 Access Denied – Admin Only
-      </div>
-    `;
-    return;
-  }
+  // if(user.email.toLowerCase().trim() !== ADMIN_EMAIL){
+//   box.innerHTML = `🚫 Access Denied – Admin Only`;
+//   return;
+// }
 
   /* ✅ ADMIN VERIFIED — LOAD ORDERS */
   const snap = await getDocs(collection(db,"orders"));
