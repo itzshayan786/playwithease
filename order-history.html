@@ -202,9 +202,9 @@ import {
 
 /* 🔴 SAME CONFIG AS LOGIN */
 const firebaseConfig = {
-  apiKey: "XXXX",
-  authDomain: "XXXX",
-  projectId: "XXXX"
+  apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+  authDomain: "playwithease.firebaseapp.com",
+  projectId: "playwithease"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -214,8 +214,10 @@ const db = getFirestore(app);
 const box = document.getElementById("ordersBox");
   <script>
 
-/* ===== LOAD USER ORDERS ===== */
+/* ===== LOAD USER ORDERS (FINAL SAFE) ===== */
 onAuthStateChanged(auth, async (user)=>{
+  box.innerHTML = ""; // clear old message
+
   if(!user){
     box.innerHTML = `
       <div class="empty">
@@ -226,6 +228,7 @@ onAuthStateChanged(auth, async (user)=>{
     return;
   }
 
+  // 🔥 USER CONFIRMED LOGGED IN
   const q = query(
     collection(db,"orders"),
     where("userId","==",user.uid),
@@ -233,7 +236,6 @@ onAuthStateChanged(auth, async (user)=>{
   );
 
   const snap = await getDocs(q);
-  box.innerHTML = "";
 
   if(snap.empty){
     box.innerHTML = `
@@ -245,9 +247,9 @@ onAuthStateChanged(auth, async (user)=>{
     return;
   }
 
-  snap.forEach(doc=>{
-    const o = doc.data();
-    const id = doc.id;
+  snap.forEach(docSnap=>{
+    const o = docSnap.data();
+    const id = docSnap.id;
 
     box.innerHTML += `
       <div class="order">
@@ -270,7 +272,9 @@ onAuthStateChanged(auth, async (user)=>{
 
         <div class="bottom">
           <span class="amount">₹${o.total}</span>
-          <span class="time">${o.createdAt?.toDate().toLocaleString() || ""}</span>
+          <span class="time">
+            ${o.createdAt?.toDate().toLocaleString() || ""}
+          </span>
         </div>
 
         ${
@@ -280,12 +284,16 @@ onAuthStateChanged(auth, async (user)=>{
               🔐 View Account Details
             </button>
             <div class="creds" id="creds-${id}">
-  <div class="cred-row">
-    <span><b>Email / ID:</b> ${o.credentials.email}</span>
-    <div class="cred-actions">
-      <button class="icon-btn" onclick="copyText('${o.credentials.email}')">📋</button>
-    </div>
-  </div>
+              <p><b>Email / ID:</b> ${o.credentials.email}</p>
+              <p><b>Password:</b> ${o.credentials.password}</p>
+            </div>
+          `
+          : ""
+        }
+      </div>
+    `;
+  });
+});
 
   <div class="cred-row">
     <span>
