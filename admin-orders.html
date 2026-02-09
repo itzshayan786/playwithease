@@ -94,6 +94,26 @@ function deleteOrder(index){
 }
 
 render();
+  function addCredentials(index){
+  let email = prompt("Enter game account Email / ID:");
+  if(!email) return;
+
+  let password = prompt("Enter game account Password:");
+  if(!password) return;
+
+  let note = prompt("Extra note (optional):") || "";
+
+  orders[index].credentials = {
+    email: email,
+    password: password,
+    note: note
+  };
+
+  orders[index].status = "success"; // delivery done
+
+  localStorage.setItem("orders", JSON.stringify(orders));
+  render();
+}
 </script>
 
 </body>
