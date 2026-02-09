@@ -1127,12 +1127,11 @@ let cart=JSON.parse(localStorage.getItem("cart")||"[]");
 function render(){
   grid.innerHTML="";
   games.slice(0,expanded?games.length:visible).forEach(g=>{
-    const d = document.createElement("a");
-const d = document.createElement("a");
-d.className = "card";
-d.href = `product.html?id=${g[2]}`;
+const card = document.createElement("a");
+card.className = "card";
+card.href = `product.html?id=${g[2]}`;
 
-d.innerHTML = `
+card.innerHTML = `
   <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
   <div class="info">
     <h4>${g[0]}</h4>
@@ -1148,7 +1147,7 @@ d.innerHTML = `
   </div>
 `;
 
-    grid.appendChild(d);
+grid.appendChild(card);
   });
   toggleBtn.innerText=expanded?"Show Less":"Show More Games";
   observeCards();
@@ -1517,6 +1516,7 @@ document.getElementById("xboxToggle").onclick = () => {
 </script>
 </body>
 </html>
+
 
 
 
