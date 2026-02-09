@@ -327,8 +327,7 @@ function startTimer(seconds){
   },1000);
 }
 
-/* AFTER PAYMENT → SAVE ORDER + WHATSAPP */
-function paidWhatsApp(){
+async function paidWhatsApp(){
   let cart = JSON.parse(localStorage.getItem("cart") || "[]");
   if(cart.length === 0) return;
 
@@ -344,23 +343,19 @@ function paidWhatsApp(){
   msg += `\n📦 Digital Delivery`;
   msg += `\n📸 Screenshot attached`;
 
-  /* ===== STEP 1: SAVE ORDER (IN PROGRESS) ===== */
-  let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-
-  orders.push({
-    id: "PWE" + Date.now(),
-    items: cart,
-    total: total,
-    status: "in-progress",     // ⏳ default
-    time: new Date().toLocaleString()
-  });
-
-  localStorage.setItem("orders", JSON.stringify(orders));
+  /* ===== STEP 3: SAVE ORDER TO FIRESTORE ===== */
+  try{
+    await window.saveOrderToFirebase(cart, total);
+  }catch(err){
+    alert("Order save failed. Please try again.");
+    console.error(err);
+    return;
+  }
 
   /* OPTIONAL: clear cart after order created */
   localStorage.removeItem("cart");
 
-  /* ===== STEP 2: OPEN WHATSAPP ===== */
+  /* ===== STEP 4: OPEN WHATSAPP ===== */
   window.open(
     "https://wa.me/917001568884?text=" + encodeURIComponent(msg),
     "_blank"
@@ -433,9 +428,47 @@ function paidWhatsApp(){
 
   </div>
 </div>
+<script type="module">
+/* ===== FIREBASE ORDER SAVE (OPTION A) ===== */
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+  authDomain: "playwithease.firebaseapp.com",
+  projectId: "playwithease"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* SAVE ORDER TO FIRESTORE */
+window.saveOrderToFirebase = async function(cart, total){
+  try{
+    await addDoc(collection(db, "orders"), {
+      items: cart,
+      total: total,
+      status: "in-progress",
+      credentials: null,
+      createdAt: serverTimestamp()
+    });
+    console.log("Order saved to Firestore");
+  }catch(err){
+    console.error("Firestore error:", err);
+    alert("Something went wrong while saving order.");
+  }
+};
+</script>
 
 </body>
 </html>
+
 
 
 
