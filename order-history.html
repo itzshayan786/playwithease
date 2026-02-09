@@ -4,32 +4,173 @@
 <meta charset="UTF-8">
 <title>My Orders | PlayWithEase</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-body{font-family:Poppins,Arial;background:#f8fafc;margin:0}
-header{background:#2563eb;color:#fff;padding:16px}
+*{box-sizing:border-box;font-family:Poppins,Arial}
+body{
+  margin:0;
+  background:linear-gradient(180deg,#f8fafc,#eef2ff);
+  color:#0f172a;
+}
+
+/* HEADER */
+header{
+  background:#2563eb;
+  color:#fff;
+  padding:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+header h1{
+  font-size:18px;
+  font-weight:800;
+}
+header a{
+  background:#fff;
+  color:#2563eb;
+  padding:10px 14px;
+  border-radius:10px;
+  text-decoration:none;
+  font-weight:600;
+  font-size:13px;
+}
+
+/* CONTAINER */
+.container{
+  max-width:900px;
+  margin:24px auto;
+  padding:0 14px;
+}
+
+/* ORDER CARD */
 .order{
   background:#fff;
-  margin:16px;
-  padding:14px;
-  border-radius:14px;
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:18px;
+  box-shadow:0 18px 40px rgba(0,0,0,.12);
+  animation:fadeUp .35s ease;
 }
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* TOP */
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+.order-id{
+  font-size:13px;
+  font-weight:700;
+  color:#2563eb;
+}
+
+/* STATUS BADGE */
 .status{
+  font-size:11px;
+  font-weight:700;
+  padding:6px 12px;
+  border-radius:999px;
+}
+.in-progress{background:#fff7ed;color:#c2410c}
+.success{background:#ecfdf5;color:#166534}
+.cancelled{background:#fef2f2;color:#b91c1c}
+
+/* ITEMS */
+.items{
+  margin:12px 0;
+  font-size:13px;
+}
+.items li{margin-bottom:4px}
+
+/* BOTTOM */
+.bottom{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.amount{
+  font-size:18px;
+  font-weight:800;
+}
+.time{
+  font-size:12px;
+  color:#64748b;
+}
+
+/* ACTIONS */
+.actions{
+  margin-top:12px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.btn{
+  border:none;
+  padding:8px 14px;
+  border-radius:10px;
   font-size:12px;
   font-weight:700;
+  cursor:pointer;
 }
-.in-progress{color:#f59e0b}
-.success{color:#16a34a}
-.cancelled{color:#dc2626}
+.view{
+  background:#2563eb;
+  color:#fff;
+}
+
+/* CREDENTIALS */
+.creds{
+  margin-top:14px;
+  padding:14px;
+  border-radius:14px;
+  background:#f8fafc;
+  border:1px dashed #cbd5e1;
+  display:none;
+  font-size:13px;
+}
+
+.cred-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-bottom:8px;
+  word-break:break-all;
+}
+.icon-btn{
+  border:none;
+  background:#e5e7eb;
+  padding:6px 8px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:12px;
+}
+.icon-btn:hover{background:#cbd5f5}
+
+/* EMPTY */
+.empty{
+  text-align:center;
+  padding:60px 10px;
+  color:#64748b;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-  <h2>📦 My Orders</h2>
+  <h1>📦 My Orders</h1>
+  <a href="index.html">← Back to Store</a>
 </header>
 
-<div id="box"></div>
+<div class="container" id="ordersBox"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -43,6 +184,7 @@ import {
   getDocs
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+/* 🔴 SAME FIREBASE CONFIG AS LOGIN & CART */
 const firebaseConfig = {
   apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
   authDomain: "playwithease.firebaseapp.com",
@@ -53,11 +195,17 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const box = document.getElementById("box");
+const box = document.getElementById("ordersBox");
 
+/* LOAD ORDERS */
 onAuthStateChanged(auth, async (user)=>{
   if(!user){
-    box.innerHTML = "<p style='padding:16px'>Please login</p>";
+    box.innerHTML = `
+      <div class="empty">
+        <h3>Please login</h3>
+        <p>You must be logged in to view orders.</p>
+      </div>
+    `;
     return;
   }
 
@@ -71,25 +219,115 @@ onAuthStateChanged(auth, async (user)=>{
   box.innerHTML = "";
 
   if(snap.empty){
-    box.innerHTML = "<p style='padding:16px'>No orders yet</p>";
+    box.innerHTML = `
+      <div class="empty">
+        <h3>No orders yet</h3>
+        <p>Your purchases will appear here.</p>
+      </div>
+    `;
     return;
   }
 
-  snap.forEach(doc=>{
-    const o = doc.data();
+  snap.forEach(docSnap=>{
+    const o = docSnap.data();
+    const id = docSnap.id;
+
     box.innerHTML += `
       <div class="order">
-        <b>₹${o.total}</b><br>
-        <span class="status ${o.status}">
-          ${o.status}
-        </span>
-        <ul>
-          ${o.items.map(i=>`<li>${i.name}</li>`).join("")}
+        <div class="top">
+          <span class="order-id">Order ID: ${id}</span>
+          <span class="status ${o.status}">
+            ${
+              o.status === "success"
+                ? "✅ Success"
+                : o.status === "cancelled"
+                ? "❌ Cancelled"
+                : "⏳ In Progress"
+            }
+          </span>
+        </div>
+
+        <ul class="items">
+          ${o.items.map(i=>`<li>• ${i.name}</li>`).join("")}
         </ul>
+
+        <div class="bottom">
+          <span class="amount">₹${o.total}</span>
+          <span class="time">
+            ${o.createdAt?.toDate().toLocaleString() || ""}
+          </span>
+        </div>
+
+        ${
+          o.credentials
+          ? `
+            <div class="actions">
+              <button class="btn view" onclick="toggleCreds('${id}')">
+                🔐 View Account Details
+              </button>
+            </div>
+
+            <div class="creds" id="creds-${id}">
+              <div class="cred-row">
+                <span><b>Email / ID:</b> ${o.credentials.email}</span>
+                <button class="icon-btn" onclick="copyText('${o.credentials.email}')">📋</button>
+              </div>
+
+              <div class="cred-row">
+                <span>
+                  <b>Password:</b>
+                  <span id="pwd-${id}" data-pwd="${o.credentials.password}">
+                    ••••••••
+                  </span>
+                </span>
+                <div>
+                  <button class="icon-btn" onclick="togglePwd('${id}')">👁️</button>
+                  <button class="icon-btn" onclick="copyPwd('${id}')">📋</button>
+                </div>
+              </div>
+
+              ${
+                o.credentials.note
+                ? `<div class="cred-row"><b>Note:</b> ${o.credentials.note}</div>`
+                : ""
+              }
+            </div>
+          `
+          : ""
+        }
       </div>
     `;
   });
 });
+</script>
+
+<script>
+/* ===== UX FUNCTIONS ===== */
+function toggleCreds(id){
+  const el = document.getElementById("creds-"+id);
+  if(!el) return;
+  el.style.display = el.style.display === "block" ? "none" : "block";
+}
+
+function togglePwd(id){
+  const el = document.getElementById("pwd-"+id);
+  if(!el) return;
+  el.textContent = el.textContent.includes("•")
+    ? el.dataset.pwd
+    : "••••••••";
+}
+
+function copyText(text){
+  navigator.clipboard.writeText(text);
+  alert("Copied");
+}
+
+function copyPwd(id){
+  const el = document.getElementById("pwd-"+id);
+  if(!el) return;
+  navigator.clipboard.writeText(el.dataset.pwd);
+  alert("Password copied");
+}
 </script>
 
 </body>
