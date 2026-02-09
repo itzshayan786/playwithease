@@ -121,41 +121,46 @@ button:hover{
     <a href="login.html">Login</a>
   </div>
 </div>
+  <script>
   <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
+/* 🔥 SAME FIREBASE CONFIG */
 const firebaseConfig = {
   apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
-  authDomain: "playwithease.firebaseapp.com"
+  authDomain: "playwithease.firebaseapp.com",
+  projectId: "playwithease",
+  storageBucket: "playwithease.firebasestorage.app",
+  messagingSenderId: "189729941006",
+  appId: "1:189729941006:web:362653774b92416c357e5f"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const form = document.getElementById("registerForm");
-const errorMsg = document.getElementById("errorMsg");
-
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-
+/* 🔥 BUTTON HANDLER */
+window.signupUser = async function () {
   const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-  const confirm = document.getElementById("confirm").value;
+  const password = document.getElementById("password").value.trim();
 
-  if(password !== confirm){
-    errorMsg.innerText = "Passwords do not match";
+  if (!email || !password) {
+    alert("Please enter email and password");
     return;
   }
 
-  createUserWithEmailAndPassword(auth, email, password)
-    .then(() => {
-      window.location.href = "login.html";
-    })
-    .catch(err => {
-      errorMsg.innerText = err.message;
-    });
-});
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+    alert("Account created successfully 🎉");
+    window.location.href = "index.html";
+  } catch (error) {
+    alert(error.message);
+    console.error(error);
+  }
+};
 </script>
 
 </body>
