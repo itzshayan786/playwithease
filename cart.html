@@ -448,17 +448,32 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-/* SAVE ORDER TO FIRESTORE */
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const auth = getAuth();
+
+/* SAVE ORDER TO FIRESTORE (USER-LINKED) */
 window.saveOrderToFirebase = async function(cart, total){
   try{
+    const user = auth.currentUser;
+
+    if(!user){
+      alert("Please login to place order");
+      return;
+    }
+
     await addDoc(collection(db, "orders"), {
+      userId: user.uid,          // 🔥 MOST IMPORTANT
+      userEmail: user.email,     // optional but useful
       items: cart,
       total: total,
       status: "in-progress",
       credentials: null,
       createdAt: serverTimestamp()
     });
-    console.log("Order saved to Firestore");
+
+    console.log("Order saved for user:", user.email);
+
   }catch(err){
     console.error("Firestore error:", err);
     alert("Something went wrong while saving order.");
@@ -468,6 +483,7 @@ window.saveOrderToFirebase = async function(cart, total){
 
 </body>
 </html>
+
 
 
 
