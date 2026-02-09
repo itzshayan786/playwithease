@@ -75,6 +75,15 @@ button{
 @media(max-width:800px){
   .container{grid-template-columns:1fr}
 }
+.product-img{
+  width:100%;
+  max-height:320px;
+  object-fit:contain;   /* OTT logos ke liye perfect */
+  background:#ffffff;
+  padding:24px;
+  border-radius:18px;
+  box-shadow:0 14px 34px rgba(0,0,0,.12);
+}
 </style>
 </head>
 
@@ -86,8 +95,8 @@ button{
 
 <div class="container">
   <div class="img-box">
-    <img id="gameImg">
-  </div>
+  <img id="gameImg" class="product-img">
+</div>
 
   <div>
     <h1 id="gameName"></h1>
