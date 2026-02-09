@@ -136,6 +136,42 @@ body{
   padding:60px 10px;
   color:#64748b;
 }
+  /* ===== CREDENTIALS UX ===== */
+.creds{
+  margin-top:12px;
+  padding:14px;
+  border-radius:14px;
+  background:#f8fafc;
+  border:1px dashed #cbd5e1;
+  font-size:13px;
+}
+
+.cred-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-bottom:8px;
+  word-break:break-all;
+}
+
+.cred-actions{
+  display:flex;
+  gap:6px;
+}
+
+.icon-btn{
+  border:none;
+  background:#e5e7eb;
+  padding:6px 8px;
+  border-radius:8px;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.icon-btn:hover{
+  background:#cbd5f5;
+}
 </style>
 </head>
 
@@ -176,6 +212,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const box = document.getElementById("ordersBox");
+  <script>
 
 /* ===== LOAD USER ORDERS ===== */
 onAuthStateChanged(auth, async (user)=>{
@@ -243,10 +280,32 @@ onAuthStateChanged(auth, async (user)=>{
               🔐 View Account Details
             </button>
             <div class="creds" id="creds-${id}">
-              <p><b>Email / ID:</b> ${o.credentials.email}</p>
-              <p><b>Password:</b> ${o.credentials.password}</p>
-              ${o.credentials.note ? `<p><b>Note:</b> ${o.credentials.note}</p>` : ""}
-            </div>
+  <div class="cred-row">
+    <span><b>Email / ID:</b> ${o.credentials.email}</span>
+    <div class="cred-actions">
+      <button class="icon-btn" onclick="copyText('${o.credentials.email}')">📋</button>
+    </div>
+  </div>
+
+  <div class="cred-row">
+    <span>
+      <b>Password:</b>
+      <span id="pwd-${id}" data-pwd="${o.credentials.password}">
+        ••••••••
+      </span>
+    </span>
+    <div class="cred-actions">
+      <button class="icon-btn" onclick="togglePwd('${id}')">👁️</button>
+      <button class="icon-btn" onclick="copyPwd('${id}')">📋</button>
+    </div>
+  </div>
+
+  ${
+    o.credentials.note
+      ? `<div class="cred-row"><b>Note:</b> ${o.credentials.note}</div>`
+      : ""
+  }
+</div>
           `
           : ""
         }
@@ -260,6 +319,31 @@ window.toggleCreds = function(id){
   const el = document.getElementById("creds-"+id);
   if(!el) return;
   el.style.display = el.style.display === "none" ? "block" : "none";
+};
+<script>
+/* ===== CREDENTIAL UX FUNCTIONS ===== */
+
+window.togglePwd = function(id){
+  const el = document.getElementById("pwd-"+id);
+  if(!el) return;
+
+  if(el.textContent.includes("•")){
+    el.textContent = el.dataset.pwd;
+  }else{
+    el.textContent = "••••••••";
+  }
+};
+
+window.copyText = function(text){
+  navigator.clipboard.writeText(text);
+  alert("Copied to clipboard");
+};
+
+window.copyPwd = function(id){
+  const el = document.getElementById("pwd-"+id);
+  if(!el) return;
+  navigator.clipboard.writeText(el.dataset.pwd);
+  alert("Password copied");
 };
 </script>
 
