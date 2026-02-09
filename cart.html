@@ -116,6 +116,28 @@ header a{
   font-weight:700;
   color:#dc2626;
 }
+  .item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.remove-btn{
+  background:#fee2e2;
+  color:#b91c1c;
+  border:none;
+  padding:6px 10px;
+  border-radius:8px;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.remove-btn:hover{
+  background:#fecaca;
+}
+  
 </style>
 </head>
 
@@ -154,16 +176,74 @@ const db = getFirestore(app);
 const box = document.getElementById("box");
 const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
+box.innerHTML = "";   // important: clear first
+
 if(cart.length === 0){
   box.innerHTML = "<p>Your cart is empty</p>";
 }else{
   let total = 0;
-  cart.forEach(i=>{
+
+  cart.forEach((i, index) => {
     total += Number(i.price);
+
     box.innerHTML += `
       <div class="item">
-        <b>${i.name}</b>
-        <span class="price">₹${i.price}</span>
+        <div>
+          <b>${i.name}</b>
+          <span class="price">₹${i.price}</span>
+        </div>
+
+        <button class="remove-btn" onclick="removeItem(${index})">
+          ✕
+        </button>
+      </div>
+    `;
+  });
+
+  box.innerHTML += `
+    <div class="total">
+      <span>Total</span>
+      <span>₹${total}</span>
+    </div>
+
+    <div class="actions">
+      <button class="upi" onclick="showUPI(${total})">Pay via UPI</button>
+      <button class="pay" onclick="showUPI(${total})">Pay Now</button>
+      <a class="back" href="index.html">Continue Shopping</a>
+    </div>
+
+    <div class="pay-box" id="payBox">
+      <h3>Scan & Pay via UPI</h3>
+      <div class="qr">
+        <img id="qrImg">
+      </div>
+      <div class="timer" id="timer"></div>
+      <button class="pay" onclick="paid(${total})">I’ve Paid</button>
+    </div>
+  `;
+}
+const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+box.innerHTML = "";   // important: clear first
+
+if(cart.length === 0){
+  box.innerHTML = "<p>Your cart is empty</p>";
+}else{
+  let total = 0;
+
+  cart.forEach((i, index) => {
+    total += Number(i.price);
+
+    box.innerHTML += `
+      <div class="item">
+        <div>
+          <b>${i.name}</b>
+          <span class="price">₹${i.price}</span>
+        </div>
+
+        <button class="remove-btn" onclick="removeItem(${index})">
+          ✕
+        </button>
       </div>
     `;
   });
@@ -254,4 +334,5 @@ window.paid = function(total){
 
 </body>
 </html>
+
 
