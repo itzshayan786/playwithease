@@ -107,30 +107,32 @@ button:hover{
   <h2>Create Account</h2>
   <span>Join PlayWithEase to buy premium games & OTT</span>
 
-  <form id="registerForm">
-    <input type="email" placeholder="Email address" required>
-    <input type="password" placeholder="Password" required>
-    <input type="password" placeholder="Confirm password" required>
+  <form id="registerForm" onsubmit="return false;">
+    <input id="email" type="email" placeholder="Email address" required>
+    <input id="password" type="password" placeholder="Password" required>
+    <input id="confirmPassword" type="password" placeholder="Confirm password" required>
 
     <button type="button" onclick="signupUser()">
-  Create Account
-</button>
+      Create Account
+    </button>
+
     <p id="errorMsg" style="color:red;font-size:13px;margin-top:10px"></p>
+  </form>
 
   <div class="extra">
     Already have an account?
     <a href="login.html">Login</a>
   </div>
 </div>
-  <script>
-  <script type="module">
+
+<!-- 🔥 ONLY ONE SCRIPT, AT THE END -->
+<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import {
   getAuth,
   createUserWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-/* 🔥 SAME FIREBASE CONFIG */
 const firebaseConfig = {
   apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
   authDomain: "playwithease.firebaseapp.com",
@@ -143,24 +145,25 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-/* 🔥 BUTTON HANDLER */
+/* 🔥 GLOBAL FUNCTION */
 window.signupUser = async function () {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
+  const confirm = document.getElementById("confirmPassword").value.trim();
   const errorBox = document.getElementById("errorMsg");
 
   errorBox.innerText = "";
 
-  if (!email || !password) {
-    errorBox.innerText = "Please enter email and password";
+  if(password !== confirm){
+    errorBox.innerText = "Passwords do not match";
     return;
   }
 
-  try {
+  try{
     await createUserWithEmailAndPassword(auth, email, password);
     alert("Account created successfully 🎉");
     window.location.href = "index.html";
-  } catch (err) {
+  }catch(err){
     errorBox.innerText = err.message;
     console.error(err);
   }
