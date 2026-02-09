@@ -2,38 +2,36 @@
 <html>
 <head>
 <title>Admin Orders | PlayWithEase</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body{font-family:Poppins;background:#f1f5f9;padding:20px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
+body{background:#f1f5f9;padding:20px}
+
 .order{
   background:#fff;
   padding:14px;
   border-radius:14px;
-  margin-bottom:14px
+  margin-bottom:14px;
+  box-shadow:0 6px 18px rgba(0,0,0,.08)
 }
+
 button{
   margin-right:8px;
-  padding:6px 12px;
-  border:none;
-  border-radius:8px;
-  font-weight:600;
-  cursor:pointer
-}
-.success{background:#16a34a;color:#fff}
-.progress{background:#f59e0b;color:#fff}
-  .delete{
-  background:#dc2626;
-  color:#fff;
+  margin-top:6px;
   padding:6px 12px;
   border:none;
   border-radius:8px;
   font-weight:600;
   cursor:pointer;
 }
-.delete:hover{
-  background:#b91c1c;
-}
+
+.progress{background:#f59e0b;color:#fff}
+.success{background:#16a34a;color:#fff}
+.cancel{background:#dc2626;color:#fff}
+.delete{background:#475569;color:#fff}
 </style>
 </head>
+
 <body>
 
 <h2>🛠 Admin – Orders</h2>
@@ -46,20 +44,33 @@ const box = document.getElementById("adminOrders");
 
 function render(){
   box.innerHTML = "";
+  if(orders.length === 0){
+    box.innerHTML = "<p>No orders found.</p>";
+    return;
+  }
+
   orders.forEach((o,i)=>{
     box.innerHTML += `
       <div class="order">
-        <p><b>${o.id}</b> — ₹${o.total}</p>
-        <p>Status: <b>${o.status}</b></p>
+        <p><b>Order ID:</b> ${o.id}</p>
+        <p><b>Amount:</b> ₹${o.total}</p>
+        <p><b>Status:</b> ${o.status}</p>
+
         <button class="progress" onclick="setStatus(${i}, 'in-progress')">
           In Progress
         </button>
+
         <button class="success" onclick="setStatus(${i}, 'success')">
           Success
         </button>
+
+        <button class="cancel" onclick="setStatus(${i}, 'cancelled')">
+          Cancel
+        </button>
+
         <button class="delete" onclick="deleteOrder(${i})">
-  Delete
-</button>
+          Delete
+        </button>
       </div>
     `;
   });
@@ -71,14 +82,14 @@ function setStatus(index, status){
   render();
 }
 
-render();
-  function deleteOrder(index){
-  if(!confirm("Are you sure you want to delete this order?")) return;
-
+function deleteOrder(index){
+  if(!confirm("Delete this order permanently?")) return;
   orders.splice(index,1);
   localStorage.setItem("orders", JSON.stringify(orders));
   render();
 }
+
+render();
 </script>
 
 </body>
