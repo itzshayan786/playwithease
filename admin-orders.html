@@ -37,6 +37,11 @@ header{
   padding:16px;
   margin-bottom:16px;
   box-shadow:0 14px 34px rgba(0,0,0,.12);
+  transition:.25s ease;
+}
+.order:hover{
+  transform:translateY(-4px);
+  box-shadow:0 24px 54px rgba(0,0,0,.18);
 }
 
 .top{
@@ -45,6 +50,7 @@ header{
   align-items:center;
   gap:10px;
 }
+
 .status{
   padding:6px 12px;
   border-radius:999px;
@@ -55,7 +61,10 @@ header{
 .success{background:#ecfdf5;color:#166534}
 .cancelled{background:#fef2f2;color:#b91c1c}
 
-.items{font-size:13px;margin:10px 0}
+.items{
+  font-size:13px;
+  margin:10px 0;
+}
 .items li{margin-bottom:4px}
 
 .actions{
@@ -75,16 +84,16 @@ button{
 .success-btn{background:#16a34a;color:#fff}
 .cancel-btn{background:#dc2626;color:#fff}
 
-/* ACCESS DENIED */
-.denied{
-  min-height:80vh;
+/* STATES */
+.center{
+  min-height:70vh;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:18px;
-  font-weight:800;
-  color:#dc2626;
+  font-size:16px;
+  font-weight:700;
 }
+.error{color:#dc2626}
 </style>
 </head>
 
@@ -95,7 +104,9 @@ button{
 <div class="container" id="box"></div>
 
 <script type="module">
-/* 🔥 FIREBASE INIT */
+/* ===============================
+   FIREBASE IMPORTS
+   =============================== */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
@@ -106,92 +117,131 @@ import {
   updateDoc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-/* 🔴 SAME CONFIG AS OTHER PAGES */
+/* ===============================
+   FIREBASE CONFIG (SAME AS OTHER PAGES)
+   =============================== */
 const firebaseConfig = {
   apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
   authDomain: "playwithease.firebaseapp.com",
   projectId: "playwithease"
 };
 
-// const ADMIN_EMAIL = "shayanakhtar1910@gmail.com";
+/* 🔐 ADMIN UID (PASTE YOUR UID HERE) */
+const ADMIN_UID = "SPQjoJ6d7LOPaIEJrReLuWv3y2E2";
 
+/* INIT */
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 const box = document.getElementById("box");
 
-/* 🔥 ADMIN CHECK — ONLY HERE */
+/* ===============================
+   AUTH + ADMIN CHECK
+   =============================== */
 onAuthStateChanged(auth, async (user)=>{
+
+  box.innerHTML = "";
 
   /* NOT LOGGED IN */
   if(!user){
     box.innerHTML = `
-      <div class="denied">
+      <div class="center error">
         Please login as admin
       </div>
     `;
     return;
   }
 
-  /* DEBUG (optional) */
-  console.log("Logged in as:", user.email);
+  /* DEBUG (safe to keep) */
+  console.log("ADMIN EMAIL:", user.email);
+  console.log("ADMIN UID:", user.uid);
 
-  /* ADMIN EMAIL CHECK */
-  // if(user.email.toLowerCase().trim() !== ADMIN_EMAIL){
-//   box.innerHTML = `🚫 Access Denied – Admin Only`;
-//   return;
-// }
-
-  /* ✅ ADMIN VERIFIED — LOAD ORDERS */
-  const snap = await getDocs(collection(db,"orders"));
-
-  if(snap.empty){
-    box.innerHTML = "<p>No orders yet</p>";
+  /* ADMIN UID CHECK */
+  if(user.uid !== ADMIN_UID){
+    box.innerHTML = `
+      <div class="center error">
+        🚫 Access Denied – Admin Only
+      </div>
+    `;
     return;
   }
 
-  box.innerHTML = "";
+  /* ===============================
+     LOAD ORDERS
+     =============================== */
+  try{
+    const snap = await getDocs(collection(db,"orders"));
 
-  snap.forEach(docSnap=>{
-    const o = docSnap.data();
-    const id = docSnap.id;
+    if(snap.empty){
+      box.innerHTML = "<p>No orders yet</p>";
+      return;
+    }
 
-    box.innerHTML += `
-      <div class="order">
-        <div class="top">
-          <b>Order ID: ${id}</b>
-          <span class="status ${o.status}">
-            ${o.status}
-          </span>
+    box.innerHTML = "";
+
+    snap.forEach(docSnap=>{
+      const o = docSnap.data();
+      const id = docSnap.id;
+
+      box.innerHTML += `
+        <div class="order">
+          <div class="top">
+            <b>Order ID: ${id}</b>
+            <span class="status ${o.status}">
+              ${o.status}
+            </span>
+          </div>
+
+          <ul class="items">
+            ${o.items.map(i=>`<li>• ${i.name}</li>`).join("")}
+          </ul>
+
+          <b>Total: ₹${o.total}</b>
+
+          <div class="actions">
+            <button class="success-btn"
+              onclick="markStatus('${id}','success')">
+              Mark Success
+            </button>
+
+            <button class="cancel-btn"
+              onclick="markStatus('${id}','cancelled')">
+              Cancel
+            </button>
+          </div>
         </div>
+      `;
+    });
 
-        <ul class="items">
-          ${o.items.map(i=>`<li>• ${i.name}</li>`).join("")}
-        </ul>
-
-        <b>Total: ₹${o.total}</b>
-
-        <div class="actions">
-          <button class="success-btn" onclick="markStatus('${id}','success')">
-            Mark Success
-          </button>
-          <button class="cancel-btn" onclick="markStatus('${id}','cancelled')">
-            Cancel
-          </button>
-        </div>
+  }catch(err){
+    console.error("LOAD ORDERS ERROR:", err);
+    box.innerHTML = `
+      <div class="center error">
+        Failed to load orders
       </div>
     `;
-  });
+  }
 });
 
-/* 🔥 STATUS UPDATE */
-window.markStatus = async function(id,status){
-  await updateDoc(doc(db,"orders",id),{
-    status: status
-  });
-  alert("Status updated");
-  location.reload();
+/* ===============================
+   STATUS UPDATE (GLOBAL)
+   =============================== */
+window.markStatus = async function(orderId, status){
+  try{
+    const ref = doc(db,"orders",orderId);
+
+    await updateDoc(ref,{
+      status: status
+    });
+
+    alert("✅ Status updated to " + status);
+    location.reload();
+
+  }catch(err){
+    console.error("STATUS UPDATE ERROR:", err);
+    alert("❌ Failed to update status. Check console.");
+  }
 };
 </script>
 
