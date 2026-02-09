@@ -6,39 +6,55 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-*{box-sizing:border-box;font-family:Poppins,Arial}
-body{margin:0;background:#f8fafc;color:#0f172a}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
+body{background:#f8fafc;color:#0f172a}
 
 /* HEADER */
 header{
   background:#2563eb;
   color:#fff;
-  padding:16px;
-  font-weight:800;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+  padding:18px 20px;
 }
-header a{
-  color:#fff;
-  text-decoration:none;
-  font-size:14px;
-  font-weight:600;
+header h1{
+  font-size:22px;
+  font-weight:700;
 }
 
 /* CONTAINER */
 .container{
   max-width:900px;
-  margin:20px auto;
+  margin:30px auto;
   padding:0 16px;
+}
+
+/* FILTERS */
+.filters{
+  display:flex;
+  gap:10px;
+  margin-bottom:16px;
+  flex-wrap:wrap;
+}
+.filters button{
+  padding:8px 14px;
+  border-radius:999px;
+  border:1px solid #cbd5f5;
+  background:#fff;
+  color:#2563eb;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+}
+.filters button.active{
+  background:#2563eb;
+  color:#fff;
 }
 
 /* CART BOX */
 .cart-box{
   background:#fff;
   border-radius:18px;
-  padding:20px;
-  box-shadow:0 14px 34px rgba(0,0,0,.12);
+  box-shadow:0 20px 40px rgba(0,0,0,.08);
+  padding:22px;
 }
 
 /* ITEM */
@@ -46,161 +62,201 @@ header a{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:12px 0;
+  gap:12px;
+  padding:14px 0;
   border-bottom:1px solid #e5e7eb;
 }
 .item:last-child{border-bottom:none}
 
-.item b{font-size:14px}
-.price{font-weight:700;color:#2563eb}
+.item-left{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.item-name{
+  font-weight:600;
+  font-size:14px;
+}
+.item-type{
+  font-size:11px;
+  color:#64748b;
+}
+.item-price{
+  color:#2563eb;
+  font-weight:600;
+  font-size:14px;
+}
+
+/* REMOVE */
+.remove-btn{
+  background:#fee2e2;
+  color:#b91c1c;
+  border:none;
+  padding:6px 12px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+}
+.remove-btn:hover{background:#fecaca}
 
 /* TOTAL */
 .total{
   display:flex;
   justify-content:space-between;
-  margin-top:18px;
-  font-size:18px;
-  font-weight:800;
+  margin-top:20px;
+  font-size:16px;
+  font-weight:700;
 }
 
 /* ACTIONS */
 .actions{
   display:flex;
-  gap:12px;
-  margin-top:20px;
+  gap:14px;
+  margin-top:26px;
   flex-wrap:wrap;
 }
-.actions button,
-.actions a{
-  flex:1;
-  text-align:center;
-  border:none;
-  padding:14px;
-  border-radius:12px;
-  font-size:14px;
-  font-weight:700;
-  cursor:pointer;
-  text-decoration:none;
-}
-.pay{
-  background:#16a34a;
-  color:#fff;
-}
-.upi{
-  background:#2563eb;
-  color:#fff;
-}
+
 .back{
+  text-decoration:none;
+  padding:12px 20px;
+  border-radius:10px;
   border:1px solid #cbd5f5;
   color:#2563eb;
-  background:#fff;
+  font-weight:600;
 }
 
-/* PAYMENT BOX */
-.pay-box{
-  display:none;
-  margin-top:24px;
-  background:#f8fafc;
-  border-radius:16px;
-  padding:18px;
-  text-align:center;
-  border:1px dashed #cbd5e1;
-}
-.qr img{
-  width:220px;
-  height:220px;
-}
-.timer{
-  margin-top:10px;
-  font-size:13px;
-  font-weight:700;
-  color:#dc2626;
-}
-  .item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:10px;
-}
-
-.remove-btn{
-  background:#fee2e2;
-  color:#b91c1c;
+.pay,.upi{
+  flex:1;
+  background:#16a34a;
+  color:#fff;
   border:none;
-  padding:6px 10px;
-  border-radius:8px;
-  font-size:14px;
+  padding:14px 22px;
+  border-radius:12px;
+  font-size:15px;
   font-weight:700;
   cursor:pointer;
 }
+.upi{background:#2563eb}
 
-.remove-btn:hover{
-  background:#fecaca;
+/* ORDER SUMMARY */
+.summary{
+  background:#f8fafc;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:14px;
+  margin-top:18px;
 }
-  
+.summary h3{
+  font-size:15px;
+  margin-bottom:8px;
+}
+.summary ul{
+  font-size:13px;
+  padding-left:18px;
+}
+.summary li{margin-bottom:4px}
+
+/* PAY BOX */
+.pay-box{
+  display:none;
+  margin-top:22px;
+  text-align:center;
+}
+.pay-box img{max-width:220px}
+
+/* EMPTY */
+.empty{
+  text-align:center;
+  padding:40px 10px;
+  color:#64748b;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-  <span>🛒 Your Cart</span>
-  <a href="index.html">Continue Shopping</a>
+  <h1>🛒 Your Cart – PlayWithEase</h1>
 </header>
 
 <div class="container">
-  <div class="cart-box" id="box"></div>
+
+  <!-- FILTERS -->
+  <div class="filters">
+    <button class="active" onclick="setFilter('all',event)">All</button>
+    <button onclick="setFilter('pc',event)">PC Games</button>
+    <button onclick="setFilter('ott',event)">OTT</button>
+    <button onclick="setFilter('ps5',event)">PS5</button>
+    <button onclick="setFilter('xbox',event)">Xbox</button>
+  </div>
+
+  <div class="cart-box" id="cartBox"></div>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<script>
+const UPI_ID = "shayanff98@okhdfcbank";
+let currentFilter = "all";
 
-/* 🔴 SAME FIREBASE CONFIG AS LOGIN */
-const firebaseConfig = {
-  apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
-  authDomain: "playwithease.firebaseapp.com",
-  projectId: "playwithease"
-};
+function detectType(name){
+  const n = name.toLowerCase();
+  if(n.includes("netflix")||n.includes("prime")||n.includes("hotstar")||n.includes("youtube")||n.includes("crunchy"))
+    return "ott";
+  if(n.includes("ps5")) return "ps5";
+  if(n.includes("xbox")) return "xbox";
+  return "pc";
+}
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+function setFilter(type,e){
+  currentFilter = type;
+  document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
+  e.target.classList.add("active");
+  renderCart();
+}
 
-const box = document.getElementById("box");
-const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+function renderCart(){
+  const box = document.getElementById("cartBox");
+  const cart = JSON.parse(localStorage.getItem("cart")||"[]");
+  box.innerHTML="";
 
-box.innerHTML = "";   // important: clear first
+  const filtered = currentFilter==="all"
+    ? cart
+    : cart.filter(i=>detectType(i.name)===currentFilter);
 
-if(cart.length === 0){
-  box.innerHTML = "<p>Your cart is empty</p>";
-}else{
-  let total = 0;
+  if(filtered.length===0){
+    box.innerHTML=`<div class="empty">Your cart is empty</div>`;
+    return;
+  }
 
-  cart.forEach((i, index) => {
-    total += Number(i.price);
+  let total=0;
+  let summaryHTML = "<ul>";
 
-    box.innerHTML += `
+  filtered.forEach((i,idx)=>{
+    total+=Number(i.price);
+    summaryHTML += `<li>${i.name} – ₹${i.price}</li>`;
+
+    box.innerHTML+=`
       <div class="item">
-        <div>
-          <b>${i.name}</b>
-          <span class="price">₹${i.price}</span>
+        <div class="item-left">
+          <span class="item-name">${i.name}</span>
+          <span class="item-type">${detectType(i.name).toUpperCase()}</span>
+          <span class="item-price">₹${i.price}</span>
         </div>
-
-        <button class="remove-btn" onclick="removeItem(${index})">
-          ✕
-        </button>
+        <button class="remove-btn" onclick="removeItem(${idx})">Remove</button>
       </div>
     `;
   });
 
-  box.innerHTML += `
+  summaryHTML += "</ul>";
+
+  box.innerHTML+=`
+    <div class="summary">
+      <h3>Order Summary</h3>
+      ${summaryHTML}
+      <b>Total: ₹${total}</b>
+    </div>
+
     <div class="total">
       <span>Total</span>
       <span>₹${total}</span>
@@ -214,125 +270,32 @@ if(cart.length === 0){
 
     <div class="pay-box" id="payBox">
       <h3>Scan & Pay via UPI</h3>
-      <div class="qr">
-        <img id="qrImg">
-      </div>
-      <div class="timer" id="timer"></div>
-      <button class="pay" onclick="paid(${total})">I’ve Paid</button>
-    </div>
-  `;
-}
-const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-
-box.innerHTML = "";   // important: clear first
-
-if(cart.length === 0){
-  box.innerHTML = "<p>Your cart is empty</p>";
-}else{
-  let total = 0;
-
-  cart.forEach((i, index) => {
-    total += Number(i.price);
-
-    box.innerHTML += `
-      <div class="item">
-        <div>
-          <b>${i.name}</b>
-          <span class="price">₹${i.price}</span>
-        </div>
-
-        <button class="remove-btn" onclick="removeItem(${index})">
-          ✕
-        </button>
-      </div>
-    `;
-  });
-
-  box.innerHTML += `
-    <div class="total">
-      <span>Total</span>
-      <span>₹${total}</span>
-    </div>
-
-    <div class="actions">
-      <button class="upi" onclick="showUPI(${total})">Pay via UPI</button>
-      <button class="pay" onclick="showUPI(${total})">Pay Now</button>
-      <a class="back" href="index.html">Continue Shopping</a>
-    </div>
-
-    <div class="pay-box" id="payBox">
-      <h3>Scan & Pay via UPI</h3>
-      <div class="qr">
-        <img id="qrImg">
-      </div>
-      <div class="timer" id="timer"></div>
+      <img id="qrImg">
       <button class="pay" onclick="paid(${total})">I’ve Paid</button>
     </div>
   `;
 }
 
-/* SHOW UPI */
-window.showUPI = function(total){
-  const upiId = "shayanff98@okhdfcbank";
-  const upiUrl = `upi://pay?pa=${upiId}&pn=PlayWithEase&am=${total}&cu=INR`;
+function removeItem(index){
+  let cart = JSON.parse(localStorage.getItem("cart")||"[]");
+  cart.splice(index,1);
+  localStorage.setItem("cart",JSON.stringify(cart));
+  renderCart();
+}
+
+function showUPI(total){
+  const upiURL =
+    `upi://pay?pa=${UPI_ID}&pn=PlayWithEase&am=${total}&cu=INR&tn=Order Payment`;
 
   document.getElementById("qrImg").src =
-    "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
-    encodeURIComponent(upiUrl);
+    "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" +
+    encodeURIComponent(upiURL);
 
-  document.getElementById("payBox").style.display = "block";
-  startTimer(15*60);
-};
-
-/* TIMER */
-function startTimer(sec){
-  const t = document.getElementById("timer");
-  const i = setInterval(()=>{
-    const m = Math.floor(sec/60);
-    const s = sec%60;
-    t.textContent = `⏳ Complete payment within ${m}:${s.toString().padStart(2,"0")}`;
-    sec--;
-    if(sec<0){
-      clearInterval(i);
-      t.textContent = "⛔ Time expired. Refresh page.";
-    }
-  },1000);
+  document.getElementById("payBox").style.display="block";
 }
 
-/* I’VE PAID */
-window.paid = function(total){
-  onAuthStateChanged(auth, async (user)=>{
-    if(!user){
-      alert("Please login first");
-      return;
-    }
-
-    await addDoc(collection(db,"orders"),{
-      userId: user.uid,
-      userEmail: user.email,
-      items: cart,
-      total: total,
-      status: "in-progress",
-      createdAt: serverTimestamp()
-    });
-
-    localStorage.removeItem("cart");
-
-    let msg = "Hi PlayWithEase 👋\n\nI have completed UPI payment.\n\n";
-    cart.forEach((i,idx)=>{
-      msg += `${idx+1}. ${i.name} – ₹${i.price}\n`;
-    });
-    msg += `\n💰 Amount Paid: ₹${total}\n📸 Screenshot attached`;
-
-    window.open(
-      "https://wa.me/917001568884?text=" + encodeURIComponent(msg),
-      "_blank"
-    );
-  });
-};
+renderCart();
 </script>
 
 </body>
 </html>
-
-
