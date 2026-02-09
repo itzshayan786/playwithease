@@ -295,33 +295,6 @@ onAuthStateChanged(auth, async (user)=>{
   });
 });
 
-  <div class="cred-row">
-    <span>
-      <b>Password:</b>
-      <span id="pwd-${id}" data-pwd="${o.credentials.password}">
-        ••••••••
-      </span>
-    </span>
-    <div class="cred-actions">
-      <button class="icon-btn" onclick="togglePwd('${id}')">👁️</button>
-      <button class="icon-btn" onclick="copyPwd('${id}')">📋</button>
-    </div>
-  </div>
-
-  ${
-    o.credentials.note
-      ? `<div class="cred-row"><b>Note:</b> ${o.credentials.note}</div>`
-      : ""
-  }
-</div>
-          `
-          : ""
-        }
-      </div>
-    `;
-  });
-});
-
 /* TOGGLE CREDS */
 window.toggleCreds = function(id){
   const el = document.getElementById("creds-"+id);
