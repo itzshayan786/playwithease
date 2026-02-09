@@ -4,191 +4,34 @@
 <meta charset="UTF-8">
 <title>My Orders | PlayWithEase</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
-body{
-  background:linear-gradient(180deg,#f8fafc,#eef2ff);
-  color:#0f172a;
-  min-height:100vh;
-}
-
-/* HEADER */
-.header{
-  background:#2563eb;
-  color:#fff;
-  padding:16px 18px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.header h1{
-  font-size:18px;
-  font-weight:800;
-}
-.header p{
-  font-size:12px;
-  opacity:.9;
-}
-.back{
-  background:#fff;
-  color:#2563eb;
-  padding:10px 14px;
-  border-radius:10px;
-  text-decoration:none;
-  font-weight:600;
-  font-size:13px;
-}
-
-/* CONTAINER */
-.container{
-  max-width:900px;
-  margin:24px auto;
-  padding:0 14px;
-}
-
-/* ORDER CARD */
+body{font-family:Poppins,Arial;background:#f8fafc;margin:0}
+header{background:#2563eb;color:#fff;padding:16px}
 .order{
   background:#fff;
-  border-radius:18px;
-  padding:16px;
-  margin-bottom:16px;
-  box-shadow:0 14px 34px rgba(0,0,0,.1);
-  animation:fadeUp .35s ease;
-}
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(12px)}
-  to{opacity:1;transform:translateY(0)}
-}
-
-.top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-}
-.order-id{
-  font-size:13px;
-  font-weight:700;
-  color:#2563eb;
-}
-
-/* STATUS */
-.status{
-  font-size:11px;
-  font-weight:700;
-  padding:6px 12px;
-  border-radius:999px;
-}
-.in-progress{background:#fff7ed;color:#c2410c}
-.success{background:#ecfdf5;color:#166534}
-.cancelled{background:#fef2f2;color:#b91c1c}
-
-/* ITEMS */
-.items{
-  margin:10px 0;
-  font-size:13px;
-}
-.items li{margin-bottom:4px}
-
-/* BOTTOM */
-.bottom{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:8px;
-}
-.amount{
-  font-size:16px;
-  font-weight:800;
-}
-.time{
-  font-size:11px;
-  color:#64748b;
-}
-
-/* CREDENTIALS */
-.view{
-  margin-top:10px;
-  padding:8px 12px;
-  border:none;
-  border-radius:8px;
-  background:#2563eb;
-  color:#fff;
-  font-size:12px;
-  font-weight:600;
-  cursor:pointer;
-}
-.creds{
-  margin-top:12px;
-  padding:12px;
-  border-radius:12px;
-  background:#f8fafc;
-  border:1px dashed #cbd5e1;
-  font-size:13px;
-  display:none;
-}
-
-/* EMPTY */
-.empty{
-  text-align:center;
-  padding:60px 10px;
-  color:#64748b;
-}
-  /* ===== CREDENTIALS UX ===== */
-.creds{
-  margin-top:12px;
+  margin:16px;
   padding:14px;
   border-radius:14px;
-  background:#f8fafc;
-  border:1px dashed #cbd5e1;
-  font-size:13px;
 }
-
-.cred-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:8px;
-  margin-bottom:8px;
-  word-break:break-all;
-}
-
-.cred-actions{
-  display:flex;
-  gap:6px;
-}
-
-.icon-btn{
-  border:none;
-  background:#e5e7eb;
-  padding:6px 8px;
-  border-radius:8px;
+.status{
   font-size:12px;
-  cursor:pointer;
+  font-weight:700;
 }
-
-.icon-btn:hover{
-  background:#cbd5f5;
-}
+.in-progress{color:#f59e0b}
+.success{color:#16a34a}
+.cancelled{color:#dc2626}
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <div>
-    <h1>📦 My Orders</h1>
-    <p>Your purchases & delivery details</p>
-  </div>
-  <a href="index.html" class="back">← Back to Store</a>
-</div>
+<header>
+  <h2>📦 My Orders</h2>
+</header>
 
-<div class="container" id="ordersBox"></div>
+<div id="box"></div>
 
 <script type="module">
-/* ===== FIREBASE + AUTH ===== */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
@@ -196,11 +39,10 @@ import {
   collection,
   query,
   where,
-  getDocs,
-  orderBy
+  orderBy,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-/* 🔴 SAME CONFIG AS LOGIN */
 const firebaseConfig = {
   apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
   authDomain: "playwithease.firebaseapp.com",
@@ -211,24 +53,14 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const box = document.getElementById("ordersBox");
-  <script>
+const box = document.getElementById("box");
 
-/* ===== LOAD USER ORDERS (FINAL SAFE) ===== */
 onAuthStateChanged(auth, async (user)=>{
-  box.innerHTML = ""; // clear old message
-
   if(!user){
-    box.innerHTML = `
-      <div class="empty">
-        <h3>Please login</h3>
-        <p>You must be logged in to view orders.</p>
-      </div>
-    `;
+    box.innerHTML = "<p style='padding:16px'>Please login</p>";
     return;
   }
 
-  // 🔥 USER CONFIRMED LOGGED IN
   const q = query(
     collection(db,"orders"),
     where("userId","==",user.uid),
@@ -236,96 +68,28 @@ onAuthStateChanged(auth, async (user)=>{
   );
 
   const snap = await getDocs(q);
+  box.innerHTML = "";
 
   if(snap.empty){
-    box.innerHTML = `
-      <div class="empty">
-        <h3>No orders yet</h3>
-        <p>Your orders will appear here.</p>
-      </div>
-    `;
+    box.innerHTML = "<p style='padding:16px'>No orders yet</p>";
     return;
   }
 
-  snap.forEach(docSnap=>{
-    const o = docSnap.data();
-    const id = docSnap.id;
-
+  snap.forEach(doc=>{
+    const o = doc.data();
     box.innerHTML += `
       <div class="order">
-        <div class="top">
-          <span class="order-id">Order ID: ${id}</span>
-          <span class="status ${o.status}">
-            ${
-              o.status === "success"
-                ? "✅ Success"
-                : o.status === "cancelled"
-                ? "❌ Cancelled"
-                : "⏳ In Progress"
-            }
-          </span>
-        </div>
-
-        <ul class="items">
-          ${o.items.map(i=>`<li>• ${i.name}</li>`).join("")}
+        <b>₹${o.total}</b><br>
+        <span class="status ${o.status}">
+          ${o.status}
+        </span>
+        <ul>
+          ${o.items.map(i=>`<li>${i.name}</li>`).join("")}
         </ul>
-
-        <div class="bottom">
-          <span class="amount">₹${o.total}</span>
-          <span class="time">
-            ${o.createdAt?.toDate().toLocaleString() || ""}
-          </span>
-        </div>
-
-        ${
-          o.credentials
-          ? `
-            <button class="view" onclick="toggleCreds('${id}')">
-              🔐 View Account Details
-            </button>
-            <div class="creds" id="creds-${id}">
-              <p><b>Email / ID:</b> ${o.credentials.email}</p>
-              <p><b>Password:</b> ${o.credentials.password}</p>
-            </div>
-          `
-          : ""
-        }
       </div>
     `;
   });
 });
-
-/* TOGGLE CREDS */
-window.toggleCreds = function(id){
-  const el = document.getElementById("creds-"+id);
-  if(!el) return;
-  el.style.display = el.style.display === "none" ? "block" : "none";
-};
-<script>
-/* ===== CREDENTIAL UX FUNCTIONS ===== */
-
-window.togglePwd = function(id){
-  const el = document.getElementById("pwd-"+id);
-  if(!el) return;
-
-  if(el.textContent.includes("•")){
-    el.textContent = el.dataset.pwd;
-  }else{
-    el.textContent = "••••••••";
-  }
-};
-
-window.copyText = function(text){
-  navigator.clipboard.writeText(text);
-  alert("Copied to clipboard");
-};
-
-window.copyPwd = function(id){
-  const el = document.getElementById("pwd-"+id);
-  if(!el) return;
-  navigator.clipboard.writeText(el.dataset.pwd);
-  alert("Password copied");
-};
 </script>
 
 </body>
