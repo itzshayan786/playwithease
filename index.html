@@ -942,27 +942,69 @@ nav a[href="#ott"]{
 
 <section class="section" id="ott">
 <h2>📺 OTT Subscriptions</h2>
+
 <div class="grid">
-  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg"><div class="info"><h4>Netflix</h4><b>From ₹149</b><button onclick="addToCart('Netflix',149,this)">
-  <span>Add to Cart</span>
-</button>
-  </div></div>
-  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png"><div class="info"><h4>Amazon Prime</h4><b>From ₹129</b><button onclick="addToCart('Amazon Prime',129,this)">
-  <span>Add to Cart</span>
-</button>
-  </div></div>
-  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg"><div class="info"><h4>Disney+ Hotstar</h4><b>From ₹99</b><button onclick="addToCart('Disney+ Hotstar',99,this)">
-  <span>Add to Cart</span>
-</button>
-  </div></div>
-  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/6/62/YouTube_social_white_square_%282024%29.svg"><div class="info"><h4>YouTube Premium</h4><b>From ₹79</b><button onclick="addToCart('Youtube Premium',79,this)">
-  <span>Add to Cart</span>
-</button>
-  </div></div>
-  <div class="card"><img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/8/85/Crunchyroll_2024_stacked.svg"><div class="info"><h4>Crunchyroll</h4><b>From ₹129</b><button onclick="addToCart('Crunchyroll',129,this)">
-  <span>Add to Cart</span>
-</button>
-</div></div>
+
+  <!-- NETFLIX -->
+  <a href="product.html?id=netflix" class="card">
+    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg">
+    <div class="info">
+      <h4>Netflix</h4>
+      <b>From ₹149</b>
+      <button onclick="event.preventDefault(); addToCart('Netflix',149,this)">
+        <span>Add to Cart</span>
+      </button>
+    </div>
+  </a>
+
+  <!-- AMAZON PRIME -->
+  <a href="product.html?id=prime" class="card">
+    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png">
+    <div class="info">
+      <h4>Amazon Prime</h4>
+      <b>From ₹129</b>
+      <button onclick="event.preventDefault(); addToCart('Amazon Prime',129,this)">
+        <span>Add to Cart</span>
+      </button>
+    </div>
+  </a>
+
+  <!-- HOTSTAR -->
+  <a href="product.html?id=hotstar" class="card">
+    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg">
+    <div class="info">
+      <h4>Disney+ Hotstar</h4>
+      <b>From ₹99</b>
+      <button onclick="event.preventDefault(); addToCart('Disney+ Hotstar',99,this)">
+        <span>Add to Cart</span>
+      </button>
+    </div>
+  </a>
+
+  <!-- YOUTUBE PREMIUM -->
+  <a href="product.html?id=youtube" class="card">
+    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/6/62/YouTube_social_white_square_%282024%29.svg">
+    <div class="info">
+      <h4>YouTube Premium</h4>
+      <b>From ₹79</b>
+      <button onclick="event.preventDefault(); addToCart('YouTube Premium',79,this)">
+        <span>Add to Cart</span>
+      </button>
+    </div>
+  </a>
+
+  <!-- CRUNCHYROLL -->
+  <a href="product.html?id=crunchyroll" class="card">
+    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/8/85/Crunchyroll_2024_stacked.svg">
+    <div class="info">
+      <h4>Crunchyroll</h4>
+      <b>From ₹129</b>
+      <button onclick="event.preventDefault(); addToCart('Crunchyroll',129,this)">
+        <span>Add to Cart</span>
+      </button>
+    </div>
+  </a>
+
 </div>
 </section>
   
@@ -1079,9 +1121,9 @@ let cart=JSON.parse(localStorage.getItem("cart")||"[]");
 function render(){
   grid.innerHTML="";
   games.slice(0,expanded?games.length:visible).forEach(g=>{
-    const d=document.createElement("div");
-    d.className="card";
-    d.innerHTML=`
+    const d = document.createElement("a");
+d.className = "card";
+d.href = `product.html?id=${g[2]}`;`
   <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
   <div class="info">
     <h4>${g[0]}</h4>
@@ -1463,3 +1505,4 @@ document.getElementById("xboxToggle").onclick = () => {
 </script>
 </body>
 </html>
+
