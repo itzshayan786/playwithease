@@ -24,137 +24,67 @@ transition:.3s;
 overflow-x:hidden;
 }
 
-/* THEMES */
-body.theme-red{--bg:#1f0a0a;--accent:#ef4444}
-body.theme-purple{--bg:#1e1b4b;--accent:#a855f7}
-body.theme-green{--bg:#022c22;--accent:#10b981}
-body.theme-gold{--bg:#000;--accent:#facc15}
-
 /* MUSIC BAR */
 .music-bar{
-position:fixed;
-top:0;left:0;width:100%;
-height:26px;
-display:flex;
-align-items:flex-end;
-justify-content:space-between;
-padding:0 3px;
-background:#000;
-z-index:9999;
+position:fixed;top:0;left:0;width:100%;height:26px;
+display:flex;align-items:flex-end;justify-content:space-between;
+padding:0 3px;background:#000;z-index:9999;
 }
-.m-bar{
-flex:1;
-margin:0 1px;
-height:6px;
-background:var(--accent);
-border-radius:2px;
-transition:.08s linear;
-}
+.m-bar{flex:1;margin:0 1px;height:6px;background:var(--accent);border-radius:2px;transition:.08s linear;}
 
 /* HEADER */
 header{
-position:fixed;
-top:26px;
-width:100%;
-padding:14px 20px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-background:var(--card);
-backdrop-filter:blur(18px);
-z-index:5000;
+position:fixed;top:26px;width:100%;
+padding:14px 20px;display:flex;
+justify-content:space-between;align-items:center;
+background:var(--card);backdrop-filter:blur(18px);z-index:5000;
 }
-.brand{
-font-family:'Orbitron';
-font-weight:900;
-font-size:20px;
-}
-.tagline{
-font-size:11px;
-opacity:.7;
-}
-.nav-right{
-display:flex;
-align-items:center;
-gap:12px;
-}
-
-/* THEME */
-.theme-box{position:relative}
-.theme-main{
-padding:6px 14px;
-border-radius:6px;
-background:var(--accent);
-border:none;
-color:#fff;
-cursor:pointer;
-transition:.3s;
-}
-.theme-main:hover{transform:scale(1.1)}
-.theme-dropdown{
-position:absolute;
-top:36px;
-right:0;
-background:var(--card);
-border-radius:6px;
-overflow:hidden;
-max-height:0;
-transition:.3s ease;
-}
-.theme-dropdown div{
-padding:8px 14px;
-cursor:pointer;
-}
-.theme-dropdown div:hover{
-background:var(--accent);
-}
-.theme-dropdown.show{max-height:200px}
+.brand{font-family:'Orbitron';font-weight:900;font-size:20px;}
+.tagline{font-size:11px;opacity:.7;}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.nav-right div{cursor:pointer;transition:.3s;}
+.nav-right div:hover{transform:scale(1.2);color:var(--accent);}
 
 /* HERO */
 .hero{
 margin-top:100px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:40px 20px;
-gap:30px;
+display:flex;align-items:center;justify-content:space-between;
+padding:40px 20px;gap:30px;
 }
 .hero-left{max-width:600px;}
-.hero-left h1{
-font-family:'Orbitron';
-font-size:38px;
-margin-bottom:10px;
-}
-.hero-left span{color:var(--accent)}
+.hero-left h1{font-family:'Orbitron';font-size:38px;margin-bottom:10px;}
+.hero-left span{color:var(--accent);}
 .video-wrap{position:relative;max-width:450px;width:100%;}
 .video-wrap video{width:100%;}
 .mute-btn{
-position:absolute;
-bottom:8px;
-right:8px;
-width:34px;height:34px;
-border-radius:50%;
-border:none;
-background:var(--accent);
-color:#fff;
-cursor:pointer;
+position:absolute;bottom:8px;right:8px;
+width:34px;height:34px;border-radius:50%;
+border:none;background:var(--accent);color:#fff;
+cursor:pointer;transition:.3s;
 }
+.mute-btn:hover{transform:scale(1.2) rotate(8deg);}
 
-/* GRID */
+/* SECTIONS */
 .section{max-width:1300px;margin:auto;padding:40px 15px;}
-.grid{
-display:grid;
-grid-template-columns:repeat(6,1fr);
-gap:12px;
-}
+.section h2{margin-bottom:20px;}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+
 @media(max-width:900px){
 .hero{flex-direction:column;text-align:center;}
 .grid{grid-template-columns:repeat(3,1fr);}
 }
+
+/* CARD */
 .card{
 background:var(--card);
 border-radius:8px;
 overflow:hidden;
+transition:.3s;
+cursor:pointer;
+}
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 0 15px var(--accent);
 }
 .card img{
 width:100%;
@@ -163,41 +93,54 @@ object-fit:cover;
 }
 .card .info{padding:6px;font-size:12px;}
 .card button{
-margin-top:4px;
-padding:5px;
-width:100%;
+margin-top:4px;padding:6px;width:100%;
+border:none;background:var(--accent);
+color:#fff;border-radius:4px;
+cursor:pointer;transition:.3s;
+}
+.card button:hover{
+transform:scale(1.05);
+box-shadow:0 0 10px var(--accent);
+}
+
+/* SHOW MORE BUTTON */
+.show-more{
+margin-top:20px;text-align:center;
+}
+.show-more button{
+padding:10px 22px;
 border:none;
 background:var(--accent);
 color:#fff;
-border-radius:4px;
+border-radius:6px;
 cursor:pointer;
+transition:.3s;
+}
+.show-more button:hover{
+transform:scale(1.1);
+box-shadow:0 0 15px var(--accent);
 }
 
-/* REVIEWS */
-.reviews{
-background:var(--card);
-padding:30px;
-text-align:center;
+/* TRUSTPILOT */
+.trustpilot{
 margin-top:40px;
-}
-
-/* COUNTERS */
-.counters{
-display:flex;
-justify-content:center;
-gap:40px;
-margin-top:30px;
-flex-wrap:wrap;
-}
-.counter h2{
-color:var(--accent);
-}
-
-footer{
 text-align:center;
-padding:40px;
-margin-top:60px;
 }
+.trustpilot a{
+display:inline-block;
+padding:12px 20px;
+background:#00b67a;
+color:#fff;
+border-radius:6px;
+text-decoration:none;
+transition:.3s;
+}
+.trustpilot a:hover{
+transform:scale(1.08);
+box-shadow:0 0 15px #00b67a;
+}
+
+footer{text-align:center;padding:40px;margin-top:60px;}
 </style>
 </head>
 
@@ -213,17 +156,6 @@ margin-top:60px;
 <div class="nav-right">
 <div>👤</div>
 <div>🛒 <span id="cartCount">0</span></div>
-
-<div class="theme-box">
-<button class="theme-main" onclick="toggleThemes()">Themes</button>
-<div class="theme-dropdown" id="themeDrop">
-<div onclick="setTheme('')">Blue</div>
-<div onclick="setTheme('theme-red')">Red</div>
-<div onclick="setTheme('theme-purple')">Purple</div>
-<div onclick="setTheme('theme-green')">Green</div>
-</div>
-</div>
-
 </div>
 </header>
 
@@ -232,121 +164,99 @@ margin-top:60px;
 <h1>Level Up Your <span>Gaming</span></h1>
 <p>India’s trusted digital platform for premium games and OTT services.</p>
 </div>
-
 <div class="video-wrap">
-<video id="gtaTrailer" autoplay muted loop playsinline crossorigin="anonymous">
+<video autoplay muted loop playsinline>
 <source src="https://videos.rockstargames.com/v4/s6c5c8co/flv/en-us-720p.mp4">
 </video>
-<button class="mute-btn" id="muteBtn">🔇</button>
+<button class="mute-btn">🔇</button>
 </div>
 </section>
 
 <section class="section">
 <h2>🎮 Games</h2>
 <div class="grid" id="gameGrid"></div>
+<div class="show-more">
+<button id="gameToggle">Show More</button>
+</div>
 </section>
 
 <section class="section">
 <h2>📺 OTT</h2>
-<div class="grid">
-<div class="card"><img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg"><div class="info">Netflix<button onclick="addToCart()">Add</button></div></div>
-<div class="card"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png"><div class="info">Prime<button onclick="addToCart()">Add</button></div></div>
+<div class="grid" id="ottGrid"></div>
+<div class="show-more">
+<button id="ottToggle">Show More</button>
 </div>
 </section>
 
-<section class="reviews">
-<h3>Customer Reviews</h3>
-<p id="reviewText">Fast delivery and genuine account!</p>
-</section>
-
-<section class="counters">
-<div class="counter"><h2 id="orders">0</h2><p>Orders</p></div>
-<div class="counter"><h2 id="customers">0</h2><p>Customers</p></div>
-</section>
+<div class="trustpilot">
+<a href="https://www.trustpilot.com/review/playwithease.in" target="_blank">
+⭐ Review Us on Trustpilot
+</a>
+</div>
 
 <footer>© 2026 PlayWithEase</footer>
 
 <script>
-/* THEME */
-function toggleThemes(){document.getElementById("themeDrop").classList.toggle("show");}
-function setTheme(t){document.body.className=t;document.getElementById("themeDrop").classList.remove("show");}
-
 /* CART */
 let cart=0;
 function addToCart(){cart++;document.getElementById("cartCount").innerText=cart;}
 
-/* MUSIC BAR */
-const musicBar=document.getElementById("musicBar");
-for(let i=0;i<120;i++){
-let bar=document.createElement("div");
-bar.className="m-bar";
-musicBar.appendChild(bar);
-}
-const bars=document.querySelectorAll(".m-bar");
-const video=document.getElementById("gtaTrailer");
-const muteBtn=document.getElementById("muteBtn");
+/* GAMES DATA (80+) */
+const games=[
+["GTA V","271590"],["RDR2","1174180"],["Cyberpunk 2077","1091500"],
+["God of War","1593500"],["Elden Ring","1245620"],
+["Hogwarts Legacy","990080"],["Spider-Man","1817070"],
+["FIFA 23","1811260"],["Resident Evil 4","2050650"],
+["Forza Horizon 5","1551360"],["Starfield","1716740"],
+["The Witcher 3","292030"],["Sekiro","814380"],
+["Battlefield 2042","1517290"],["Call of Duty MWII","1938090"]
+];
 
-let ctx, analyser, source;
-let started=false;
-
-document.body.addEventListener("click",()=>{
-if(!started){
-video.muted=false;
-ctx=new (window.AudioContext||window.webkitAudioContext)();
-analyser=ctx.createAnalyser();
-source=ctx.createMediaElementSource(video);
-source.connect(analyser);
-analyser.connect(ctx.destination);
-analyser.fftSize=128;
-started=true;
-animate();
-muteBtn.textContent="🔊";
-}
-},{once:true});
-
-muteBtn.addEventListener("click",(e)=>{
-e.stopPropagation();
-video.muted=!video.muted;
-muteBtn.textContent=video.muted?"🔇":"🔊";
-});
-
-function animate(){
-if(!analyser) return;
-let data=new Uint8Array(analyser.frequencyBinCount);
-analyser.getByteFrequencyData(data);
-bars.forEach((bar,i)=>{
-bar.style.height=Math.max(6,data[i]/4)+"px";
-});
-requestAnimationFrame(animate);
+while(games.length<80){
+games.push(...games.slice(0,15));
 }
 
-/* GAMES */
-const games=[];
-const base=[["GTA V",199,"271590"],["RDR2",249,"1174180"],
-["Cyberpunk",75,"1091500"],["God of War",199,"1593500"]];
-while(games.length<80){games.push(...base);}
+let expanded=false;
 const grid=document.getElementById("gameGrid");
-games.slice(0,36).forEach(g=>{
+
+function renderGames(){
+grid.innerHTML="";
+let list=expanded?games:games.slice(0,18);
+list.forEach(g=>{
 grid.innerHTML+=`
 <div class="card">
-<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
-<div class="info">${g[0]}<button onclick="addToCart()">Add</button></div>
+<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[1]}/header.jpg">
+<div class="info">${g[0]}
+<button onclick="addToCart()">Add to Cart</button>
+</div>
 </div>`;
 });
-
-/* COUNTERS */
-function animateCounter(id,target){
-let el=document.getElementById(id);
-let count=0;
-let step=target/100;
-let interval=setInterval(()=>{
-count+=step;
-if(count>=target){count=target;clearInterval(interval);}
-el.innerText=Math.floor(count);
-},20);
+document.getElementById("gameToggle").innerText=expanded?"Show Less":"Show More";
 }
-animateCounter("orders",1250);
-animateCounter("customers",980);
+document.getElementById("gameToggle").onclick=()=>{expanded=!expanded;renderGames();}
+renderGames();
+
+/* OTT */
+const otts=["Netflix","Prime","Disney+","Crunchyroll","YouTube Premium"];
+let ottExpanded=false;
+const ottGrid=document.getElementById("ottGrid");
+
+function renderOTT(){
+ottGrid.innerHTML="";
+let list=ottExpanded?otts:otts.slice(0,3);
+list.forEach(o=>{
+ottGrid.innerHTML+=`
+<div class="card">
+<img src="https://via.placeholder.com/300x200?text=${o}">
+<div class="info">${o}
+<button onclick="addToCart()">Add to Cart</button>
+</div>
+</div>`;
+});
+document.getElementById("ottToggle").innerText=ottExpanded?"Show Less":"Show More";
+}
+document.getElementById("ottToggle").onclick=()=>{ottExpanded=!ottExpanded;renderOTT();}
+renderOTT();
 </script>
 
 </body>
