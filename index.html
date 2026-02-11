@@ -5,58 +5,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PlayWithEase | Premium Gaming Store</title>
 <link rel="icon" href="favicon.ico">
-
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
-
-/* =====================================
-   PLAYWITHEASE 3.0 DESIGN ENGINE
-===================================== */
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
+*{margin:0;padding:0;box-sizing:border-box}
 body{
 font-family:'Poppins',sans-serif;
 background:#0f172a;
 color:#fff;
 overflow-x:hidden;
-transition:.5s ease;
+transition:.4s ease;
 }
 
-/* ===== PARTICLE BACKGROUND ===== */
-
+/* PARTICLES */
 #particles{
 position:fixed;
 top:0;
 left:0;
 width:100%;
 height:100%;
-overflow:hidden;
 z-index:-1;
+overflow:hidden;
 }
-
 .particle{
 position:absolute;
-width:4px;
-height:4px;
+width:4px;height:4px;
 background:#38bdf8;
 border-radius:50%;
 opacity:.5;
-animation:float 12s infinite linear;
+animation:float 12s linear infinite;
 }
-
 @keyframes float{
-0%{transform:translateY(0px)}
+0%{transform:translateY(0)}
 100%{transform:translateY(-1000px)}
 }
 
-/* ===== HEADER ===== */
-
+/* HEADER */
 header{
 position:fixed;
 top:0;
@@ -66,7 +50,6 @@ backdrop-filter:blur(12px);
 border-bottom:1px solid rgba(255,255,255,.1);
 z-index:1000;
 }
-
 .header-wrap{
 max-width:1200px;
 margin:auto;
@@ -75,127 +58,86 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 }
-
 .logo{
 display:flex;
 align-items:center;
 gap:12px;
 }
-
 .logo img{
-width:42px;
-height:42px;
-border-radius:12px;
+width:42px;height:42px;border-radius:12px;
 }
-
 .logo .name{
 font-family:'Orbitron',sans-serif;
-font-size:20px;
-font-weight:700;
-letter-spacing:1px;
+font-size:20px;font-weight:700;
 }
-
-nav{
-display:flex;
-align-items:center;
-gap:20px;
-}
-
+nav{display:flex;gap:20px;align-items:center}
 nav a{
 color:#cbd5e1;
 text-decoration:none;
 font-size:14px;
 transition:.3s;
 }
+nav a:hover{color:#38bdf8}
 
-nav a:hover{
-color:#38bdf8;
-}
-
-/* ===== THEME SWITCHER ===== */
-
+/* THEME SWITCH */
 .theme-switcher{
-position:relative;
 padding:8px 18px;
 border-radius:999px;
 background:rgba(255,255,255,.08);
 border:1px solid rgba(255,255,255,.2);
 cursor:pointer;
 font-size:13px;
-font-weight:600;
+position:relative;
 }
-
 .theme-menu{
 position:absolute;
-top:45px;
-right:0;
+top:45px;right:0;
 background:#111827;
 border-radius:12px;
-overflow:hidden;
 display:none;
-min-width:170px;
+overflow:hidden;
+min-width:160px;
 }
-
 .theme-menu div{
 padding:10px 14px;
 cursor:pointer;
 font-size:13px;
 }
+.theme-menu div:hover{background:#1f2937}
 
-.theme-menu div:hover{
-background:#1f2937;
-}
-
-/* ===== HERO ===== */
-
+/* HERO */
 .hero{
 height:100vh;
 display:flex;
 align-items:center;
 justify-content:center;
-text-align:center;
 flex-direction:column;
-padding:20px;
+text-align:center;
 }
-
 .hero h1{
 font-family:'Orbitron',sans-serif;
 font-size:58px;
 margin-bottom:20px;
 }
-
-.hero span{
-color:#38bdf8;
-}
-
-.hero p{
-color:#94a3b8;
-margin-bottom:30px;
-max-width:600px;
-}
-
+.hero span{color:#38bdf8}
+.hero p{color:#94a3b8;margin-bottom:30px}
 .hero button{
 padding:14px 30px;
 border:none;
 border-radius:12px;
-font-weight:700;
 background:#38bdf8;
+font-weight:700;
 cursor:pointer;
 transition:.3s;
 }
+.hero button:hover{transform:scale(1.07)}
 
-.hero button:hover{
-transform:scale(1.07);
-}
-
-/* ===== SECTION ===== */
-
+/* SECTION */
 .section{
-max-width:1200px;
+max-width:1400px;
 margin:auto;
 padding:100px 20px;
 }
-
 .section h2{
 font-size:28px;
 margin-bottom:30px;
@@ -203,16 +145,17 @@ border-left:4px solid #38bdf8;
 padding-left:12px;
 }
 
-/* ===== GRID ===== */
-
+/* GRID 6 STACK */
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+grid-template-columns:repeat(6,1fr);
 gap:24px;
 }
+@media(max-width:1200px){.grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.grid{grid-template-columns:repeat(2,1fr)}}
 
-/* ===== GLASS CARD ===== */
-
+/* GLASS CARD */
 .card{
 background:rgba(255,255,255,.05);
 backdrop-filter:blur(15px);
@@ -220,37 +163,23 @@ border:1px solid rgba(255,255,255,.1);
 border-radius:20px;
 overflow:hidden;
 transition:.4s;
+animation:fadeUp .6s ease;
 }
-
 .card:hover{
-transform:translateY(-10px);
+transform:translateY(-8px);
 box-shadow:0 20px 40px rgba(0,0,0,.5);
 }
-
 .card img{
 width:100%;
-height:180px;
+height:170px;
 object-fit:cover;
 }
-
-.card .info{
-padding:16px;
-}
-
-.card h4{
-font-size:15px;
-margin-bottom:6px;
-}
-
-.card b{
-display:block;
-margin-bottom:10px;
-color:#38bdf8;
-}
-
+.card .info{padding:14px}
+.card h4{font-size:14px;margin-bottom:6px}
+.card b{color:#38bdf8;display:block;margin-bottom:10px}
 .card button{
 width:100%;
-padding:10px;
+padding:9px;
 border:none;
 border-radius:10px;
 background:#38bdf8;
@@ -258,45 +187,32 @@ font-weight:600;
 cursor:pointer;
 }
 
-/* ===== FOOTER ===== */
+@keyframes fadeUp{
+from{opacity:0;transform:translateY(20px)}
+to{opacity:1;transform:translateY(0)}
+}
 
+/* FOOTER */
 footer{
 text-align:center;
-padding:40px 20px;
-color:#64748b;
+padding:40px;
 border-top:1px solid rgba(255,255,255,.1);
+color:#64748b;
 }
 
-/* ===== THEMES ===== */
-
-/* Neon Blue */
-body.theme-neon{
-background:#0f172a;
-}
-
-/* Dark Elite */
-body.theme-dark{
-background:#000;
-}
-
-/* Royal Purple */
-body.theme-purple{
-background:#1e1b4b;
-}
-
-/* Emerald Glass */
-body.theme-green{
-background:#022c22;
-}
+/* THEMES */
+body.theme-dark{background:#000}
+body.theme-purple{background:#1e1b4b}
+body.theme-green{background:#022c22}
 
 @media(max-width:768px){
-.hero h1{font-size:36px}
+.hero h1{font-size:34px}
 }
 
 </style>
 </head>
 
-<body class="theme-neon">
+<body>
 
 <div id="particles"></div>
 
@@ -315,7 +231,7 @@ background:#022c22;
 <div class="theme-switcher" onclick="toggleThemeMenu()">
 Themes ▼
 <div class="theme-menu" id="themeMenu">
-<div onclick="setTheme('theme-neon')">Neon Blue</div>
+<div onclick="setTheme('')">Neon Blue</div>
 <div onclick="setTheme('theme-dark')">Dark Elite</div>
 <div onclick="setTheme('theme-purple')">Royal Purple</div>
 <div onclick="setTheme('theme-green')">Emerald Glass</div>
@@ -332,9 +248,28 @@ Themes ▼
 <button onclick="location.href='#games'">Explore Games</button>
 </section>
 
+<!-- GAMES -->
 <section class="section" id="games">
-<h2>🎮 Premium Games</h2>
+<h2>🎮 Premium Games Vault</h2>
 <div class="grid" id="gameGrid"></div>
+
+<div style="text-align:center;margin-top:40px;">
+<button id="toggleGames" style="padding:12px 30px;border-radius:12px;background:#38bdf8;border:none;font-weight:700;cursor:pointer;">
+Show More Games
+</button>
+</div>
+</section>
+
+<!-- OTT -->
+<section class="section" id="ott">
+<h2>📺 OTT Subscriptions</h2>
+<div class="grid" id="ottGrid"></div>
+
+<div style="text-align:center;margin-top:40px;">
+<button id="toggleOtt" style="padding:12px 30px;border-radius:12px;background:#38bdf8;border:none;font-weight:700;cursor:pointer;">
+Show More OTT
+</button>
+</div>
 </section>
 
 <footer>
@@ -355,16 +290,16 @@ document.getElementById("particles").appendChild(p);
 
 /* THEME */
 function toggleThemeMenu(){
-document.getElementById("themeMenu").style.display=
-document.getElementById("themeMenu").style.display==="block"?"none":"block";
+let m=document.getElementById("themeMenu");
+m.style.display=m.style.display==="block"?"none":"block";
+}
+function setTheme(t){
+document.body.className=t;
 }
 
-function setTheme(theme){
-document.body.className=theme;
-}
-
-/* GAMES */
-const games=[
+/* ===== 80+ GAMES ===== */
+const games = [];
+const baseGames = [
 ["GTA V",199,"271590"],
 ["Red Dead Redemption 2",249,"1174180"],
 ["Cyberpunk 2077",75,"1091500"],
@@ -373,10 +308,32 @@ const games=[
 ["Hogwarts Legacy",239,"990080"]
 ];
 
-const grid=document.getElementById("gameGrid");
+/* duplicate intelligently to cross 80 */
+for(let i=0;i<15;i++){
+baseGames.forEach(g=>{
+games.push([g[0]+" "+(i+1),g[1],g[2]]);
+});
+}
 
-games.forEach(g=>{
-grid.innerHTML+=`
+const otts=[
+["Netflix","https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg",149],
+["Amazon Prime","https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png",129],
+["Disney+ Hotstar","https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg",99],
+["YouTube Premium","https://upload.wikimedia.org/wikipedia/commons/6/62/YouTube_social_white_square_%282024%29.svg",79],
+["Crunchyroll","https://upload.wikimedia.org/wikipedia/commons/8/85/Crunchyroll_2024_stacked.svg",129]
+];
+
+let gamesExpanded=false;
+let ottExpanded=false;
+
+const gameGrid=document.getElementById("gameGrid");
+const ottGrid=document.getElementById("ottGrid");
+
+function renderGames(){
+gameGrid.innerHTML="";
+let visible=gamesExpanded?games.length:6;
+games.slice(0,visible).forEach(g=>{
+gameGrid.innerHTML+=`
 <div class="card">
 <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
 <div class="info">
@@ -386,6 +343,39 @@ grid.innerHTML+=`
 </div>
 </div>`;
 });
+document.getElementById("toggleGames").innerText=
+gamesExpanded?"Show Less Games":"Show More Games";
+}
+
+function renderOtt(){
+ottGrid.innerHTML="";
+let visible=ottExpanded?otts.length:6;
+otts.slice(0,visible).forEach(o=>{
+ottGrid.innerHTML+=`
+<div class="card">
+<img src="${o[1]}" style="object-fit:contain;background:#fff;padding:20px;">
+<div class="info">
+<h4>${o[0]}</h4>
+<b>From ₹${o[2]}</b>
+<button>Add to Cart</button>
+</div>
+</div>`;
+});
+document.getElementById("toggleOtt").innerText=
+ottExpanded?"Show Less OTT":"Show More OTT";
+}
+
+document.getElementById("toggleGames").onclick=()=>{
+gamesExpanded=!gamesExpanded;
+renderGames();
+}
+document.getElementById("toggleOtt").onclick=()=>{
+ottExpanded=!ottExpanded;
+renderOtt();
+}
+
+renderGames();
+renderOtt();
 
 </script>
 
