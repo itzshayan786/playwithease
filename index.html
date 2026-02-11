@@ -10,24 +10,26 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 
-/* ===== THEME ===== */
+/* ================= THEME ================= */
 :root{
 --bg:#0f172a;
 --card:#ffffff0d;
 --accent:#38bdf8;
 --text:#ffffff;
 }
+
 body{
 font-family:'Poppins',sans-serif;
 background:var(--bg);
 color:var(--text);
 overflow-x:hidden;
 }
+
 body.theme-dark{--bg:#000;--accent:#f43f5e}
 body.theme-purple{--bg:#1e1b4b;--accent:#a855f7}
 body.theme-green{--bg:#022c22;--accent:#10b981}
 
-/* ===== SLIM MUSIC STRIP (UNCHANGED SIZE) ===== */
+/* ================= MUSIC STRIP ================= */
 .music-bar{
 position:fixed;
 top:0;
@@ -43,15 +45,16 @@ backdrop-filter:blur(6px);
 z-index:3000;
 padding-bottom:4px;
 }
+
 .m-bar{
 width:3px;
 height:6px;
 background:var(--accent);
 border-radius:2px;
-transition:.1s ease;
+transition:.08s linear;
 }
 
-/* ===== HEADER ===== */
+/* ================= HEADER ================= */
 header{
 position:fixed;
 top:32px;
@@ -61,6 +64,7 @@ backdrop-filter:blur(14px);
 border-bottom:1px solid rgba(255,255,255,.1);
 z-index:2000;
 }
+
 .header-wrap{
 max-width:1500px;
 margin:auto;
@@ -69,13 +73,67 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 }
-.logo{display:flex;align-items:center;gap:12px}
+
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+}
 .logo img{width:42px;height:42px;border-radius:12px}
 .logo .name{font-family:'Orbitron';font-weight:800;font-size:20px}
+
 nav{display:flex;gap:15px;align-items:center}
 nav a{color:#cbd5e1;text-decoration:none;font-size:14px}
 
-/* ===== TRAILER TAB ===== */
+/* ===== THEME BUTTON ===== */
+.theme-container{position:relative}
+
+.theme-toggle{
+padding:8px 20px;
+border-radius:999px;
+border:1px solid var(--accent);
+background:transparent;
+color:var(--accent);
+font-weight:700;
+cursor:pointer;
+transition:.3s;
+}
+.theme-toggle:hover{
+background:var(--accent);
+color:#000;
+box-shadow:0 0 20px var(--accent);
+}
+
+.theme-menu{
+position:absolute;
+top:45px;
+right:0;
+background:#111827;
+border-radius:12px;
+overflow:hidden;
+display:none;
+min-width:160px;
+box-shadow:0 15px 40px rgba(0,0,0,.6);
+animation:fadeDown .25s ease;
+}
+
+@keyframes fadeDown{
+from{opacity:0;transform:translateY(-10px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+.theme-menu div{
+padding:10px 14px;
+cursor:pointer;
+color:#fff;
+font-size:13px;
+}
+.theme-menu div:hover{
+background:var(--accent);
+color:#000;
+}
+
+/* ================= TRAILER TAB ================= */
 .trailer-tab{
 position:fixed;
 right:-420px;
@@ -89,6 +147,7 @@ transition:.4s ease;
 z-index:2500;
 box-shadow:0 0 40px rgba(0,0,0,.6);
 }
+
 .trailer-handle{
 position:absolute;
 left:-45px;
@@ -105,7 +164,7 @@ font-weight:800;
 color:#000;
 }
 
-/* ===== HERO & SECTIONS (UNCHANGED) ===== */
+/* ================= HERO ================= */
 .hero{
 height:100vh;
 display:flex;
@@ -123,6 +182,8 @@ font-size:52px;
 color:var(--accent);
 text-shadow:0 0 25px var(--accent);
 }
+
+/* ================= CONTENT ================= */
 .section{
 max-width:1500px;
 margin:auto;
@@ -134,6 +195,7 @@ margin-bottom:30px;
 border-left:4px solid var(--accent);
 padding-left:12px;
 }
+
 .grid{
 display:grid;
 grid-template-columns:repeat(6,1fr);
@@ -142,13 +204,16 @@ gap:22px;
 @media(max-width:1300px){.grid{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:600px){.grid{grid-template-columns:repeat(2,1fr)}}
+
 .card{
 background:var(--card);
 backdrop-filter:blur(16px);
 border:1px solid rgba(255,255,255,.1);
 border-radius:16px;
 overflow:hidden;
+transition:.3s;
 }
+.card:hover{transform:translateY(-6px)}
 .card img{width:100%;height:150px;object-fit:cover}
 .card .info{padding:12px}
 .card b{color:var(--accent);display:block;margin:8px 0}
@@ -161,6 +226,7 @@ background:var(--accent);
 font-weight:600;
 cursor:pointer;
 }
+
 .show-btn{
 margin-top:30px;
 padding:12px 30px;
@@ -171,6 +237,7 @@ font-weight:800;
 cursor:pointer;
 box-shadow:0 0 15px var(--accent);
 }
+
 footer{
 text-align:center;
 padding:40px;
@@ -185,7 +252,7 @@ color:#64748b;
 <!-- MUSIC STRIP -->
 <div class="music-bar" id="musicBar"></div>
 
-<!-- TRAILER PANEL -->
+<!-- TRAILER -->
 <div class="trailer-tab" id="trailerTab">
 <div class="trailer-handle" onclick="toggleTrailer()">🎬</div>
 <video id="trailerVideo" width="100%" height="100%" controls>
@@ -204,6 +271,17 @@ color:#64748b;
 <a href="#ott">OTT</a>
 <a href="cart.html">Cart</a>
 <a href="login.html">Login</a>
+
+<div class="theme-container">
+<button class="theme-toggle" onclick="toggleTheme()">Themes</button>
+<div class="theme-menu" id="themeMenu">
+<div onclick="setTheme('')">Neon Blue</div>
+<div onclick="setTheme('theme-dark')">Dark Elite</div>
+<div onclick="setTheme('theme-purple')">Royal Purple</div>
+<div onclick="setTheme('theme-green')">Emerald Lux</div>
+</div>
+</div>
+
 </nav>
 </div>
 </header>
@@ -228,13 +306,23 @@ color:#64748b;
 
 <script>
 
-/* TRAILER TOGGLE */
+/* ===== THEME ===== */
+function toggleTheme(){
+let m=document.getElementById("themeMenu");
+m.style.display=m.style.display==="block"?"none":"block";
+}
+function setTheme(t){
+document.body.className=t;
+document.getElementById("themeMenu").style.display="none";
+}
+
+/* ===== TRAILER TOGGLE ===== */
 function toggleTrailer(){
 let tab=document.getElementById("trailerTab");
 tab.style.right=tab.style.right==="0px"?"-420px":"0px";
 }
 
-/* MUSIC STRIP BARS */
+/* ===== MUSIC VISUALIZER CONNECTED TO TRAILER ===== */
 const musicBar=document.getElementById("musicBar");
 for(let i=0;i<60;i++){
 let bar=document.createElement("div");
@@ -243,13 +331,12 @@ musicBar.appendChild(bar);
 }
 const bars=document.querySelectorAll(".m-bar");
 
-/* CONNECT TO TRAILER AUDIO */
 const video=document.getElementById("trailerVideo");
-const audioContext=new AudioContext();
-const analyser=audioContext.createAnalyser();
-const source=audioContext.createMediaElementSource(video);
+const audioCtx=new AudioContext();
+const analyser=audioCtx.createAnalyser();
+const source=audioCtx.createMediaElementSource(video);
 source.connect(analyser);
-analyser.connect(audioContext.destination);
+analyser.connect(audioCtx.destination);
 analyser.fftSize=128;
 const data=new Uint8Array(analyser.frequencyBinCount);
 
@@ -261,16 +348,22 @@ bar.style.height=Math.max(6,val)+"px";
 });
 requestAnimationFrame(animate);
 }
-video.onplay=()=>{audioContext.resume();animate();};
 
-/* 80+ GAMES */
+video.addEventListener("play",()=>{
+audioCtx.resume();
+animate();
+});
+
+/* ===== 80+ GAMES ===== */
 const games=[];
-const base=[["GTA V",199,"271590"],["RDR2",249,"1174180"],
+const base=[
+["GTA V",199,"271590"],["RDR2",249,"1174180"],
 ["Cyberpunk",75,"1091500"],["God of War",199,"1593500"],
-["Elden Ring",229,"1245620"],["Hogwarts",239,"990080"]];
+["Elden Ring",229,"1245620"],["Hogwarts",239,"990080"]
+];
 while(games.length<84){games.push(...base);}
 
-/* OTT */
+/* ===== OTT ===== */
 const otts=[
 ["Netflix","https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg",149],
 ["Prime","https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png",129],
@@ -280,6 +373,7 @@ const otts=[
 ];
 
 let gExp=false,oExp=false;
+
 function renderGames(){
 const grid=document.getElementById("gameGrid");
 grid.innerHTML="";
@@ -293,6 +387,7 @@ grid.innerHTML+=`
 });
 document.getElementById("toggleGames").innerText=gExp?"Show Less Games":"Show More Games";
 }
+
 function renderOtt(){
 const grid=document.getElementById("ottGrid");
 grid.innerHTML="";
@@ -306,8 +401,10 @@ grid.innerHTML+=`
 });
 document.getElementById("toggleOtt").innerText=oExp?"Show Less OTT":"Show More OTT";
 }
+
 document.getElementById("toggleGames").onclick=()=>{gExp=!gExp;renderGames()}
 document.getElementById("toggleOtt").onclick=()=>{oExp=!oExp;renderOtt()}
+
 renderGames();renderOtt();
 
 </script>
