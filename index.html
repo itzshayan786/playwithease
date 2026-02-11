@@ -9,9 +9,10 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 
+/* ========= ROOT ========= */
 :root{
 --bg:#0f172a;
---card:rgba(255,255,255,0.08);
+--card:rgba(255,255,255,0.06);
 --accent:#3b82f6;
 --text:#f1f5f9;
 }
@@ -24,36 +25,36 @@ transition:.3s;
 overflow-x:hidden;
 }
 
-/* ===== THEMES ===== */
+/* ========= THEMES ========= */
 body.theme-red{--bg:#1f0a0a;--accent:#ef4444}
 body.theme-purple{--bg:#1e1b4b;--accent:#a855f7}
 body.theme-green{--bg:#022c22;--accent:#10b981}
-body.theme-dark{--bg:#000;--accent:#facc15}
+body.theme-gold{--bg:#000;--accent:#facc15}
 
-/* ===== MUSIC BAR ===== */
+/* ========= MUSIC BAR FULL ========= */
 .music-bar{
 position:fixed;
 top:0;
 left:0;
-width:100%;
+width:100vw;
 height:28px;
 display:flex;
 align-items:flex-end;
-justify-content:center;
-gap:2px;
+justify-content:space-between;
+padding:0 4px;
 background:#000;
 z-index:9999;
-padding-bottom:3px;
 }
 .m-bar{
-width:2px;
+flex:1;
+margin:0 1px;
 height:6px;
 background:var(--accent);
 border-radius:2px;
 transition:.08s linear;
 }
 
-/* ===== HEADER ===== */
+/* ========= HEADER ========= */
 header{
 position:fixed;
 top:28px;
@@ -69,33 +70,78 @@ z-index:5000;
 .brand{
 font-family:'Orbitron';
 font-weight:900;
-font-size:20px;
+font-size:22px;
 }
-.theme-buttons{
+.tagline{
+font-size:12px;
+opacity:.7;
+margin-top:2px;
+}
+.nav-right{
 display:flex;
-gap:8px;
+align-items:center;
+gap:12px;
 }
-.theme-btn{
-padding:6px 12px;
+.profile{
+font-size:18px;
+cursor:pointer;
+}
+.cart{
+position:relative;
+cursor:pointer;
+}
+.cart-count{
+position:absolute;
+top:-6px;
+right:-8px;
+background:var(--accent);
+color:#fff;
+font-size:10px;
+padding:2px 5px;
+border-radius:50%;
+}
+
+/* ========= THEMES BUTTON ========= */
+.theme-box{
+position:relative;
+}
+.theme-main{
+padding:6px 14px;
 border-radius:6px;
 background:var(--accent);
 border:none;
 color:#fff;
-font-size:12px;
 cursor:pointer;
 transition:.3s;
 }
-.theme-btn:hover{
+.theme-main:hover{
 transform:scale(1.08);
 }
+.theme-dropdown{
+position:absolute;
+top:36px;
+right:0;
+background:var(--card);
+backdrop-filter:blur(20px);
+border-radius:6px;
+display:none;
+overflow:hidden;
+}
+.theme-dropdown div{
+padding:8px 14px;
+cursor:pointer;
+}
+.theme-dropdown div:hover{
+background:var(--accent);
+}
 
-/* ===== HERO ===== */
+/* ========= HERO ========= */
 .hero{
 margin-top:110px;
-padding:60px 30px;
 display:flex;
 align-items:center;
 justify-content:space-between;
+padding:50px 30px;
 gap:40px;
 }
 .hero-left h1{
@@ -105,77 +151,67 @@ font-size:42px;
 .hero-left span{
 color:var(--accent);
 }
-
 .video-wrap{
 position:relative;
-max-width:480px;
+flex:1;
 }
 .video-wrap video{
 width:100%;
-border-radius:12px;
+height:100%;
+object-fit:cover;
+border:none;
 }
 
-/* ===== MUTE BUTTON ===== */
+/* ========= MUTE BUTTON ========= */
 .mute-btn{
 position:absolute;
-bottom:10px;
-right:10px;
+bottom:12px;
+right:12px;
+width:42px;
+height:42px;
+border-radius:50%;
+border:none;
 background:var(--accent);
 color:#fff;
-border:none;
-border-radius:50%;
-width:40px;
-height:40px;
 cursor:pointer;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:16px;
+font-size:18px;
 transition:.3s;
 }
 .mute-btn:hover{
-transform:scale(1.1);
+transform:scale(1.2) rotate(8deg);
 }
 
-/* ===== SECTION ===== */
+/* ========= GRID ========= */
 .section{
 max-width:1400px;
 margin:auto;
-padding:50px 20px;
+padding:40px 20px;
 }
 .grid{
 display:grid;
 grid-template-columns:repeat(6,1fr);
-gap:15px;
+gap:14px;
 }
-
-/* MOBILE FIX */
 @media(max-width:900px){
-.hero{
-flex-direction:column;
-text-align:center;
-}
+.hero{flex-direction:column;text-align:center;}
 }
 @media(max-width:600px){
-.grid{
-grid-template-columns:repeat(3,1fr);
-}
-.hero-left h1{
-font-size:28px;
-}
+.grid{grid-template-columns:repeat(3,1fr);}
+.hero-left h1{font-size:28px;}
 }
 
-/* ===== CARD ===== */
+/* ========= CARD ========= */
 .card{
 background:var(--card);
 backdrop-filter:blur(15px);
-border-radius:10px;
+border-radius:8px;
 overflow:hidden;
 transition:.3s;
 }
-.card:hover{
-transform:translateY(-5px);
-}
+.card:hover{transform:translateY(-5px);}
 .card img{
 width:100%;
 height:110px;
@@ -185,14 +221,14 @@ object-fit:cover;
 padding:6px;
 font-size:12px;
 }
-.card b{
-color:var(--accent);
-}
-
-footer{
-text-align:center;
-padding:40px;
-margin-top:60px;
+.card button{
+margin-top:4px;
+padding:4px 6px;
+border:none;
+background:var(--accent);
+color:#fff;
+cursor:pointer;
+font-size:11px;
 }
 </style>
 </head>
@@ -202,13 +238,25 @@ margin-top:60px;
 <div class="music-bar" id="musicBar"></div>
 
 <header>
+<div>
 <div class="brand">PlayWithEase</div>
-<div class="theme-buttons">
-<button class="theme-btn" onclick="setTheme('')">Blue</button>
-<button class="theme-btn" onclick="setTheme('theme-red')">Red</button>
-<button class="theme-btn" onclick="setTheme('theme-purple')">Purple</button>
-<button class="theme-btn" onclick="setTheme('theme-green')">Green</button>
-<button class="theme-btn" onclick="setTheme('theme-dark')">Gold</button>
+<div class="tagline">All Your Entertainment Store</div>
+</div>
+
+<div class="nav-right">
+<div class="profile">👤</div>
+<div class="cart">🛒<span class="cart-count" id="cartCount">0</span></div>
+
+<div class="theme-box">
+<button class="theme-main" onclick="toggleThemes()">Themes</button>
+<div class="theme-dropdown" id="themeDrop">
+<div onclick="setTheme('')">Blue</div>
+<div onclick="setTheme('theme-red')">Red</div>
+<div onclick="setTheme('theme-purple')">Purple</div>
+<div onclick="setTheme('theme-green')">Green</div>
+</div>
+</div>
+
 </div>
 </header>
 
@@ -218,12 +266,7 @@ margin-top:60px;
 </div>
 
 <div class="video-wrap">
-<video id="gtaTrailer"
-autoplay
-muted
-loop
-playsinline
-crossorigin="anonymous">
+<video id="gtaTrailer" autoplay muted loop playsinline crossorigin="anonymous">
 <source src="https://videos.rockstargames.com/v4/s6c5c8co/flv/en-us-720p.mp4" type="video/mp4">
 </video>
 <button class="mute-btn" id="muteBtn">🔇</button>
@@ -235,81 +278,87 @@ crossorigin="anonymous">
 <div class="grid" id="gameGrid"></div>
 </section>
 
-<footer>© 2026 PlayWithEase</footer>
+<section class="section">
+<h2>📺 OTT</h2>
+<div class="grid">
+<div class="card"><img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg"><div class="info">Netflix<button onclick="addToCart()">Add</button></div></div>
+<div class="card"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png"><div class="info">Prime<button onclick="addToCart()">Add</button></div></div>
+</div>
+</section>
 
 <script>
-/* ===== THEME ===== */
+function toggleThemes(){
+let d=document.getElementById("themeDrop");
+d.style.display=d.style.display==="block"?"none":"block";
+}
 function setTheme(t){
 document.body.className=t;
+document.getElementById("themeDrop").style.display="none";
 }
 
-/* ===== VIDEO + SOUND SYSTEM ===== */
+/* CART */
+let cart=0;
+function addToCart(){
+cart++;
+document.getElementById("cartCount").innerText=cart;
+}
+
+/* MUSIC BAR */
+const musicBar=document.getElementById("musicBar");
+for(let i=0;i<150;i++){
+let bar=document.createElement("div");
+bar.className="m-bar";
+musicBar.appendChild(bar);
+}
+const bars=document.querySelectorAll(".m-bar");
 const video=document.getElementById("gtaTrailer");
 const muteBtn=document.getElementById("muteBtn");
 
-let audioCtx=null, analyser=null, source=null;
+let ctx, analyser, source;
 let started=false;
 
-/* Autoplay muted */
-video.play();
-
-/* First click anywhere enables sound */
 document.body.addEventListener("click",()=>{
 if(!started){
 video.muted=false;
-video.play();
-
-audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-analyser=audioCtx.createAnalyser();
-source=audioCtx.createMediaElementSource(video);
+ctx=new (window.AudioContext||window.webkitAudioContext)();
+analyser=ctx.createAnalyser();
+source=ctx.createMediaElementSource(video);
 source.connect(analyser);
-analyser.connect(audioCtx.destination);
+analyser.connect(ctx.destination);
 analyser.fftSize=128;
-
 started=true;
 animate();
 muteBtn.textContent="🔊";
 }
 },{once:true});
 
-/* Mute toggle */
 muteBtn.addEventListener("click",(e)=>{
 e.stopPropagation();
 video.muted=!video.muted;
 muteBtn.textContent=video.muted?"🔇":"🔊";
 });
 
-/* ===== MUSIC BAR ===== */
-const musicBar=document.getElementById("musicBar");
-for(let i=0;i<120;i++){
-let bar=document.createElement("div");
-bar.className="m-bar";
-musicBar.appendChild(bar);
-}
-const bars=document.querySelectorAll(".m-bar");
-
 function animate(){
 if(!analyser) return;
 let data=new Uint8Array(analyser.frequencyBinCount);
 analyser.getByteFrequencyData(data);
 bars.forEach((bar,i)=>{
-bar.style.height=Math.max(6,data[i]/5)+"px";
+bar.style.height=Math.max(6,data[i]/4)+"px";
 });
 requestAnimationFrame(animate);
 }
 
-/* ===== 100+ GAMES ===== */
+/* 80+ GAMES */
 const games=[];
 const base=[["GTA V",199,"271590"],["RDR2",249,"1174180"],
-["Cyberpunk",75,"1091500"],["God of War",199,"1593500"],
-["Elden Ring",229,"1245620"],["Hogwarts",239,"990080"]];
-while(games.length<120){games.push(...base);}
+["Cyberpunk",75,"1091500"],["God of War",199,"1593500"]];
+while(games.length<80){games.push(...base);}
 const grid=document.getElementById("gameGrid");
 games.slice(0,36).forEach(g=>{
 grid.innerHTML+=`
 <div class="card">
 <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
-<div class="info"><b>${g[0]}</b><br>₹${g[1]}</div>
+<div class="info">${g[0]}<button onclick="addToCart()">Add</button></div>
 </div>`;
 });
 </script>
