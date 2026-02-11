@@ -10,9 +10,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 
-/* =====================
-   THEME ENGINE
-===================== */
+/* ================= THEME ================= */
 
 :root{
 --bg:#0f172a;
@@ -26,48 +24,48 @@ font-family:'Poppins',sans-serif;
 background:var(--bg);
 color:var(--text);
 overflow-x:hidden;
-transition:.4s ease;
 }
 
 body.theme-dark{--bg:#000;--accent:#f43f5e}
 body.theme-purple{--bg:#1e1b4b;--accent:#a855f7}
 body.theme-green{--bg:#022c22;--accent:#10b981}
 
-/* =====================
-   TOP MUSIC VISUALIZER
-===================== */
+/* ================= FULL WIDTH MUSIC BAR ================= */
 
 .music-bar{
 position:fixed;
 top:0;
 left:0;
 width:100%;
-height:35px;
+height:55px;
 display:flex;
+align-items:flex-end;
 justify-content:center;
-align-items:center;
-gap:5px;
-z-index:2000;
-background:rgba(0,0,0,.4);
-backdrop-filter:blur(6px);
+gap:4px;
+background:rgba(0,0,0,.5);
+backdrop-filter:blur(8px);
+z-index:3000;
+padding-bottom:6px;
 }
 
 .m-bar{
-width:4px;
+width:6px;
 height:10px;
 background:var(--accent);
-border-radius:3px;
-transition:.2s;
+border-radius:4px;
+transition:.1s;
 }
+
+/* ================= HEADER ================= */
 
 header{
 position:fixed;
-top:35px;
+top:55px;
 width:100%;
 background:rgba(15,23,42,.75);
 backdrop-filter:blur(14px);
 border-bottom:1px solid rgba(255,255,255,.1);
-z-index:1500;
+z-index:2000;
 }
 
 .header-wrap{
@@ -84,30 +82,13 @@ display:flex;
 align-items:center;
 gap:12px;
 }
-.logo img{
-width:42px;height:42px;border-radius:12px;
-}
-.logo .name{
-font-family:'Orbitron';
-font-weight:800;
-font-size:20px;
-}
+.logo img{width:42px;height:42px;border-radius:12px}
+.logo .name{font-family:'Orbitron';font-weight:800;font-size:20px}
 
-/* NAV */
-nav{
-display:flex;
-gap:18px;
-align-items:center;
-}
-nav a{
-color:#cbd5e1;
-text-decoration:none;
-font-size:14px;
-}
+nav{display:flex;gap:15px;align-items:center}
+nav a{color:#cbd5e1;text-decoration:none;font-size:14px}
 
-/* =====================
-   PREMIUM THEME BUTTON
-===================== */
+/* PREMIUM THEME BUTTON */
 
 .theme-container{position:relative}
 
@@ -120,10 +101,7 @@ color:var(--accent);
 font-weight:700;
 cursor:pointer;
 transition:.3s;
-position:relative;
-overflow:hidden;
 }
-
 .theme-toggle:hover{
 background:var(--accent);
 color:#000;
@@ -140,12 +118,6 @@ overflow:hidden;
 display:none;
 min-width:170px;
 box-shadow:0 15px 40px rgba(0,0,0,.6);
-animation:fadeDown .3s ease;
-}
-
-@keyframes fadeDown{
-from{opacity:0;transform:translateY(-10px)}
-to{opacity:1;transform:translateY(0)}
 }
 
 .theme-menu div{
@@ -153,7 +125,6 @@ padding:12px 16px;
 cursor:pointer;
 font-size:13px;
 color:#fff;
-transition:.3s;
 }
 .theme-menu div:hover{
 background:var(--accent);
@@ -161,6 +132,7 @@ color:#000;
 }
 
 /* HERO */
+
 .hero{
 height:100vh;
 display:flex;
@@ -168,12 +140,11 @@ flex-direction:column;
 align-items:center;
 justify-content:center;
 text-align:center;
-padding-top:100px;
+padding-top:140px;
 }
 .hero h1{
 font-family:'Orbitron';
 font-size:56px;
-margin-bottom:20px;
 }
 .hero span{
 color:var(--accent);
@@ -181,6 +152,7 @@ text-shadow:0 0 30px var(--accent);
 }
 
 /* SECTION */
+
 .section{
 max-width:1500px;
 margin:auto;
@@ -193,7 +165,6 @@ border-left:4px solid var(--accent);
 padding-left:12px;
 }
 
-/* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(6,1fr);
@@ -203,7 +174,6 @@ gap:24px;
 @media(max-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:600px){.grid{grid-template-columns:repeat(2,1fr)}}
 
-/* CARD */
 .card{
 background:var(--card);
 backdrop-filter:blur(16px);
@@ -212,15 +182,8 @@ border-radius:18px;
 overflow:hidden;
 transition:.4s;
 }
-.card:hover{
-transform:translateY(-8px);
-box-shadow:0 20px 50px rgba(0,0,0,.6);
-}
-.card img{
-width:100%;
-height:160px;
-object-fit:cover;
-}
+.card:hover{transform:translateY(-8px)}
+.card img{width:100%;height:160px;object-fit:cover}
 .card .info{padding:12px}
 .card b{color:var(--accent);display:block;margin:8px 0}
 .card button{
@@ -231,13 +194,8 @@ border-radius:10px;
 background:var(--accent);
 font-weight:600;
 cursor:pointer;
-transition:.3s;
-}
-.card button:hover{
-box-shadow:0 0 20px var(--accent);
 }
 
-/* PREMIUM SHOW BUTTON */
 .show-btn{
 margin-top:40px;
 padding:14px 35px;
@@ -246,12 +204,7 @@ border-radius:999px;
 background:var(--accent);
 font-weight:800;
 cursor:pointer;
-transition:.3s;
 box-shadow:0 0 20px var(--accent);
-}
-.show-btn:hover{
-transform:scale(1.1);
-box-shadow:0 0 40px var(--accent);
 }
 
 footer{
@@ -265,14 +218,8 @@ color:#64748b;
 
 <body>
 
-<!-- TOP MUSIC VISUALIZER -->
-<div class="music-bar" id="musicBar">
-<div class="m-bar"></div>
-<div class="m-bar"></div>
-<div class="m-bar"></div>
-<div class="m-bar"></div>
-<div class="m-bar"></div>
-</div>
+<!-- FULL WIDTH VISUALIZER -->
+<div class="music-bar" id="musicBar"></div>
 
 <header>
 <div class="header-wrap">
@@ -305,14 +252,12 @@ color:#64748b;
 <h1>Level Up Your <span>Digital Gaming</span></h1>
 </section>
 
-<!-- GAMES -->
 <section class="section" id="games">
 <h2>🎮 Premium Games Vault</h2>
 <div class="grid" id="gameGrid"></div>
 <center><button class="show-btn" id="toggleGames">Show More Games</button></center>
 </section>
 
-<!-- OTT -->
 <section class="section" id="ott">
 <h2>📺 OTT Subscriptions</h2>
 <div class="grid" id="ottGrid"></div>
@@ -333,22 +278,36 @@ document.body.className=t;
 document.getElementById("themeMenu").style.display="none";
 }
 
-/* MUSIC VISUALIZER (only when media plays) */
-const bars=document.querySelectorAll(".m-bar");
-function activateBars(){
-bars.forEach(bar=>{
-bar.style.height=Math.random()*30+10+"px";
-});
+/* REAL AUDIO VISUALIZER */
+const musicBar=document.getElementById("musicBar");
+for(let i=0;i<40;i++){
+let bar=document.createElement("div");
+bar.className="m-bar";
+musicBar.appendChild(bar);
 }
-setInterval(()=>{
-if(document.querySelector("audio,video")?.paused===false){
-activateBars();
-}else{
-bars.forEach(bar=>bar.style.height="10px");
-}
-},200);
 
-/* GAMES 80+ */
+navigator.mediaDevices.getUserMedia({audio:true})
+.then(stream=>{
+const audioContext=new AudioContext();
+const analyser=audioContext.createAnalyser();
+const source=audioContext.createMediaStreamSource(stream);
+source.connect(analyser);
+analyser.fftSize=128;
+const data=new Uint8Array(analyser.frequencyBinCount);
+
+function animate(){
+analyser.getByteFrequencyData(data);
+document.querySelectorAll(".m-bar").forEach((bar,i)=>{
+let val=data[i]/2;
+bar.style.height=val+"px";
+});
+requestAnimationFrame(animate);
+}
+animate();
+})
+.catch(()=>{});
+
+/* 80+ GAMES */
 const games=[];
 const base=[
 ["GTA V",199,"271590"],["RDR2",249,"1174180"],
