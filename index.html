@@ -826,36 +826,59 @@ nav a[href="#ott"]{
 </style>
 <style>
 
-/* 🔥 GLASS EFFECT HEADER */
+/* 🔥 PLAYWITHEASE GLASS HEADER FIXED */
+
 header {
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
-    padding: 15px 40px;
+    height: 70px;
 
-    background: rgba(15, 15, 15, 0.6);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    padding: 0 40px;
 
-    border-bottom: 1px solid rgba(0, 170, 255, 0.3);
-    box-shadow: 0 8px 32px rgba(0, 170, 255, 0.1);
+    background: rgba(0, 0, 0, 0.75); /* darker black */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border-bottom: 1px solid rgba(0, 170, 255, 0.4);
 
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
 
-    z-index: 1000;
+    z-index: 999;
+}
+
+/* Logo */
+header h1 {
+    margin: 0;
+    font-size: 22px;
+    color: #00aaff;
+}
+
+/* Nav */
+header nav {
+    display: flex;
+    align-items: center;
 }
 
 header nav a {
     color: white;
     margin-left: 25px;
     text-decoration: none;
+    font-weight: 500;
     transition: 0.3s;
 }
 
 header nav a:hover {
     color: #00aaff;
+}
+
+/* Body top spacing (IMPORTANT) */
+body {
+    margin: 0;
+    padding-top: 80px; /* Header ke neeche content shift karega */
 }
 
 </style>
