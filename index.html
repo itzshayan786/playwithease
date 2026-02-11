@@ -826,67 +826,29 @@ nav a[href="#ott"]{
 .card:hover h4{
   color:#2563eb;
 }
-/* ===== PREMIUM THEME BUTTON ===== */
+/* ===== PREMIUM CLICK THEME SWITCHER ===== */
 
-.theme-dropdown{
-  position:relative;
-  margin-left:18px;
-}
-
-.theme-toggle{
-  background:rgba(255,255,255,0.15);
-  backdrop-filter:blur(8px);
-  border:1px solid rgba(255,255,255,0.25);
-  color:#fff;
-  padding:8px 16px;
+.premium-theme-btn{
+  margin-left:16px;
+  padding:8px 18px;
   border-radius:999px;
-  font-size:13px;
-  font-weight:600;
-  cursor:pointer;
-  transition:.25s;
-}
-
-.theme-toggle:hover{
-  background:rgba(255,255,255,0.25);
-}
-
-.theme-options{
-  position:absolute;
-  top:42px;
-  right:0;
-  background:#ffffff;
-  border-radius:14px;
-  box-shadow:0 18px 40px rgba(0,0,0,.18);
-  overflow:hidden;
-  min-width:160px;
-  opacity:0;
-  transform:translateY(-10px);
-  pointer-events:none;
-  transition:.25s ease;
-  z-index:9999;
-}
-
-.theme-options button{
-  width:100%;
-  padding:12px 14px;
   border:none;
-  background:#fff;
-  text-align:left;
-  font-size:14px;
   cursor:pointer;
-  transition:.2s;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.3px;
+  transition:.35s ease;
+  background:linear-gradient(135deg,#2563eb,#1d4ed8);
+  color:#fff;
+  box-shadow:0 8px 22px rgba(37,99,235,.4);
 }
 
-.theme-options button:hover{
-  background:#f1f5f9;
-  color:#2563eb;
+.premium-theme-btn:hover{
+  transform:translateY(-2px);
 }
 
-/* show dropdown */
-.theme-dropdown:hover .theme-options{
-  opacity:1;
-  transform:translateY(0);
-  pointer-events:auto;
+.premium-theme-btn:active{
+  transform:scale(.95);
 }
 
 </style>
@@ -918,19 +880,6 @@ nav a[href="#ott"]{
       <a href="login.html" id="loginBtn">Login</a>
       <a href="#" id="logoutBtn" style="display:none">Logout</a>
 
-      <div class="theme-dropdown">
-  <button class="theme-toggle">
-    🎨 Themes
-  </button>
-
-  <div class="theme-options">
-    <button onclick="setTheme('blue')">Blue</button>
-    <button onclick="setTheme('dark')">Dark</button>
-    <button onclick="setTheme('purple')">Purple</button>
-    <button onclick="setTheme('green')">Emerald</button>
-  </div>
-</div>
-
       <!-- PROFILE -->
       <div class="profile-wrap" id="profileWrap" style="display:none">
         <div class="profile-btn" onclick="toggleProfile()">
@@ -943,7 +892,10 @@ nav a[href="#ott"]{
           <a href="#" onclick="firebaseLogout()">Logout</a>
         </div>
       </div>
-
+<button id="themeSwitcher" class="premium-theme-btn">
+  Blue Mode
+</button>
+      
     </nav>
 
   </div>
@@ -1643,6 +1595,61 @@ document.getElementById("xboxToggle").onclick = () => {
     xboxExpanded ? "Show Less Games" : "Show More Games";
   renderConsoleGames("xboxGrid", xboxGames, xboxExpanded);
 };
+  <script>
+
+/* ===== PREMIUM 4 CLICK THEME SWITCHER ===== */
+
+const themes = ["blue","dark","purple","green"];
+let currentThemeIndex = 0;
+
+const btn = document.getElementById("themeSwitcher");
+
+function applyTheme(theme){
+
+  const body = document.body;
+  const header = document.querySelector("header");
+
+  if(theme === "blue"){
+    body.style.background = "#f8fafc";
+    header.style.background = "rgba(59,130,246,0.75)";
+    btn.textContent = "Blue Mode";
+    btn.style.background = "linear-gradient(135deg,#2563eb,#1d4ed8)";
+  }
+
+  if(theme === "dark"){
+    body.style.background = "#0f172a";
+    header.style.background = "#111827";
+    body.style.color = "#f1f5f9";
+    btn.textContent = "Dark Mode";
+    btn.style.background = "linear-gradient(135deg,#111827,#1f2937)";
+  }
+
+  if(theme === "purple"){
+    body.style.background = "#f5f3ff";
+    header.style.background = "linear-gradient(135deg,#7c3aed,#5b21b6)";
+    btn.textContent = "Purple Mode";
+    btn.style.background = "linear-gradient(135deg,#7c3aed,#5b21b6)";
+  }
+
+  if(theme === "green"){
+    body.style.background = "#ecfdf5";
+    header.style.background = "linear-gradient(135deg,#059669,#047857)";
+    btn.textContent = "Emerald Mode";
+    btn.style.background = "linear-gradient(135deg,#059669,#047857)";
+  }
+}
+
+btn.addEventListener("click", () => {
+  currentThemeIndex++;
+  if(currentThemeIndex >= themes.length){
+    currentThemeIndex = 0;
+  }
+  applyTheme(themes[currentThemeIndex]);
+});
+
+/* default load */
+applyTheme("blue");
+
 </script>
 </body>
 </html>
