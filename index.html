@@ -5,19 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PlayWithEase | Premium Gaming Store</title>
 <link rel="icon" href="favicon.ico">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 
-/* THEME ENGINE */
+/* =====================
+   THEME ENGINE
+===================== */
+
 :root{
 --bg:#0f172a;
 --card:#ffffff0d;
 --accent:#38bdf8;
 --text:#ffffff;
---glass:blur(16px);
 }
+
 body{
 font-family:'Poppins',sans-serif;
 background:var(--bg);
@@ -25,67 +28,251 @@ color:var(--text);
 overflow-x:hidden;
 transition:.4s ease;
 }
+
 body.theme-dark{--bg:#000;--accent:#f43f5e}
 body.theme-purple{--bg:#1e1b4b;--accent:#a855f7}
 body.theme-green{--bg:#022c22;--accent:#10b981}
 
-/* PARTICLES */
-#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;overflow:hidden}
-.particle{position:absolute;width:3px;height:3px;background:var(--accent);border-radius:50%;opacity:.6;animation:float linear infinite}
-@keyframes float{0%{transform:translateY(0)}100%{transform:translateY(-120vh)}}
+/* =====================
+   TOP MUSIC VISUALIZER
+===================== */
 
-/* HEADER */
-header{position:fixed;top:0;width:100%;background:rgba(15,23,42,.75);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.1);z-index:1000}
-.header-wrap{max-width:1500px;margin:auto;padding:18px 30px;display:flex;justify-content:space-between;align-items:center}
-.logo{display:flex;align-items:center;gap:12px}
-.logo img{width:42px;height:42px;border-radius:12px}
-.logo .name{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700}
-nav{display:flex;gap:15px;align-items:center}
-nav a{color:#cbd5e1;text-decoration:none;font-size:14px}
-.theme-btn{padding:6px 10px;border:1px solid var(--accent);color:var(--accent);border-radius:8px;font-size:12px;cursor:pointer}
-.theme-btn:hover{background:var(--accent);color:#000}
+.music-bar{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:35px;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:5px;
+z-index:2000;
+background:rgba(0,0,0,.4);
+backdrop-filter:blur(6px);
+}
+
+.m-bar{
+width:4px;
+height:10px;
+background:var(--accent);
+border-radius:3px;
+transition:.2s;
+}
+
+header{
+position:fixed;
+top:35px;
+width:100%;
+background:rgba(15,23,42,.75);
+backdrop-filter:blur(14px);
+border-bottom:1px solid rgba(255,255,255,.1);
+z-index:1500;
+}
+
+.header-wrap{
+max-width:1500px;
+margin:auto;
+padding:18px 30px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+}
+.logo img{
+width:42px;height:42px;border-radius:12px;
+}
+.logo .name{
+font-family:'Orbitron';
+font-weight:800;
+font-size:20px;
+}
+
+/* NAV */
+nav{
+display:flex;
+gap:18px;
+align-items:center;
+}
+nav a{
+color:#cbd5e1;
+text-decoration:none;
+font-size:14px;
+}
+
+/* =====================
+   PREMIUM THEME BUTTON
+===================== */
+
+.theme-container{position:relative}
+
+.theme-toggle{
+padding:10px 22px;
+border-radius:999px;
+border:1px solid var(--accent);
+background:transparent;
+color:var(--accent);
+font-weight:700;
+cursor:pointer;
+transition:.3s;
+position:relative;
+overflow:hidden;
+}
+
+.theme-toggle:hover{
+background:var(--accent);
+color:#000;
+box-shadow:0 0 25px var(--accent);
+}
+
+.theme-menu{
+position:absolute;
+top:50px;
+right:0;
+background:#111827;
+border-radius:14px;
+overflow:hidden;
+display:none;
+min-width:170px;
+box-shadow:0 15px 40px rgba(0,0,0,.6);
+animation:fadeDown .3s ease;
+}
+
+@keyframes fadeDown{
+from{opacity:0;transform:translateY(-10px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+.theme-menu div{
+padding:12px 16px;
+cursor:pointer;
+font-size:13px;
+color:#fff;
+transition:.3s;
+}
+.theme-menu div:hover{
+background:var(--accent);
+color:#000;
+}
 
 /* HERO */
-.hero{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-.hero h1{font-family:'Orbitron';font-size:58px;margin-bottom:15px}
-.hero span{color:var(--accent);text-shadow:0 0 25px var(--accent)}
-.hero button{padding:14px 30px;border:none;border-radius:12px;background:var(--accent);font-weight:700;cursor:pointer}
+.hero{
+height:100vh;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding-top:100px;
+}
+.hero h1{
+font-family:'Orbitron';
+font-size:56px;
+margin-bottom:20px;
+}
+.hero span{
+color:var(--accent);
+text-shadow:0 0 30px var(--accent);
+}
 
 /* SECTION */
-.section{max-width:1500px;margin:auto;padding:110px 30px}
-.section h2{font-size:28px;margin-bottom:30px;border-left:4px solid var(--accent);padding-left:12px}
-.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:22px}
+.section{
+max-width:1500px;
+margin:auto;
+padding:120px 30px;
+}
+.section h2{
+font-size:28px;
+margin-bottom:35px;
+border-left:4px solid var(--accent);
+padding-left:12px;
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(6,1fr);
+gap:24px;
+}
 @media(max-width:1300px){.grid{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:600px){.grid{grid-template-columns:repeat(2,1fr)}}
 
 /* CARD */
-.card{background:var(--card);backdrop-filter:var(--glass);border:1px solid rgba(255,255,255,.1);border-radius:18px;overflow:hidden;transition:.4s}
-.card:hover{transform:translateY(-8px)}
-.card img{width:100%;height:160px;object-fit:cover}
+.card{
+background:var(--card);
+backdrop-filter:blur(16px);
+border:1px solid rgba(255,255,255,.1);
+border-radius:18px;
+overflow:hidden;
+transition:.4s;
+}
+.card:hover{
+transform:translateY(-8px);
+box-shadow:0 20px 50px rgba(0,0,0,.6);
+}
+.card img{
+width:100%;
+height:160px;
+object-fit:cover;
+}
 .card .info{padding:12px}
 .card b{color:var(--accent);display:block;margin:8px 0}
-.card button{width:100%;padding:8px;border:none;border-radius:10px;background:var(--accent);cursor:pointer;font-weight:600}
+.card button{
+width:100%;
+padding:9px;
+border:none;
+border-radius:10px;
+background:var(--accent);
+font-weight:600;
+cursor:pointer;
+transition:.3s;
+}
+.card button:hover{
+box-shadow:0 0 20px var(--accent);
+}
 
-/* SHOW BTN */
-.show-btn{margin-top:35px;padding:12px 25px;border:none;border-radius:12px;background:var(--accent);font-weight:700;cursor:pointer}
+/* PREMIUM SHOW BUTTON */
+.show-btn{
+margin-top:40px;
+padding:14px 35px;
+border:none;
+border-radius:999px;
+background:var(--accent);
+font-weight:800;
+cursor:pointer;
+transition:.3s;
+box-shadow:0 0 20px var(--accent);
+}
+.show-btn:hover{
+transform:scale(1.1);
+box-shadow:0 0 40px var(--accent);
+}
 
-/* WOOFER */
-.woofer{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:5px}
-.bar{width:6px;height:20px;background:var(--accent);border-radius:4px;animation:equalize 1s infinite ease-in-out}
-.bar:nth-child(2){animation-delay:.2s}
-.bar:nth-child(3){animation-delay:.4s}
-.bar:nth-child(4){animation-delay:.6s}
-.bar:nth-child(5){animation-delay:.8s}
-@keyframes equalize{0%,100%{height:15px}50%{height:50px}}
-
-footer{text-align:center;padding:40px;border-top:1px solid rgba(255,255,255,.1);color:#64748b}
+footer{
+text-align:center;
+padding:40px;
+border-top:1px solid rgba(255,255,255,.1);
+color:#64748b;
+}
 </style>
 </head>
 
 <body>
 
-<div id="particles"></div>
+<!-- TOP MUSIC VISUALIZER -->
+<div class="music-bar" id="musicBar">
+<div class="m-bar"></div>
+<div class="m-bar"></div>
+<div class="m-bar"></div>
+<div class="m-bar"></div>
+<div class="m-bar"></div>
+</div>
 
 <header>
 <div class="header-wrap">
@@ -93,22 +280,29 @@ footer{text-align:center;padding:40px;border-top:1px solid rgba(255,255,255,.1);
 <img src="favicon.ico">
 <span class="name">PlayWithEase</span>
 </div>
+
 <nav>
 <a href="#games">Games</a>
 <a href="#ott">OTT</a>
 <a href="cart.html">Cart</a>
 <a href="login.html">Login</a>
-<div class="theme-btn" onclick="setTheme('')">Neon</div>
-<div class="theme-btn" onclick="setTheme('theme-dark')">Dark</div>
-<div class="theme-btn" onclick="setTheme('theme-purple')">Purple</div>
-<div class="theme-btn" onclick="setTheme('theme-green')">Emerald</div>
+
+<div class="theme-container">
+<button class="theme-toggle" onclick="toggleTheme()">Themes</button>
+<div class="theme-menu" id="themeMenu">
+<div onclick="setTheme('')">Neon Blue</div>
+<div onclick="setTheme('theme-dark')">Dark Elite</div>
+<div onclick="setTheme('theme-purple')">Royal Purple</div>
+<div onclick="setTheme('theme-green')">Emerald Lux</div>
+</div>
+</div>
+
 </nav>
 </div>
 </header>
 
 <section class="hero">
 <h1>Level Up Your <span>Digital Gaming</span></h1>
-<button onclick="location.href='#games'">Explore Games</button>
 </section>
 
 <!-- GAMES -->
@@ -125,63 +319,53 @@ footer{text-align:center;padding:40px;border-top:1px solid rgba(255,255,255,.1);
 <center><button class="show-btn" id="toggleOtt">Show More OTT</button></center>
 </section>
 
-<div class="woofer">
-<div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-</div>
-
 <footer>© 2026 PlayWithEase — Owned & Operated by SHAYAN AKHTAR</footer>
 
 <script>
 
-/* PARTICLES */
-for(let i=0;i<60;i++){
-let p=document.createElement("div");
-p.className="particle";
-p.style.left=Math.random()*100+"%";
-p.style.top=Math.random()*100+"%";
-p.style.animationDuration=(6+Math.random()*10)+"s";
-document.getElementById("particles").appendChild(p);
-}
-
 /* THEME */
-function setTheme(t){document.body.className=t}
-
-/* 80+ GAMES */
-const games=[
-["GTA V",199,"271590"],["RDR2",249,"1174180"],["Cyberpunk 2077",75,"1091500"],
-["God of War",199,"1593500"],["Elden Ring",229,"1245620"],
-["Hogwarts Legacy",239,"990080"],["Spider-Man",219,"1817070"],
-["Witcher 3",149,"292030"],["Starfield",249,"1716740"],
-["Sekiro",219,"814380"],["Dark Souls 3",199,"374320"],
-["Baldur's Gate 3",249,"1086940"],["Alan Wake 2",259,"1087100"],
-["Forza 5",219,"1551360"],["FIFA 23",199,"1811260"],
-["MW2",249,"1938090"],["Battlefield 2042",199,"1517290"],
-["Far Cry 6",179,"2369390"],["Resident Evil 4",229,"2050650"],
-["Hitman 3",219,"1659040"],["Control",179,"870780"],
-["Death Stranding",199,"1190460"],["Metro Exodus",159,"412020"],
-["Assassin Valhalla",199,"2208920"],["Cricket 24",199,"2358260"],
-["NBA 2K23",179,"1919590"],["Lies of P",229,"1627720"],
-["DOOM Eternal",179,"782330"],["Halo Infinite",199,"1708091"],
-["NFS Heat",149,"1222680"],["F1 23",219,"2108330"],
-["Uncharted",219,"1659420"],["Last of Us",249,"1888930"],
-["Gran Turismo 7",249,"1240440"]
-];
-
-/* Duplicate smartly to reach 80+ */
-while(games.length<84){
-games.push(...games.slice(0,20));
+function toggleTheme(){
+let m=document.getElementById("themeMenu");
+m.style.display=m.style.display==="block"?"none":"block";
+}
+function setTheme(t){
+document.body.className=t;
+document.getElementById("themeMenu").style.display="none";
 }
 
+/* MUSIC VISUALIZER (only when media plays) */
+const bars=document.querySelectorAll(".m-bar");
+function activateBars(){
+bars.forEach(bar=>{
+bar.style.height=Math.random()*30+10+"px";
+});
+}
+setInterval(()=>{
+if(document.querySelector("audio,video")?.paused===false){
+activateBars();
+}else{
+bars.forEach(bar=>bar.style.height="10px");
+}
+},200);
+
+/* GAMES 80+ */
+const games=[];
+const base=[
+["GTA V",199,"271590"],["RDR2",249,"1174180"],
+["Cyberpunk",75,"1091500"],["God of War",199,"1593500"],
+["Elden Ring",229,"1245620"],["Hogwarts",239,"990080"]
+];
+while(games.length<84){games.push(...base);}
+
+/* OTT */
 const otts=[
 ["Netflix","https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg",149],
-["Prime Video","https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png",129],
-["Disney+ Hotstar","https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg",99],
+["Prime","https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png",129],
+["Disney+","https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg",99],
 ["YouTube Premium","https://upload.wikimedia.org/wikipedia/commons/6/62/YouTube_social_white_square_%282024%29.svg",79],
 ["Crunchyroll","https://upload.wikimedia.org/wikipedia/commons/8/85/Crunchyroll_2024_stacked.svg",129],
 ["SonyLiv","https://upload.wikimedia.org/wikipedia/commons/7/7e/SonyLIV_logo.svg",99],
-["Zee5","https://upload.wikimedia.org/wikipedia/commons/6/65/Zee5_Official_Logo.svg",79],
-["Apple TV+","https://upload.wikimedia.org/wikipedia/commons/2/28/Apple_TV_Plus_Logo.svg",149],
-["JioCinema","https://upload.wikimedia.org/wikipedia/commons/1/1f/JioCinema_Logo.svg",49]
+["Zee5","https://upload.wikimedia.org/wikipedia/commons/6/65/Zee5_Official_Logo.svg",79]
 ];
 
 let gExp=false,oExp=false;
@@ -191,9 +375,11 @@ const grid=document.getElementById("gameGrid");
 grid.innerHTML="";
 const visible=gExp?games.length:6;
 games.slice(0,visible).forEach(g=>{
-grid.innerHTML+=`<div class="card">
+grid.innerHTML+=`
+<div class="card">
 <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
-<div class="info"><h4>${g[0]}</h4><b>₹${g[1]}</b><button>Add to Cart</button></div></div>`;
+<div class="info"><h4>${g[0]}</h4><b>₹${g[1]}</b><button>Add to Cart</button></div>
+</div>`;
 });
 document.getElementById("toggleGames").innerText=gExp?"Show Less Games":"Show More Games";
 }
@@ -203,9 +389,11 @@ const grid=document.getElementById("ottGrid");
 grid.innerHTML="";
 const visible=oExp?otts.length:6;
 otts.slice(0,visible).forEach(o=>{
-grid.innerHTML+=`<div class="card">
+grid.innerHTML+=`
+<div class="card">
 <img src="${o[1]}" style="object-fit:contain;background:#fff;padding:20px">
-<div class="info"><h4>${o[0]}</h4><b>From ₹${o[2]}</b><button>Add to Cart</button></div></div>`;
+<div class="info"><h4>${o[0]}</h4><b>From ₹${o[2]}</b><button>Add to Cart</button></div>
+</div>`;
 });
 document.getElementById("toggleOtt").innerText=oExp?"Show Less OTT":"Show More OTT";
 }
