@@ -24,18 +24,16 @@ transition:.3s;
 overflow-x:hidden;
 }
 
-/* ===== THEMES ===== */
+/* THEMES */
 body.theme-red{--bg:#1f0a0a;--accent:#ef4444}
 body.theme-purple{--bg:#1e1b4b;--accent:#a855f7}
 body.theme-green{--bg:#022c22;--accent:#10b981}
 body.theme-gold{--bg:#000;--accent:#facc15}
 
-/* ===== MUSIC BAR ===== */
+/* MUSIC BAR */
 .music-bar{
 position:fixed;
-top:0;
-left:0;
-width:100%;
+top:0;left:0;width:100%;
 height:26px;
 display:flex;
 align-items:flex-end;
@@ -53,7 +51,7 @@ border-radius:2px;
 transition:.08s linear;
 }
 
-/* ===== HEADER ===== */
+/* HEADER */
 header{
 position:fixed;
 top:26px;
@@ -75,14 +73,13 @@ font-size:20px;
 font-size:11px;
 opacity:.7;
 }
-
 .nav-right{
 display:flex;
 align-items:center;
-gap:10px;
+gap:12px;
 }
 
-/* ===== THEMES BUTTON ===== */
+/* THEME */
 .theme-box{position:relative}
 .theme-main{
 padding:6px 14px;
@@ -93,16 +90,12 @@ color:#fff;
 cursor:pointer;
 transition:.3s;
 }
-.theme-main:hover{
-transform:scale(1.1);
-box-shadow:0 0 12px var(--accent);
-}
+.theme-main:hover{transform:scale(1.1)}
 .theme-dropdown{
 position:absolute;
 top:36px;
 right:0;
 background:var(--card);
-backdrop-filter:blur(15px);
 border-radius:6px;
 overflow:hidden;
 max-height:0;
@@ -115,11 +108,9 @@ cursor:pointer;
 .theme-dropdown div:hover{
 background:var(--accent);
 }
-.theme-dropdown.show{
-max-height:200px;
-}
+.theme-dropdown.show{max-height:200px}
 
-/* ===== HERO ===== */
+/* HERO */
 .hero{
 margin-top:100px;
 display:flex;
@@ -128,86 +119,49 @@ justify-content:space-between;
 padding:40px 20px;
 gap:30px;
 }
+.hero-left{max-width:600px;}
 .hero-left h1{
 font-family:'Orbitron';
 font-size:38px;
+margin-bottom:10px;
 }
-.hero-left span{
-color:var(--accent);
-}
-
-.video-wrap{
-position:relative;
-max-width:450px;
-width:100%;
-}
-.video-wrap video{
-width:100%;
-height:auto;
-object-fit:cover;
-}
-
-/* ===== MUTE BUTTON ===== */
+.hero-left span{color:var(--accent)}
+.video-wrap{position:relative;max-width:450px;width:100%;}
+.video-wrap video{width:100%;}
 .mute-btn{
 position:absolute;
 bottom:8px;
 right:8px;
-width:34px;
-height:34px;
+width:34px;height:34px;
 border-radius:50%;
 border:none;
 background:var(--accent);
 color:#fff;
 cursor:pointer;
-font-size:14px;
-display:flex;
-align-items:center;
-justify-content:center;
-transition:.3s;
-}
-.mute-btn:hover{
-transform:scale(1.15);
 }
 
-/* ===== GRID ===== */
-.section{
-max-width:1300px;
-margin:auto;
-padding:40px 15px;
-}
+/* GRID */
+.section{max-width:1300px;margin:auto;padding:40px 15px;}
 .grid{
 display:grid;
 grid-template-columns:repeat(6,1fr);
 gap:12px;
 }
-
 @media(max-width:900px){
 .hero{flex-direction:column;text-align:center;}
 .grid{grid-template-columns:repeat(3,1fr);}
 }
-@media(max-width:500px){
-.grid{grid-template-columns:repeat(3,1fr);}
-}
-
-/* ===== CARD ===== */
 .card{
 background:var(--card);
 border-radius:8px;
 overflow:hidden;
-transition:.3s;
-}
-.card:hover{
-transform:translateY(-5px);
 }
 .card img{
 width:100%;
 height:120px;
 object-fit:cover;
 }
-.card .info{
-padding:6px;
-font-size:12px;
-}
+.card .info{padding:6px;font-size:12px;}
 .card button{
 margin-top:4px;
 padding:5px;
@@ -215,24 +169,34 @@ width:100%;
 border:none;
 background:var(--accent);
 color:#fff;
-cursor:pointer;
 border-radius:4px;
-transition:.3s;
-}
-.card button:hover{
-transform:scale(1.05);
-box-shadow:0 0 10px var(--accent);
+cursor:pointer;
 }
 
-/* ===== TRUST SECTION ===== */
-.trust{
-margin-top:40px;
-padding:30px 20px;
-text-align:center;
+/* REVIEWS */
+.reviews{
 background:var(--card);
+padding:30px;
+text-align:center;
+margin-top:40px;
 }
-.trust h3{
-margin-bottom:10px;
+
+/* COUNTERS */
+.counters{
+display:flex;
+justify-content:center;
+gap:40px;
+margin-top:30px;
+flex-wrap:wrap;
+}
+.counter h2{
+color:var(--accent);
+}
+
+footer{
+text-align:center;
+padding:40px;
+margin-top:60px;
 }
 </style>
 </head>
@@ -246,10 +210,9 @@ margin-bottom:10px;
 <div class="brand">PlayWithEase</div>
 <div class="tagline">All Your Entertainment Store</div>
 </div>
-
 <div class="nav-right">
 <div>👤</div>
-<div>🛒</div>
+<div>🛒 <span id="cartCount">0</span></div>
 
 <div class="theme-box">
 <button class="theme-main" onclick="toggleThemes()">Themes</button>
@@ -267,11 +230,12 @@ margin-bottom:10px;
 <section class="hero">
 <div class="hero-left">
 <h1>Level Up Your <span>Gaming</span></h1>
+<p>India’s trusted digital platform for premium games and OTT services.</p>
 </div>
 
 <div class="video-wrap">
 <video id="gtaTrailer" autoplay muted loop playsinline crossorigin="anonymous">
-<source src="https://videos.rockstargames.com/v4/s6c5c8co/flv/en-us-720p.mp4" type="video/mp4">
+<source src="https://videos.rockstargames.com/v4/s6c5c8co/flv/en-us-720p.mp4">
 </video>
 <button class="mute-btn" id="muteBtn">🔇</button>
 </div>
@@ -285,28 +249,33 @@ margin-bottom:10px;
 <section class="section">
 <h2>📺 OTT</h2>
 <div class="grid">
-<div class="card"><img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg"><div class="info">Netflix<button>Add to Cart</button></div></div>
-<div class="card"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png"><div class="info">Prime<button>Add to Cart</button></div></div>
-<div class="card"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg"><div class="info">Hotstar<button>Add to Cart</button></div></div>
+<div class="card"><img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg"><div class="info">Netflix<button onclick="addToCart()">Add</button></div></div>
+<div class="card"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png"><div class="info">Prime<button onclick="addToCart()">Add</button></div></div>
 </div>
 </section>
 
-<section class="trust">
-<h3>Why Trust PlayWithEase?</h3>
-<p>✔ Instant Delivery • ✔ Genuine Access • ✔ Secure Payments • ✔ WhatsApp Support</p>
+<section class="reviews">
+<h3>Customer Reviews</h3>
+<p id="reviewText">Fast delivery and genuine account!</p>
 </section>
 
-<script>
-/* ===== THEMES ===== */
-function toggleThemes(){
-document.getElementById("themeDrop").classList.toggle("show");
-}
-function setTheme(t){
-document.body.className=t;
-document.getElementById("themeDrop").classList.remove("show");
-}
+<section class="counters">
+<div class="counter"><h2 id="orders">0</h2><p>Orders</p></div>
+<div class="counter"><h2 id="customers">0</h2><p>Customers</p></div>
+</section>
 
-/* ===== MUSIC BAR ===== */
+<footer>© 2026 PlayWithEase</footer>
+
+<script>
+/* THEME */
+function toggleThemes(){document.getElementById("themeDrop").classList.toggle("show");}
+function setTheme(t){document.body.className=t;document.getElementById("themeDrop").classList.remove("show");}
+
+/* CART */
+let cart=0;
+function addToCart(){cart++;document.getElementById("cartCount").innerText=cart;}
+
+/* MUSIC BAR */
 const musicBar=document.getElementById("musicBar");
 for(let i=0;i<120;i++){
 let bar=document.createElement("div");
@@ -351,7 +320,7 @@ bar.style.height=Math.max(6,data[i]/4)+"px";
 requestAnimationFrame(animate);
 }
 
-/* ===== GAMES ===== */
+/* GAMES */
 const games=[];
 const base=[["GTA V",199,"271590"],["RDR2",249,"1174180"],
 ["Cyberpunk",75,"1091500"],["God of War",199,"1593500"]];
@@ -361,9 +330,23 @@ games.slice(0,36).forEach(g=>{
 grid.innerHTML+=`
 <div class="card">
 <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
-<div class="info">${g[0]}<button>Add to Cart</button></div>
+<div class="info">${g[0]}<button onclick="addToCart()">Add</button></div>
 </div>`;
 });
+
+/* COUNTERS */
+function animateCounter(id,target){
+let el=document.getElementById(id);
+let count=0;
+let step=target/100;
+let interval=setInterval(()=>{
+count+=step;
+if(count>=target){count=target;clearInterval(interval);}
+el.innerText=Math.floor(count);
+},20);
+}
+animateCounter("orders",1250);
+animateCounter("customers",980);
 </script>
 
 </body>
