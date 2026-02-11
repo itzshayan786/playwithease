@@ -4,21 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PlayWithEase</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 
-/* =========================
-   THEME VARIABLES
-========================= */
 :root{
 --bg:#f8fafc;
---card:rgba(255,255,255,0.75);
+--card:#ffffff;
 --accent:#2563eb;
 --text:#0f172a;
---glass:rgba(255,255,255,0.6);
 }
 
 body{
@@ -29,136 +24,51 @@ transition:.3s;
 overflow-x:hidden;
 }
 
-/* THEMES */
-body.theme-dark{
---bg:#0f172a;
---card:rgba(30,41,59,0.7);
---accent:#3b82f6;
---text:#f1f5f9;
---glass:rgba(30,41,59,0.6);
-}
-body.theme-red{--accent:#ef4444}
-body.theme-green{--accent:#10b981}
-body.theme-purple{--accent:#a855f7}
-
-/* =========================
-   MUSIC BAR
-========================= */
+/* ===== MUSIC BAR ===== */
 .music-bar{
-position:fixed;
-top:0;
-left:0;
-width:100%;
+position:fixed;top:0;left:0;width:100%;
 height:24px;
-display:flex;
-align-items:flex-end;
+display:flex;align-items:flex-end;
 justify-content:space-between;
 padding:0 2px;
 background:#000;
 z-index:9999;
 }
 .m-bar{
-flex:1;
-margin:0 1px;
-height:6px;
+flex:1;margin:0 1px;height:6px;
 background:var(--accent);
 border-radius:2px;
 transition:.08s linear;
 }
 
-/* =========================
-   GLASS HEADER (FIXED)
-========================= */
+/* ===== HEADER ===== */
 header{
-position:fixed;
-top:24px;
-width:100%;
+position:fixed;top:24px;width:100%;
 padding:14px 20px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-background:var(--glass);
-backdrop-filter:blur(18px);
--webkit-backdrop-filter:blur(18px);
-border-bottom:1px solid rgba(0,0,0,0.08);
+display:flex;justify-content:space-between;align-items:center;
+background:var(--card);
 z-index:5000;
+border-bottom:1px solid #e5e7eb;
 }
-
-.brand{
-font-family:'Orbitron';
-font-weight:900;
-font-size:18px;
-}
-
+.brand{font-family:'Orbitron';font-weight:900;font-size:18px;}
+.tagline{font-size:11px;opacity:.7;}
 .nav-links{
-display:flex;
-gap:18px;
-align-items:center;
+display:flex;gap:16px;align-items:center;
 }
-
 .nav-links a{
 text-decoration:none;
 color:var(--text);
 font-size:14px;
-transition:.3s;
 }
-
-.nav-links a:hover{
-color:var(--accent);
-}
-
-/* =========================
-   PREMIUM THEME BUTTON
-========================= */
-.theme-box{position:relative;}
-
-.theme-btn{
-padding:6px 16px;
-border-radius:6px;
-border:none;
-background:linear-gradient(135deg,var(--accent),#1d4ed8);
-color:#fff;
-cursor:pointer;
-font-weight:600;
-transition:.3s;
-}
-
-.theme-btn:hover{
-transform:scale(1.1);
-box-shadow:0 0 15px var(--accent);
-}
-
-.theme-dropdown{
-position:absolute;
-top:38px;
-right:0;
-background:var(--card);
-backdrop-filter:blur(18px);
-border-radius:10px;
-box-shadow:0 10px 30px rgba(0,0,0,.15);
-overflow:hidden;
-max-height:0;
-transition:.3s ease;
-}
-
-.theme-dropdown div{
-padding:10px 18px;
-cursor:pointer;
-transition:.2s;
-}
-
-.theme-dropdown div:hover{
+.cart-count{
 background:var(--accent);
 color:#fff;
+padding:2px 6px;
+border-radius:50%;
+font-size:10px;
 }
 
-.theme-dropdown.show{
-max-height:250px;
-}
-
-/* =========================
-   HERO
-========================= */
+/* ===== HERO ===== */
 .hero{
 margin-top:100px;
 display:flex;
@@ -167,138 +77,114 @@ justify-content:space-between;
 padding:30px 15px;
 gap:20px;
 }
-
+.hero-left{max-width:550px;}
 .hero-left h1{
 font-family:'Orbitron';
-font-size:30px;
+font-size:32px;
+margin-bottom:10px;
 }
-
-.video-wrap{
-position:relative;
-max-width:420px;
-width:100%;
-}
-
-.video-wrap video{
-width:100%;
-border-radius:12px;
-}
-
+.hero-left span{color:var(--accent);}
+.video-wrap{position:relative;max-width:420px;width:100%;}
+.video-wrap video{width:100%;border-radius:8px;}
 .mute-btn{
 position:absolute;
-bottom:8px;
-right:8px;
-width:30px;
-height:30px;
+bottom:6px;right:6px;
+width:30px;height:30px;
 border-radius:50%;
 border:none;
 background:var(--accent);
 color:#fff;
 cursor:pointer;
-transition:.3s;
 }
 
-.mute-btn:hover{
-transform:scale(1.15);
-}
-
-/* =========================
-   GRID + CARDS
-========================= */
+/* ===== GRID FIXED MOBILE ===== */
 .section{
 max-width:1200px;
 margin:auto;
 padding:30px 10px;
 }
-
 .grid{
 display:grid;
 grid-template-columns:repeat(6,1fr);
 gap:12px;
 }
 
-@media(max-width:900px){
-.hero{flex-direction:column;text-align:center;}
-.grid{grid-template-columns:repeat(3,1fr);}
+/* TABLET */
+@media(max-width:1024px){
+.grid{grid-template-columns:repeat(4,1fr);}
 }
 
+/* MOBILE FIX */
+@media(max-width:768px){
+.hero{
+flex-direction:column;
+text-align:center;
+}
+.grid{
+grid-template-columns:repeat(3,1fr);
+gap:8px;
+}
+.card img{
+height:90px;
+}
+}
+
+/* SMALL MOBILE */
+@media(max-width:480px){
+.grid{
+grid-template-columns:repeat(2,1fr);
+}
+}
+
+/* CARD */
 .card{
 background:var(--card);
-backdrop-filter:blur(12px);
-border-radius:12px;
+border-radius:6px;
 overflow:hidden;
-border:1px solid rgba(0,0,0,0.06);
-transition:.3s;
-cursor:pointer;
+transition:.2s;
+border:1px solid #e5e7eb;
 }
-
 .card:hover{
-transform:translateY(-6px);
-box-shadow:0 15px 30px rgba(0,0,0,.12);
+transform:translateY(-4px);
+box-shadow:0 0 10px rgba(0,0,0,.1);
 }
-
 .card img{
 width:100%;
 height:110px;
 object-fit:cover;
 }
-
 .card .info{
-padding:10px;
-font-size:13px;
+padding:6px;
+font-size:12px;
 }
-
 .card button{
-margin-top:6px;
+margin-top:4px;
 padding:6px;
 width:100%;
 border:none;
 background:var(--accent);
 color:#fff;
-border-radius:6px;
+border-radius:4px;
 cursor:pointer;
-transition:.2s;
+font-size:12px;
 }
 
-.card button:hover{
-transform:scale(1.05);
-}
-
-/* SHOW MORE */
-.show-more{
-text-align:center;
-margin-top:20px;
-}
-
+.show-more{text-align:center;margin-top:15px;}
 .show-more button{
-padding:8px 20px;
+padding:8px 18px;
 background:var(--accent);
-border:none;
-color:#fff;
-border-radius:6px;
+border:none;color:#fff;
+border-radius:4px;
 cursor:pointer;
-transition:.3s;
 }
 
-.show-more button:hover{
-transform:scale(1.1);
-}
-
-/* =========================
-   TRUSTPILOT
-========================= */
 .trustpilot{
-margin-top:40px;
-background:#ffffff;
-padding:25px;
+margin-top:30px;
+background:#fff;
+padding:20px;
 text-align:center;
-border-radius:12px;
-box-shadow:0 5px 20px rgba(0,0,0,.08);
-}
-.trustpilot a{
-color:#00b67a;
-font-weight:600;
-text-decoration:none;
+border-radius:6px;
+border:1px solid #e5e7eb;
 }
 </style>
 </head>
@@ -308,39 +194,23 @@ text-decoration:none;
 <div class="music-bar" id="musicBar"></div>
 
 <header>
+<div>
 <div class="brand">PlayWithEase</div>
+<div class="tagline">All Your Entertainment Store</div>
+</div>
 
 <div class="nav-links">
 <a href="#">Store</a>
 <a href="#">OTT</a>
 <a href="#">Login</a>
-
-<div class="theme-box">
-<button class="theme-btn" onclick="toggleTheme()">Themes</button>
-<div class="theme-dropdown" id="themeDrop">
-<div onclick="setTheme('')">Minimal</div>
-<div onclick="setTheme('theme-dark')">Dark</div>
-<div onclick="setTheme('theme-red')">Red</div>
-<div onclick="setTheme('theme-green')">Green</div>
-<div onclick="setTheme('theme-purple')">Purple</div>
-</div>
-</div>
-
+<a href="#">Cart <span id="cartCount" class="cart-count">0</span></a>
 </div>
 </header>
 
 <section class="hero">
 <div class="hero-left">
-<h1>Level Up Your Gaming</h1>
-</div>
-<p style="margin-top:12px;font-size:15px;line-height:1.6;opacity:.85;">
-Experience next-generation digital gaming with instant access to premium PC titles, console accounts, and OTT subscriptions — all delivered securely within minutes.  
-No delays. No hassle. Just pure entertainment.
-</p>
-
-<div style="margin-top:18px;padding:14px 18px;border-radius:10px;background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);font-size:14px;font-weight:600;">
-🚀 <span style="color:var(--accent);">We Are Officially Live!</span>  
-PlayWithEase is now serving gamers across India with trusted digital access and lightning-fast support.
+<h1>Level Up Your <span>Gaming</span></h1>
+<p>Premium digital games & entertainment delivered instantly.</p>
 </div>
 
 <div class="video-wrap">
@@ -360,78 +230,46 @@ PlayWithEase is now serving gamers across India with trusted digital access and 
 </section>
 
 <div class="trustpilot">
-⭐ Rated 5 Stars <br>
+⭐ <strong>Rated 5 Stars</strong><br>
 <a href="https://www.trustpilot.com/review/playwithease.in" target="_blank">
 Review Us on Trustpilot →
 </a>
 </div>
 
 <script>
-/* THEME */
-function toggleTheme(){
-document.getElementById("themeDrop").classList.toggle("show");
-}
-function setTheme(t){
-document.body.className=t;
-document.getElementById("themeDrop").classList.remove("show");
+/* CART */
+let cart=0;
+function addToCart(){
+cart++;
+document.getElementById("cartCount").innerText=cart;
 }
 
-/* MUSIC BAR */
-const musicBar=document.getElementById("musicBar");
-for(let i=0;i<80;i++){
-let bar=document.createElement("div");
-bar.className="m-bar";
-musicBar.appendChild(bar);
-}
-
-const bars=document.querySelectorAll(".m-bar");
-const video=document.getElementById("gtaTrailer");
-const muteBtn=document.getElementById("muteBtn");
-
-let ctx, analyser, source;
-let started=false;
-
-document.addEventListener("click",()=>{
-if(!started){
-video.muted=false;
-ctx=new (window.AudioContext||window.webkitAudioContext)();
-analyser=ctx.createAnalyser();
-source=ctx.createMediaElementSource(video);
-source.connect(analyser);
-analyser.connect(ctx.destination);
-analyser.fftSize=128;
-started=true;
-animate();
-muteBtn.textContent="🔊";
-}
-},{once:true});
-
-muteBtn.addEventListener("click",(e)=>{
-e.stopPropagation();
-video.muted=!video.muted;
-muteBtn.textContent=video.muted?"🔇":"🔊";
-});
-
-function animate(){
-if(!analyser) return;
-let data=new Uint8Array(analyser.frequencyBinCount);
-analyser.getByteFrequencyData(data);
-bars.forEach((bar,i)=>{
-bar.style.height=Math.max(6,data[i]/4)+"px";
-});
-requestAnimationFrame(animate);
-}
-
-/* GAMES */
+/* GAME DATA FIXED NAMES */
 const games=[
 ["GTA V",271590],
 ["Red Dead Redemption 2",1174180],
 ["Cyberpunk 2077",1091500],
 ["God of War",1593500],
-["Elden Ring",1245620]
+["Elden Ring",1245620],
+["Hogwarts Legacy",990080],
+["Spider-Man Remastered",1817070],
+["FIFA 23",1811260],
+["Resident Evil 4",2050650],
+["Forza Horizon 5",1551360],
+["Starfield",1716740],
+["The Witcher 3",292030],
+["Sekiro",814380],
+["Battlefield 2042",1517290],
+["Call of Duty MWII",1938090],
+["Need For Speed Heat",1222680],
+["Assassin’s Creed Mirage",3035570],
+["Far Cry 6",2369390],
+["Watch Dogs Legion",2239550],
+["Death Stranding",1190460]
 ];
+
 while(games.length<80){
-games.push(...games.slice(0,5));
+games.push(...games.slice(0,20));
 }
 games.length=80;
 
@@ -446,7 +284,7 @@ grid.innerHTML+=`
 <div class="card">
 <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[1]}/header.jpg">
 <div class="info">${g[0]}
-<button>Add to Cart</button>
+<button onclick="addToCart()">Add to Cart</button>
 </div>
 </div>`;
 });
