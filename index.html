@@ -10,7 +10,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 
-/* ================= THEME ================= */
+/* ===== THEME VARIABLES ===== */
 :root{
 --bg:#0f172a;
 --card:#ffffff0d;
@@ -21,14 +21,13 @@ body{
 font-family:'Poppins',sans-serif;
 background:var(--bg);
 color:var(--text);
-overflow-x:hidden;
 transition:.3s;
 }
 body.theme-dark{--bg:#000;--accent:#f43f5e}
 body.theme-purple{--bg:#1e1b4b;--accent:#a855f7}
 body.theme-green{--bg:#022c22;--accent:#10b981}
 
-/* ================= MUSIC STRIP ================= */
+/* ===== MUSIC STRIP ===== */
 .music-bar{
 position:fixed;
 top:0;
@@ -39,7 +38,7 @@ display:flex;
 align-items:flex-end;
 justify-content:center;
 gap:3px;
-background:rgba(0,0,0,.35);
+background:rgba(0,0,0,.4);
 backdrop-filter:blur(6px);
 z-index:9999;
 padding-bottom:4px;
@@ -52,67 +51,53 @@ border-radius:2px;
 transition:.08s linear;
 }
 
-/* ================= HEADER ================= */
+/* ===== HEADER ===== */
 header{
 position:fixed;
 top:32px;
 width:100%;
-background:rgba(15,23,42,.85);
+background:rgba(15,23,42,.9);
 backdrop-filter:blur(14px);
-border-bottom:1px solid rgba(255,255,255,.1);
 z-index:5000;
 }
 .header-wrap{
-max-width:1500px;
+max-width:1400px;
 margin:auto;
 padding:18px 30px;
 display:flex;
 justify-content:space-between;
 align-items:center;
 }
-.logo{display:flex;align-items:center;gap:12px}
-.logo img{width:42px;height:42px;border-radius:12px}
-.logo .name{font-family:'Orbitron';font-weight:800;font-size:20px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo img{width:38px;height:38px;border-radius:10px}
+.logo .name{font-family:'Orbitron';font-size:20px;font-weight:800}
 nav{display:flex;gap:15px;align-items:center}
 nav a{color:#cbd5e1;text-decoration:none;font-size:14px}
 
 /* ===== THEME BUTTON ===== */
 .theme-container{position:relative}
 .theme-toggle{
-padding:8px 20px;
+padding:8px 18px;
 border-radius:999px;
 border:1px solid var(--accent);
 background:transparent;
 color:var(--accent);
 font-weight:700;
 cursor:pointer;
-transition:.3s;
-}
-.theme-toggle:hover{
-background:var(--accent);
-color:#000;
-box-shadow:0 0 15px var(--accent);
 }
 .theme-menu{
 position:absolute;
-top:45px;
+top:42px;
 right:0;
 background:#111827;
-border-radius:12px;
+border-radius:10px;
 overflow:hidden;
 display:none;
-min-width:160px;
-z-index:6000;
-animation:fadeDown .3s ease;
-}
-@keyframes fadeDown{
-from{opacity:0;transform:translateY(-10px)}
-to{opacity:1;transform:translateY(0)}
+min-width:150px;
 }
 .theme-menu div{
-padding:10px 14px;
+padding:8px 12px;
 cursor:pointer;
-color:#fff;
 font-size:13px;
 }
 .theme-menu div:hover{
@@ -120,7 +105,69 @@ background:var(--accent);
 color:#000;
 }
 
-/* ================= TRAILER OVERLAY ================= */
+/* ===== HERO ===== */
+.hero{
+margin-top:120px;
+padding:80px 20px;
+text-align:center;
+}
+.hero h1{
+font-family:'Orbitron';
+font-size:48px;
+}
+.hero span{
+color:var(--accent);
+text-shadow:0 0 20px var(--accent);
+}
+
+/* ===== SECTION ===== */
+.section{
+max-width:1400px;
+margin:auto;
+padding:60px 20px;
+}
+.section h2{
+margin-bottom:25px;
+border-left:4px solid var(--accent);
+padding-left:10px;
+}
+
+/* ===== GRID ===== */
+.grid{
+display:grid;
+grid-template-columns:repeat(6,1fr);
+gap:20px;
+}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:800px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:500px){.grid{grid-template-columns:repeat(2,1fr)}}
+
+.card{
+background:var(--card);
+backdrop-filter:blur(14px);
+border-radius:14px;
+overflow:hidden;
+transition:.3s;
+}
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 12px 30px rgba(0,0,0,.4);
+}
+.card img{width:100%;height:140px;object-fit:cover}
+.card .info{padding:10px}
+.card b{color:var(--accent)}
+.card button{
+margin-top:6px;
+width:100%;
+padding:6px;
+border:none;
+border-radius:6px;
+background:var(--accent);
+font-weight:600;
+cursor:pointer;
+}
+
+/* ===== TRAILER OVERLAY ===== */
 .trailer-overlay{
 position:fixed;
 right:20px;
@@ -128,20 +175,22 @@ bottom:20px;
 width:320px;
 height:180px;
 background:#000;
-border-radius:14px;
+border-radius:12px;
 overflow:hidden;
-box-shadow:0 10px 30px rgba(0,0,0,.6);
+box-shadow:0 10px 25px rgba(0,0,0,.6);
 z-index:8000;
-animation:fadeIn .6s ease;
-}
-@keyframes fadeIn{
-from{opacity:0;transform:translateY(20px)}
-to{opacity:1;transform:translateY(0)}
 }
 .trailer-overlay video{
 width:100%;
 height:100%;
 object-fit:cover;
+}
+
+footer{
+text-align:center;
+padding:40px;
+border-top:1px solid rgba(255,255,255,.1);
+margin-top:60px;
 }
 </style>
 </head>
@@ -149,18 +198,6 @@ object-fit:cover;
 <body>
 
 <div class="music-bar" id="musicBar"></div>
-
-<!-- AUTO TRAILER -->
-<div class="trailer-overlay">
-<video id="gtaTrailer"
-autoplay
-muted
-loop
-playsinline
-crossorigin="anonymous">
-<source src="https://videos.rockstargames.com/v4/s6c5c8co/flv/en-us-720p.mp4" type="video/mp4">
-</video>
-</div>
 
 <header>
 <div class="header-wrap">
@@ -188,6 +225,35 @@ crossorigin="anonymous">
 </div>
 </header>
 
+<section class="hero">
+<h1>Level Up Your <span>Digital Gaming</span></h1>
+</section>
+
+<section class="section" id="games">
+<h2>🎮 Premium Games Vault</h2>
+<div class="grid" id="gameGrid"></div>
+</section>
+
+<section class="section" id="ott">
+<h2>📺 OTT Subscriptions</h2>
+<div class="grid" id="ottGrid"></div>
+</section>
+
+<!-- GTA TRAILER -->
+<div class="trailer-overlay">
+<video id="gtaTrailer"
+autoplay
+muted
+loop
+controls
+playsinline
+crossorigin="anonymous">
+<source src="https://videos.rockstargames.com/v4/s6c5c8co/flv/en-us-720p.mp4" type="video/mp4">
+</video>
+</div>
+
+<footer>© 2026 PlayWithEase — Owned & Operated by SHAYAN AKHTAR</footer>
+
 <script>
 /* ===== THEME ===== */
 function toggleTheme(){
@@ -199,7 +265,7 @@ document.body.className=t;
 document.getElementById("themeMenu").style.display="none";
 }
 
-/* ===== VISUALIZER ===== */
+/* ===== MUSIC VISUALIZER ===== */
 const musicBar=document.getElementById("musicBar");
 for(let i=0;i<60;i++){
 let bar=document.createElement("div");
@@ -209,11 +275,8 @@ musicBar.appendChild(bar);
 const bars=document.querySelectorAll(".m-bar");
 const video=document.getElementById("gtaTrailer");
 
-let audioCtx;
-let analyser;
-let source;
+let audioCtx, analyser, source;
 
-/* Enable audio on first interaction */
 document.body.addEventListener("click",()=>{
 if(!audioCtx){
 audioCtx=new (window.AudioContext||window.webkitAudioContext)();
@@ -237,6 +300,38 @@ bar.style.height=Math.max(6,data[i]/6)+"px";
 });
 requestAnimationFrame(animate);
 }
+
+/* ===== SAMPLE GAMES (80+) ===== */
+const games=[];
+const base=[["GTA V",199,"271590"],["RDR2",249,"1174180"],
+["Cyberpunk",75,"1091500"],["God of War",199,"1593500"],
+["Elden Ring",229,"1245620"],["Hogwarts",239,"990080"]];
+while(games.length<84){games.push(...base);}
+const gameGrid=document.getElementById("gameGrid");
+games.slice(0,12).forEach(g=>{
+gameGrid.innerHTML+=`
+<div class="card">
+<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
+<div class="info"><h4>${g[0]}</h4><b>₹${g[1]}</b><button>Add to Cart</button></div>
+</div>`;
+});
+
+/* ===== OTT ===== */
+const otts=[
+["Netflix","https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg",149],
+["Prime","https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png",129],
+["Disney+","https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg",99],
+["YouTube Premium","https://upload.wikimedia.org/wikipedia/commons/6/62/YouTube_social_white_square_%282024%29.svg",79],
+["Crunchyroll","https://upload.wikimedia.org/wikipedia/commons/8/85/Crunchyroll_2024_stacked.svg",129]
+];
+const ottGrid=document.getElementById("ottGrid");
+otts.forEach(o=>{
+ottGrid.innerHTML+=`
+<div class="card">
+<img src="${o[1]}" style="object-fit:contain;background:#fff;padding:15px">
+<div class="info"><h4>${o[0]}</h4><b>From ₹${o[2]}</b><button>Add to Cart</button></div>
+</div>`;
+});
 </script>
 
 </body>
