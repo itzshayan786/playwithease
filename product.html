@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Product | PlayWithEase</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{box-sizing:border-box;font-family:Poppins,Arial}
+body{margin:0;background:#f8fafc;color:#0f172a}
+
+header{
+  background:#2563eb;
+  color:#fff;
+  padding:16px;
+  font-weight:800;
+}
+
+.container{
+  max-width:1100px;
+  margin:30px auto;
+  padding:0 16px;
+  display:grid;
+  grid-template-columns:1fr 1.2fr;
+  gap:30px;
+}
+
+.img-box img{
+  width:100%;
+  border-radius:18px;
+  box-shadow:0 14px 34px rgba(0,0,0,.15);
+}
+
+h1{margin:0;font-size:28px}
+.price{
+  font-size:26px;
+  font-weight:800;
+  color:#16a34a;
+  margin:10px 0;
+}
+
+.badges span{
+  display:inline-block;
+  background:#e0e7ff;
+  color:#2563eb;
+  padding:6px 12px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  margin-right:6px;
+}
+
+.desc{
+  margin:16px 0;
+  line-height:1.6;
+  color:#475569;
+}
+
+.actions{
+  display:flex;
+  gap:12px;
+  margin-top:20px;
+}
+button{
+  border:none;
+  padding:14px 22px;
+  border-radius:12px;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+}
+.cart{background:#2563eb;color:#fff}
+.whatsapp{background:#16a34a;color:#fff}
+
+@media(max-width:800px){
+  .container{grid-template-columns:1fr}
+}
+.product-img{
+  width:100%;
+  max-height:320px;
+  object-fit:contain;   /* OTT logos ke liye perfect */
+  background:#ffffff;
+  padding:24px;
+  border-radius:18px;
+  box-shadow:0 14px 34px rgba(0,0,0,.12);
+}
+  .details{
+  margin-top:20px;
+  background:#f8fafc;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:16px;
+}
+
+.details h3{
+  margin:0 0 10px;
+  font-size:16px;
+}
+
+.details ul{
+  padding-left:18px;
+  margin:0;
+  font-size:14px;
+  color:#334155;
+}
+
+.details li{
+  margin-bottom:6px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="index.html" style="color:#fff;text-decoration:none">← Back</a>
+</header>
+
+<div class="container">
+  <div class="img-box">
+  <img id="gameImg" class="product-img">
+</div>
+
+  <div>
+    <h1 id="gameName"></h1>
+    <div class="price" id="gamePrice"></div>
+
+    <div class="badges">
+      <span>Instant Delivery</span>
+      <span>Trusted</span>
+      <span>WhatsApp Support</span>
+    </div>
+
+    <div class="desc" id="gameDesc"></div>
+    <div class="details">
+  <h3>Product Details</h3>
+  <ul>
+    <li>✔ Instant Digital Delivery</li>
+    <li>✔ Genuine & Verified</li>
+    <li>✔ Works on All Devices</li>
+    <li>✔ WhatsApp Support Available</li>
+    <li>✔ Replacement Warranty*</li>
+  </ul>
+</div>
+    <div class="actions">
+      <button class="cart" onclick="addToCart()">Add to Cart</button>
+      <button class="whatsapp" onclick="orderWhatsApp()">Order on WhatsApp</button>
+    </div>
+  </div>
+</div>
+<script>
+const products = {
+
+  /* ===== PC GAMES ===== */
+  "271590":{
+    name:"GTA V",
+    price:199,
+    type:"Rockstar Activation Key (Global)",
+    img:"https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg",
+    desc:"GTA V PC – Rockstar Activation Key. Instant digital delivery."
+  },
+
+  "1091500":{
+    name:"Cyberpunk 2077",
+    price:75,
+    type:"Steam Account",
+    img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg",
+    desc:"Cyberpunk 2077 Ultimate Edition for PC."
+  },
+
+  /* ===== OTT ===== */
+  "netflix":{
+    name:"Netflix Subscription",
+    price:149,
+    type:"OTT Subscription",
+    img:"https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg",
+    desc:"Netflix Premium subscription. Instant activation."
+  },
+
+  "prime":{
+    name:"Amazon Prime Video",
+    price:129,
+    type:"OTT Subscription",
+    img:"https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png",
+    desc:"Amazon Prime Video subscription."
+  },
+
+  "hotstar":{
+    name:"Disney+ Hotstar",
+    price:99,
+    type:"OTT Subscription",
+    img:"https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg",
+    desc:"Disney+ Hotstar subscription."
+  },
+
+  "youtube":{
+    name:"YouTube Premium",
+    price:79,
+    type:"OTT Subscription",
+    img:"https://upload.wikimedia.org/wikipedia/commons/6/62/YouTube_social_white_square_%282024%29.svg",
+    desc:"YouTube Premium – No ads."
+  },
+
+  "crunchyroll":{
+    name:"Crunchyroll",
+    price:129,
+    type:"OTT Subscription",
+    img:"https://upload.wikimedia.org/wikipedia/commons/8/85/Crunchyroll_2024_stacked.svg",
+    desc:"Crunchyroll anime streaming subscription."
+  }
+};
+
+/* GET ID FROM URL */
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+const p = products[id];
+
+if(!p){
+  document.body.innerHTML = "Product not found";
+}else{
+  document.getElementById("gameImg").src = p.img;
+document.getElementById("gameName").textContent = p.name;
+document.getElementById("gamePrice").textContent = "₹" + p.price;
+document.getElementById("gameDesc").textContent = p.desc;
+}
+
+/* CART */
+function addToCart(){
+  let cart = JSON.parse(localStorage.getItem("cart")||"[]");
+  cart.push({name:p.name, price:p.price});
+  localStorage.setItem("cart",JSON.stringify(cart));
+  alert("Added to cart");
+}
+
+/* WHATSAPP */
+function orderWhatsApp(){
+  const msg = `Hi PlayWithEase 👋\nI want to buy ${p.name} for ₹${p.price}`;
+  window.open("https://wa.me/917001568884?text="+encodeURIComponent(msg));
+}
+</script>
+
+</body>
+</html>
