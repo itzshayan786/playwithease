@@ -924,6 +924,71 @@ body.theme-green .card button,
 body.theme-green .btn.primary{
 background:linear-gradient(135deg,#059669,#065f46);
 }
+/* ==================================
+   🔥 PREMIUM ANIMATED THEME BUTTON
+================================== */
+
+.premium-theme-btn{
+  position:relative;
+  margin-left:18px;
+  padding:10px 22px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.25);
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.4px;
+  cursor:pointer;
+
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+
+  color:#fff;
+  overflow:hidden;
+  transition:.35s ease;
+}
+
+/* Animated glow border */
+.premium-theme-btn::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius:999px;
+  background:linear-gradient(45deg,#00c6ff,#0072ff,#00c6ff);
+  z-index:-1;
+  opacity:.6;
+  animation:glowRotate 4s linear infinite;
+}
+
+/* Shine sweep */
+.premium-theme-btn::after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-100%;
+  width:100%;
+  height:100%;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.4),transparent);
+  transition:.6s;
+}
+
+.premium-theme-btn:hover::after{
+  left:100%;
+}
+
+.premium-theme-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 30px rgba(0,198,255,.4);
+}
+
+.premium-theme-btn:active{
+  transform:scale(.96);
+}
+
+@keyframes glowRotate{
+  0%{filter:hue-rotate(0deg);}
+  100%{filter:hue-rotate(360deg);}
+}
 
 </style>
 </head>
