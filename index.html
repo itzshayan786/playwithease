@@ -10,8 +10,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 
-/* ================= THEME ================= */
-
+/* ===== THEME ENGINE ===== */
 :root{
 --bg:#0f172a;
 --card:#ffffff0d;
@@ -30,37 +29,35 @@ body.theme-dark{--bg:#000;--accent:#f43f5e}
 body.theme-purple{--bg:#1e1b4b;--accent:#a855f7}
 body.theme-green{--bg:#022c22;--accent:#10b981}
 
-/* ================= FULL WIDTH MUSIC BAR ================= */
-
+/* ===== SLIM FULL WIDTH MUSIC STRIP ===== */
 .music-bar{
 position:fixed;
 top:0;
 left:0;
 width:100%;
-height:55px;
+height:32px;
 display:flex;
 align-items:flex-end;
 justify-content:center;
-gap:4px;
-background:rgba(0,0,0,.5);
-backdrop-filter:blur(8px);
+gap:3px;
+background:rgba(0,0,0,.35);
+backdrop-filter:blur(6px);
 z-index:3000;
-padding-bottom:6px;
+padding-bottom:4px;
 }
 
 .m-bar{
-width:6px;
-height:10px;
+width:3px;
+height:6px;
 background:var(--accent);
-border-radius:4px;
-transition:.1s;
+border-radius:2px;
+transition:.15s ease;
 }
 
-/* ================= HEADER ================= */
-
+/* ===== HEADER ===== */
 header{
 position:fixed;
-top:55px;
+top:32px;
 width:100%;
 background:rgba(15,23,42,.75);
 backdrop-filter:blur(14px);
@@ -88,12 +85,11 @@ gap:12px;
 nav{display:flex;gap:15px;align-items:center}
 nav a{color:#cbd5e1;text-decoration:none;font-size:14px}
 
-/* PREMIUM THEME BUTTON */
-
+/* ===== PREMIUM THEME BUTTON ===== */
 .theme-container{position:relative}
 
 .theme-toggle{
-padding:10px 22px;
+padding:8px 20px;
 border-radius:999px;
 border:1px solid var(--accent);
 background:transparent;
@@ -105,34 +101,32 @@ transition:.3s;
 .theme-toggle:hover{
 background:var(--accent);
 color:#000;
-box-shadow:0 0 25px var(--accent);
+box-shadow:0 0 20px var(--accent);
 }
 
 .theme-menu{
 position:absolute;
-top:50px;
+top:45px;
 right:0;
 background:#111827;
-border-radius:14px;
+border-radius:12px;
 overflow:hidden;
 display:none;
-min-width:170px;
-box-shadow:0 15px 40px rgba(0,0,0,.6);
+min-width:160px;
 }
 
 .theme-menu div{
-padding:12px 16px;
+padding:10px 14px;
 cursor:pointer;
-font-size:13px;
 color:#fff;
+font-size:13px;
 }
 .theme-menu div:hover{
 background:var(--accent);
 color:#000;
 }
 
-/* HERO */
-
+/* ===== HERO ===== */
 .hero{
 height:100vh;
 display:flex;
@@ -140,27 +134,26 @@ flex-direction:column;
 align-items:center;
 justify-content:center;
 text-align:center;
-padding-top:140px;
+padding-top:120px;
 }
 .hero h1{
 font-family:'Orbitron';
-font-size:56px;
+font-size:52px;
 }
 .hero span{
 color:var(--accent);
-text-shadow:0 0 30px var(--accent);
+text-shadow:0 0 25px var(--accent);
 }
 
-/* SECTION */
-
+/* ===== SECTION ===== */
 .section{
 max-width:1500px;
 margin:auto;
 padding:120px 30px;
 }
 .section h2{
-font-size:28px;
-margin-bottom:35px;
+font-size:26px;
+margin-bottom:30px;
 border-left:4px solid var(--accent);
 padding-left:12px;
 }
@@ -168,7 +161,7 @@ padding-left:12px;
 .grid{
 display:grid;
 grid-template-columns:repeat(6,1fr);
-gap:24px;
+gap:22px;
 }
 @media(max-width:1300px){.grid{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
@@ -178,33 +171,33 @@ gap:24px;
 background:var(--card);
 backdrop-filter:blur(16px);
 border:1px solid rgba(255,255,255,.1);
-border-radius:18px;
+border-radius:16px;
 overflow:hidden;
 transition:.4s;
 }
-.card:hover{transform:translateY(-8px)}
-.card img{width:100%;height:160px;object-fit:cover}
+.card:hover{transform:translateY(-6px)}
+.card img{width:100%;height:150px;object-fit:cover}
 .card .info{padding:12px}
 .card b{color:var(--accent);display:block;margin:8px 0}
 .card button{
 width:100%;
-padding:9px;
+padding:8px;
 border:none;
-border-radius:10px;
+border-radius:8px;
 background:var(--accent);
 font-weight:600;
 cursor:pointer;
 }
 
 .show-btn{
-margin-top:40px;
-padding:14px 35px;
+margin-top:30px;
+padding:12px 30px;
 border:none;
 border-radius:999px;
 background:var(--accent);
 font-weight:800;
 cursor:pointer;
-box-shadow:0 0 20px var(--accent);
+box-shadow:0 0 15px var(--accent);
 }
 
 footer{
@@ -218,7 +211,7 @@ color:#64748b;
 
 <body>
 
-<!-- FULL WIDTH VISUALIZER -->
+<!-- MUSIC STRIP -->
 <div class="music-bar" id="musicBar"></div>
 
 <header>
@@ -278,34 +271,30 @@ document.body.className=t;
 document.getElementById("themeMenu").style.display="none";
 }
 
-/* REAL AUDIO VISUALIZER */
+/* MUSIC STRIP LOGIC (NO MIC) */
 const musicBar=document.getElementById("musicBar");
-for(let i=0;i<40;i++){
+for(let i=0;i<60;i++){
 let bar=document.createElement("div");
 bar.className="m-bar";
 musicBar.appendChild(bar);
 }
 
-navigator.mediaDevices.getUserMedia({audio:true})
-.then(stream=>{
-const audioContext=new AudioContext();
-const analyser=audioContext.createAnalyser();
-const source=audioContext.createMediaStreamSource(stream);
-source.connect(analyser);
-analyser.fftSize=128;
-const data=new Uint8Array(analyser.frequencyBinCount);
+const bars=document.querySelectorAll(".m-bar");
 
-function animate(){
-analyser.getByteFrequencyData(data);
-document.querySelectorAll(".m-bar").forEach((bar,i)=>{
-let val=data[i]/2;
-bar.style.height=val+"px";
+function animateBars(){
+bars.forEach(bar=>{
+bar.style.height=(Math.random()*18+6)+"px";
 });
-requestAnimationFrame(animate);
 }
-animate();
-})
-.catch(()=>{});
+
+setInterval(()=>{
+const media=document.querySelector("audio, video");
+if(media && !media.paused){
+animateBars();
+}else{
+bars.forEach(bar=>bar.style.height="6px");
+}
+},120);
 
 /* 80+ GAMES */
 const games=[];
