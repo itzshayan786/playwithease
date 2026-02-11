@@ -10,7 +10,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 
-/* ===== THEME ===== */
+/* ================= THEME ================= */
 :root{
 --bg:#0f172a;
 --card:#ffffff0d;
@@ -27,7 +27,7 @@ body.theme-dark{--bg:#000;--accent:#f43f5e}
 body.theme-purple{--bg:#1e1b4b;--accent:#a855f7}
 body.theme-green{--bg:#022c22;--accent:#10b981}
 
-/* ===== MUSIC STRIP ===== */
+/* ================= MUSIC STRIP ================= */
 .music-bar{
 position:fixed;
 top:0;
@@ -40,7 +40,7 @@ justify-content:center;
 gap:3px;
 background:rgba(0,0,0,.35);
 backdrop-filter:blur(6px);
-z-index:5000;
+z-index:9999;
 padding-bottom:4px;
 }
 .m-bar{
@@ -51,7 +51,7 @@ border-radius:2px;
 transition:.08s linear;
 }
 
-/* ===== HEADER ===== */
+/* ================= HEADER ================= */
 header{
 position:fixed;
 top:32px;
@@ -59,7 +59,7 @@ width:100%;
 background:rgba(15,23,42,.85);
 backdrop-filter:blur(14px);
 border-bottom:1px solid rgba(255,255,255,.1);
-z-index:4000;
+z-index:5000;
 }
 .header-wrap{
 max-width:1500px;
@@ -75,75 +75,33 @@ align-items:center;
 nav{display:flex;gap:15px;align-items:center}
 nav a{color:#cbd5e1;text-decoration:none;font-size:14px}
 
-/* ===== THEME BUTTON ===== */
-.theme-container{position:relative}
-.theme-toggle{
-padding:8px 20px;
-border-radius:999px;
-border:1px solid var(--accent);
-background:transparent;
-color:var(--accent);
-font-weight:700;
-cursor:pointer;
-transition:.3s;
-}
-.theme-toggle:hover{
-background:var(--accent);
-color:#000;
-}
-.theme-menu{
-position:absolute;
-top:45px;
-right:0;
-background:#111827;
+/* ================= MINI TRAILER ================= */
+.mini-trailer{
+position:fixed;
+right:20px;
+bottom:20px;
+width:260px;
+height:150px;
+background:#000;
 border-radius:12px;
 overflow:hidden;
-display:none;
-min-width:160px;
-z-index:6000;
+box-shadow:0 10px 30px rgba(0,0,0,.6);
+z-index:8000;
 }
-.theme-menu div{
-padding:10px 14px;
-cursor:pointer;
-color:#fff;
-font-size:13px;
-}
-.theme-menu div:hover{
-background:var(--accent);
-color:#000;
-}
-
-/* ===== TRAILER TAB ===== */
-.trailer-tab{
-position:fixed;
-right:-400px;
-top:140px;
-width:400px;
-height:225px;
-background:#000;
-border-radius:16px 0 0 16px;
-overflow:hidden;
-transition:right .4s ease;
-z-index:4500;
-box-shadow:0 0 40px rgba(0,0,0,.6);
-}
-.trailer-handle{
+.mini-header{
 position:absolute;
-left:-45px;
-top:70px;
-width:45px;
-height:90px;
+top:-35px;
+right:0;
 background:var(--accent);
-border-radius:10px 0 0 10px;
-display:flex;
-align-items:center;
-justify-content:center;
-cursor:pointer;
-font-weight:800;
 color:#000;
+padding:6px 14px;
+border-radius:8px 8px 0 0;
+cursor:pointer;
+font-weight:700;
+font-size:12px;
 }
 
-/* ===== HERO ===== */
+/* ================= HERO ================= */
 .hero{
 height:100vh;
 display:flex;
@@ -162,7 +120,7 @@ color:var(--accent);
 text-shadow:0 0 25px var(--accent);
 }
 
-/* ===== CONTENT ===== */
+/* ================= CONTENT ================= */
 .section{
 max-width:1500px;
 margin:auto;
@@ -219,9 +177,7 @@ cursor:pointer;
 box-shadow:0 0 15px var(--accent);
 transition:.3s;
 }
-.show-btn:hover{
-transform:scale(1.05);
-}
+.show-btn:hover{transform:scale(1.05)}
 
 footer{
 text-align:center;
@@ -236,10 +192,10 @@ color:#64748b;
 
 <div class="music-bar" id="musicBar"></div>
 
-<div class="trailer-tab" id="trailerTab">
-<div class="trailer-handle" onclick="toggleTrailer()">🎬</div>
-<video id="trailerVideo" width="100%" height="100%" controls preload="auto">
-<source src="https://cdn.cloudflare.steamstatic.com/steam/apps/256671638/movie480.mp4" type="video/mp4">
+<div class="mini-trailer">
+<div class="mini-header">🎬 GTA V Trailer</div>
+<video id="gtaTrailer" width="100%" height="100%" controls crossorigin="anonymous">
+<source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
 </video>
 </div>
 
@@ -254,15 +210,6 @@ color:#64748b;
 <a href="#ott">OTT</a>
 <a href="cart.html">Cart</a>
 <a href="login.html">Login</a>
-<div class="theme-container">
-<button class="theme-toggle" onclick="toggleTheme()">Themes</button>
-<div class="theme-menu" id="themeMenu">
-<div onclick="setTheme('')">Neon Blue</div>
-<div onclick="setTheme('theme-dark')">Dark Elite</div>
-<div onclick="setTheme('theme-purple')">Royal Purple</div>
-<div onclick="setTheme('theme-green')">Emerald Lux</div>
-</div>
-</div>
 </nav>
 </div>
 </header>
@@ -286,20 +233,7 @@ color:#64748b;
 <footer>© 2026 PlayWithEase — Owned & Operated by SHAYAN AKHTAR</footer>
 
 <script>
-function toggleTheme(){
-let m=document.getElementById("themeMenu");
-m.style.display=m.style.display==="block"?"none":"block";
-}
-function setTheme(t){
-document.body.className=t;
-document.getElementById("themeMenu").style.display="none";
-}
-function toggleTrailer(){
-let tab=document.getElementById("trailerTab");
-tab.style.right = tab.style.right === "0px" ? "-400px" : "0px";
-}
-
-/* VISUALIZER */
+/* MUSIC VISUALIZER */
 const musicBar=document.getElementById("musicBar");
 for(let i=0;i<60;i++){
 let bar=document.createElement("div");
@@ -307,12 +241,13 @@ bar.className="m-bar";
 musicBar.appendChild(bar);
 }
 const bars=document.querySelectorAll(".m-bar");
-const video=document.getElementById("trailerVideo");
+const video=document.getElementById("gtaTrailer");
+
 let audioCtx, analyser, source;
 
 video.addEventListener("play",()=>{
 if(!audioCtx){
-audioCtx=new AudioContext();
+audioCtx=new (window.AudioContext||window.webkitAudioContext)();
 analyser=audioCtx.createAnalyser();
 source=audioCtx.createMediaElementSource(video);
 source.connect(analyser);
@@ -322,6 +257,7 @@ analyser.fftSize=128;
 audioCtx.resume();
 animate();
 });
+
 function animate(){
 const data=new Uint8Array(analyser.frequencyBinCount);
 analyser.getByteFrequencyData(data);
