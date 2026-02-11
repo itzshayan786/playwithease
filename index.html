@@ -1596,60 +1596,70 @@ document.getElementById("xboxToggle").onclick = () => {
   renderConsoleGames("xboxGrid", xboxGames, xboxExpanded);
 };
   <script>
+<script>
 
-/* ===== PREMIUM 4 CLICK THEME SWITCHER ===== */
+/* ===== WORKING PREMIUM THEME SWITCHER ===== */
 
-const themes = ["blue","dark","purple","green"];
-let currentThemeIndex = 0;
+document.addEventListener("DOMContentLoaded", function(){
 
-const btn = document.getElementById("themeSwitcher");
+  const btn = document.getElementById("themeSwitcher");
 
-function applyTheme(theme){
+  if(!btn) return; // safety
 
-  const body = document.body;
-  const header = document.querySelector("header");
+  const themes = ["blue","dark","purple","green"];
+  let current = 0;
 
-  if(theme === "blue"){
-    body.style.background = "#f8fafc";
-    header.style.background = "rgba(59,130,246,0.75)";
-    btn.textContent = "Blue Mode";
-    btn.style.background = "linear-gradient(135deg,#2563eb,#1d4ed8)";
+  function applyTheme(theme){
+
+    const body = document.body;
+    const header = document.querySelector("header");
+
+    // RESET COLORS
+    body.style.color = "";
+    
+    if(theme === "blue"){
+      body.style.background = "#f8fafc";
+      header.style.background = "rgba(59,130,246,0.75)";
+      btn.textContent = "Blue Mode";
+      btn.style.background = "linear-gradient(135deg,#2563eb,#1d4ed8)";
+    }
+
+    if(theme === "dark"){
+      body.style.background = "#0f172a";
+      header.style.background = "#111827";
+      body.style.color = "#f1f5f9";
+      btn.textContent = "Dark Mode";
+      btn.style.background = "linear-gradient(135deg,#111827,#1f2937)";
+    }
+
+    if(theme === "purple"){
+      body.style.background = "#f5f3ff";
+      header.style.background = "linear-gradient(135deg,#7c3aed,#5b21b6)";
+      btn.textContent = "Purple Mode";
+      btn.style.background = "linear-gradient(135deg,#7c3aed,#5b21b6)";
+    }
+
+    if(theme === "green"){
+      body.style.background = "#ecfdf5";
+      header.style.background = "linear-gradient(135deg,#059669,#047857)";
+      btn.textContent = "Emerald Mode";
+      btn.style.background = "linear-gradient(135deg,#059669,#047857)";
+    }
   }
 
-  if(theme === "dark"){
-    body.style.background = "#0f172a";
-    header.style.background = "#111827";
-    body.style.color = "#f1f5f9";
-    btn.textContent = "Dark Mode";
-    btn.style.background = "linear-gradient(135deg,#111827,#1f2937)";
-  }
+  btn.addEventListener("click", function(){
+    current++;
+    if(current >= themes.length){
+      current = 0;
+    }
+    applyTheme(themes[current]);
+  });
 
-  if(theme === "purple"){
-    body.style.background = "#f5f3ff";
-    header.style.background = "linear-gradient(135deg,#7c3aed,#5b21b6)";
-    btn.textContent = "Purple Mode";
-    btn.style.background = "linear-gradient(135deg,#7c3aed,#5b21b6)";
-  }
+  applyTheme("blue");
 
-  if(theme === "green"){
-    body.style.background = "#ecfdf5";
-    header.style.background = "linear-gradient(135deg,#059669,#047857)";
-    btn.textContent = "Emerald Mode";
-    btn.style.background = "linear-gradient(135deg,#059669,#047857)";
-  }
-}
-
-btn.addEventListener("click", () => {
-  currentThemeIndex++;
-  if(currentThemeIndex >= themes.length){
-    currentThemeIndex = 0;
-  }
-  applyTheme(themes[currentThemeIndex]);
 });
 
-/* default load */
-applyTheme("blue");
-
 </script>
+
 </body>
 </html>
