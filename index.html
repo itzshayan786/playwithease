@@ -9,6 +9,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 
+/* ===== THEME SYSTEM ===== */
 :root{
 --bg:#f8fafc;
 --card:#ffffff;
@@ -24,18 +25,32 @@ transition:.3s;
 overflow-x:hidden;
 }
 
+body.theme-dark{
+--bg:#0f172a;
+--card:#1e293b;
+--accent:#3b82f6;
+--text:#f1f5f9;
+}
+body.theme-red{--accent:#ef4444}
+body.theme-green{--accent:#10b981}
+body.theme-purple{--accent:#a855f7}
+
 /* ===== MUSIC BAR ===== */
 .music-bar{
-position:fixed;top:0;left:0;width:100%;
+position:fixed;
+top:0;left:0;width:100%;
 height:24px;
-display:flex;align-items:flex-end;
+display:flex;
+align-items:flex-end;
 justify-content:space-between;
 padding:0 2px;
 background:#000;
 z-index:9999;
 }
 .m-bar{
-flex:1;margin:0 1px;height:6px;
+flex:1;
+margin:0 1px;
+height:6px;
 background:var(--accent);
 border-radius:2px;
 transition:.08s linear;
@@ -43,29 +58,74 @@ transition:.08s linear;
 
 /* ===== HEADER ===== */
 header{
-position:fixed;top:24px;width:100%;
+position:fixed;
+top:24px;width:100%;
 padding:14px 20px;
-display:flex;justify-content:space-between;align-items:center;
+display:flex;
+justify-content:space-between;
+align-items:center;
 background:var(--card);
-z-index:5000;
 border-bottom:1px solid #e5e7eb;
+z-index:5000;
 }
-.brand{font-family:'Orbitron';font-weight:900;font-size:18px;}
-.tagline{font-size:11px;opacity:.7;}
+.brand{
+font-family:'Orbitron';
+font-weight:900;
+font-size:18px;
+}
 .nav-links{
-display:flex;gap:16px;align-items:center;
+display:flex;
+gap:18px;
+align-items:center;
 }
 .nav-links a{
 text-decoration:none;
 color:var(--text);
 font-size:14px;
+transition:.3s;
 }
-.cart-count{
+.nav-links a:hover{
+color:var(--accent);
+}
+
+/* ===== PREMIUM THEME BUTTON ===== */
+.theme-box{position:relative;}
+.theme-btn{
+padding:6px 16px;
+border-radius:6px;
+border:none;
+background:linear-gradient(135deg,var(--accent),#1d4ed8);
+color:#fff;
+cursor:pointer;
+font-weight:600;
+transition:.3s;
+}
+.theme-btn:hover{
+transform:scale(1.1);
+box-shadow:0 0 15px var(--accent);
+}
+.theme-dropdown{
+position:absolute;
+top:38px;
+right:0;
+background:var(--card);
+border-radius:8px;
+box-shadow:0 8px 25px rgba(0,0,0,.15);
+overflow:hidden;
+max-height:0;
+transition:.3s ease;
+}
+.theme-dropdown div{
+padding:10px 16px;
+cursor:pointer;
+transition:.2s;
+}
+.theme-dropdown div:hover{
 background:var(--accent);
 color:#fff;
-padding:2px 6px;
-border-radius:50%;
-font-size:10px;
+}
+.theme-dropdown.show{
+max-height:300px;
 }
 
 /* ===== HERO ===== */
@@ -77,19 +137,25 @@ justify-content:space-between;
 padding:30px 15px;
 gap:20px;
 }
-.hero-left{max-width:550px;}
 .hero-left h1{
 font-family:'Orbitron';
-font-size:32px;
-margin-bottom:10px;
+font-size:30px;
 }
-.hero-left span{color:var(--accent);}
-.video-wrap{position:relative;max-width:420px;width:100%;}
-.video-wrap video{width:100%;border-radius:8px;}
+.video-wrap{
+position:relative;
+max-width:420px;
+width:100%;
+}
+.video-wrap video{
+width:100%;
+border-radius:8px;
+}
 .mute-btn{
 position:absolute;
-bottom:6px;right:6px;
-width:30px;height:30px;
+bottom:8px;
+right:8px;
+width:30px;
+height:30px;
 border-radius:50%;
 border:none;
 background:var(--accent);
@@ -97,7 +163,7 @@ color:#fff;
 cursor:pointer;
 }
 
-/* ===== GRID FIXED MOBILE ===== */
+/* ===== GRID ===== */
 .section{
 max-width:1200px;
 margin:auto;
@@ -108,45 +174,23 @@ display:grid;
 grid-template-columns:repeat(6,1fr);
 gap:12px;
 }
-
-/* TABLET */
-@media(max-width:1024px){
-.grid{grid-template-columns:repeat(4,1fr);}
+@media(max-width:900px){
+.hero{flex-direction:column;text-align:center;}
+.grid{grid-template-columns:repeat(3,1fr);}
 }
 
-/* MOBILE FIX */
-@media(max-width:768px){
-.hero{
-flex-direction:column;
-text-align:center;
-}
-.grid{
-grid-template-columns:repeat(3,1fr);
-gap:8px;
-}
-.card img{
-height:90px;
-}
-}
-
-/* SMALL MOBILE */
-@media(max-width:480px){
-.grid{
-grid-template-columns:repeat(2,1fr);
-}
-}
-
-/* CARD */
+/* ===== ENHANCED CARD ===== */
 .card{
 background:var(--card);
-border-radius:6px;
+border-radius:8px;
 overflow:hidden;
-transition:.2s;
 border:1px solid #e5e7eb;
+transition:.3s;
+cursor:pointer;
 }
 .card:hover{
-transform:translateY(-4px);
-box-shadow:0 0 10px rgba(0,0,0,.1);
+transform:translateY(-6px);
+box-shadow:0 10px 25px rgba(0,0,0,.15);
 }
 .card img{
 width:100%;
@@ -154,11 +198,11 @@ height:110px;
 object-fit:cover;
 }
 .card .info{
-padding:6px;
+padding:8px;
 font-size:12px;
 }
 .card button{
-margin-top:4px;
+margin-top:6px;
 padding:6px;
 width:100%;
 border:none;
@@ -166,25 +210,28 @@ background:var(--accent);
 color:#fff;
 border-radius:4px;
 cursor:pointer;
-font-size:12px;
+transition:.2s;
+}
+.card button:hover{
+transform:scale(1.05);
 }
 
-.show-more{text-align:center;margin-top:15px;}
+/* SHOW MORE */
+.show-more{
+text-align:center;
+margin-top:15px;
+}
 .show-more button{
 padding:8px 18px;
 background:var(--accent);
-border:none;color:#fff;
+border:none;
+color:#fff;
 border-radius:4px;
 cursor:pointer;
+transition:.3s;
 }
-
-.trustpilot{
-margin-top:30px;
-background:#fff;
-padding:20px;
-text-align:center;
-border-radius:6px;
-border:1px solid #e5e7eb;
+.show-more button:hover{
+transform:scale(1.1);
 }
 </style>
 </head>
@@ -194,23 +241,29 @@ border:1px solid #e5e7eb;
 <div class="music-bar" id="musicBar"></div>
 
 <header>
-<div>
 <div class="brand">PlayWithEase</div>
-<div class="tagline">All Your Entertainment Store</div>
-</div>
-
 <div class="nav-links">
 <a href="#">Store</a>
 <a href="#">OTT</a>
 <a href="#">Login</a>
-<a href="#">Cart <span id="cartCount" class="cart-count">0</span></a>
+
+<div class="theme-box">
+<button class="theme-btn" onclick="toggleTheme()">Themes</button>
+<div class="theme-dropdown" id="themeDrop">
+<div onclick="setTheme('')">Minimal</div>
+<div onclick="setTheme('theme-dark')">Dark</div>
+<div onclick="setTheme('theme-red')">Red</div>
+<div onclick="setTheme('theme-green')">Green</div>
+<div onclick="setTheme('theme-purple')">Purple</div>
+</div>
+</div>
+
 </div>
 </header>
 
 <section class="hero">
 <div class="hero-left">
-<h1>Level Up Your <span>Gaming</span></h1>
-<p>Premium digital games & entertainment delivered instantly.</p>
+<h1>Level Up Your Gaming</h1>
 </div>
 
 <div class="video-wrap">
@@ -229,22 +282,63 @@ border:1px solid #e5e7eb;
 </div>
 </section>
 
-<div class="trustpilot">
-⭐ <strong>Rated 5 Stars</strong><br>
-<a href="https://www.trustpilot.com/review/playwithease.in" target="_blank">
-Review Us on Trustpilot →
-</a>
-</div>
-
 <script>
-/* CART */
-let cart=0;
-function addToCart(){
-cart++;
-document.getElementById("cartCount").innerText=cart;
+/* ===== THEME ===== */
+function toggleTheme(){
+document.getElementById("themeDrop").classList.toggle("show");
+}
+function setTheme(t){
+document.body.className=t;
+document.getElementById("themeDrop").classList.remove("show");
 }
 
-/* GAME DATA FIXED NAMES */
+/* ===== MUSIC BAR WORKING ===== */
+const musicBar=document.getElementById("musicBar");
+for(let i=0;i<80;i++){
+let bar=document.createElement("div");
+bar.className="m-bar";
+musicBar.appendChild(bar);
+}
+const bars=document.querySelectorAll(".m-bar");
+const video=document.getElementById("gtaTrailer");
+const muteBtn=document.getElementById("muteBtn");
+
+let ctx, analyser, source;
+let started=false;
+
+/* CLICK ANYWHERE ENABLE SOUND */
+document.addEventListener("click",()=>{
+if(!started){
+video.muted=false;
+ctx=new (window.AudioContext||window.webkitAudioContext)();
+analyser=ctx.createAnalyser();
+source=ctx.createMediaElementSource(video);
+source.connect(analyser);
+analyser.connect(ctx.destination);
+analyser.fftSize=128;
+started=true;
+animate();
+muteBtn.textContent="🔊";
+}
+},{once:true});
+
+muteBtn.addEventListener("click",(e)=>{
+e.stopPropagation();
+video.muted=!video.muted;
+muteBtn.textContent=video.muted?"🔇":"🔊";
+});
+
+function animate(){
+if(!analyser) return;
+let data=new Uint8Array(analyser.frequencyBinCount);
+analyser.getByteFrequencyData(data);
+bars.forEach((bar,i)=>{
+bar.style.height=Math.max(6,data[i]/4)+"px";
+});
+requestAnimationFrame(animate);
+}
+
+/* ===== GAMES ===== */
 const games=[
 ["GTA V",271590],
 ["Red Dead Redemption 2",1174180],
@@ -255,21 +349,10 @@ const games=[
 ["Spider-Man Remastered",1817070],
 ["FIFA 23",1811260],
 ["Resident Evil 4",2050650],
-["Forza Horizon 5",1551360],
-["Starfield",1716740],
-["The Witcher 3",292030],
-["Sekiro",814380],
-["Battlefield 2042",1517290],
-["Call of Duty MWII",1938090],
-["Need For Speed Heat",1222680],
-["Assassin’s Creed Mirage",3035570],
-["Far Cry 6",2369390],
-["Watch Dogs Legion",2239550],
-["Death Stranding",1190460]
+["Forza Horizon 5",1551360]
 ];
-
 while(games.length<80){
-games.push(...games.slice(0,20));
+games.push(...games.slice(0,10));
 }
 games.length=80;
 
@@ -284,7 +367,7 @@ grid.innerHTML+=`
 <div class="card">
 <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[1]}/header.jpg">
 <div class="info">${g[0]}
-<button onclick="addToCart()">Add to Cart</button>
+<button>Add to Cart</button>
 </div>
 </div>`;
 });
