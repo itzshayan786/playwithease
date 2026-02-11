@@ -17,11 +17,14 @@ body{background:#f8fafc;color:#0f172a}
 
 /* HEADER */
 header{
-  background:#3b82f6; /* Light professional blue */
-  border-bottom:1px solid #2563eb;
+  background: rgba(59,130,246,0.75); /* light blue glass */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border-bottom:1px solid rgba(37,99,235,0.6);
   position:sticky;
   top:0;
-  z-index:100
+  z-index:100;
 }
 
 /* Logo */
@@ -823,52 +826,6 @@ nav a[href="#ott"]{
   color:#2563eb;
 }
   
-</style>
-<style>
-/* 🔥 RESET PROBLEM FIX */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Body fix */
-body {
-    font-family: Arial, sans-serif;
-    background: #0f0f0f;  /* Solid Dark Background */
-    color: white;
-    padding-top: 80px;   /* header ke neeche gap */
-}
-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-
-    height: 70px;
-
-    background: rgba(0, 170, 255, 0.15);
-    backdrop-filter: blur(12px);
-
-    border-bottom: 1px solid rgba(0, 170, 255, 0.4);
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 0 60px;
-
-    z-index: 9999;
-}
-
-header * {
-    text-align: left !important;
-}
-
-header {
-    margin: 0 !important;
-}
-
 </style>
 
 </head>
