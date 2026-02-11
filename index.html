@@ -833,48 +833,56 @@ nav a[href="#ott"]{
 <body>
 
 <header>
-<div class="header-wrap">
-  <div class="logo">
-    <img src="favicon.ico">
-    <div>
-      <span class="name">PlayWithEase</span>
-      <span class="tag">Trusted Games & OTT Store</span>
+  <div class="header-wrap">
+
+    <div class="logo">
+      <img src="favicon.ico">
+      <div>
+        <span class="name">PlayWithEase</span>
+        <span class="tag">Trusted Games & OTT Store</span>
+      </div>
     </div>
+
+    <nav>
+      <a href="#games">Games</a>
+      <a href="#ott">OTT</a>
+
+      <a href="cart.html">
+        🛒 Cart <span id="cartCount" class="cart-count">0</span>
+      </a>
+
+      <span id="userEmail" style="font-weight:600; display:none"></span>
+
+      <a href="login.html" id="loginBtn">Login</a>
+      <a href="#" id="logoutBtn" style="display:none">Logout</a>
+
+      <!-- 🔥 THEMES OPTION YAHAN DAALNA HAI -->
+      <div class="theme-wrap">
+        <span class="theme-btn">Themes ▾</span>
+        <div class="theme-menu">
+          <button onclick="setTheme('blue')">🔵 Blue</button>
+          <button onclick="setTheme('dark')">🌙 Dark</button>
+          <button onclick="setTheme('purple')">🟣 Purple</button>
+          <button onclick="setTheme('green')">🟢 Emerald</button>
+        </div>
+      </div>
+
+      <!-- PROFILE -->
+      <div class="profile-wrap" id="profileWrap" style="display:none">
+        <div class="profile-btn" onclick="toggleProfile()">
+          <span class="avatar">🙎🏻‍♂️</span>
+        </div>
+
+        <div class="profile-menu" id="profileMenu">
+          <a href="my-account.html">My Account</a>
+          <a href="order-history.html">Order History</a>
+          <a href="#" onclick="firebaseLogout()">Logout</a>
+        </div>
+      </div>
+
+    </nav>
+
   </div>
-  <nav>
-  <a href="#games">Games</a>
-  <a href="#ott">OTT</a>
-
-  <a href="cart.html">
-    🛒 Cart <span id="cartCount" class="cart-count">0</span>
-  </a>
-
-  <!-- USER EMAIL -->
-  <span id="userEmail" style="font-weight:600; display:none"></span>
-
-  <!-- LOGIN -->
-  <a href="login.html" id="loginBtn">Login</a>
-
-  <!-- LOGOUT -->
-  <a href="#" id="logoutBtn" style="display:none">Logout</a>
-<div class="profile-wrap" id="profileWrap" style="display:none">
-  <div class="profile-btn" onclick="toggleProfile()">
-    <span class="avatar" style="
-    margin-left: 3px;
-">🙎🏻&zwj;♂️</span>
-
-  <div class="profile-menu" id="profileMenu">
-  <a href="my-account.html">My Account</a>
-  <a href="order-history.html">Order History</a>
-  <a href="#" onclick="firebaseLogout()">Logout</a>
-</div>
-</nav>
-
-  <!-- LOGIN SYSTEM -->
-  <span id="userEmail" style="font-weight:600"></span>
-  <a href="login.html" id="loginBtn" style="display:none">Login</a>
-</nav>
-</div>
 </header>
 
 <section class="hero">
