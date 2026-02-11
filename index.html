@@ -826,29 +826,103 @@ nav a[href="#ott"]{
 .card:hover h4{
   color:#2563eb;
 }
-/* ===== PREMIUM CLICK THEME SWITCHER ===== */
+/* =====================================
+   🔥 PLAYWITHEASE PREMIUM THEME ENGINE
+===================================== */
 
-.premium-theme-btn{
-  margin-left:16px;
-  padding:8px 18px;
-  border-radius:999px;
-  border:none;
-  cursor:pointer;
-  font-size:13px;
-  font-weight:700;
-  letter-spacing:.3px;
-  transition:.35s ease;
+body{
+  transition:background .5s ease, color .5s ease;
+}
+
+header{
+  transition:all .5s ease;
+}
+
+.card,
+.btn,
+.card button{
+  transition:all .4s ease;
+}
+
+/* ========= THEME: BLUE (DEFAULT) ========= */
+body.theme-blue{
+  background:#f8fafc;
+  color:#0f172a;
+}
+
+body.theme-blue header{
+  background:rgba(59,130,246,.75);
+}
+
+body.theme-blue .card{
+  background:#ffffff;
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+body.theme-blue .card button,
+body.theme-blue .btn.primary{
   background:linear-gradient(135deg,#2563eb,#1d4ed8);
-  color:#fff;
-  box-shadow:0 8px 22px rgba(37,99,235,.4);
 }
 
-.premium-theme-btn:hover{
-  transform:translateY(-2px);
+/* ========= THEME: DARK ELITE ========= */
+body.theme-dark{
+  background:#0b1220;
+  color:#e2e8f0;
 }
 
-.premium-theme-btn:active{
-  transform:scale(.95);
+body.theme-dark header{
+  background:#111827;
+  border-bottom:1px solid #1f2937;
+}
+
+body.theme-dark .card{
+  background:#1e293b;
+  box-shadow:0 12px 35px rgba(0,0,0,.5);
+}
+
+body.theme-dark .card button,
+body.theme-dark .btn.primary{
+  background:linear-gradient(135deg,#3b82f6,#1e40af);
+}
+
+/* ========= THEME: ROYAL PURPLE ========= */
+body.theme-purple{
+  background:#f5f3ff;
+  color:#1e1b4b;
+}
+
+body.theme-purple header{
+  background:linear-gradient(135deg,#7c3aed,#5b21b6);
+}
+
+body.theme-purple .card{
+  background:#ffffff;
+  box-shadow:0 14px 40px rgba(124,58,237,.2);
+}
+
+body.theme-purple .card button,
+body.theme-purple .btn.primary{
+  background:linear-gradient(135deg,#7c3aed,#4c1d95);
+}
+
+/* ========= THEME: EMERALD LUX ========= */
+body.theme-green{
+  background:#ecfdf5;
+  color:#064e3b;
+}
+
+body.theme-green header{
+  background:linear-gradient(135deg,#059669,#047857);
+}
+
+body.theme-green .card{
+  background:#ffffff;
+  box-shadow:0 14px 40px rgba(5,150,105,.2);
+}
+
+body.theme-green .card button,
+body.theme-green .btn.primary{
+  background:linear-gradient(135deg,#059669,#065f46);
 }
 
 </style>
@@ -1598,53 +1672,31 @@ document.getElementById("xboxToggle").onclick = () => {
 </script>
 
 <script>
-/* ===== WORKING PREMIUM THEME SWITCHER ===== */
-
 document.addEventListener("DOMContentLoaded", function(){
 
   const btn = document.getElementById("themeSwitcher");
 
-  if(!btn) return; // safety
+  const themes = [
+    {name:"theme-blue", label:"Blue Mode"},
+    {name:"theme-dark", label:"Dark Elite"},
+    {name:"theme-purple", label:"Royal Purple"},
+    {name:"theme-green", label:"Emerald Lux"}
+  ];
 
-  const themes = ["blue","dark","purple","green"];
   let current = 0;
 
-  function applyTheme(theme){
+  function applyTheme(index){
 
-    const body = document.body;
-    const header = document.querySelector("header");
+    document.body.classList.remove(
+      "theme-blue",
+      "theme-dark",
+      "theme-purple",
+      "theme-green"
+    );
 
-    // RESET COLORS
-    body.style.color = "";
-    
-    if(theme === "blue"){
-      body.style.background = "#f8fafc";
-      header.style.background = "rgba(59,130,246,0.75)";
-      btn.textContent = "Blue Mode";
-      btn.style.background = "linear-gradient(135deg,#2563eb,#1d4ed8)";
-    }
+    document.body.classList.add(themes[index].name);
 
-    if(theme === "dark"){
-      body.style.background = "#0f172a";
-      header.style.background = "#111827";
-      body.style.color = "#f1f5f9";
-      btn.textContent = "Dark Mode";
-      btn.style.background = "linear-gradient(135deg,#111827,#1f2937)";
-    }
-
-    if(theme === "purple"){
-      body.style.background = "#f5f3ff";
-      header.style.background = "linear-gradient(135deg,#7c3aed,#5b21b6)";
-      btn.textContent = "Purple Mode";
-      btn.style.background = "linear-gradient(135deg,#7c3aed,#5b21b6)";
-    }
-
-    if(theme === "green"){
-      body.style.background = "#ecfdf5";
-      header.style.background = "linear-gradient(135deg,#059669,#047857)";
-      btn.textContent = "Emerald Mode";
-      btn.style.background = "linear-gradient(135deg,#059669,#047857)";
-    }
+    btn.textContent = themes[index].label;
   }
 
   btn.addEventListener("click", function(){
@@ -1652,10 +1704,10 @@ document.addEventListener("DOMContentLoaded", function(){
     if(current >= themes.length){
       current = 0;
     }
-    applyTheme(themes[current]);
+    applyTheme(current);
   });
 
-  applyTheme("blue");
+  applyTheme(0); // default
 
 });
 
