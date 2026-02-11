@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login | PlayWithEase</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.ico">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(180deg,#f8fafc,#eef2ff);
+  color:#0f172a;
+}
+
+/* CARD */
+.login-card{
+  width:100%;
+  max-width:420px;
+  background:#fff;
+  border-radius:18px;
+  padding:32px;
+  box-shadow:0 20px 50px rgba(0,0,0,.12);
+}
+
+/* LOGO */
+.login-logo{
+  text-align:center;
+  margin-bottom:22px;
+}
+.login-logo img{
+  width:56px;
+  height:56px;
+  border-radius:14px;
+}
+.login-logo h2{
+  margin-top:10px;
+  font-size:22px;
+  font-weight:800;
+}
+.login-logo span{
+  font-size:13px;
+  color:#64748b;
+}
+
+/* FORM */
+.login-card h3{
+  font-size:20px;
+  margin-bottom:6px;
+}
+.login-card p{
+  font-size:13px;
+  color:#64748b;
+  margin-bottom:22px;
+}
+
+.field{
+  margin-bottom:16px;
+}
+.field label{
+  display:block;
+  font-size:13px;
+  margin-bottom:6px;
+  font-weight:600;
+}
+.field input{
+  width:100%;
+  padding:12px 14px;
+  border-radius:10px;
+  border:1px solid #cbd5e1;
+  outline:none;
+  font-size:14px;
+}
+.field input:focus{
+  border-color:#2563eb;
+  box-shadow:0 0 0 3px rgba(37,99,235,.15);
+}
+
+/* BUTTON */
+.login-btn{
+  width:100%;
+  margin-top:8px;
+  padding:13px;
+  border:none;
+  border-radius:12px;
+  background:#2563eb;
+  color:#fff;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.25s;
+}
+.login-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 30px rgba(37,99,235,.4);
+}
+
+/* LINKS */
+.login-links{
+  display:flex;
+  justify-content:space-between;
+  margin-top:14px;
+  font-size:13px;
+}
+.login-links a{
+  text-decoration:none;
+  color:#2563eb;
+  font-weight:600;
+}
+
+/* FOOT */
+.login-foot{
+  margin-top:22px;
+  text-align:center;
+  font-size:12px;
+  color:#64748b;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-card">
+
+  <div class="login-logo">
+    <img src="favicon.ico" alt="PlayWithEase">
+    <h2>PlayWithEase</h2>
+    <span>Trusted Games & OTT Store</span>
+  </div>
+
+  <h3>Welcome Back 👋</h3>
+  <p>Login to manage your orders and cart</p>
+
+  <div class="field">
+    <label>Email</label>
+    <input type="email" id="email" placeholder="you@example.com">
+  </div>
+
+  <div class="field">
+    <label>Password</label>
+    <input type="password" id="password" placeholder="••••••••">
+  </div>
+
+  <button class="login-btn" onclick="login()">Login</button>
+
+  <div class="login-links">
+    <a href="#">Forgot password?</a>
+    <a href="./register.html">Create account</a>
+  </div>
+
+  <div class="login-foot">
+    Secure login powered by Firebase 🔒
+  </div>
+
+</div>
+
+<!-- FIREBASE LOGIN -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+  authDomain: "playwithease.firebaseapp.com"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+window.login = function(){
+  const email = document.getElementById("email").value;
+  const pass  = document.getElementById("password").value;
+
+  signInWithEmailAndPassword(auth,email,pass)
+    .then(()=>{
+      window.location.href="index.html";
+    })
+    .catch(err=>{
+      alert(err.message);
+    });
+};
+</script>
+
+</body>
+</html>
