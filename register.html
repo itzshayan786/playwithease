@@ -1,0 +1,214 @@
+
+!DOCTYPE html
+html lang=en
+head
+meta charset=UTF-8
+titleCreate Account  PlayWithEasetitle
+
+meta name=viewport content=width=device-width, initial-scale=1.0
+link rel=icon href=favicon.ico
+
+style
+{margin0;padding0;box-sizingborder-box;font-familyPoppins,Arial}
+body{
+  min-height100vh;
+  displayflex;
+  align-itemscenter;
+  justify-contentcenter;
+  backgroundlinear-gradient(135deg,#eef2ff,#f8fafc);
+}
+
+.auth-wrap{
+  width100%;
+  max-width420px;
+  background#fff;
+  border-radius18px;
+  padding32px;
+  box-shadow0 20px 45px rgba(0,0,0,.12);
+}
+
+.logo{
+  text-aligncenter;
+  margin-bottom20px;
+}
+.logo h1{
+  color#2563eb;
+  font-size28px;
+  font-weight800;
+}
+.logo p{
+  font-size13px;
+  color#64748b;
+}
+
+.auth-wrap h2{
+  font-size22px;
+  margin-bottom6px;
+}
+.auth-wrap span{
+  font-size13px;
+  color#64748b;
+}
+
+form{
+  margin-top20px;
+}
+
+input{
+  width100%;
+  padding14px 16px;
+  margin-bottom14px;
+  border-radius10px;
+  border1px solid #cbd5e1;
+  font-size14px;
+  outlinenone;
+}
+inputfocus{
+  border-color#2563eb;
+}
+
+button{
+  width100%;
+  padding14px;
+  bordernone;
+  border-radius10px;
+  background#2563eb;
+  color#fff;
+  font-size15px;
+  font-weight600;
+  cursorpointer;
+  transition.25s;
+}
+buttonhover{
+  background#1e40af;
+}
+
+.extra{
+  margin-top18px;
+  text-aligncenter;
+  font-size13px;
+}
+.extra a{
+  color#2563eb;
+  font-weight600;
+  text-decorationnone;
+}
+.extra ahover{text-decorationunderline}
+   SUCCESS TOAST 
+.toast{
+  positionfixed;
+  top20px;
+  right20px;
+  background#16a34a;
+  color#fff;
+  padding14px 18px;
+  border-radius12px;
+  font-size14px;
+  font-weight600;
+  box-shadow0 12px 30px rgba(22,163,74,.45);
+  displayflex;
+  align-itemscenter;
+  gap8px;
+  opacity0;
+  transformtranslateY(-20px);
+  pointer-eventsnone;
+  transition.35s ease;
+  z-index9999;
+}
+.toast.show{
+  opacity1;
+  transformtranslateY(0);
+}
+.toast span{
+  font-size18px;
+}
+
+style
+head
+
+body
+
+div class=auth-wrap
+  div class=logo
+    h1PlayWithEaseh1
+    pTrusted Games & OTT Storep
+  div
+
+  h2Create Accounth2
+  spanJoin PlayWithEase to buy premium games & OTTspan
+
+  form id=registerForm onsubmit=return false;
+    input id=email type=email placeholder=Email address required
+    input id=password type=password placeholder=Password required
+    input id=confirmPassword type=password placeholder=Confirm password required
+
+    button type=button onclick=signupUser()
+      Create Account
+    button
+
+    p id=errorMsg style=colorred;font-size13px;margin-top10pxp
+  form
+
+  div class=extra
+    Already have an account
+    a href=login.htmlLogina
+  div
+div
+
+!-- 🔥 ONLY ONE SCRIPT, AT THE END --
+script type=module
+import { initializeApp } from httpswww.gstatic.comfirebasejs10.7.1firebase-app.js;
+import {
+  getAuth,
+  createUserWithEmailAndPassword
+} from httpswww.gstatic.comfirebasejs10.7.1firebase-auth.js;
+
+const firebaseConfig = {
+  apiKey AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs,
+  authDomain playwithease.firebaseapp.com,
+  projectId playwithease,
+  storageBucket playwithease.firebasestorage.app,
+  messagingSenderId 189729941006,
+  appId 1189729941006web362653774b92416c357e5f
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+ 🔥 GLOBAL FUNCTION 
+window.signupUser = async function () {
+  const email = document.getElementById(email).value.trim();
+  const password = document.getElementById(password).value.trim();
+  const confirm = document.getElementById(confirmPassword).value.trim();
+  const errorBox = document.getElementById(errorMsg);
+
+  errorBox.innerText = ;
+
+  if(password !== confirm){
+    errorBox.innerText = Passwords do not match;
+    return;
+  }
+
+  try{
+    await createUserWithEmailAndPassword(auth, email, password);
+    const toast = document.getElementById(successToast);
+toast.classList.add(show);
+
+setTimeout(()={
+  toast.classList.remove(show);
+  window.location.href = index.html;
+},2500);
+
+  }catch(err){
+    errorBox.innerText = err.message;
+    console.error(err);
+  }
+};
+script
+div id=successToast class=toast
+  span✅span
+  Account created successfully
+div
+  
+body
+html
