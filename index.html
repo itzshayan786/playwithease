@@ -22,6 +22,7 @@ font-family:'Poppins',sans-serif;
 background:var(--bg);
 color:var(--text);
 overflow-x:hidden;
+transition:.3s;
 }
 body.theme-dark{--bg:#000;--accent:#f43f5e}
 body.theme-purple{--bg:#1e1b4b;--accent:#a855f7}
@@ -75,30 +76,89 @@ align-items:center;
 nav{display:flex;gap:15px;align-items:center}
 nav a{color:#cbd5e1;text-decoration:none;font-size:14px}
 
-/* ================= MINI TRAILER ================= */
-.mini-trailer{
-position:fixed;
-right:20px;
-bottom:20px;
-width:260px;
-height:150px;
-background:#000;
+/* ===== THEME BUTTON ===== */
+.theme-container{position:relative}
+.theme-toggle{
+padding:8px 20px;
+border-radius:999px;
+border:1px solid var(--accent);
+background:transparent;
+color:var(--accent);
+font-weight:700;
+cursor:pointer;
+transition:.3s;
+}
+.theme-toggle:hover{
+background:var(--accent);
+color:#000;
+box-shadow:0 0 15px var(--accent);
+}
+.theme-menu{
+position:absolute;
+top:45px;
+right:0;
+background:#111827;
 border-radius:12px;
+overflow:hidden;
+display:none;
+min-width:160px;
+z-index:6000;
+animation:fadeDown .3s ease;
+}
+@keyframes fadeDown{
+from{opacity:0;transform:translateY(-10px)}
+to{opacity:1;transform:translateY(0)}
+}
+.theme-menu div{
+padding:10px 14px;
+cursor:pointer;
+color:#fff;
+font-size:13px;
+}
+.theme-menu div:hover{
+background:var(--accent);
+color:#000;
+}
+
+/* ================= TRAILER TAB ================= */
+.trailer-tab{
+position:fixed;
+right:-320px;
+bottom:20px;
+width:300px;
+height:170px;
+background:#000;
+border-radius:14px;
 overflow:hidden;
 box-shadow:0 10px 30px rgba(0,0,0,.6);
 z-index:8000;
+transition:right .4s ease;
 }
-.mini-header{
-position:absolute;
-top:-35px;
-right:0;
+.trailer-tab.open{right:20px;}
+
+.trailer-btn{
+position:fixed;
+right:20px;
+bottom:200px;
 background:var(--accent);
 color:#000;
-padding:6px 14px;
-border-radius:8px 8px 0 0;
+padding:8px 16px;
+border-radius:8px;
 cursor:pointer;
 font-weight:700;
-font-size:12px;
+box-shadow:0 0 20px var(--accent);
+animation:pulse 2s infinite;
+}
+@keyframes pulse{
+0%{box-shadow:0 0 10px var(--accent)}
+50%{box-shadow:0 0 25px var(--accent)}
+100%{box-shadow:0 0 10px var(--accent)}
+}
+
+.trailer-tab iframe{
+width:100%;
+height:100%;
+border:0;
 }
 
 /* ================= HERO ================= */
@@ -137,10 +197,6 @@ display:grid;
 grid-template-columns:repeat(6,1fr);
 gap:22px;
 }
-@media(max-width:1300px){.grid{grid-template-columns:repeat(4,1fr)}}
-@media(max-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:600px){.grid{grid-template-columns:repeat(2,1fr)}}
-
 .card{
 background:var(--card);
 backdrop-filter:blur(16px);
@@ -178,13 +234,6 @@ box-shadow:0 0 15px var(--accent);
 transition:.3s;
 }
 .show-btn:hover{transform:scale(1.05)}
-
-footer{
-text-align:center;
-padding:40px;
-border-top:1px solid rgba(255,255,255,.1);
-color:#64748b;
-}
 </style>
 </head>
 
@@ -192,12 +241,17 @@ color:#64748b;
 
 <div class="music-bar" id="musicBar"></div>
 
-<div class="mini-trailer">
-<div class="mini-header">🎬 GTA V Trailer</div>
-<video id="gtaTrailer" width="100%" height="100%" controls crossorigin="anonymous">
+<div class="trailer-btn" onclick="toggleTrailer()">🎬 GTA V</div>
+
+<div class="trailer-tab" id="trailerTab">
+<iframe src="https://www.rockstargames.com/videos/s6c5c8co?resolution=720p&embed"
+allow="autoplay; fullscreen"></iframe>
+</div>
+
+<!-- Hidden Audio Source for Visualizer -->
+<video id="audioSource" preload="auto" style="display:none">
 <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
 </video>
-</div>
 
 <header>
 <div class="header-wrap">
@@ -210,6 +264,17 @@ color:#64748b;
 <a href="#ott">OTT</a>
 <a href="cart.html">Cart</a>
 <a href="login.html">Login</a>
+
+<div class="theme-container">
+<button class="theme-toggle" onclick="toggleTheme()">Themes</button>
+<div class="theme-menu" id="themeMenu">
+<div onclick="setTheme('')">Neon Blue</div>
+<div onclick="setTheme('theme-dark')">Dark Elite</div>
+<div onclick="setTheme('theme-purple')">Royal Purple</div>
+<div onclick="setTheme('theme-green')">Emerald Lux</div>
+</div>
+</div>
+
 </nav>
 </div>
 </header>
@@ -218,22 +283,21 @@ color:#64748b;
 <h1>Level Up Your <span>Digital Gaming</span></h1>
 </section>
 
-<section class="section" id="games">
-<h2>🎮 Premium Games Vault</h2>
-<div class="grid" id="gameGrid"></div>
-<center><button class="show-btn" id="toggleGames">Show More Games</button></center>
-</section>
-
-<section class="section" id="ott">
-<h2>📺 OTT Subscriptions</h2>
-<div class="grid" id="ottGrid"></div>
-<center><button class="show-btn" id="toggleOtt">Show More OTT</button></center>
-</section>
-
-<footer>© 2026 PlayWithEase — Owned & Operated by SHAYAN AKHTAR</footer>
-
 <script>
-/* MUSIC VISUALIZER */
+function toggleTheme(){
+let m=document.getElementById("themeMenu");
+m.style.display=m.style.display==="block"?"none":"block";
+}
+function setTheme(t){
+document.body.className=t;
+document.getElementById("themeMenu").style.display="none";
+}
+function toggleTrailer(){
+document.getElementById("trailerTab").classList.toggle("open");
+document.getElementById("audioSource").play();
+}
+
+/* VISUALIZER */
 const musicBar=document.getElementById("musicBar");
 for(let i=0;i<60;i++){
 let bar=document.createElement("div");
@@ -241,78 +305,27 @@ bar.className="m-bar";
 musicBar.appendChild(bar);
 }
 const bars=document.querySelectorAll(".m-bar");
-const video=document.getElementById("gtaTrailer");
+const audio=document.getElementById("audioSource");
 
-let audioCtx, analyser, source;
-
-video.addEventListener("play",()=>{
-if(!audioCtx){
-audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-analyser=audioCtx.createAnalyser();
-source=audioCtx.createMediaElementSource(video);
-source.connect(analyser);
-analyser.connect(audioCtx.destination);
+let ctx=new AudioContext();
+let analyser=ctx.createAnalyser();
+let src=ctx.createMediaElementSource(audio);
+src.connect(analyser);
+analyser.connect(ctx.destination);
 analyser.fftSize=128;
-}
-audioCtx.resume();
+
+audio.addEventListener("play",()=>{
+ctx.resume();
 animate();
 });
-
 function animate(){
-const data=new Uint8Array(analyser.frequencyBinCount);
+let data=new Uint8Array(analyser.frequencyBinCount);
 analyser.getByteFrequencyData(data);
 bars.forEach((bar,i)=>{
 bar.style.height=Math.max(6,data[i]/6)+"px";
 });
 requestAnimationFrame(animate);
 }
-
-/* 80+ GAMES */
-const games=[];
-const base=[["GTA V",199,"271590"],["RDR2",249,"1174180"],
-["Cyberpunk",75,"1091500"],["God of War",199,"1593500"],
-["Elden Ring",229,"1245620"],["Hogwarts",239,"990080"]];
-while(games.length<84){games.push(...base);}
-
-/* OTT */
-const otts=[
-["Netflix","https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg",149],
-["Prime","https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png",129],
-["Disney+","https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg",99],
-["YouTube Premium","https://upload.wikimedia.org/wikipedia/commons/6/62/YouTube_social_white_square_%282024%29.svg",79],
-["Crunchyroll","https://upload.wikimedia.org/wikipedia/commons/8/85/Crunchyroll_2024_stacked.svg",129]
-];
-
-let gExp=false,oExp=false;
-function renderGames(){
-const grid=document.getElementById("gameGrid");
-grid.innerHTML="";
-const visible=gExp?games.length:6;
-games.slice(0,visible).forEach(g=>{
-grid.innerHTML+=`
-<div class="card">
-<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
-<div class="info"><h4>${g[0]}</h4><b>₹${g[1]}</b><button>Add to Cart</button></div>
-</div>`;
-});
-document.getElementById("toggleGames").innerText=gExp?"Show Less Games":"Show More Games";
-}
-function renderOtt(){
-const grid=document.getElementById("ottGrid");
-grid.innerHTML="";
-const visible=oExp?otts.length:6;
-otts.slice(0,visible).forEach(o=>{
-grid.innerHTML+=`
-<div class="card">
-<img src="${o[1]}" style="object-fit:contain;background:#fff;padding:20px">
-<div class="info"><h4>${o[0]}</h4><b>From ₹${o[2]}</b><button>Add to Cart</button></div>
-</div>`;
-});
-document.getElementById("toggleOtt").innerText=oExp?"Show Less OTT":"Show More OTT";
-}
-document.getElementById("toggleGames").onclick=()=>{gExp=!gExp;renderGames()}
-document.getElementById("toggleOtt").onclick=()=>{oExp=!oExp;renderOtt()}
-renderGames();renderOtt();
 </script>
 
 </body>
