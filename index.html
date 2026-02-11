@@ -304,14 +304,77 @@ transform:scale(1.1);
 }
 
 /* =====================
-   DETAILS SECTION
+   TRUST SECTION (UPDATED ONLY)
 ===================== */
 .details{
 margin-top:40px;
 padding:30px;
 background:var(--card);
 border-radius:14px;
-line-height:1.7;
+}
+
+.trust-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:18px;
+}
+
+.trust-card{
+background:var(--card);
+padding:20px;
+border-radius:14px;
+border:1px solid rgba(0,0,0,0.08);
+transition:.3s ease;
+position:relative;
+overflow:hidden;
+opacity:0;
+transform:translateY(30px);
+animation:fadeUp .8s ease forwards;
+}
+
+.trust-card:nth-child(1){animation-delay:.1s}
+.trust-card:nth-child(2){animation-delay:.2s}
+.trust-card:nth-child(3){animation-delay:.3s}
+.trust-card:nth-child(4){animation-delay:.4s}
+.trust-card:nth-child(5){animation-delay:.5s}
+
+.trust-card:hover{
+transform:translateY(-8px);
+box-shadow:0 15px 35px rgba(0,0,0,.12);
+}
+
+.trust-card .icon{
+font-size:26px;
+display:block;
+margin-bottom:10px;
+}
+
+.trust-card h4{
+margin-bottom:6px;
+font-size:16px;
+}
+
+.trust-card p{
+font-size:13px;
+opacity:.8;
+line-height:1.5;
+}
+
+/* GOLD CARD */
+.trust-card.gold{
+background:linear-gradient(135deg,#fff7e6,#ffe4b3);
+border:1px solid #ffd700;
+}
+
+.trust-card.gold:hover{
+box-shadow:0 15px 40px rgba(255,215,0,.35);
+}
+
+@keyframes fadeUp{
+to{
+opacity:1;
+transform:translateY(0);
+}
 }
 </style>
 </head>
@@ -322,7 +385,6 @@ line-height:1.7;
 
 <header>
 <div class="brand">PlayWithEase</div>
-
 <div class="nav-links">
 <a href="#">Store</a>
 <a href="#">OTT</a>
@@ -345,16 +407,11 @@ line-height:1.7;
 <section class="hero">
 <div class="hero-left">
 <h1>Level Up Your <span>Gaming</span></h1>
-
-<p>
-Experience next-generation digital gaming with instant access to premium PC titles and OTT subscriptions — delivered securely within minutes.
-</p>
-
+<p>Experience next-generation digital gaming with instant access to premium PC titles and OTT subscriptions — delivered securely within minutes.</p>
 <div class="live-box">
 🚀 <span style="color:var(--accent);font-weight:700;">We Are Officially Live!</span><br><br>
 PlayWithEase is now actively serving gamers across India with trusted digital access, secure payments, and lightning-fast support.
 </div>
-
 </div>
 
 <div class="video-wrap">
@@ -373,110 +430,43 @@ PlayWithEase is now actively serving gamers across India with trusted digital ac
 </div>
 </section>
 
+<!-- UPDATED TRUST SECTION -->
 <section class="details">
-<h3>Why Choose PlayWithEase?</h3>
-<p>
-✔ Instant Delivery within minutes<br>
-✔ 100% Genuine Digital Access<br>
-✔ Secure Payment Process<br>
-✔ Dedicated Customer Support<br>
-✔ Trusted by Gamers Across India
-</p>
-</section>
+<h3 style="margin-bottom:20px;">Why Choose <span style="color:var(--accent);">PlayWithEase?</span></h3>
+<div class="trust-grid">
 
-<script>
-/* THEME */
-function toggleTheme(){
-document.getElementById("themeDrop").classList.toggle("show");
-}
-function setTheme(t){
-document.body.className=t;
-document.getElementById("themeDrop").classList.remove("show");
-}
-
-/* MUSIC BAR */
-const musicBar=document.getElementById("musicBar");
-for(let i=0;i<80;i++){
-let bar=document.createElement("div");
-bar.className="m-bar";
-musicBar.appendChild(bar);
-}
-
-const bars=document.querySelectorAll(".m-bar");
-const video=document.getElementById("gtaTrailer");
-const muteBtn=document.getElementById("muteBtn");
-
-let ctx, analyser, source;
-let started=false;
-
-document.addEventListener("click",()=>{
-if(!started){
-video.muted=false;
-ctx=new (window.AudioContext||window.webkitAudioContext)();
-analyser=ctx.createAnalyser();
-source=ctx.createMediaElementSource(video);
-source.connect(analyser);
-analyser.connect(ctx.destination);
-analyser.fftSize=128;
-started=true;
-animate();
-muteBtn.textContent="🔊";
-}
-},{once:true});
-
-muteBtn.addEventListener("click",(e)=>{
-e.stopPropagation();
-video.muted=!video.muted;
-muteBtn.textContent=video.muted?"🔇":"🔊";
-});
-
-function animate(){
-if(!analyser) return;
-let data=new Uint8Array(analyser.frequencyBinCount);
-analyser.getByteFrequencyData(data);
-bars.forEach((bar,i)=>{
-bar.style.height=Math.max(6,data[i]/4)+"px";
-});
-requestAnimationFrame(animate);
-}
-
-/* GAMES */
-const games=[
-["GTA V",271590],
-["Red Dead Redemption 2",1174180],
-["Cyberpunk 2077",1091500],
-["God of War",1593500],
-["Elden Ring",1245620]
-];
-
-while(games.length<80){
-games.push(...games.slice(0,5));
-}
-games.length=80;
-
-let expanded=false;
-const grid=document.getElementById("gameGrid");
-
-function renderGames(){
-grid.innerHTML="";
-let list=expanded?games:games.slice(0,18);
-list.forEach(g=>{
-grid.innerHTML+=`
-<div class="card">
-<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[1]}/header.jpg">
-<div class="info">${g[0]}
-<button>Add to Cart</button>
+<div class="trust-card">
+<span class="icon">⚡</span>
+<h4>Instant Delivery</h4>
+<p>Get your game or subscription within minutes after purchase.</p>
 </div>
-</div>`;
-});
-document.getElementById("toggleGames").innerText=expanded?"Show Less":"Show More";
-}
-document.getElementById("toggleGames").onclick=()=>{
-expanded=!expanded;
-renderGames();
-};
-renderGames();
-</script>
+
+<div class="trust-card">
+<span class="icon">🔐</span>
+<h4>100% Genuine Access</h4>
+<p>Authentic digital products with verified login credentials.</p>
+</div>
+
+<div class="trust-card">
+<span class="icon">💳</span>
+<h4>Secure Payment Process</h4>
+<p>Safe and encrypted payment transactions every time.</p>
+</div>
+
+<div class="trust-card">
+<span class="icon">🎧</span>
+<h4>Dedicated Customer Support</h4>
+<p>Fast response with real-time assistance whenever needed.</p>
+</div>
+
+<div class="trust-card gold">
+<span class="icon">👑</span>
+<h4>Gold Trusted Seller</h4>
+<p>Recognized and trusted by gamers across India.</p>
+</div>
+
+</div>
+</section>
 
 </body>
 </html>
