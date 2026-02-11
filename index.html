@@ -120,120 +120,29 @@ background:var(--accent);
 color:#000;
 }
 
-/* ================= TRAILER TAB ================= */
-.trailer-tab{
+/* ================= TRAILER OVERLAY ================= */
+.trailer-overlay{
 position:fixed;
-right:-320px;
+right:20px;
 bottom:20px;
-width:300px;
-height:170px;
+width:320px;
+height:180px;
 background:#000;
 border-radius:14px;
 overflow:hidden;
 box-shadow:0 10px 30px rgba(0,0,0,.6);
 z-index:8000;
-transition:right .4s ease;
+animation:fadeIn .6s ease;
 }
-.trailer-tab.open{right:20px;}
-
-.trailer-btn{
-position:fixed;
-right:20px;
-bottom:200px;
-background:var(--accent);
-color:#000;
-padding:8px 16px;
-border-radius:8px;
-cursor:pointer;
-font-weight:700;
-box-shadow:0 0 20px var(--accent);
-animation:pulse 2s infinite;
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(20px)}
+to{opacity:1;transform:translateY(0)}
 }
-@keyframes pulse{
-0%{box-shadow:0 0 10px var(--accent)}
-50%{box-shadow:0 0 25px var(--accent)}
-100%{box-shadow:0 0 10px var(--accent)}
-}
-
-.trailer-tab iframe{
+.trailer-overlay video{
 width:100%;
 height:100%;
-border:0;
+object-fit:cover;
 }
-
-/* ================= HERO ================= */
-.hero{
-height:100vh;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-text-align:center;
-padding-top:120px;
-}
-.hero h1{
-font-family:'Orbitron';
-font-size:52px;
-}
-.hero span{
-color:var(--accent);
-text-shadow:0 0 25px var(--accent);
-}
-
-/* ================= CONTENT ================= */
-.section{
-max-width:1500px;
-margin:auto;
-padding:120px 30px;
-}
-.section h2{
-font-size:26px;
-margin-bottom:30px;
-border-left:4px solid var(--accent);
-padding-left:12px;
-}
-.grid{
-display:grid;
-grid-template-columns:repeat(6,1fr);
-gap:22px;
-}
-.card{
-background:var(--card);
-backdrop-filter:blur(16px);
-border:1px solid rgba(255,255,255,.1);
-border-radius:16px;
-overflow:hidden;
-transition:.3s ease;
-}
-.card:hover{
-transform:translateY(-8px);
-box-shadow:0 15px 40px rgba(0,0,0,.5);
-}
-.card img{width:100%;height:150px;object-fit:cover}
-.card .info{padding:12px}
-.card b{color:var(--accent);display:block;margin:8px 0}
-.card button{
-width:100%;
-padding:8px;
-border:none;
-border-radius:8px;
-background:var(--accent);
-font-weight:600;
-cursor:pointer;
-}
-
-.show-btn{
-margin-top:30px;
-padding:12px 30px;
-border:none;
-border-radius:999px;
-background:var(--accent);
-font-weight:800;
-cursor:pointer;
-box-shadow:0 0 15px var(--accent);
-transition:.3s;
-}
-.show-btn:hover{transform:scale(1.05)}
 </style>
 </head>
 
@@ -241,17 +150,17 @@ transition:.3s;
 
 <div class="music-bar" id="musicBar"></div>
 
-<div class="trailer-btn" onclick="toggleTrailer()">🎬 GTA V</div>
-
-<div class="trailer-tab" id="trailerTab">
-<iframe src="https://www.rockstargames.com/videos/s6c5c8co?resolution=720p&embed"
-allow="autoplay; fullscreen"></iframe>
-</div>
-
-<!-- Hidden Audio Source for Visualizer -->
-<video id="audioSource" preload="auto" style="display:none">
-<source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
+<!-- AUTO TRAILER -->
+<div class="trailer-overlay">
+<video id="gtaTrailer"
+autoplay
+muted
+loop
+playsinline
+crossorigin="anonymous">
+<source src="https://videos.rockstargames.com/v4/s6c5c8co/flv/en-us-720p.mp4" type="video/mp4">
 </video>
+</div>
 
 <header>
 <div class="header-wrap">
@@ -279,11 +188,8 @@ allow="autoplay; fullscreen"></iframe>
 </div>
 </header>
 
-<section class="hero">
-<h1>Level Up Your <span>Digital Gaming</span></h1>
-</section>
-
 <script>
+/* ===== THEME ===== */
 function toggleTheme(){
 let m=document.getElementById("themeMenu");
 m.style.display=m.style.display==="block"?"none":"block";
@@ -292,12 +198,8 @@ function setTheme(t){
 document.body.className=t;
 document.getElementById("themeMenu").style.display="none";
 }
-function toggleTrailer(){
-document.getElementById("trailerTab").classList.toggle("open");
-document.getElementById("audioSource").play();
-}
 
-/* VISUALIZER */
+/* ===== VISUALIZER ===== */
 const musicBar=document.getElementById("musicBar");
 for(let i=0;i<60;i++){
 let bar=document.createElement("div");
@@ -305,21 +207,30 @@ bar.className="m-bar";
 musicBar.appendChild(bar);
 }
 const bars=document.querySelectorAll(".m-bar");
-const audio=document.getElementById("audioSource");
+const video=document.getElementById("gtaTrailer");
 
-let ctx=new AudioContext();
-let analyser=ctx.createAnalyser();
-let src=ctx.createMediaElementSource(audio);
-src.connect(analyser);
-analyser.connect(ctx.destination);
+let audioCtx;
+let analyser;
+let source;
+
+/* Enable audio on first interaction */
+document.body.addEventListener("click",()=>{
+if(!audioCtx){
+audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+analyser=audioCtx.createAnalyser();
+source=audioCtx.createMediaElementSource(video);
+source.connect(analyser);
+analyser.connect(audioCtx.destination);
 analyser.fftSize=128;
-
-audio.addEventListener("play",()=>{
-ctx.resume();
+video.muted=false;
+}
+audioCtx.resume();
 animate();
-});
+},{once:true});
+
 function animate(){
-let data=new Uint8Array(analyser.frequencyBinCount);
+if(!analyser) return;
+const data=new Uint8Array(analyser.frequencyBinCount);
 analyser.getByteFrequencyData(data);
 bars.forEach((bar,i)=>{
 bar.style.height=Math.max(6,data[i]/6)+"px";
