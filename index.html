@@ -9,12 +9,11 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 
-/* ===== THEMES ===== */
 :root{
---bg:#0f172a;
---card:rgba(255,255,255,0.06);
---accent:#3b82f6;
---text:#f1f5f9;
+--bg:#f8fafc;
+--card:#ffffff;
+--accent:#2563eb;
+--text:#0f172a;
 }
 
 body{
@@ -25,26 +24,13 @@ transition:.3s;
 overflow-x:hidden;
 }
 
-/* White Minimal Default */
-body.theme-white{
---bg:#f8fafc;
---card:#ffffff;
---accent:#2563eb;
---text:#0f172a;
-}
-
-body.theme-red{--bg:#1f0a0a;--accent:#ef4444}
-body.theme-purple{--bg:#1e1b4b;--accent:#a855f7}
-body.theme-green{--bg:#022c22;--accent:#10b981}
-body.theme-gold{--bg:#000;--accent:#facc15}
-
 /* ===== MUSIC BAR ===== */
 .music-bar{
 position:fixed;top:0;left:0;width:100%;
-height:26px;
+height:24px;
 display:flex;align-items:flex-end;
 justify-content:space-between;
-padding:0 3px;
+padding:0 2px;
 background:#000;
 z-index:9999;
 }
@@ -57,25 +43,23 @@ transition:.08s linear;
 
 /* ===== HEADER ===== */
 header{
-position:fixed;top:26px;width:100%;
+position:fixed;top:24px;width:100%;
 padding:14px 20px;
 display:flex;justify-content:space-between;align-items:center;
 background:var(--card);
-backdrop-filter:blur(18px);
 z-index:5000;
+border-bottom:1px solid #e5e7eb;
 }
-.brand{font-family:'Orbitron';font-weight:900;font-size:20px;}
+.brand{font-family:'Orbitron';font-weight:900;font-size:18px;}
 .tagline{font-size:11px;opacity:.7;}
 .nav-links{
-display:flex;gap:18px;align-items:center;
+display:flex;gap:16px;align-items:center;
 }
 .nav-links a{
 text-decoration:none;
 color:var(--text);
 font-size:14px;
-transition:.3s;
 }
-.nav-links a:hover{color:var(--accent);}
 .cart-count{
 background:var(--accent);
 color:#fff;
@@ -84,97 +68,95 @@ border-radius:50%;
 font-size:10px;
 }
 
-/* ===== THEME BUTTON ===== */
-.theme-box{position:relative;}
-.theme-btn{
-padding:6px 14px;
-border-radius:6px;
-background:var(--accent);
-border:none;color:#fff;
-cursor:pointer;
-transition:.3s;
-}
-.theme-btn:hover{
-transform:scale(1.1);
-box-shadow:0 0 12px var(--accent);
-}
-.theme-dropdown{
-position:absolute;
-top:36px;right:0;
-background:var(--card);
-border-radius:6px;
-overflow:hidden;
-max-height:0;
-transition:.3s ease;
-}
-.theme-dropdown div{
-padding:8px 14px;
-cursor:pointer;
-}
-.theme-dropdown div:hover{
-background:var(--accent);
-color:#fff;
-}
-.theme-dropdown.show{max-height:250px;}
-
 /* ===== HERO ===== */
 .hero{
 margin-top:100px;
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:40px 20px;
-gap:30px;
+padding:30px 15px;
+gap:20px;
 }
-.hero-left{max-width:600px;}
+.hero-left{max-width:550px;}
 .hero-left h1{
 font-family:'Orbitron';
-font-size:36px;
+font-size:32px;
 margin-bottom:10px;
 }
 .hero-left span{color:var(--accent);}
-.video-wrap{position:relative;max-width:450px;width:100%;}
-.video-wrap video{width:100%;border-radius:10px;}
+.video-wrap{position:relative;max-width:420px;width:100%;}
+.video-wrap video{width:100%;border-radius:8px;}
 .mute-btn{
 position:absolute;
-bottom:8px;right:8px;
-width:32px;height:32px;
+bottom:6px;right:6px;
+width:30px;height:30px;
 border-radius:50%;
 border:none;
 background:var(--accent);
 color:#fff;
 cursor:pointer;
-transition:.3s;
 }
-.mute-btn:hover{transform:scale(1.2);}
 
-/* ===== GRID ===== */
-.section{max-width:1300px;margin:auto;padding:40px 15px;}
+/* ===== GRID FIXED MOBILE ===== */
+.section{
+max-width:1200px;
+margin:auto;
+padding:30px 10px;
+}
 .grid{
 display:grid;
 grid-template-columns:repeat(6,1fr);
 gap:12px;
 }
-@media(max-width:900px){
-.hero{flex-direction:column;text-align:center;}
-.grid{grid-template-columns:repeat(3,1fr);}
+
+/* TABLET */
+@media(max-width:1024px){
+.grid{grid-template-columns:repeat(4,1fr);}
 }
+
+/* MOBILE FIX */
+@media(max-width:768px){
+.hero{
+flex-direction:column;
+text-align:center;
+}
+.grid{
+grid-template-columns:repeat(3,1fr);
+gap:8px;
+}
+.card img{
+height:90px;
+}
+}
+
+/* SMALL MOBILE */
+@media(max-width:480px){
+.grid{
+grid-template-columns:repeat(2,1fr);
+}
+}
+
+/* CARD */
 .card{
 background:var(--card);
-border-radius:8px;
+border-radius:6px;
 overflow:hidden;
-transition:.3s;
+transition:.2s;
+border:1px solid #e5e7eb;
 }
 .card:hover{
-transform:translateY(-6px);
-box-shadow:0 0 15px var(--accent);
+transform:translateY(-4px);
+box-shadow:0 0 10px rgba(0,0,0,.1);
 }
 .card img{
 width:100%;
-height:120px;
+height:110px;
 object-fit:cover;
 }
-.card .info{padding:6px;font-size:12px;}
+.card .info{
+padding:6px;
+font-size:12px;
+}
 .card button{
 margin-top:4px;
 padding:6px;
@@ -184,45 +166,30 @@ background:var(--accent);
 color:#fff;
 border-radius:4px;
 cursor:pointer;
-transition:.3s;
-}
-.card button:hover{
-transform:scale(1.05);
-box-shadow:0 0 10px var(--accent);
+font-size:12px;
 }
 
-/* SHOW MORE */
-.show-more{text-align:center;margin-top:20px;}
+.show-more{text-align:center;margin-top:15px;}
 .show-more button{
-padding:8px 20px;
+padding:8px 18px;
 background:var(--accent);
 border:none;color:#fff;
-border-radius:6px;
+border-radius:4px;
 cursor:pointer;
-transition:.3s;
-}
-.show-more button:hover{
-transform:scale(1.1);
-box-shadow:0 0 15px var(--accent);
 }
 
-/* TRUSTPILOT */
 .trustpilot{
-margin-top:40px;
+margin-top:30px;
 background:#fff;
-padding:25px;
+padding:20px;
 text-align:center;
-border-radius:8px;
-}
-.trustpilot a{
-color:#00b67a;
-text-decoration:none;
-font-weight:600;
+border-radius:6px;
+border:1px solid #e5e7eb;
 }
 </style>
 </head>
 
-<body class="theme-white">
+<body>
 
 <div class="music-bar" id="musicBar"></div>
 
@@ -237,19 +204,6 @@ font-weight:600;
 <a href="#">OTT</a>
 <a href="#">Login</a>
 <a href="#">Cart <span id="cartCount" class="cart-count">0</span></a>
-
-<div class="theme-box">
-<button class="theme-btn" onclick="toggleTheme()">Themes</button>
-<div class="theme-dropdown" id="themeDrop">
-<div onclick="setTheme('theme-white')">Minimal White</div>
-<div onclick="setTheme('')">Blue</div>
-<div onclick="setTheme('theme-red')">Red</div>
-<div onclick="setTheme('theme-purple')">Purple</div>
-<div onclick="setTheme('theme-green')">Green</div>
-<div onclick="setTheme('theme-gold')">Gold</div>
-</div>
-</div>
-
 </div>
 </header>
 
@@ -275,32 +229,14 @@ font-weight:600;
 </div>
 </section>
 
-<section class="section">
-<h2>📺 OTT</h2>
-<div class="grid">
-<div class="card"><img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg"><div class="info">Netflix<button onclick="addToCart()">Add</button></div></div>
-<div class="card"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png"><div class="info">Prime<button onclick="addToCart()">Add</button></div></div>
-<div class="card"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg"><div class="info">Hotstar<button onclick="addToCart()">Add</button></div></div>
-</div>
-</section>
-
 <div class="trustpilot">
-<p>⭐ Rated 5 Stars</p>
+⭐ <strong>Rated 5 Stars</strong><br>
 <a href="https://www.trustpilot.com/review/playwithease.in" target="_blank">
 Review Us on Trustpilot →
 </a>
 </div>
 
 <script>
-/* THEME */
-function toggleTheme(){
-document.getElementById("themeDrop").classList.toggle("show");
-}
-function setTheme(t){
-document.body.className=t;
-document.getElementById("themeDrop").classList.remove("show");
-}
-
 /* CART */
 let cart=0;
 function addToCart(){
@@ -308,78 +244,47 @@ cart++;
 document.getElementById("cartCount").innerText=cart;
 }
 
-/* MUSIC BAR */
-const musicBar=document.getElementById("musicBar");
-for(let i=0;i<100;i++){
-let bar=document.createElement("div");
-bar.className="m-bar";
-musicBar.appendChild(bar);
-}
-const bars=document.querySelectorAll(".m-bar");
-const video=document.getElementById("gtaTrailer");
-const muteBtn=document.getElementById("muteBtn");
-
-let ctx, analyser, source;
-let started=false;
-
-document.body.addEventListener("click",()=>{
-if(!started){
-video.muted=false;
-ctx=new (window.AudioContext||window.webkitAudioContext)();
-analyser=ctx.createAnalyser();
-source=ctx.createMediaElementSource(video);
-source.connect(analyser);
-analyser.connect(ctx.destination);
-analyser.fftSize=128;
-started=true;
-animate();
-muteBtn.textContent="🔊";
-}
-},{once:true});
-
-muteBtn.addEventListener("click",(e)=>{
-e.stopPropagation();
-video.muted=!video.muted;
-muteBtn.textContent=video.muted?"🔇":"🔊";
-});
-
-function animate(){
-if(!analyser) return;
-let data=new Uint8Array(analyser.frequencyBinCount);
-analyser.getByteFrequencyData(data);
-bars.forEach((bar,i)=>{
-bar.style.height=Math.max(6,data[i]/4)+"px";
-});
-requestAnimationFrame(animate);
-}
-
-/* 80+ UNIQUE GAMES */
-const gameIds=[
-271590,1174180,1091500,1593500,1245620,990080,1817070,1811260,
-2050650,1551360,1716740,292030,814380,1517290,1938090,1293830,
-1151640,782330,2239550,2221490,552520,2369390,2208920,582160,
-3035570,2221490,1846380,1222680,2108330,2195250,2358260,
-1942660,1919590,1196590,1087100,414700,1030840,1659040,
-870780,1190460,1475810,1282100
+/* GAME DATA FIXED NAMES */
+const games=[
+["GTA V",271590],
+["Red Dead Redemption 2",1174180],
+["Cyberpunk 2077",1091500],
+["God of War",1593500],
+["Elden Ring",1245620],
+["Hogwarts Legacy",990080],
+["Spider-Man Remastered",1817070],
+["FIFA 23",1811260],
+["Resident Evil 4",2050650],
+["Forza Horizon 5",1551360],
+["Starfield",1716740],
+["The Witcher 3",292030],
+["Sekiro",814380],
+["Battlefield 2042",1517290],
+["Call of Duty MWII",1938090],
+["Need For Speed Heat",1222680],
+["Assassin’s Creed Mirage",3035570],
+["Far Cry 6",2369390],
+["Watch Dogs Legion",2239550],
+["Death Stranding",1190460]
 ];
 
-while(gameIds.length<80){
-gameIds.push(...gameIds);
+while(games.length<80){
+games.push(...games.slice(0,20));
 }
-gameIds.length=80;
+games.length=80;
 
 let expanded=false;
 const grid=document.getElementById("gameGrid");
 
 function renderGames(){
 grid.innerHTML="";
-let list=expanded?gameIds:gameIds.slice(0,18);
-list.forEach(id=>{
+let list=expanded?games:games.slice(0,18);
+list.forEach(g=>{
 grid.innerHTML+=`
 <div class="card">
-<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${id}/header.jpg">
-<div class="info">Game ${id}
-<button onclick="addToCart()">Add</button>
+<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[1]}/header.jpg">
+<div class="info">${g[0]}
+<button onclick="addToCart()">Add to Cart</button>
 </div>
 </div>`;
 });
@@ -388,7 +293,7 @@ document.getElementById("toggleGames").innerText=expanded?"Show Less":"Show More
 document.getElementById("toggleGames").onclick=()=>{
 expanded=!expanded;
 renderGames();
-}
+};
 renderGames();
 </script>
 
