@@ -34,6 +34,12 @@ body.theme-dark{
 body.theme-red{--accent:#ef4444}
 body.theme-green{--accent:#10b981}
 body.theme-purple{--accent:#a855f7}
+body.theme-elite-red{
+--bg:#14090b;
+--card:#1f1114;
+--accent:#dc2626;
+--text:#fef2f2;
+}
 
 /* MUSIC BAR */
 .music-bar{
@@ -617,12 +623,6 @@ currentTheme=0;
 
 document.body.className=themes[currentTheme];
 
-body.theme-elite-red{
---bg:#14090b;
---card:#1f1114;
---accent:#dc2626;
---text:#fef2f2;
-}
 /* Subtle click animation */
 themeBtn.style.transform="scale(.95)";
 setTimeout(()=>{
@@ -630,7 +630,7 @@ themeBtn.style.transform="";
 },150);
 
 });
-//function toggleCart(e){
+function toggleCart(e){
 e.preventDefault();
 const drop=document.getElementById("cartDropdown");
 drop.style.display=drop.style.display==="block"?"none":"block";
