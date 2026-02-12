@@ -1,213 +1,240 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Your Cart | PlayWithEase</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlayWithEase - Cart</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
-body{background:#f8fafc;color:#0f172a}
-header{background:#2563eb;color:#fff;padding:18px 20px}
-header h1{font-size:22px;font-weight:700}
-.container{max-width:900px;margin:30px auto;padding:0 16px}
+*{margin:0;padding:0;box-sizing:border-box}
 
-.filters{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
-.filters button{
-  padding:8px 14px;border-radius:999px;border:1px solid #cbd5f5;
-  background:#fff;color:#2563eb;font-size:13px;font-weight:600;cursor:pointer
-}
-.filters button.active{background:#2563eb;color:#fff}
-
-.cart-box{
-  background:#fff;border-radius:18px;
-  box-shadow:0 20px 40px rgba(0,0,0,.08);
-  padding:22px
+/* ===== THEME VARIABLES ===== */
+:root{
+--bg:#f8fafc;
+--card:#ffffff;
+--accent:#2563eb;
+--text:#0f172a;
 }
 
-.item{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:12px;padding:14px 0;border-bottom:1px solid #e5e7eb
+body{
+font-family:'Poppins',sans-serif;
+background:var(--bg);
+color:var(--text);
+min-height:100vh;
 }
-.item:last-child{border-bottom:none}
-.item-left{display:flex;flex-direction:column;gap:4px}
-.item-name{font-weight:600;font-size:14px}
-.item-type{font-size:11px;color:#64748b}
-.item-price{color:#2563eb;font-weight:600;font-size:14px}
+
+/* ===== ELITE RED ===== */
+body.theme-elite-red{
+--bg:#14090b;
+--card:#1f1114;
+--accent:#dc2626;
+--text:#fef2f2;
+}
+
+/* ===== HEADER ===== */
+header{
+padding:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.brand{
+font-family:'Orbitron';
+font-size:20px;
+font-weight:900;
+text-decoration:none;
+color:inherit;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:30px 20px;
+}
+
+/* ===== CART CARD ===== */
+.cart-item{
+background:var(--card);
+border-radius:18px;
+padding:20px;
+margin-bottom:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+animation:fadeIn .4s ease;
+}
+
+.item-left{
+display:flex;
+flex-direction:column;
+gap:6px;
+}
+
+.item-name{
+font-weight:600;
+}
+
+.qty-controls{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.qty-btn{
+padding:6px 12px;
+border:none;
+border-radius:8px;
+background:var(--accent);
+color:#fff;
+cursor:pointer;
+font-weight:600;
+}
 
 .remove-btn{
-  background:#fee2e2;color:#b91c1c;border:none;
-  padding:6px 12px;border-radius:8px;
-  font-size:12px;font-weight:700;cursor:pointer
+background:#ef4444;
+color:#fff;
+border:none;
+padding:6px 12px;
+border-radius:8px;
+cursor:pointer;
 }
 
 .summary{
-  background:#f8fafc;border:1px solid #e5e7eb;
-  border-radius:14px;padding:14px;margin-top:18px
+margin-top:40px;
+background:var(--card);
+padding:30px;
+border-radius:20px;
+box-shadow:0 15px 40px rgba(0,0,0,0.1);
 }
 
 .total{
-  display:flex;justify-content:space-between;
-  margin-top:20px;font-size:16px;font-weight:700
+font-size:20px;
+font-weight:700;
+margin-bottom:20px;
 }
 
-.actions{
-  display:flex;gap:14px;margin-top:26px;flex-wrap:wrap
+.checkout-btn{
+width:100%;
+padding:14px;
+border:none;
+border-radius:14px;
+background:linear-gradient(135deg,var(--accent),#1d4ed8);
+color:#fff;
+font-size:16px;
+font-weight:700;
+cursor:pointer;
+transition:.3s;
 }
-.back{
-  text-decoration:none;padding:12px 20px;border-radius:10px;
-  border:1px solid #cbd5f5;color:#2563eb;font-weight:600
-}
-.pay,.upi{
-  flex:1;border:none;padding:14px 22px;border-radius:12px;
-  font-size:15px;font-weight:700;cursor:pointer;color:#fff
-}
-.upi{background:#2563eb}
-.pay{background:#16a34a}
 
-.pay-box{
-  display:none;margin-top:22px;
-  background:#f8fafc;border:1px solid #e5e7eb;
-  border-radius:16px;padding:18px;text-align:center
+.checkout-btn:hover{
+transform:translateY(-3px);
+box-shadow:0 15px 35px rgba(0,0,0,0.3);
 }
-.pay-box img{width:220px;height:220px;margin-bottom:14px}
+
+.clear-btn{
+margin-top:10px;
+background:#111;
+color:#fff;
+padding:10px;
+border-radius:10px;
+border:none;
+width:100%;
+cursor:pointer;
+}
+
+.empty{
+text-align:center;
+margin-top:100px;
+font-size:18px;
+opacity:.6;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(20px);}
+to{opacity:1;transform:translateY(0);}
+}
 </style>
 </head>
 
 <body>
 
 <header>
-  <h1>🛒 Your Cart – PlayWithEase</h1>
+<a href="index.html" class="brand">PlayWithEase®</a>
 </header>
 
 <div class="container">
-  <div class="filters">
-    <button class="active">All</button>
-  </div>
 
-  <div class="cart-box" id="cartBox"></div>
+<h2>Your Cart</h2>
+
+<div id="cartContainer"></div>
+
+<div class="summary" id="summaryBox" style="display:none;">
+<div class="total" id="totalPrice"></div>
+<button class="checkout-btn">Proceed to Checkout</button>
+<button class="clear-btn" onclick="clearCart()">Clear Cart</button>
 </div>
 
-<!-- 🔥 FIREBASE + CART LOGIC -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<div class="empty" id="emptyMsg">Your cart is empty.</div>
 
-/* 🔥 FIREBASE CONFIG (AS YOU GAVE) */
-const firebaseConfig = {
-  apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
-  authDomain: "playwithease.firebaseapp.com",
-  projectId: "playwithease",
-  storageBucket: "playwithease.firebasestorage.app",
-  messagingSenderId: "189729941006",
-  appId: "1:189729941006:web:362653774b92416c357e5f",
-  measurementId: "G-1C3B31KQ7C"
-};
+</div>
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-const box = document.getElementById("cartBox");
-const UPI_ID = "shayanff98@okhdfcbank";
-const WHATSAPP = "917001568884";
+<script>
+let cart = JSON.parse(localStorage.getItem("pwe_cart")) || [];
 
 function renderCart(){
-  const cart = JSON.parse(localStorage.getItem("cart")||"[]");
-  box.innerHTML = "";
+const container=document.getElementById("cartContainer");
+const totalBox=document.getElementById("totalPrice");
+const summary=document.getElementById("summaryBox");
+const empty=document.getElementById("emptyMsg");
 
-  if(cart.length === 0){
-    box.innerHTML = "<p>Your cart is empty</p>";
-    return;
-  }
+container.innerHTML="";
 
-  let total = 0;
-  cart.forEach((i,idx)=>{
-    total += Number(i.price);
-    box.innerHTML += `
-      <div class="item">
-        <div class="item-left">
-          <span class="item-name">${i.name}</span>
-          <span class="item-price">₹${i.price}</span>
-        </div>
-        <button class="remove-btn" onclick="removeItem(${idx})">Remove</button>
-      </div>
-    `;
-  });
-
-  box.innerHTML += `
-    <div class="summary">
-      <b>Order Summary</b>
-      <p>Total items: ${cart.length}</p>
-    </div>
-
-    <div class="total">
-      <span>Total</span>
-      <span>₹${total}</span>
-    </div>
-
-    <div class="actions">
-      <button class="upi" onclick="startPayment(${total})">Pay via UPI</button>
-      <button class="pay" onclick="startPayment(${total})">Pay Now</button>
-      <a class="back" href="index.html">Continue Shopping</a>
-    </div>
-
-    <div class="pay-box" id="payBox">
-      <h3>Scan & Pay via UPI</h3>
-      <img id="qrImg">
-      <button class="pay" onclick="paid(${total})">I’ve Paid</button>
-    </div>
-  `;
+if(cart.length===0){
+summary.style.display="none";
+empty.style.display="block";
+return;
 }
 
-window.removeItem = function(i){
-  let cart = JSON.parse(localStorage.getItem("cart")||"[]");
-  cart.splice(i,1);
-  localStorage.setItem("cart",JSON.stringify(cart));
-  renderCart();
-};
+empty.style.display="none";
+summary.style.display="block";
 
-window.startPayment = function(total){
-  const upiURL = `upi://pay?pa=${UPI_ID}&pn=PlayWithEase&am=${total}&cu=INR`;
-  document.getElementById("qrImg").src =
-    "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" +
-    encodeURIComponent(upiURL);
-  document.getElementById("payBox").style.display = "block";
-};
+let total=0;
 
-window.paid = async function(total){
-  const user = auth.currentUser;
-  const cart = JSON.parse(localStorage.getItem("cart")||"[]");
+cart.forEach((item,index)=>{
+total+=999;
 
-  if(!user){
-    alert("Please login first");
-    return;
-  }
+container.innerHTML+=`
+<div class="cart-item">
+<div class="item-left">
+<div class="item-name">${item}</div>
+<div>₹999</div>
+</div>
 
-  await addDoc(collection(db,"orders"),{
-    userId: user.uid,
-    email: user.email,
-    items: cart,
-    total: total,
-    status: "in-progress",
-    credentials: null,
-    createdAt: serverTimestamp()
-  });
+<div class="qty-controls">
+<button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+</div>
+</div>
+`;
+});
 
-  let msg = "Hi PlayWithEase 👋\n\nI’ve completed UPI payment.\n\nOrder details:\n";
-  cart.forEach((i,idx)=>msg+=`${idx+1}. ${i.name} – ₹${i.price}\n`);
-  msg += `\n💰 Amount Paid: ₹${total}\n📸 Screenshot attached`;
+totalBox.innerText="Total: ₹"+total;
+}
 
-  localStorage.removeItem("cart");
-  window.open("https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent(msg),"_blank");
-};
+function removeItem(index){
+cart.splice(index,1);
+localStorage.setItem("pwe_cart",JSON.stringify(cart));
+renderCart();
+}
+
+function clearCart(){
+cart=[];
+localStorage.setItem("pwe_cart",JSON.stringify(cart));
+renderCart();
+}
 
 renderCart();
 </script>
