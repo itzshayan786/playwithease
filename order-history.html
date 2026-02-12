@@ -1,161 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PlayWithEase - Order History</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-
-:root{
---bg:#f8fafc;
---card:#ffffff;
---accent:#2563eb;
---text:#0f172a;
-}
-
-body{
-font-family:'Poppins',sans-serif;
-background:var(--bg);
-color:var(--text);
-transition:.3s;
-min-height:100vh;
-}
-
-body.theme-dark{--bg:#0f172a;--card:#1e293b;--accent:#3b82f6;--text:#f1f5f9;}
-body.theme-emerald{--accent:#10b981;}
-body.theme-royal{--accent:#7c3aed;}
-body.theme-elite-red{--bg:#14090b;--card:#1f1114;--accent:#dc2626;--text:#fef2f2;}
-
-.header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:25px 30px;
-}
-
-.brand{
-font-family:'Orbitron';
-font-size:22px;
-font-weight:900;
-text-decoration:none;
-color:inherit;
-}
-
-.theme-btn{
-padding:8px 16px;
-border:none;
-border-radius:10px;
-background:linear-gradient(135deg,var(--accent),#1d4ed8);
-color:#fff;
-font-weight:600;
-cursor:pointer;
-}
-
-.container{
-max-width:1100px;
-margin:auto;
-padding:20px;
-}
-
-.order-card{
-background:var(--card);
-border-radius:18px;
-padding:20px;
-margin-bottom:20px;
-box-shadow:0 15px 35px rgba(0,0,0,.1);
-animation:fadeUp .4s ease;
-}
-
-.order-header{
-display:flex;
-justify-content:space-between;
-margin-bottom:10px;
-flex-wrap:wrap;
-}
-
-.status{
-padding:6px 14px;
-border-radius:20px;
-font-size:12px;
-font-weight:600;
-}
-
-.in-progress{background:#facc15;color:#000;}
-.success{background:#16a34a;color:#fff;}
-.cancelled{background:#ef4444;color:#fff;}
-.refunded{background:#3b82f6;color:#fff;}
-
-.items{
-margin-top:8px;
-font-size:14px;
-opacity:.9;
-}
-
-.total{
-margin-top:8px;
-font-weight:700;
-color:var(--accent);
-}
-
-/* CREDENTIALS SECTION */
-.credentials{
-margin-top:15px;
-padding:15px;
-background:rgba(0,0,0,.05);
-border-radius:12px;
-}
-
-.cred-row{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:8px;
-flex-wrap:wrap;
-}
-
-.copy-btn{
-padding:4px 10px;
-border:none;
-border-radius:6px;
-background:var(--accent);
-color:#fff;
-cursor:pointer;
-font-size:12px;
-}
-
-.toggle-btn{
-font-size:12px;
-cursor:pointer;
-color:var(--accent);
-}
-
-@keyframes fadeUp{
-from{transform:translateY(20px);opacity:0;}
-to{transform:translateY(0);opacity:1;}
-}
-</style>
+<title>Order History</title>
 </head>
-
 <body>
 
-<div class="header">
-<a href="index.html" class="brand">PlayWithEase®</a>
-<button id="themeSwitcher" class="theme-btn">Theme</button>
-</div>
-
-<div class="container">
 <h2>Your Orders</h2>
-<div id="ordersContainer"></div>
-</div>
+<div id="orders"></div>
 
 <script type="module">
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, query, where, onSnapshot } 
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { 
+getFirestore, 
+collection, 
+query, 
+where, 
+onSnapshot 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } 
 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
@@ -165,102 +27,45 @@ authDomain:"playwithease.firebaseapp.com",
 projectId:"playwithease"
 };
 
-const app=initializeApp(firebaseConfig);
-const db=getFirestore(app);
-const auth=getAuth(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
-const container=document.getElementById("ordersContainer");
+const container = document.getElementById("orders");
 
-onAuthStateChanged(auth,(user)=>{
+onAuthStateChanged(auth, (user)=>{
+
 if(!user){
-container.innerHTML="Please login.";
+container.innerHTML="Please login";
 return;
 }
 
-const q=query(collection(db,"orders"),where("userEmail","==",user.email));
+const q = query(
+collection(db,"orders"),
+where("userEmail","==",user.email)
+);
 
 onSnapshot(q,(snapshot)=>{
+
 container.innerHTML="";
+
 snapshot.forEach(docSnap=>{
-let order=docSnap.data();
+let order = docSnap.data();
 
-let itemsHTML="";
-order.items.forEach(i=>{
-itemsHTML+=`• ${i.name} (x${i.qty})<br>`;
-});
-
-let credentialsHTML="";
-
-if(order.status==="success" && order.credentials){
-credentialsHTML=`
-<div class="credentials">
-<h4>Account Details</h4>
-
-<div class="cred-row">
-<span>Username: ${order.credentials.username}</span>
-<button class="copy-btn" onclick="copyText('${order.credentials.username}')">Copy</button>
-</div>
-
-<div class="cred-row">
-<span>Password: 
-<span id="pass-${docSnap.id}">••••••••</span>
-</span>
-<div>
-<span class="toggle-btn" onclick="togglePass('${docSnap.id}','${order.credentials.password}')">
-Show
-</span>
-<button class="copy-btn" onclick="copyText('${order.credentials.password}')">
-Copy
-</button>
-</div>
-</div>
-
+container.innerHTML += `
+<div style="border:1px solid #ccc;padding:10px;margin:10px;">
+Order ID: ${docSnap.id}<br>
+Total: ₹${order.total}<br>
+Status: ${order.status}
 </div>
 `;
-}
 
-container.innerHTML+=`
-<div class="order-card">
-<div class="order-header">
-<div><b>Order ID:</b> ${docSnap.id}</div>
-<div class="status ${order.status}">${order.status.toUpperCase()}</div>
-</div>
-
-<div class="items">${itemsHTML}</div>
-<div class="total">Total: ₹${order.total}</div>
-
-${credentialsHTML}
-
-</div>
-`;
-});
-});
 });
 
-/* Copy */
-window.copyText=function(text){
-navigator.clipboard.writeText(text);
-alert("Copied!");
-}
-
-/* Toggle Password */
-window.togglePass=function(id,password){
-const span=document.getElementById("pass-"+id);
-if(span.innerText==="••••••••"){
-span.innerText=password;
-}else{
-span.innerText="••••••••";
-}
-}
-
-/* Theme */
-const themes=["","theme-dark","theme-emerald","theme-royal","theme-elite-red"];
-let currentTheme=0;
-document.getElementById("themeSwitcher").addEventListener("click",()=>{
-currentTheme++;
-if(currentTheme>=themes.length)currentTheme=0;
-document.body.className=themes[currentTheme];
 });
+
+});
+
 </script>
 
 </body>
