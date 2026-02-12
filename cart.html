@@ -26,22 +26,11 @@ min-height:100vh;
 }
 
 /* THEMES */
-body.theme-dark{
---bg:#0f172a;
---card:#1e293b;
---accent:#3b82f6;
---text:#f1f5f9;
-}
+body.theme-dark{--bg:#0f172a;--card:#1e293b;--accent:#3b82f6;--text:#f1f5f9;}
 body.theme-emerald{--accent:#10b981;}
 body.theme-royal{--accent:#7c3aed;}
-body.theme-elite-red{
---bg:#14090b;
---card:#1f1114;
---accent:#dc2626;
---text:#fef2f2;
-}
+body.theme-elite-red{--bg:#14090b;--card:#1f1114;--accent:#dc2626;--text:#fef2f2;}
 
-/* HEADER */
 .header{
 display:flex;
 justify-content:space-between;
@@ -65,11 +54,6 @@ background:linear-gradient(135deg,var(--accent),#1d4ed8);
 color:#fff;
 font-weight:600;
 cursor:pointer;
-transition:.3s;
-}
-.theme-btn:hover{
-transform:translateY(-3px);
-box-shadow:0 15px 35px rgba(0,0,0,.3);
 }
 
 .container{
@@ -78,7 +62,6 @@ margin:auto;
 padding:20px;
 }
 
-/* CART ITEM */
 .cart-item{
 background:var(--card);
 border-radius:18px;
@@ -90,41 +73,21 @@ align-items:center;
 box-shadow:0 15px 40px rgba(0,0,0,.08);
 }
 
-.cart-item img{
-width:140px;
-border-radius:12px;
-}
-
+.cart-item img{width:140px;border-radius:12px;}
 .item-info{flex:1;}
+.item-name{font-weight:600;margin-bottom:6px;}
 
-.item-name{
-font-weight:600;
-margin-bottom:6px;
-}
-
-.qty-box{
-display:flex;
-align-items:center;
-gap:10px;
-margin-top:10px;
-}
-
+.qty-box{display:flex;gap:10px;margin-top:10px;}
 .qty-btn{
 background:var(--accent);
-border:none;
-color:#fff;
-padding:5px 12px;
-border-radius:8px;
-cursor:pointer;
+border:none;color:#fff;
+padding:5px 12px;border-radius:8px;cursor:pointer;
 }
 
 .remove-btn{
 background:#ef4444;
-border:none;
-color:#fff;
-padding:6px 12px;
-border-radius:8px;
-cursor:pointer;
+border:none;color:#fff;
+padding:6px 12px;border-radius:8px;cursor:pointer;
 margin-top:10px;
 }
 
@@ -142,10 +105,7 @@ justify-content:space-between;
 margin-bottom:10px;
 }
 
-.total{
-font-size:20px;
-font-weight:700;
-}
+.total{font-size:20px;font-weight:700;}
 
 .checkout-btn{
 width:100%;
@@ -158,28 +118,55 @@ font-size:16px;
 font-weight:700;
 cursor:pointer;
 margin-top:20px;
-transition:.3s;
-}
-.checkout-btn:hover{
-transform:translateY(-3px);
 }
 
-.qr-section{
-margin-top:25px;
+/* ===== OVERLAY ===== */
+
+.overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.6);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:9999;
+}
+
+.modal{
+background:var(--card);
+padding:30px;
+border-radius:20px;
+width:360px;
 text-align:center;
+box-shadow:0 30px 80px rgba(0,0,0,.4);
+animation:pop .3s ease;
 }
 
-.qr-section img{
-width:200px;
+.modal img{width:200px;margin-top:10px;border-radius:12px;}
+
+.timer{
 margin-top:10px;
-border-radius:12px;
+font-weight:600;
+color:var(--accent);
 }
 
-.empty{
-text-align:center;
-margin-top:100px;
-opacity:.6;
-font-size:18px;
+.modal-btn{
+width:100%;
+margin-top:10px;
+padding:10px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:600;
+}
+
+.cancel{background:#ef4444;color:#fff;}
+.paid{background:var(--accent);color:#fff;}
+.back{background:#111;color:#fff;}
+
+@keyframes pop{
+from{transform:scale(.8);opacity:0;}
+to{transform:scale(1);opacity:1;}
 }
 </style>
 </head>
@@ -192,7 +179,6 @@ font-size:18px;
 </div>
 
 <div class="container">
-
 <h2>Your Cart</h2>
 <div id="cartContainer"></div>
 
@@ -201,65 +187,51 @@ font-size:18px;
 <span>Subtotal</span>
 <span id="subtotal"></span>
 </div>
-
 <div class="summary-row">
 <span>GST</span>
 <span>Not Applicable</span>
 </div>
-
 <div class="summary-row total">
 <span>Total</span>
 <span id="grandTotal"></span>
 </div>
 
-<button class="checkout-btn" onclick="payNow()">Pay via UPI</button>
+<button class="checkout-btn" onclick="openPayment()">Checkout</button>
+</div>
+</div>
 
-<div class="qr-section">
-<p>Scan to Pay</p>
+<!-- OVERLAY -->
+<div class="overlay" id="paymentOverlay">
+<div class="modal">
+<h3>Complete Your Payment</h3>
+<p><b>UPI ID:</b> shayanff98@okhdfcbank</p>
 <img id="upiQR">
-<p><b>UPI:</b> shayanff98@okhdfcbank</p>
+<div class="timer" id="countdown">10:00</div>
+
+<button class="modal-btn paid" onclick="confirmPaid()">I've Paid</button>
+<button class="modal-btn cancel" onclick="closePayment()">Cancel Payment</button>
+<button class="modal-btn back" onclick="window.location.href='index.html'">Back to Store</button>
 </div>
-
-</div>
-
-<div class="empty" id="emptyMsg">Your cart is empty.</div>
-
 </div>
 
 <script>
 let cart = JSON.parse(localStorage.getItem("pwe_cart")) || [];
 
-/* Fix old cart structure */
 cart = cart.map(item=>{
 if(typeof item === "string"){
 return {name:item,image:"https://via.placeholder.com/140x80?text=Game",price:999,qty:1};
 }
-return {
-name:item.name,
-image:item.image || "https://via.placeholder.com/140x80?text=Game",
-price:item.price || 999,
-qty:item.qty || 1
-};
+return {name:item.name,image:item.image||"",price:item.price||999,qty:item.qty||1};
 });
-
-localStorage.setItem("pwe_cart",JSON.stringify(cart));
 
 function renderCart(){
 const container=document.getElementById("cartContainer");
 const subtotalEl=document.getElementById("subtotal");
 const totalEl=document.getElementById("grandTotal");
 const summary=document.getElementById("summaryBox");
-const empty=document.getElementById("emptyMsg");
 
 container.innerHTML="";
-
-if(cart.length===0){
-summary.style.display="none";
-empty.style.display="block";
-return;
-}
-
-empty.style.display="none";
+if(cart.length===0){summary.style.display="none";return;}
 summary.style.display="block";
 
 let subtotal=0;
@@ -284,71 +256,75 @@ container.innerHTML+=`
 `;
 });
 
-subtotalEl.innerText="₹"+subtotal.toFixed(0);
-totalEl.innerText="₹"+subtotal.toFixed(0);
+subtotalEl.innerText="₹"+subtotal;
+totalEl.innerText="₹"+subtotal;
+}
 
-/* WORKING UPI QR */
+function changeQty(i,c){
+cart[i].qty+=c;
+if(cart[i].qty<=0)cart.splice(i,1);
+localStorage.setItem("pwe_cart",JSON.stringify(cart));
+renderCart();
+}
+
+function removeItem(i){
+cart.splice(i,1);
+localStorage.setItem("pwe_cart",JSON.stringify(cart));
+renderCart();
+}
+
+/* PAYMENT OVERLAY */
+let timerInterval;
+
+function openPayment(){
+let total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+document.getElementById("paymentOverlay").style.display="flex";
+
 document.getElementById("upiQR").src =
-`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=shayanff98@okhdfcbank&pn=PlayWithEase&am=${subtotal.toFixed(0)}&cu=INR`;
+`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=shayanff98@okhdfcbank&pn=PlayWithEase&am=${total}&cu=INR`;
+
+startTimer(600);
 }
 
-function changeQty(index,change){
-cart[index].qty+=change;
-if(cart[index].qty<=0){
-cart.splice(index,1);
-}
-localStorage.setItem("pwe_cart",JSON.stringify(cart));
-renderCart();
+function closePayment(){
+document.getElementById("paymentOverlay").style.display="none";
+clearInterval(timerInterval);
 }
 
-function removeItem(index){
-cart.splice(index,1);
-localStorage.setItem("pwe_cart",JSON.stringify(cart));
-renderCart();
+function startTimer(seconds){
+let time=seconds;
+timerInterval=setInterval(()=>{
+let min=Math.floor(time/60);
+let sec=time%60;
+document.getElementById("countdown").innerText=
+(min<10?"0":"")+min+":"+(sec<10?"0":"")+sec;
+time--;
+if(time<0)clearInterval(timerInterval);
+},1000);
 }
 
-function payNow(){
+function confirmPaid(){
+let total = cart.reduce((s,i)=>s+i.price*i.qty,0);
 
-if(cart.length===0){
-alert("Your cart is empty.");
-return;
-}
-
-let total = 0;
-let itemDetails = "";
-
+let details="";
 cart.forEach((item,index)=>{
-let itemTotal = item.price * item.qty;
-total += itemTotal;
-
-itemDetails += 
-`${index+1}. ${item.name}\n` +
-`   Qty: ${item.qty}\n` +
-`   Price: ₹${item.price}\n` +
-`   Subtotal: ₹${itemTotal}\n\n`;
+details+=`${index+1}. ${item.name}%0AQty: ${item.qty}%0APrice: ₹${item.price}%0A%0A`;
 });
 
-let message =
-`Hello PlayWithEase Team,%0A%0A` +
-`I have completed the payment for the following items:%0A%0A` +
-encodeURIComponent(itemDetails) +
-`%0A--------------------------------%0A` +
-`Total Paid: ₹${total}%0A` +
-`UPI ID: shayanff98@okhdfcbank%0A%0A` +
-`Please find the payment screenshot attached below.%0A` +
-`Kindly confirm and activate my order at the earliest.%0A%0A` +
-`Thank you.`;
+let msg=
+`Hello PlayWithEase Team,%0A%0AI have completed payment.%0A%0A`+
+details+
+`Total Paid: ₹${total}%0AUPI ID: shayanff98@okhdfcbank%0A%0APlease confirm my order.%0A`;
 
-window.location.href =
-`https://wa.me/917001568884?text=${message}`;
+window.location.href=`https://wa.me/917001568884?text=${msg}`;
 }
 
-/* THEME CYCLER */
+/* THEME */
 const themes=["","theme-dark","theme-emerald","theme-royal","theme-elite-red"];
 let currentTheme=0;
 document.getElementById("themeSwitcher").addEventListener("click",()=>{
 currentTheme++;
-if(currentTheme>=themes.length) currentTheme=0;
+if(currentTheme>=themes.length)currentTheme=0;
 document.body.className=themes[currentTheme];
 });
 
