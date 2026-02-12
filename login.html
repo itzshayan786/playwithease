@@ -171,6 +171,12 @@ margin-left:8px;
 
 <button id="loginBtn" onclick="login()">Login</button>
 
+<p style="margin-top:12px;font-size:13px;">
+<span onclick="resetPassword()" style="color:#3b82f6;cursor:pointer;">
+Forgot Password?
+</span>
+</p>
+
 <p style="margin-top:15px;font-size:13px;">
 New user? <span onclick="register()" style="color:#3b82f6;cursor:pointer;">Create Account</span>
 </p>
@@ -184,8 +190,12 @@ New user? <span onclick="register()" style="color:#3b82f6;cursor:pointer;">Creat
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } 
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { 
+getAuth, 
+signInWithEmailAndPassword, 
+createUserWithEmailAndPassword,
+sendPasswordResetEmail 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 /* 🔥 PASTE REAL CONFIG */
 const firebaseConfig = {
@@ -248,6 +258,30 @@ createUserWithEmailAndPassword(auth,email,password)
 window.togglePass=function(){
 const pass=document.getElementById("password");
 pass.type=pass.type==="password"?"text":"password";
+}
+window.resetPassword = function(){
+
+const email=document.getElementById("email").value;
+const errorBox=document.getElementById("errorBox");
+
+if(!email){
+errorBox.innerText="Please enter your email first.";
+errorBox.style.display="block";
+return;
+}
+
+sendPasswordResetEmail(auth,email)
+.then(()=>{
+errorBox.style.color="#22c55e";
+errorBox.innerText="Password reset link sent to your email.";
+errorBox.style.display="block";
+})
+.catch(err=>{
+errorBox.style.color="#ef4444";
+errorBox.innerText=err.message;
+errorBox.style.display="block";
+});
+
 }
 
 </script>
