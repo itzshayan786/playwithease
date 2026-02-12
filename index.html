@@ -33,8 +33,15 @@
         [x-cloak] { display: none !important; }
         body, div, button, span, i, nav, section, main { transition-property: color, background-color, border-color; transition-duration: 300ms; }
         
-        /* Video Container to force Aspect Ratio Fill */
-        .video-background { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%); pointer-events: none; }
+        /* High-Fidelity Video Background */
+        .video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 20; }
+        .video-background { 
+            position: absolute; top: 50%; left: 50%; 
+            width: 100vw; height: 100vh; 
+            transform: translate(-50%, -50%); 
+            pointer-events: none; 
+        }
+        /* Force 16:9 Aspect Ratio to cover screen without black bars */
         @media (min-aspect-ratio: 16/9) { .video-background { height: 56.25vw; } }
         @media (max-aspect-ratio: 16/9) { .video-background { width: 177.78vh; } }
     </style>
@@ -125,7 +132,7 @@
         </div>
     </nav>
 
-    <section class="relative min-h-[85vh] w-full overflow-hidden mt-16 md:mt-20 flex items-center justify-center pb-10 text-white bg-black">
+    <section class="relative min-h-[70vh] w-full overflow-hidden mt-16 md:mt-20 flex items-center justify-center pb-10 text-white bg-black">
         
         <div x-show="!trailerPlaying" x-transition.opacity.duration.500ms class="absolute inset-0 z-10">
             <div class="absolute inset-0 bg-gradient-to-t from-bg-main via-transparent to-transparent z-10"></div>
@@ -133,7 +140,7 @@
             <img src="https://media-rockstargames-com.akamaized.net/mfe6/prod/__common/img/71d4d17edcd49703a5ea446cc0e588e6.jpg" class="w-full h-full object-cover animate-float scale-110 origin-center">
         </div>
 
-        <div x-show="trailerPlaying" x-transition.opacity.duration.1000ms class="absolute inset-0 z-20 bg-black">
+        <div x-show="trailerPlaying" x-transition.opacity.duration.1000ms class="video-container">
             <div id="hero-player" class="video-background"></div>
         </div>
 
@@ -146,13 +153,13 @@
             </div>
             
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg/512px-Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg.png" 
-                 class="h-20 md:h-48 mx-auto mb-8 md:mb-10 drop-shadow-[0_0_30px_rgba(255,0,170,0.5)] w-auto max-w-[90%]">
+                 class="h-16 md:h-32 mx-auto mb-8 drop-shadow-[0_0_30px_rgba(255,0,170,0.5)] w-auto max-w-[80%]">
             
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-12 text-white mb-8 md:mb-12 max-w-3xl mx-auto">
-                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-6xl font-display font-black" x-text="timer.days">000</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Days</div></div>
-                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-6xl font-display font-black" x-text="timer.hours">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Hours</div></div>
-                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-6xl font-display font-black" x-text="timer.minutes">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Mins</div></div>
-                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-6xl font-display font-black text-brand-secondary" x-text="timer.seconds">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Secs</div></div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-12 text-white mb-8 max-w-3xl mx-auto">
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black" x-text="timer.days">000</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Days</div></div>
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black" x-text="timer.hours">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Hours</div></div>
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black" x-text="timer.minutes">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Mins</div></div>
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black text-brand-secondary" x-text="timer.seconds">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Secs</div></div>
             </div>
             
             <div class="flex flex-col md:flex-row justify-center gap-4 px-4 md:px-0">
@@ -168,7 +175,7 @@
                 <i :data-lucide="isMuted ? 'volume-x' : 'volume-2'" class="w-5 h-5"></i>
             </button>
             <button @click="stopTrailer" class="px-6 py-3 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold uppercase text-xs tracking-widest transition flex items-center gap-2 shadow-lg">
-                <i data-lucide="x" class="w-4 h-4"></i> Close Trailer
+                <i data-lucide="x" class="w-4 h-4"></i> Close
             </button>
         </div>
     </section>
@@ -233,11 +240,8 @@
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-        
         var ytPlayer;
-        function onYouTubeIframeAPIReady() {
-            // Player is ready to be initialized by Alpine
-        }
+        function onYouTubeIframeAPIReady() { /* Ready */ }
     </script>
 
     <script>
@@ -256,7 +260,6 @@
                 currentTheme: localStorage.getItem('pwe_theme') || 'cyber',
                 searchQuery: '', activeCategory: 'All',
                 notifications: [], mobileSearchOpen: false,
-                cookiesAccepted: localStorage.getItem('pwe_cookies') === 'true',
                 timer: { days: '00', hours: '00', minutes: '00', seconds: '00' },
                 
                 // VIDEO STATE
@@ -306,7 +309,6 @@
                 notify(type, title, message) { const id = Date.now(); this.notifications.push({ id, type, title, message, visible: true }); setTimeout(() => { const index = this.notifications.findIndex(n => n.id === id); if(index > -1) this.notifications[index].visible = false; }, 3000); },
                 startTimer() { const target = new Date("2026-11-19T00:00:00").getTime(); setInterval(() => { const now = new Date().getTime(), d = target - now; this.timer.days = Math.floor(d/(1000*60*60*24)); this.timer.hours = Math.floor((d%(1000*60*60*24))/(1000*60*60)); this.timer.minutes = Math.floor((d%(1000*60*60))/(1000*60)); this.timer.seconds = Math.floor((d%(1000*60))/1000); }, 1000); },
                 
-                // YOUTUBE PLAYER LOGIC
                 playTrailer() {
                     this.trailerPlaying = true;
                     if(window.ytPlayer && typeof window.ytPlayer.playVideo === 'function') {
@@ -314,9 +316,16 @@
                     } else {
                         window.ytPlayer = new YT.Player('hero-player', {
                             height: '100%', width: '100%',
-                            videoId: 'QdBZY2fkU-0', // GTA 6 Trailer ID
-                            playerVars: { 'autoplay': 1, 'controls': 0, 'rel': 0, 'showinfo': 0, 'loop': 1, 'playlist': 'QdBZY2fkU-0', 'mute': 0 },
-                            events: { 'onReady': (event) => { event.target.playVideo(); } }
+                            videoId: 'QdBZY2fkU-0',
+                            playerVars: { 'autoplay': 1, 'controls': 0, 'rel': 0, 'showinfo': 0, 'loop': 1, 'playlist': 'QdBZY2fkU-0', 'modestbranding': 1 },
+                            events: {
+                                'onReady': (event) => {
+                                    event.target.mute(); // Safety mute first
+                                    event.target.setPlaybackQuality('hd1080'); // Try to force HD
+                                    event.target.playVideo();
+                                    setTimeout(() => event.target.unMute(), 500); // Unmute for user effect
+                                }
+                            }
                         });
                     }
                 },
@@ -327,7 +336,6 @@
                 toggleMute() {
                     this.isMuted = !this.isMuted;
                     if(window.ytPlayer) { this.isMuted ? window.ytPlayer.mute() : window.ytPlayer.unMute(); }
-                    // Update icon dynamically
                     this.$nextTick(() => lucide.createIcons()); 
                 }
             }))
