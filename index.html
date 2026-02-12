@@ -208,6 +208,55 @@ font-size:11px;
 vertical-align:super;
 margin-left:2px;
 }
+/* ===== PREMIUM CART BUTTON (CLEAN) ===== */
+
+.cart-btn{
+text-decoration:none;
+padding:8px 18px;
+border-radius:12px;
+background:linear-gradient(135deg,var(--accent),#1d4ed8);
+color:#fff;
+font-size:14px;
+font-weight:600;
+letter-spacing:.5px;
+display:flex;
+align-items:center;
+gap:8px;
+transition:.3s ease;
+position:relative;
+overflow:hidden;
+}
+
+.cart-btn:hover{
+transform:translateY(-3px) scale(1.04);
+box-shadow:0 15px 35px rgba(37,99,235,0.45);
+}
+
+.cart-btn::after{
+content:"";
+position:absolute;
+width:200%;
+height:200%;
+top:50%;
+left:50%;
+background:rgba(255,255,255,0.2);
+transform:translate(-50%,-50%) scale(0);
+border-radius:50%;
+transition:transform .6s ease;
+}
+
+.cart-btn:active::after{
+transform:translate(-50%,-50%) scale(1);
+}
+
+#cartCount{
+background:#fff;
+color:var(--accent);
+padding:3px 8px;
+border-radius:20px;
+font-size:12px;
+font-weight:700;
+}
 
 </style>
 
@@ -226,7 +275,9 @@ margin-left:2px;
 <a href="#">OTT</a>
 
 <a href="login.html" id="loginLink">Login</a>
-
+<a href="#" class="cart-btn">
+Cart <span id="cartCount">0</span>
+</a>
 <div class="user-menu" id="userMenu" style="display:none;">
 <span onclick="toggleMenu()">⋮</span>
 <div id="dropdown">
