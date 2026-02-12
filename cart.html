@@ -2,13 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Your Cart | PlayWithEase</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout | PlayWithEase</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;600;800&family=Orbitron:wght@900&display=swap" rel="stylesheet">
-    
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -17,240 +14,126 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        tech: ['Rajdhani', 'sans-serif'],
-                        display: ['Orbitron', 'sans-serif'],
-                    },
-                    colors: {
-                        bg: { main: '#080808', card: '#101010', surface: '#181818' },
-                        brand: { 
-                            gta: '#ff00aa', 
-                            blue: '#2563eb',
-                            gold: '#fbbf24',
-                            green: '#10b981'
-                        }
-                    }
+                    fontFamily: { sans: ['Inter', 'sans-serif'], tech: ['Rajdhani', 'sans-serif'], display: ['Orbitron', 'sans-serif'] },
+                    colors: { bg: { main: '#080808', card: '#101010' }, brand: { primary: '#2563eb', secondary: '#ff00aa', green: '#10b981' } }
                 }
             }
         }
     </script>
-
     <style>
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #080808; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        
-        .glass {
-            background: rgba(16, 16, 16, 0.9);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
+        .glass { background: rgba(16, 16, 16, 0.9); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
         body { -webkit-tap-highlight-color: transparent; }
     </style>
 </head>
 
-<body class="bg-bg-main text-white antialiased overflow-x-hidden" x-data="cartLogic()">
+<body class="bg-bg-main text-white antialiased overflow-x-hidden" x-data="checkoutLogic()">
 
-    <nav class="fixed top-0 w-full z-50 glass h-16 md:h-20 flex items-center transition-all duration-300">
-        <div class="max-w-[1200px] mx-auto px-4 md:px-6 w-full flex items-center justify-between">
-            
-            <a href="index.html" class="flex items-center gap-2 md:gap-3 cursor-pointer group hover:opacity-80 transition">
-                <i data-lucide="arrow-left" class="w-5 h-5 md:w-6 md:h-6 text-gray-400 group-hover:text-white group-hover:-translate-x-1 transition"></i>
-                <div class="relative w-9 h-9 md:w-10 md:h-10 flex items-center justify-center bg-white/5 rounded-xl border border-white/10 overflow-hidden">
-                    <i data-lucide="gamepad-2" class="relative z-10 w-5 h-5 md:w-6 md:h-6 text-white"></i>
-                </div>
-                <h1 class="font-display text-lg md:text-xl tracking-wider hidden md:block">PLAYWITH<span class="text-brand-blue">EASE</span></h1>
+    <nav class="fixed top-0 w-full z-50 glass h-20 flex items-center border-b border-white/5">
+        <div class="max-w-[1200px] mx-auto px-6 w-full flex items-center justify-between">
+            <a href="cart.html" class="flex items-center gap-3 hover:text-brand-primary transition">
+                <i data-lucide="arrow-left"></i> <span class="font-display font-bold text-xl">SECURE<span class="text-brand-green">PAY</span></span>
             </a>
-
-            <div class="flex items-center gap-2 md:gap-4 text-xs md:text-sm font-tech tracking-wider">
-                <div class="flex items-center gap-2 text-white font-bold">
-                    <span class="w-5 h-5 md:w-6 md:h-6 rounded-full bg-brand-blue flex items-center justify-center text-[10px]">1</span>
-                    <span>CART</span>
-                </div>
-                <div class="w-8 md:w-12 h-px bg-white/10"></div>
-                <div class="flex items-center gap-2 text-gray-500">
-                    <span class="w-5 h-5 md:w-6 md:h-6 rounded-full border border-white/10 flex items-center justify-center text-[10px]">2</span>
-                    <span>PAYMENT</span>
-                </div>
+            <div class="flex items-center gap-2 px-3 py-1 bg-brand-green/10 border border-brand-green/20 rounded text-brand-green text-xs font-bold">
+                <i data-lucide="lock" class="w-3 h-3"></i> 256-BIT SSL
             </div>
-
-            <button @click="toggleCurrency" 
-                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-[10px] md:text-xs font-bold font-tech tracking-wider">
-                <span x-text="currency === 'USD' ? 'USD' : 'INR'"></span>
-            </button>
         </div>
     </nav>
 
-    <main class="max-w-[1200px] mx-auto px-4 md:px-6 pt-24 pb-20 grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
-
-        <div class="lg:col-span-2 space-y-6">
-            <h2 class="text-2xl md:text-3xl font-display font-bold flex items-center gap-3">
-                MY CART <span class="text-brand-blue" x-text="'(' + cartItems.length + ')'"></span>
-            </h2>
-
-            <div x-show="cartItems.length === 0" class="text-center py-20 border border-dashed border-white/10 rounded-2xl bg-white/5">
-                <i data-lucide="ghost" class="w-12 h-12 md:w-16 md:h-16 text-gray-600 mx-auto mb-4"></i>
-                <h3 class="text-lg md:text-xl font-bold text-gray-400">Your cart is empty</h3>
-                <a href="index.html" class="mt-4 inline-block text-brand-blue hover:text-white underline text-sm">Browse Store</a>
+    <main class="max-w-[1200px] mx-auto px-6 pt-32 pb-20 grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div class="lg:col-span-2 space-y-8">
+            <h2 class="text-3xl font-display font-bold">PAYMENT <span class="text-brand-primary">METHOD</span></h2>
+            
+            <div class="flex gap-4 border-b border-white/10 pb-1">
+                <button @click="method = 'UPI'" :class="method === 'UPI' ? 'text-brand-secondary border-b-2 border-brand-secondary' : 'text-gray-500'" class="px-6 py-4 font-bold font-tech tracking-wider text-lg transition flex items-center gap-2"><i data-lucide="smartphone"></i> UPI / QR</button>
+                <button @click="method = 'CARD'" :class="method === 'CARD' ? 'text-brand-primary border-b-2 border-brand-primary' : 'text-gray-500'" class="px-6 py-4 font-bold font-tech tracking-wider text-lg transition flex items-center gap-2"><i data-lucide="credit-card"></i> CARD</button>
             </div>
 
-            <template x-for="(item, index) in cartItems" :key="item.id">
-                <div class="group relative flex gap-4 p-3 md:p-4 rounded-xl bg-bg-card border border-white/5 hover:border-brand-blue/30 transition-all duration-300">
-                    
-                    <div class="w-20 h-28 md:w-32 md:h-44 flex-shrink-0 rounded-lg overflow-hidden relative">
-                        <img :src="item.image" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                    </div>
-
-                    <div class="flex-1 flex flex-col justify-between py-1">
-                        <div>
-                            <div class="flex justify-between items-start">
-                                <h3 class="font-bold text-sm md:text-xl text-white font-display tracking-wide line-clamp-2" x-text="item.title"></h3>
-                                <button @click="removeItem(index)" class="text-gray-500 hover:text-red-500 transition p-1"><i data-lucide="trash-2" class="w-4 h-4 md:w-5 md:h-5"></i></button>
-                            </div>
-                            <div class="flex items-center gap-2 mt-2 text-[10px] md:text-xs text-gray-400 font-tech uppercase tracking-wider">
-                                <span class="bg-white/10 px-2 py-0.5 rounded flex items-center gap-1"><i data-lucide="monitor" class="w-3 h-3"></i> PC</span>
-                                <span class="bg-brand-blue/10 text-brand-blue px-2 py-0.5 rounded">Digital Key</span>
-                            </div>
-                        </div>
-
-                        <div class="flex justify-between items-end mt-4">
-                            <label class="flex items-center gap-2 cursor-pointer group/gift">
-                                <input type="checkbox" class="w-3 h-3 md:w-4 md:h-4 bg-transparent border-gray-600 rounded text-brand-blue focus:ring-0">
-                                <span class="text-xs md:text-sm text-gray-400 group-hover/gift:text-white transition">Buy as Gift</span>
-                            </label>
-                            
-                            <div class="text-right">
-                                <div x-show="item.oldPrice" class="text-[10px] md:text-xs text-gray-500 line-through mb-0.5" x-text="formatPrice(item.oldPrice)"></div>
-                                <div class="text-lg md:text-2xl font-bold font-tech text-white" x-text="formatPrice(item.price)"></div>
-                            </div>
-                        </div>
-                    </div>
+            <div x-show="method === 'UPI'" class="bg-bg-card border border-white/10 rounded-2xl p-8 flex flex-col md:flex-row gap-8 items-center">
+                <div class="bg-white p-2 rounded-xl shadow-lg">
+                    <img :src="getQRCodeUrl()" class="w-48 h-48 mix-blend-multiply">
                 </div>
-            </template>
+                <div class="flex-1 space-y-4 w-full">
+                    <div>
+                        <label class="text-xs text-gray-500 uppercase font-bold">Paying To</label>
+                        <div class="text-white font-bold text-lg">shayanff98@okhdfcbank</div>
+                    </div>
+                    <div class="text-xs text-gray-400">Scan with any UPI App (GPay, PhonePe, Paytm)</div>
+                </div>
+            </div>
+
+            <div x-show="method === 'CARD'" class="bg-bg-card border border-white/10 rounded-2xl p-8 space-y-4">
+                <input type="text" placeholder="Card Number" class="w-full bg-black/50 border border-white/10 rounded-lg p-4 outline-none focus:border-brand-primary transition">
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" placeholder="MM/YY" class="bg-black/50 border border-white/10 rounded-lg p-4 outline-none focus:border-brand-primary transition">
+                    <input type="text" placeholder="CVV" class="bg-black/50 border border-white/10 rounded-lg p-4 outline-none focus:border-brand-primary transition">
+                </div>
+            </div>
         </div>
 
         <div class="lg:col-span-1">
-            <div class="glass rounded-2xl p-4 md:p-6 sticky top-24 border border-white/10">
-                <h3 class="font-display font-bold text-lg md:text-xl mb-6 border-b border-white/10 pb-4">ORDER SUMMARY</h3>
-
-                <div class="space-y-3 mb-6 text-xs md:text-sm font-tech tracking-wide">
-                    <div class="flex justify-between text-gray-400">
-                        <span>Official Price</span>
-                        <span class="line-through" x-text="formatPrice(totalOldPrice)"></span>
+            <div class="glass rounded-2xl p-6 sticky top-28">
+                <h3 class="font-display font-bold text-xl mb-6">SUMMARY</h3>
+                <template x-for="item in cartItems">
+                    <div class="flex justify-between text-sm mb-2 text-gray-400">
+                        <span x-text="item.title" class="truncate w-40"></span>
+                        <span x-text="currency === 'USD' ? '$'+item.price : '₹'+Math.round(item.price*85)"></span>
                     </div>
-                    <div class="flex justify-between text-white">
-                        <span>Store Price</span>
-                        <span x-text="formatPrice(totalPrice)"></span>
-                    </div>
-                    <div class="flex justify-between text-brand-green">
-                        <span>You Save</span>
-                        <span x-text="formatPrice(totalOldPrice - totalPrice)"></span>
-                    </div>
+                </template>
+                <div class="border-t border-white/10 my-4 pt-4 flex justify-between font-bold text-xl text-white">
+                    <span>Total</span>
+                    <span x-text="formatTotal()"></span>
                 </div>
-
-                <div class="relative mb-6">
-                    <input type="text" x-model="promoCode" placeholder="Promo Code" class="w-full bg-black/50 border border-white/10 rounded-lg py-3 px-4 text-xs md:text-sm focus:outline-none focus:border-brand-blue/50 uppercase placeholder-gray-600">
-                    <button @click="applyPromo" class="absolute right-2 top-1.5 bottom-1.5 px-3 bg-white/10 hover:bg-brand-blue text-white text-[10px] md:text-xs font-bold rounded transition">APPLY</button>
-                    <p x-show="promoMessage" class="text-xs mt-2" :class="promoSuccess ? 'text-green-500' : 'text-red-500'" x-text="promoMessage"></p>
-                </div>
-
-                <div class="flex justify-between items-end border-t border-white/10 pt-4 mb-8">
-                    <span class="text-gray-400 font-bold uppercase text-xs md:text-sm">Total</span>
-                    <span class="text-2xl md:text-3xl font-display font-black text-brand-blue" x-text="formatPrice(finalTotal)"></span>
-                </div>
-
-                <a href="checkout.html" class="block w-full py-4 bg-brand-blue hover:bg-blue-600 text-white font-bold font-display tracking-widest uppercase rounded-xl transition shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] text-center text-sm md:text-base flex items-center justify-center gap-2 group">
-                    Secure Checkout <i data-lucide="lock" class="w-4 h-4 group-hover:scale-110 transition"></i>
-                </a>
-
-                <div class="mt-6 flex justify-center gap-4 opacity-50 grayscale hover:grayscale-0 transition duration-500">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1200px-UPI-Logo-vector.svg.png" class="h-5 md:h-6 object-contain">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" class="h-5 md:h-6 object-contain">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" class="h-5 md:h-6 object-contain">
-                </div>
+                <button @click="processPayment" class="w-full py-4 bg-brand-primary hover:bg-blue-600 text-white font-bold font-display uppercase rounded-xl transition shadow-lg flex items-center justify-center gap-2">
+                    Complete Payment <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
             </div>
         </div>
-
     </main>
 
-    <footer class="bg-black border-t border-white/5 py-8 text-center text-gray-600 text-[10px] md:text-xs">
-        <p>&copy; 2026 PlayWithEase. 256-bit SSL Secured Transaction.</p>
-    </footer>
+    <div x-show="processing" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex flex-col items-center justify-center">
+        <div class="w-16 h-16 border-4 border-brand-green border-t-transparent rounded-full animate-spin mb-4"></div>
+        <h2 class="text-xl font-bold animate-pulse">PROCESSING...</h2>
+    </div>
 
     <script>
         document.addEventListener('alpine:init', () => {
-            Alpine.data('cartLogic', () => ({
-                currency: 'INR', 
-                exchangeRate: 85.0,
-                promoCode: '',
-                promoMessage: '',
-                promoSuccess: false,
-                discountMultiplier: 1,
+            Alpine.data('checkoutLogic', () => ({
+                method: 'UPI',
+                processing: false,
+                cartItems: JSON.parse(localStorage.getItem('pwe_cart_items') || '[]'),
+                currency: localStorage.getItem('pwe_currency') || 'INR',
 
-                // UPDATED: Used Permanent Steam Links for Cart Items
-                cartItems: [
-                    { 
-                        id: 1, 
-                        title: 'Grand Theft Auto V: Premium Edition', 
-                        price: 14.99, 
-                        oldPrice: 29.99, 
-                        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' 
-                    },
-                    { 
-                        id: 3, 
-                        title: 'Cyberpunk 2077: Ultimate Edition', 
-                        price: 29.99, 
-                        oldPrice: 49.99, 
-                        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg' 
-                    }
-                ],
-
-                init() {
-                    lucide.createIcons();
+                getQRCodeUrl() {
+                    const total = this.cartItems.reduce((sum, item) => sum + item.price, 0) * 85;
+                    return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=shayanff98@okhdfcbank&pn=PlayWithEase&am=${total}`;
                 },
 
-                toggleCurrency() {
-                    this.currency = this.currency === 'USD' ? 'INR' : 'USD';
+                formatTotal() {
+                    const total = this.cartItems.reduce((sum, item) => sum + item.price, 0);
+                    return this.currency === 'USD' ? '$'+total.toFixed(2) : '₹'+Math.round(total*85);
                 },
 
-                get totalPrice() {
-                    return this.cartItems.reduce((sum, item) => sum + item.price, 0);
+                processPayment() {
+                    if(this.cartItems.length === 0) return alert("Cart is empty!");
+                    
+                    this.processing = true;
+                    
+                    setTimeout(() => {
+                        // 1. SAVE ORDER TO HISTORY
+                        const oldOrders = JSON.parse(localStorage.getItem('pwe_orders') || '[]');
+                        const newOrders = [...oldOrders, ...this.cartItems]; // Add cart items to history
+                        localStorage.setItem('pwe_orders', JSON.stringify(newOrders));
+
+                        // 2. CLEAR CART
+                        localStorage.removeItem('pwe_cart_items');
+                        localStorage.setItem('pwe_cart_count', 0);
+
+                        // 3. REDIRECT TO PROFILE
+                        window.location.href = 'profile.html';
+                    }, 3000);
                 },
 
-                get totalOldPrice() {
-                    return this.cartItems.reduce((sum, item) => sum + (item.oldPrice || item.price), 0);
-                },
-
-                get finalTotal() {
-                    return this.totalPrice * this.discountMultiplier;
-                },
-
-                removeItem(index) {
-                    this.cartItems.splice(index, 1);
-                },
-
-                applyPromo() {
-                    if (this.promoCode.toUpperCase() === 'GTA6') {
-                        this.discountMultiplier = 0.8; // 20% off
-                        this.promoSuccess = true;
-                        this.promoMessage = 'CODE APPLIED! 20% OFF';
-                    } else {
-                        this.discountMultiplier = 1;
-                        this.promoSuccess = false;
-                        this.promoMessage = 'INVALID CODE';
-                    }
-                },
-
-                formatPrice(price) {
-                    if (this.currency === 'USD') {
-                        return '$' + price.toFixed(2);
-                    } else {
-                        const inr = Math.round(price * this.exchangeRate / 10) * 10 - 1; 
-                        return '₹' + (inr > 0 ? inr.toLocaleString('en-IN') : 0);
-                    }
-                }
+                init() { lucide.createIcons(); }
             }))
         });
     </script>
