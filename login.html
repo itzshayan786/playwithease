@@ -1,267 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PlayWithEase Login</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-
-body{
-font-family:'Poppins',sans-serif;
-background:#000;
-overflow-x:hidden;
-overflow-y:auto;
-min-height:100vh;
-}
-
-/* ===== POSTER WALL ===== */
-.poster-wall{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
-grid-auto-rows:160px;
-gap:4px;
-z-index:-1;
-animation:slowMove 60s linear infinite;
-}
-
-.poster-wall img{
-width:100%;
-height:100%;
-object-fit:cover;
-filter:brightness(0.5) blur(2px);
-}
-
-@keyframes slowMove{
-0%{transform:translateY(0);}
-50%{transform:translateY(-20px);}
-100%{transform:translateY(0);}
-}
-
-/* ===== LOGIN BOX ===== */
-.login-container{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-width:90%;
-max-width:450px;
-background:#0f172a;
-padding:55px 45px;
-border-radius:20px;
-box-shadow:0 30px 90px rgba(0,0,0,0.9);
-color:#fff;
-text-align:center;
-}
-
-.login-container h2{
-font-family:'Orbitron';
-margin-bottom:25px;
-font-size:26px;
-}
-
-.login-container input{
-width:100%;
-padding:14px;
-margin-bottom:18px;
-border-radius:8px;
-border:1px solid #1e293b;
-background:#1e293b;
-color:#fff;
-font-size:14px;
-}
-
-.login-container button{
-width:100%;
-padding:14px;
-border:none;
-border-radius:8px;
-background:linear-gradient(135deg,#2563eb,#3b82f6);
-color:#fff;
-font-weight:600;
-cursor:pointer;
-transition:.3s;
-}
-
-.login-container button:disabled{
-opacity:0.6;
-cursor:not-allowed;
-}
-
-.login-container button:hover{
-transform:scale(1.05);
-box-shadow:0 10px 30px rgba(59,130,246,0.6);
-}
-
-.options{
-display:flex;
-justify-content:space-between;
-font-size:12px;
-margin-bottom:18px;
-}
-
-.error-msg{
-color:#ef4444;
-font-size:13px;
-margin-bottom:12px;
-display:none;
-}
-
-.spinner{
-border:3px solid rgba(255,255,255,0.2);
-border-top:3px solid #fff;
-border-radius:50%;
-width:18px;
-height:18px;
-animation:spin 1s linear infinite;
-display:inline-block;
-vertical-align:middle;
-margin-left:8px;
-}
-
-@keyframes spin{
-100%{transform:rotate(360deg);}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Login | PlayWithEase ID</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;600;800&family=Orbitron:wght@900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], tech: ['Rajdhani', 'sans-serif'], display: ['Orbitron', 'sans-serif'] },
+                    colors: { bg: { main: '#080808', card: '#101010' }, brand: { primary: '#2563eb', secondary: '#ff00aa' } },
+                    animation: { 'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite' }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass { background: rgba(16, 16, 16, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .grid-bg { background-image: radial-gradient(rgba(37, 99, 235, 0.15) 1px, transparent 1px); background-size: 40px 40px; }
+        .loader { border-top-color: #2563eb; -webkit-animation: spinner 1.5s linear infinite; animation: spinner 1.5s linear infinite; }
+        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
 </head>
 
-<body>
+<body class="bg-bg-main text-white h-screen flex items-center justify-center overflow-hidden grid-bg relative">
 
-<div class="poster-wall" id="posterWall"></div>
+    <div class="absolute inset-0 z-0">
+        <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-brand-primary/20 rounded-full blur-[120px] animate-pulse-slow"></div>
+        <div class="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-brand-secondary/20 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
 
-<div class="login-container">
-<h2>PlayWithEase</h2>
+    <div class="relative z-10 w-full max-w-md p-4">
+        <div class="glass rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+            
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 mx-auto bg-gradient-to-br from-brand-primary to-brand-secondary rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-brand-primary/20">
+                    <i data-lucide="cloud" class="w-8 h-8 text-white"></i>
+                </div>
+                <h1 class="text-3xl font-display font-bold tracking-wider">PLAYWITH<span class="text-brand-primary">EASE</span></h1>
+                <p class="text-gray-500 text-xs font-tech tracking-[0.2em] mt-1 uppercase">Cloud Sync • Secure ID</p>
+            </div>
 
-<div class="error-msg" id="errorBox"></div>
+            <div id="loginForm" class="space-y-5">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Email</label>
+                    <div class="relative group">
+                        <i data-lucide="mail" class="absolute left-4 top-3.5 w-5 h-5 text-gray-500 group-focus-within:text-brand-primary transition"></i>
+                        <input type="email" id="email" placeholder="gamer@example.com" class="w-full bg-black/50 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:border-brand-primary focus:outline-none transition focus:bg-white/5">
+                    </div>
+                </div>
 
-<input type="email" id="email" placeholder="Enter Email">
-<input type="password" id="password" placeholder="Enter Password">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Password</label>
+                    <div class="relative group">
+                        <i data-lucide="lock" class="absolute left-4 top-3.5 w-5 h-5 text-gray-500 group-focus-within:text-brand-primary transition"></i>
+                        <input type="password" id="password" placeholder="••••••••" class="w-full bg-black/50 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:border-brand-primary focus:outline-none transition focus:bg-white/5">
+                    </div>
+                </div>
 
-<div class="options">
-<label><input type="checkbox" onclick="togglePass()"> Show Password</label>
-<label><input type="checkbox"> Remember Me</label>
-</div>
+                <button id="btnSignIn" class="w-full py-4 bg-white text-black font-bold font-display uppercase tracking-widest rounded-xl hover:bg-brand-primary hover:text-white transition shadow-[0_0_20px_rgba(255,255,255,0.2)] flex items-center justify-center gap-2 group">
+                    <span id="btnText">Sign In</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
+                </button>
 
-<button id="loginBtn" onclick="login()">Login</button>
+                <div class="relative flex py-2 items-center">
+                    <div class="flex-grow border-t border-white/10"></div>
+                    <span class="flex-shrink mx-4 text-gray-500 text-xs uppercase tracking-widest">Or Continue With</span>
+                    <div class="flex-grow border-t border-white/10"></div>
+                </div>
 
-<p style="margin-top:12px;font-size:13px;">
-<a href="forgot.html" style="color:#3b82f6;text-decoration:none;">
-Forgot Password?
-</a>
-</p>
+                <button id="btnGoogle" class="w-full py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition flex justify-center items-center gap-3 text-sm font-bold tracking-wide">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-5 h-5">
+                    <span>Google Account</span>
+                </button>
 
-<p style="margin-top:15px;font-size:13px;">
-New user? <span onclick="register()">Create Account</span>
-</p>
-</div>
-<script type="module">
+                <p id="errorMsg" class="text-red-500 text-xs text-center hidden mt-2 font-bold"></p>
+                
+                <p class="text-center text-xs text-gray-500 mt-6">
+                    No account? <a href="#" id="btnSignUp" class="text-white font-bold hover:text-brand-primary transition">Create One</a>
+                </p>
+            </div>
+        </div>
+    </div>
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { 
-getAuth, 
-signInWithEmailAndPassword, 
-createUserWithEmailAndPassword,
-sendPasswordResetEmail 
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    <script type="module">
+        // 1. Import Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-/* 🔥 PASTE REAL CONFIG */
-const firebaseConfig = {
-apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
-authDomain: "playwithease.firebaseapp.com",
-projectId: "playwithease",
-storageBucket: "playwithease.firebasestorage.app",
-messagingSenderId: "189729941006",
-appId: "1:189729941006:web:362653774b92416c357e5f",
-measurementId: "G-1C3B31KQ7C"
-};
+        // 2. Your Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+            authDomain: "playwithease.firebaseapp.com",
+            projectId: "playwithease",
+            storageBucket: "playwithease.firebasestorage.app",
+            messagingSenderId: "189729941006",
+            appId: "1:189729941006:web:362653774b92416c357e5f",
+            measurementId: "G-1C3B31KQ7C"
+        };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+        // 3. Initialize
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
 
-/* ===== POPULAR WORKING GAME IDS ===== */
-const gameIDs=[
-271590,1174180,1091500,1593500,1245620,570,730,578080,
-292030,377160,440,945360,1817070,1086940,739630,
-990080,601150,394360,252950,976730,812140
-];
+        // 4. Icons
+        lucide.createIcons();
 
-const posterWall=document.getElementById("posterWall");
+        // 5. Auth State Listener (Auto-Redirect)
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // If user is already logged in, go to profile
+                window.location.href = "profile.html";
+            }
+        });
 
-for(let i=0;i<120;i++){
-let img=document.createElement("img");
-img.src=`https://cdn.cloudflare.steamstatic.com/steam/apps/${gameIDs[i%gameIDs.length]}/header.jpg`;
-posterWall.appendChild(img);
-}
+        // 6. Handle Email/Pass Sign In
+        document.getElementById('btnSignIn').addEventListener('click', async () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+            const btnText = document.getElementById('btnText');
 
-/* ===== LOGIN ===== */
-window.login=function(){
-const btn=document.getElementById("loginBtn");
-const email=document.getElementById("email").value;
-const password=document.getElementById("password").value;
-const errorBox=document.getElementById("errorBox");
+            if(!email || !password) return;
 
-errorBox.style.display="none";
-btn.disabled=true;
-btn.innerHTML="Authenticating <span class='spinner'></span>";
+            try {
+                btnText.innerText = "Syncing...";
+                await signInWithEmailAndPassword(auth, email, password);
+                // Redirect happens automatically via onAuthStateChanged
+            } catch (error) {
+                btnText.innerText = "Sign In";
+                errorMsg.innerText = error.message.replace('Firebase: ', '');
+                errorMsg.classList.remove('hidden');
+            }
+        });
 
-signInWithEmailAndPassword(auth,email,password)
-.then(()=>{
-window.location.href="index.html";
-})
-.catch(err=>{
-errorBox.innerText=err.message;
-errorBox.style.display="block";
-btn.disabled=false;
-btn.innerHTML="Login";
-});
-}
+        // 7. Handle Create Account
+        document.getElementById('btnSignUp').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if(!email || !password) {
+                alert("Enter email & password to create account");
+                return;
+            }
 
-window.register=function(){
-const email=document.getElementById("email").value;
-const password=document.getElementById("password").value;
-createUserWithEmailAndPassword(auth,email,password)
-.then(()=>alert("Account Created"))
-.catch(err=>alert(err.message));
-}
+            try {
+                await createUserWithEmailAndPassword(auth, email, password);
+                alert("Account Created! Logging in...");
+            } catch (error) {
+                alert(error.message);
+            }
+        });
 
-window.togglePass=function(){
-const pass=document.getElementById("password");
-pass.type=pass.type==="password"?"text":"password";
-}
-window.resetPassword = function(){
-
-const email=document.getElementById("email").value;
-const errorBox=document.getElementById("errorBox");
-
-if(!email){
-errorBox.innerText="Please enter your email first.";
-errorBox.style.display="block";
-return;
-}
-
-sendPasswordResetEmail(auth,email)
-.then(()=>{
-errorBox.style.color="#22c55e";
-errorBox.innerText="Password reset link sent to your email.";
-errorBox.style.display="block";
-})
-.catch(err=>{
-errorBox.style.color="#ef4444";
-errorBox.innerText=err.message;
-errorBox.style.display="block";
-});
-
-}
-
-</script>
-
+        // 8. Handle Google Login
+        document.getElementById('btnGoogle').addEventListener('click', async () => {
+            try {
+                await signInWithPopup(auth, provider);
+            } catch (error) {
+                console.error(error);
+                alert("Google Sign In Failed");
+            }
+        });
+    </script>
 </body>
 </html>
