@@ -94,7 +94,7 @@
                 </button>
 
                 <a href="cart.html" class="relative p-1 shrink-0">
-                    <i data-lucide="shopping-bag" class="w-6 h-6 text-gray-400"></i>
+                    <i data-lucide="shopping-bag" class="w-6 h-6 text-gray-400 hover:text-white transition"></i>
                     <span x-show="cartCount > 0" 
                           class="absolute -top-1 -right-1 bg-brand-gta text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-black" 
                           x-text="cartCount"></span>
@@ -167,8 +167,8 @@
             <template x-for="game in games" :key="game.id">
                 <div class="group relative bg-bg-card rounded-lg md:rounded-xl overflow-hidden border border-white/5 hover:border-brand-blue/50 transition-all duration-300">
                     
-                    <div class="relative aspect-[2/3] overflow-hidden">
-                        <img :src="game.image" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                    <div class="relative aspect-[2/3] overflow-hidden bg-gray-900">
+                        <img :src="game.image" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" loading="lazy">
                         
                         <div class="hidden md:flex absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition duration-300 flex-col items-center justify-center gap-3 p-4">
                             <button @click="addToCart(game)" class="w-full py-3 bg-white text-black font-bold uppercase text-xs tracking-wider rounded hover:bg-brand-blue hover:text-white transition flex items-center justify-center gap-2">
@@ -179,11 +179,11 @@
                             </button>
                         </div>
 
-                        <button @click="addToCart(game)" class="md:hidden absolute bottom-2 right-2 bg-brand-blue text-white p-2 rounded-full shadow-lg">
+                        <button @click="addToCart(game)" class="md:hidden absolute bottom-2 right-2 bg-brand-blue text-white p-2 rounded-full shadow-lg z-10">
                             <i data-lucide="plus" class="w-4 h-4"></i>
                         </button>
                         
-                        <div x-show="game.discount" class="absolute top-2 left-2 bg-red-600 text-white text-[9px] md:text-[10px] font-bold px-1.5 py-0.5 rounded shadow-lg">
+                        <div x-show="game.discount" class="absolute top-2 left-2 bg-red-600 text-white text-[9px] md:text-[10px] font-bold px-1.5 py-0.5 rounded shadow-lg z-10">
                             <span x-text="game.discount"></span>
                         </div>
                     </div>
@@ -195,7 +195,7 @@
                                 <span class="text-[9px] md:text-[10px] text-gray-500 line-through" x-show="game.oldPrice" x-text="formatPrice(game.oldPrice)"></span>
                                 <span class="text-brand-blue font-tech font-bold text-sm md:text-lg" x-text="formatPrice(game.price)"></span>
                             </div>
-                            <button @click="simulateKeyReveal(game)" class="md:hidden text-gray-500">
+                            <button @click="simulateKeyReveal(game)" class="md:hidden text-gray-500 p-1">
                                 <i data-lucide="key" class="w-4 h-4"></i>
                             </button>
                         </div>
@@ -210,7 +210,7 @@
          x-transition.opacity>
         
         <div class="bg-bg-card border border-brand-gta/30 w-full max-w-md rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(255,0,170,0.2)] relative">
-            <button @click="keyModal.open = false" class="absolute top-4 right-4 text-gray-500 hover:text-white"><i data-lucide="x"></i></button>
+            <button @click="keyModal.open = false" class="absolute top-4 right-4 text-gray-500 hover:text-white z-20"><i data-lucide="x"></i></button>
 
             <div x-show="keyModal.loading" class="p-10 text-center">
                 <div class="w-12 h-12 md:w-16 md:h-16 border-4 border-brand-gta border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
@@ -247,17 +247,18 @@
                 timer: { days: '00', hours: '00', minutes: '00', seconds: '00' },
                 keyModal: { open: false, loading: false, gameTitle: '', key: '' },
 
+                // FIXED: Used Official Steam CDN links (Permanent)
                 games: [
-                    { id: 1, title: 'Grand Theft Auto V', price: 14.99, oldPrice: 29.99, discount: '-50%', image: 'https://image.api.playstation.com/vulcan/ap/disc/2110/CUSA00411_00/H541E22.png' },
-                    { id: 2, title: 'Red Dead Redemption 2', price: 19.99, oldPrice: 59.99, discount: '-66%', image: 'https://image.api.playstation.com/vulcan/ap/disc/2110/CUSA03041_00/H494E55.png' },
-                    { id: 3, title: 'Cyberpunk 2077', price: 29.99, oldPrice: 49.99, discount: '-40%', image: 'https://image.api.playstation.com/vulcan/ap/disc/2108/CUSA16596_00/H630B37.png' },
-                    { id: 4, title: 'Elden Ring', price: 39.99, oldPrice: 59.99, discount: '-33%', image: 'https://image.api.playstation.com/vulcan/ap/disc/2106/CUSA18581_00/H423E56.png' },
-                    { id: 5, title: 'God of War Ragnarök', price: 49.99, oldPrice: 69.99, discount: '-28%', image: 'https://image.api.playstation.com/vulcan/ap/disc/2109/CUSA34384_00/H894E22.png' },
-                    { id: 6, title: 'Call of Duty: MW3', price: 69.99, oldPrice: null, discount: null, image: 'https://image.api.playstation.com/vulcan/ap/disc/2110/CUSA34394_00/H894E22.png' },
-                    { id: 7, title: 'Minecraft Legends', price: 24.99, oldPrice: 39.99, discount: '-35%', image: 'https://image.api.playstation.com/vulcan/ap/disc/2109/CUSA32646_00/H894E22.png' },
-                    { id: 8, title: 'Resident Evil 4', price: 34.99, oldPrice: 59.99, discount: '-40%', image: 'https://image.api.playstation.com/vulcan/ap/disc/2108/CUSA33385_00/H234E55.png' },
-                    { id: 9, title: 'Spider-Man 2', price: 59.99, oldPrice: null, discount: 'NEW', image: 'https://image.api.playstation.com/vulcan/ap/disc/2106/CUSA34389_00/H423E56.png' },
-                    { id: 10, title: 'The Last of Us Part I', price: 49.99, oldPrice: 69.99, discount: '-28%', image: 'https://image.api.playstation.com/vulcan/ap/disc/2107/CUSA32559_00/H214E55.png' }
+                    { id: 1, title: 'Grand Theft Auto V', price: 14.99, oldPrice: 29.99, discount: '-50%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
+                    { id: 2, title: 'Red Dead Redemption 2', price: 19.99, oldPrice: 59.99, discount: '-66%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
+                    { id: 3, title: 'Cyberpunk 2077', price: 29.99, oldPrice: 49.99, discount: '-40%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg' },
+                    { id: 4, title: 'Elden Ring', price: 39.99, oldPrice: 59.99, discount: '-33%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg' },
+                    { id: 5, title: 'God of War (2018)', price: 49.99, oldPrice: 69.99, discount: '-28%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg' },
+                    { id: 6, title: 'Call of Duty: MW3', price: 69.99, oldPrice: null, discount: null, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2519060/library_600x900.jpg' },
+                    { id: 7, title: 'Minecraft Legends', price: 24.99, oldPrice: 39.99, discount: '-35%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1928870/library_600x900.jpg' },
+                    { id: 8, title: 'Resident Evil 4', price: 34.99, oldPrice: 59.99, discount: '-40%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg' },
+                    { id: 9, title: 'Spider-Man Remastered', price: 59.99, oldPrice: null, discount: 'NEW', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg' },
+                    { id: 10, title: 'The Last of Us Part I', price: 49.99, oldPrice: 69.99, discount: '-28%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900.jpg' }
                 ],
 
                 init() {
