@@ -43,28 +43,30 @@ cursor:pointer;
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { 
-getFirestore, 
-collection, 
-onSnapshot, 
-doc, 
-updateDoc, 
-deleteDoc 
+  getFirestore, 
+  collection, 
+  onSnapshot, 
+  doc, 
+  updateDoc, 
+  deleteDoc 
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig={
+const firebaseConfig = {
 apiKey:"AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
 authDomain:"playwithease.firebaseapp.com",
 projectId:"playwithease"
 };
 
-const app=initializeApp(firebaseConfig);
-const db=getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-const container=document.getElementById("ordersContainer");
+const container = document.getElementById("ordersContainer");
 
+
+/* ================= RENDER FUNCTION ================= */
 function renderOrder(id, order){
 
-container.innerHTML+=`
+container.innerHTML += `
 <div class="order">
 
 <b>Order ID:</b> ${id}<br>
@@ -72,23 +74,23 @@ container.innerHTML+=`
 <b>Total:</b> ₹${order.total || 0}<br>
 
 <select onchange="updateStatus('${id}',this.value)">
-<option value="in-progress">Pending</option>
-<option value="success">Success</option>
-<option value="cancelled">Cancelled</option>
-<option value="refunded">Refunded</option>
+<option ${order.status==="in-progress"?"selected":""} value="in-progress">Pending</option>
+<option ${order.status==="success"?"selected":""} value="success">Success</option>
+<option ${order.status==="cancelled"?"selected":""} value="cancelled">Cancelled</option>
+<option ${order.status==="refunded"?"selected":""} value="refunded">Refunded</option>
 </select>
 
 <div style="margin-top:8px;">
 <b>Account Details</b><br>
-<input placeholder="Username" id="user-${id}">
-<input placeholder="Password" id="pass-${id}">
+
+<input placeholder="Username" id="user-${id}" value="${order.credentials?.username || ""}">
+<input placeholder="Password" id="pass-${id}" value="${order.credentials?.password || ""}">
 <br>
-<button class="save" onclick="saveCredentials('${id}')">
-Save Credentials
-</button>
+
+<button onclick="saveCredentials('${id}')">Save Credentials</button>
 </div>
 
-<button class="delete" onclick="deleteOrder('${id}')">
+<button onclick="deleteOrder('${id}')" style="background:#ef4444;color:#fff;">
 Delete Order
 </button>
 
@@ -96,15 +98,16 @@ Delete Order
 `;
 }
 
-/* 🔥 FIRESTORE ORDERS */
+
+/* 🔥 FIRESTORE ORDERS (REAL ORDERS) */
 onSnapshot(collection(db,"orders"), (snapshot)=>{
-container.innerHTML="";
+container.innerHTML = "";
 
 snapshot.forEach(docSnap=>{
 renderOrder(docSnap.id, docSnap.data());
 });
 
-/* 🔥 LOCAL STORAGE ORDERS */
+/* 🔥 LOCAL STORAGE ORDERS (OLD ORDERS) */
 let localOrders = JSON.parse(localStorage.getItem("pwe_orders")) || [];
 
 localOrders.forEach((order,index)=>{
@@ -113,48 +116,62 @@ renderOrder("local-"+index, order);
 
 });
 
-/* STATUS UPDATE */
+
+/* ================= STATUS UPDATE ================= */
 window.updateStatus = async function(id,status){
+
 if(id.startsWith("local-")){
 alert("Local order — status change not saved.");
 return;
 }
-await updateDoc(doc(db,"orders",id),{status:status});
+
+await updateDoc(doc(db,"orders",id), { status: status });
+
 };
 
-/* SAVE CREDENTIALS */
+
+/* ================= SAVE CREDENTIALS ================= */
 window.saveCredentials = async function(id){
 
-let username=document.getElementById("user-"+id).value;
-let password=document.getElementById("pass-"+id).value;
+let username = document.getElementById("user-"+id).value;
+let password = document.getElementById("pass-"+id).value;
 
 if(id.startsWith("local-")){
 alert("Local order — credentials not saved.");
 return;
 }
 
-await updateDoc(doc(db,"orders",id),{
-credentials:{username,password}
+await updateDoc(doc(db,"orders",id), {
+credentials: {
+username: username,
+password: password
+}
 });
 
-alert("Saved");
+alert("Credentials Saved");
+
 };
 
-/* DELETE */
+
+/* ================= DELETE ORDER ================= */
 window.deleteOrder = async function(id){
 
 if(!confirm("Delete this order?")) return;
 
 if(id.startsWith("local-")){
+
 let orders = JSON.parse(localStorage.getItem("pwe_orders")) || [];
 let index = parseInt(id.replace("local-",""));
+
 orders.splice(index,1);
 localStorage.setItem("pwe_orders", JSON.stringify(orders));
+
 location.reload();
 return;
 }
 
 await deleteDoc(doc(db,"orders",id));
+
 };
 
 </script>
