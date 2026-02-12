@@ -12,61 +12,67 @@
 
 body{
 font-family:'Poppins',sans-serif;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-overflow:hidden;
 background:#000;
+overflow:hidden;
 }
 
-/* ===== BACKGROUND GAMING WALL ===== */
-.bg{
+/* ===== GAMING POSTER WALL ===== */
+.poster-wall{
 position:fixed;
+top:0;
+left:0;
 width:100%;
 height:100%;
-background:
-linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
-url('https://cdn.cloudflare.steamstatic.com/steam/apps/271590/library_hero.jpg');
-background-size:cover;
-background-position:center;
-filter:blur(6px);
+display:grid;
+grid-template-columns:repeat(auto-fill, minmax(120px,1fr));
+grid-auto-rows:160px;
+gap:4px;
 z-index:-1;
 }
 
-/* ===== GLASS LOGIN BOX ===== */
-.login-box{
-width:380px;
-padding:40px;
+.poster-wall img{
+width:100%;
+height:100%;
+object-fit:cover;
+filter:brightness(0.35);
+}
+
+/* ===== LOGIN CONTAINER ===== */
+.login-container{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:420px;
+background:#0f172a;
+padding:50px 40px;
 border-radius:20px;
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(20px);
-border:1px solid rgba(255,255,255,0.2);
-box-shadow:0 25px 60px rgba(0,0,0,0.6);
+box-shadow:0 30px 80px rgba(0,0,0,0.8);
+color:#fff;
 text-align:center;
-color:#fff;
-animation:fadeIn .8s ease;
+animation:fadeUp .6s ease;
 }
 
-.login-box h2{
+.login-container h2{
 font-family:'Orbitron';
-margin-bottom:20px;
+margin-bottom:25px;
+font-size:24px;
 }
 
-.login-box input{
+.login-container input{
 width:100%;
-padding:12px;
-margin-bottom:15px;
+padding:14px;
+margin-bottom:18px;
 border-radius:8px;
-border:none;
-outline:none;
-background:rgba(255,255,255,0.15);
+border:1px solid #1e293b;
+background:#1e293b;
 color:#fff;
+font-size:14px;
 }
 
-.login-box button{
+.login-container button{
 width:100%;
-padding:12px;
+padding:14px;
 border:none;
 border-radius:8px;
 background:linear-gradient(135deg,#2563eb,#3b82f6);
@@ -76,32 +82,39 @@ cursor:pointer;
 transition:.3s;
 }
 
-.login-box button:hover{
+.login-container button:hover{
 transform:scale(1.05);
-box-shadow:0 10px 30px rgba(59,130,246,0.5);
+box-shadow:0 10px 30px rgba(59,130,246,0.6);
 }
 
-.extra{
-margin-top:15px;
-font-size:13px;
+.options{
+display:flex;
+justify-content:space-between;
+font-size:12px;
+margin-bottom:18px;
 }
 
-.extra span{
-color:#3b82f6;
+.options label{
 cursor:pointer;
 }
 
-/* ===== SUCCESS POPUP ===== */
+.error-msg{
+color:#ef4444;
+font-size:13px;
+margin-bottom:10px;
+display:none;
+}
+
 .success-popup{
 position:fixed;
 top:50%;
 left:50%;
 transform:translate(-50%,-50%) scale(0);
 background:#111;
-padding:30px;
+padding:35px;
 border-radius:16px;
 color:#fff;
-box-shadow:0 30px 60px rgba(0,0,0,0.6);
+box-shadow:0 40px 100px rgba(0,0,0,0.9);
 text-align:center;
 transition:.4s;
 }
@@ -110,43 +123,49 @@ transition:.4s;
 transform:translate(-50%,-50%) scale(1);
 }
 
-@keyframes fadeIn{
-from{opacity:0;transform:translateY(20px);}
-to{opacity:1;transform:translateY(0);}
+@keyframes fadeUp{
+from{opacity:0;transform:translate(-50%,-40%);}
+to{opacity:1;transform:translate(-50%,-50%);}
 }
 </style>
 </head>
 
 <body>
 
-<div class="bg"></div>
+<div class="poster-wall" id="posterWall"></div>
 
-<div class="login-box">
+<div class="login-container">
 <h2>PlayWithEase</h2>
+
+<div class="error-msg" id="errorBox"></div>
 
 <input type="email" id="email" placeholder="Enter Email">
 <input type="password" id="password" placeholder="Enter Password">
 
+<div class="options">
+<label><input type="checkbox" onclick="togglePass()"> Show Password</label>
+<label><input type="checkbox"> Remember Me</label>
+</div>
+
 <button onclick="login()">Login</button>
 
-<div class="extra">
-New user? <span onclick="register()">Create Account</span>
-</div>
+<p style="margin-top:15px;font-size:13px;">
+New user? <span onclick="register()" style="color:#3b82f6;cursor:pointer;">Create Account</span>
+</p>
 </div>
 
 <div class="success-popup" id="successBox">
 <h3>🎉 Login Successful!</h3>
-<p>Welcome back to PlayWithEase</p>
+<p>Redirecting to PlayWithEase...</p>
 </div>
 
-<!-- FIREBASE -->
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } 
 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-/* 🔥 APNA ORIGINAL FIREBASE CONFIG YAHA PASTE KAR */
+/* 🔥 APNA REAL FIREBASE CONFIG YAHA PASTE KAR */
 const firebaseConfig = {
 apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
 authDomain: "playwithease.firebaseapp.com",
@@ -157,35 +176,47 @@ appId: "1:189729941006:web:362653774b92416c357e5f"
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+/* ===== LOGIN ===== */
 window.login = function(){
-const email = document.getElementById("email").value;
-const password = document.getElementById("password").value;
+const email=document.getElementById("email").value;
+const password=document.getElementById("password").value;
+const errorBox=document.getElementById("errorBox");
 
-signInWithEmailAndPassword(auth, email, password)
+errorBox.style.display="none";
+
+signInWithEmailAndPassword(auth,email,password)
 .then(()=>{
-const box=document.getElementById("successBox");
-box.classList.add("active");
-
-setTimeout(()=>{
-window.location.href="index.html";
-},2000);
+document.getElementById("successBox").classList.add("active");
+setTimeout(()=>window.location.href="index.html",2000);
 })
 .catch(err=>{
-alert("❌ "+err.message);
+errorBox.innerText=err.message;
+errorBox.style.display="block";
 });
 }
 
-window.register = function(){
-const email = document.getElementById("email").value;
-const password = document.getElementById("password").value;
+/* ===== REGISTER ===== */
+window.register=function(){
+const email=document.getElementById("email").value;
+const password=document.getElementById("password").value;
 
-createUserWithEmailAndPassword(auth, email, password)
-.then(()=>{
-alert("Account Created Successfully ✅");
-})
-.catch(err=>{
-alert(err.message);
-});
+createUserWithEmailAndPassword(auth,email,password)
+.then(()=>alert("Account Created Successfully"))
+.catch(err=>alert(err.message));
+}
+
+/* ===== SHOW PASSWORD ===== */
+window.togglePass=function(){
+const pass=document.getElementById("password");
+pass.type=pass.type==="password"?"text":"password";
+}
+
+/* ===== GENERATE 100+ GAME POSTERS ===== */
+const posterWall=document.getElementById("posterWall");
+for(let i=100;i<220;i++){
+let img=document.createElement("img");
+img.src=`https://cdn.cloudflare.steamstatic.com/steam/apps/${i}/header.jpg`;
+posterWall.appendChild(img);
 }
 
 </script>
