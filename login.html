@@ -115,25 +115,6 @@ margin-bottom:12px;
 display:none;
 }
 
-.success-popup{
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%) scale(0);
-background:#111;
-padding:35px;
-border-radius:16px;
-color:#fff;
-box-shadow:0 40px 100px rgba(0,0,0,0.9);
-text-align:center;
-transition:.4s;
-}
-
-.success-popup.active{
-transform:translate(-50%,-50%) scale(1);
-box-shadow:0 0 40px #3b82f6;
-}
-
 .spinner{
 border:3px solid rgba(255,255,255,0.2);
 border-top:3px solid #fff;
@@ -180,12 +161,7 @@ Forgot Password?
 <p style="margin-top:15px;font-size:13px;">
 New user? <span onclick="register()">Create Account</span>
 </p>
-
-<div class="success-popup" id="successBox">
-<h3>🎉 Login Successful!</h3>
-<p>Redirecting...</p>
 </div>
-
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -201,7 +177,10 @@ const firebaseConfig = {
 apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
 authDomain: "playwithease.firebaseapp.com",
 projectId: "playwithease",
-appId: "1:189729941006:web:362653774b92416c357e5f"
+storageBucket: "playwithease.firebasestorage.app",
+messagingSenderId: "189729941006",
+appId: "1:189729941006:web:362653774b92416c357e5f",
+measurementId: "G-1C3B31KQ7C"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -231,12 +210,11 @@ const errorBox=document.getElementById("errorBox");
 
 errorBox.style.display="none";
 btn.disabled=true;
-btn.innerHTML="Logging in <span class='spinner'></span>";
+btn.innerHTML="Authenticating...";
 
 signInWithEmailAndPassword(auth,email,password)
 .then(()=>{
-document.getElementById("successBox").classList.add("active");
-setTimeout(()=>window.location.href="index.html",2000);
+window.location.href="index.html";
 })
 .catch(err=>{
 errorBox.innerText=err.message;
