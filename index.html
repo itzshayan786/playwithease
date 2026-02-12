@@ -304,6 +304,72 @@ transform:translateY(-8px);
 from{transform:translateY(40px);opacity:0;}
 to{transform:translateY(0);opacity:1;}
 }
+/* ===== PREMIUM CART BUTTON EFFECT ===== */
+.card button{
+position:relative;
+overflow:hidden;
+transition:all .3s ease;
+}
+
+.card button::after{
+content:"";
+position:absolute;
+width:300%;
+height:300%;
+top:50%;
+left:50%;
+background:rgba(255,255,255,0.25);
+transform:translate(-50%,-50%) scale(0);
+border-radius:50%;
+transition:transform .6s ease;
+}
+
+.card button.clicked::after{
+transform:translate(-50%,-50%) scale(1);
+}
+
+.card button.success{
+background:linear-gradient(135deg,#16a34a,#22c55e);
+box-shadow:0 8px 20px rgba(34,197,94,0.4);
+}
+
+/* ===== PREMIUM TOAST ===== */
+.cart-toast{
+position:fixed;
+bottom:30px;
+right:30px;
+width:320px;
+background:var(--card);
+border-radius:14px;
+box-shadow:0 20px 40px rgba(0,0,0,0.15);
+padding:18px;
+z-index:9999;
+border-left:5px solid var(--accent);
+animation:toastSlide .4s ease;
+}
+
+.cart-toast h4{
+margin-bottom:6px;
+font-size:15px;
+}
+
+.cart-toast p{
+font-size:13px;
+opacity:.8;
+margin-bottom:8px;
+}
+
+.cart-toast .toast-price{
+font-weight:600;
+color:var(--accent);
+font-size:14px;
+}
+
+@keyframes toastSlide{
+from{transform:translateX(40px);opacity:0;}
+to{transform:translateX(0);opacity:1;}
+}
+
 </style>
 </head>
 
@@ -467,44 +533,42 @@ grid.innerHTML+=`
 <div class="info">
 ${g[0]}
 <div class="price">₹999</div>
-<button onclick="addToCart(this)">Add to Cart</button>
+<button onclick="addToCart(this,'${g[0]}')">Add to Cart</button>
 </div>
 </div>`;
 });
+function addToCart(btn,gameName){
 
-/* ================= ADD TO CART ANIMATION ================= */
-function addToCart(btn){
-
-// Button animation
-btn.innerHTML="✔ Added";
-btn.style.transform="scale(1.1)";
-btn.style.background="green";
+btn.classList.add("clicked");
 
 setTimeout(()=>{
-btn.innerHTML="Add to Cart";
-btn.style.transform="scale(1)";
-btn.style.background="var(--accent)";
-},1500);
+btn.classList.remove("clicked");
+btn.classList.add("success");
+btn.innerHTML="✔ Added";
+},200);
 
-// Floating toast
+setTimeout(()=>{
+btn.classList.remove("success");
+btn.innerHTML="Add to Cart";
+},1800);
+
+/* ===== PREMIUM TOAST ===== */
 let toast=document.createElement("div");
-toast.innerText="🛒 Added to Cart!";
-toast.style.position="fixed";
-toast.style.bottom="30px";
-toast.style.right="30px";
-toast.style.padding="14px 20px";
-toast.style.background="var(--accent)";
-toast.style.color="#fff";
-toast.style.borderRadius="10px";
-toast.style.boxShadow="0 10px 25px rgba(0,0,0,0.2)";
-toast.style.zIndex="9999";
-toast.style.animation="slideUp 0.4s ease";
+toast.className="cart-toast";
+toast.innerHTML=`
+<h4>🛒 Successfully Added!</h4>
+<p><b>${gameName}</b> has been added to your cart.</p>
+<div class="toast-price">Total: ₹999</div>
+`;
 
 document.body.appendChild(toast);
 
 setTimeout(()=>{
-toast.remove();
-},2000);
+toast.style.opacity="0";
+toast.style.transform="translateX(40px)";
+setTimeout(()=>toast.remove(),300);
+},2500);
+
 }
 
 </script>
