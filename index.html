@@ -31,10 +31,12 @@
         .glass { background: var(--bg-card); opacity: 0.95; backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
         body { -webkit-tap-highlight-color: transparent; color: var(--text-main); }
         [x-cloak] { display: none !important; }
-        /* Hide Scrollbar for category list */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         body, div, button, span, i, nav, section, main { transition-property: color, background-color, border-color; transition-duration: 300ms; }
+        
+        /* Video Container to force Aspect Ratio Fill */
+        .video-background { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%); pointer-events: none; }
+        @media (min-aspect-ratio: 16/9) { .video-background { height: 56.25vw; } }
+        @media (max-aspect-ratio: 16/9) { .video-background { width: 177.78vh; } }
     </style>
 </head>
 
@@ -123,31 +125,55 @@
         </div>
     </nav>
 
-    <section class="relative min-h-[70vh] w-full overflow-hidden mt-16 md:mt-20 flex items-center justify-center pb-10 text-white">
-        <div class="absolute inset-0 z-0">
+    <section class="relative min-h-[85vh] w-full overflow-hidden mt-16 md:mt-20 flex items-center justify-center pb-10 text-white bg-black">
+        
+        <div x-show="!trailerPlaying" x-transition.opacity.duration.500ms class="absolute inset-0 z-10">
             <div class="absolute inset-0 bg-gradient-to-t from-bg-main via-transparent to-transparent z-10"></div>
-            <div class="absolute inset-0 bg-black/40 z-10"></div>
+            <div class="absolute inset-0 bg-black/30 z-10"></div>
             <img src="https://media-rockstargames-com.akamaized.net/mfe6/prod/__common/img/71d4d17edcd49703a5ea446cc0e588e6.jpg" class="w-full h-full object-cover animate-float scale-110 origin-center">
         </div>
-        <div class="relative z-20 text-center w-full max-w-5xl mx-auto px-4 md:px-6 pt-10">
+
+        <div x-show="trailerPlaying" x-transition.opacity.duration.1000ms class="absolute inset-0 z-20 bg-black">
+            <div id="hero-player" class="video-background"></div>
+        </div>
+
+        <div x-show="!trailerPlaying" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90" 
+             class="relative z-30 text-center w-full max-w-5xl mx-auto px-4 md:px-6 pt-10">
+            
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded border border-white/20 bg-black/40 backdrop-blur mb-6">
-                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span><span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white">Global Premiere</span>
+                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white">Global Premiere</span>
             </div>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg/512px-Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg.png" class="h-16 md:h-32 mx-auto mb-8 drop-shadow-[0_0_30px_rgba(255,0,170,0.5)] w-auto max-w-[80%]">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-12 text-white mb-8 max-w-3xl mx-auto">
-                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black" x-text="timer.days">000</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Days</div></div>
-                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black" x-text="timer.hours">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Hours</div></div>
-                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black" x-text="timer.minutes">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Mins</div></div>
-                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black text-brand-secondary" x-text="timer.seconds">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Secs</div></div>
+            
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg/512px-Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg.png" 
+                 class="h-20 md:h-48 mx-auto mb-8 md:mb-10 drop-shadow-[0_0_30px_rgba(255,0,170,0.5)] w-auto max-w-[90%]">
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-12 text-white mb-8 md:mb-12 max-w-3xl mx-auto">
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-6xl font-display font-black" x-text="timer.days">000</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Days</div></div>
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-6xl font-display font-black" x-text="timer.hours">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Hours</div></div>
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-6xl font-display font-black" x-text="timer.minutes">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Mins</div></div>
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-6xl font-display font-black text-brand-secondary" x-text="timer.seconds">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Secs</div></div>
             </div>
+            
             <div class="flex flex-col md:flex-row justify-center gap-4 px-4 md:px-0">
                 <button class="bg-white text-black px-8 py-3.5 rounded font-bold uppercase tracking-widest text-sm md:text-base hover:bg-brand-primary hover:text-white transition duration-300 w-full md:w-auto shadow-lg">Pre-Order Now</button>
+                <button @click="playTrailer" class="px-8 py-3.5 rounded border border-white/30 backdrop-blur font-bold uppercase tracking-widest text-sm md:text-base hover:bg-white/10 transition flex items-center justify-center gap-3 w-full md:w-auto text-white">
+                    <i data-lucide="play-circle" class="w-5 h-5"></i> Watch Trailer
+                </button>
             </div>
+        </div>
+
+        <div x-show="trailerPlaying" x-cloak class="absolute bottom-10 right-10 z-40 flex gap-4 animate-fade-in">
+            <button @click="toggleMute" class="w-12 h-12 rounded-full glass border border-white/20 flex items-center justify-center hover:bg-white/20 transition text-white">
+                <i :data-lucide="isMuted ? 'volume-x' : 'volume-2'" class="w-5 h-5"></i>
+            </button>
+            <button @click="stopTrailer" class="px-6 py-3 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold uppercase text-xs tracking-widest transition flex items-center gap-2 shadow-lg">
+                <i data-lucide="x" class="w-4 h-4"></i> Close Trailer
+            </button>
         </div>
     </section>
 
     <main class="max-w-[1600px] mx-auto px-4 md:px-6 py-12 text-brand-text">
-        
         <div class="flex items-center gap-2 overflow-x-auto no-scrollbar mb-8 pb-2">
             <button @click="activeCategory = 'All'" :class="activeCategory === 'All' ? 'bg-brand-primary text-white border-brand-primary' : 'bg-brand-text/5 border-brand-text/10 hover:bg-brand-text/10'" class="px-4 py-2 rounded-full border text-xs font-bold uppercase tracking-widest whitespace-nowrap transition">All Games</button>
             <template x-for="cat in ['Action', 'RPG', 'Shooter', 'Sports', 'Adventure', 'Horror']">
@@ -168,13 +194,11 @@
                             <div class="flex items-center gap-1 text-[8px] font-bold text-gray-300"><i data-lucide="globe" class="w-3 h-3 text-brand-primary"></i></div>
                         </div>
                         <div x-show="game.discount" class="absolute top-2 left-2 bg-red-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow-lg z-10"><span x-text="game.discount"></span></div>
-                        
                         <div class="hidden lg:flex absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition duration-200 flex-col items-center justify-center p-4 gap-2">
                             <button @click.stop="buyNow(game)" class="w-full py-2 bg-white text-black font-bold uppercase text-[10px] tracking-wider rounded hover:bg-brand-primary hover:text-white transition">Buy Now</button>
                             <button @click.stop="addToCart(game)" class="w-full py-2 border border-white/20 text-white font-bold uppercase text-[10px] tracking-wider rounded hover:bg-white/10 transition">Add to Cart</button>
                         </div>
                     </a>
-
                     <div class="p-2 md:p-3">
                         <a :href="'product.html?id=' + game.id" class="block">
                             <h3 class="font-bold truncate text-xs hover:text-brand-primary transition leading-tight mb-1" x-text="game.title"></h3>
@@ -193,7 +217,7 @@
     </main>
 
     <footer class="bg-black/50 border-t border-white/10 pt-12 pb-24 md:pb-12 text-brand-text text-center text-xs">
-        <p class="opacity-50">&copy; 2026 PlayWithEase. Official Digital Retailer.</p>
+        <p class="opacity-50">&copy; 2026 PlayWithEase.</p>
     </footer>
 
     <script type="module">
@@ -205,28 +229,26 @@
     </script>
 
     <script>
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        
+        var ytPlayer;
+        function onYouTubeIframeAPIReady() {
+            // Player is ready to be initialized by Alpine
+        }
+    </script>
+
+    <script>
         document.addEventListener('alpine:init', () => {
             
-            // AI CHATBOT
             Alpine.data('chatBot', () => ({
                 open: false, input: '',
-                messages: [{ id: 1, text: "Welcome! Need help finding a game or checking an order?", sender: 'bot' }],
-                sendMessage() {
-                    if (!this.input.trim()) return;
-                    this.messages.push({ id: Date.now(), text: this.input, sender: 'user' });
-                    const txt = this.input.toLowerCase(); this.input = '';
-                    setTimeout(() => {
-                        let r = "I can help with keys, refunds, and support.";
-                        if (txt.includes('key')) r = "Keys are in <b>Profile > My Vault</b>.";
-                        if (txt.includes('refund')) r = "Refunds are possible within 14 days if unredeemed.";
-                        if (txt.includes('hello')) r = "Hi there! Ready to play?";
-                        this.messages.push({ id: Date.now()+1, text: r, sender: 'bot' });
-                        this.$nextTick(() => document.getElementById('chatContainer').scrollTop = 9999);
-                    }, 800);
-                }
+                messages: [{ id: 1, text: "Welcome! Need help?", sender: 'bot' }],
+                sendMessage() { if (!this.input.trim()) return; this.messages.push({ id: Date.now(), text: this.input, sender: 'user' }); const txt = this.input.toLowerCase(); this.input = ''; setTimeout(() => { let r = "I can help with keys and refunds."; if (txt.includes('key')) r = "Check <b>Profile > My Vault</b>."; if (txt.includes('hello')) r = "Hi there!"; this.messages.push({ id: Date.now()+1, text: r, sender: 'bot' }); this.$nextTick(() => document.getElementById('chatContainer').scrollTop = 9999); }, 800); }
             }));
 
-            // STORE
             Alpine.data('storeLogic', () => ({
                 currency: localStorage.getItem('pwe_currency') || 'INR', 
                 exchangeRate: 85.0, 
@@ -236,6 +258,10 @@
                 notifications: [], mobileSearchOpen: false,
                 cookiesAccepted: localStorage.getItem('pwe_cookies') === 'true',
                 timer: { days: '00', hours: '00', minutes: '00', seconds: '00' },
+                
+                // VIDEO STATE
+                trailerPlaying: false,
+                isMuted: false,
 
                 themes: {
                     cyber: { '--bg-main': '#080808', '--bg-card': '#101010', '--text-main': '#ffffff', '--brand-primary': '#2563eb', '--brand-secondary': '#ff00aa' },
@@ -269,34 +295,41 @@
                 ],
 
                 init() { lucide.createIcons(); this.startTimer(); this.setTheme(this.currentTheme); },
-                
-                get filteredGames() { 
-                    let result = this.games;
-                    if (this.activeCategory !== 'All') result = result.filter(g => g.category === this.activeCategory);
-                    if (this.searchQuery !== '') result = result.filter(g => g.title.toLowerCase().includes(this.searchQuery.toLowerCase()));
-                    return result;
-                },
-
-                addToCart(game) { 
-                    this.cartCount++; localStorage.setItem('pwe_cart_count', this.cartCount); 
-                    let cart = JSON.parse(localStorage.getItem('pwe_cart_items') || '[]'); cart.push(game); localStorage.setItem('pwe_cart_items', JSON.stringify(cart)); 
-                    this.notify('success', 'Added', `${game.title} is in cart.`);
-                },
-
-                buyNow(game) {
-                    let cart = JSON.parse(localStorage.getItem('pwe_cart_items') || '[]');
-                    cart.push(game);
-                    localStorage.setItem('pwe_cart_items', JSON.stringify(cart));
-                    window.location.href = 'checkout.html';
-                },
-
+                get filteredGames() { let r = this.games; if(this.activeCategory !== 'All') r = r.filter(g => g.category === this.activeCategory); if(this.searchQuery !== '') r = r.filter(g => g.title.toLowerCase().includes(this.searchQuery.toLowerCase())); return r; },
+                addToCart(game) { this.cartCount++; localStorage.setItem('pwe_cart_count', this.cartCount); let cart = JSON.parse(localStorage.getItem('pwe_cart_items') || '[]'); cart.push(game); localStorage.setItem('pwe_cart_items', JSON.stringify(cart)); this.notify('success', 'Added', `${game.title} is in cart.`); },
+                buyNow(game) { let cart = JSON.parse(localStorage.getItem('pwe_cart_items') || '[]'); cart.push(game); localStorage.setItem('pwe_cart_items', JSON.stringify(cart)); window.location.href = 'checkout.html'; },
                 toggleCurrency() { this.currency = this.currency === 'USD' ? 'INR' : 'USD'; localStorage.setItem('pwe_currency', this.currency); this.notify('info', 'Updated', `Currency: ${this.currency}`); },
                 setTheme(name) { this.currentTheme = name; localStorage.setItem('pwe_theme', name); },
                 toggleSearchMobile() { this.mobileSearchOpen = !this.mobileSearchOpen; },
                 get themeStyles() { return Object.entries(this.themes[this.currentTheme]).map(([k, v]) => `${k}: ${v};`).join(' '); },
                 formatPrice(p) { return this.currency === 'USD' ? '$'+p.toFixed(2) : '₹'+Math.round(p*this.exchangeRate); },
                 notify(type, title, message) { const id = Date.now(); this.notifications.push({ id, type, title, message, visible: true }); setTimeout(() => { const index = this.notifications.findIndex(n => n.id === id); if(index > -1) this.notifications[index].visible = false; }, 3000); },
-                startTimer() { const target = new Date("2026-11-19T00:00:00").getTime(); setInterval(() => { const now = new Date().getTime(), d = target - now; this.timer.days = Math.floor(d/(1000*60*60*24)); this.timer.hours = Math.floor((d%(1000*60*60*24))/(1000*60*60)); this.timer.minutes = Math.floor((d%(1000*60*60))/(1000*60)); this.timer.seconds = Math.floor((d%(1000*60))/1000); }, 1000); }
+                startTimer() { const target = new Date("2026-11-19T00:00:00").getTime(); setInterval(() => { const now = new Date().getTime(), d = target - now; this.timer.days = Math.floor(d/(1000*60*60*24)); this.timer.hours = Math.floor((d%(1000*60*60*24))/(1000*60*60)); this.timer.minutes = Math.floor((d%(1000*60*60))/(1000*60)); this.timer.seconds = Math.floor((d%(1000*60))/1000); }, 1000); },
+                
+                // YOUTUBE PLAYER LOGIC
+                playTrailer() {
+                    this.trailerPlaying = true;
+                    if(window.ytPlayer && typeof window.ytPlayer.playVideo === 'function') {
+                        window.ytPlayer.playVideo();
+                    } else {
+                        window.ytPlayer = new YT.Player('hero-player', {
+                            height: '100%', width: '100%',
+                            videoId: 'QdBZY2fkU-0', // GTA 6 Trailer ID
+                            playerVars: { 'autoplay': 1, 'controls': 0, 'rel': 0, 'showinfo': 0, 'loop': 1, 'playlist': 'QdBZY2fkU-0', 'mute': 0 },
+                            events: { 'onReady': (event) => { event.target.playVideo(); } }
+                        });
+                    }
+                },
+                stopTrailer() {
+                    this.trailerPlaying = false;
+                    if(window.ytPlayer && typeof window.ytPlayer.stopVideo === 'function') window.ytPlayer.stopVideo();
+                },
+                toggleMute() {
+                    this.isMuted = !this.isMuted;
+                    if(window.ytPlayer) { this.isMuted ? window.ytPlayer.mute() : window.ytPlayer.unMute(); }
+                    // Update icon dynamically
+                    this.$nextTick(() => lucide.createIcons()); 
+                }
             }))
         });
     </script>
