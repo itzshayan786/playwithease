@@ -273,6 +273,53 @@ projectId: "playwithease"
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+window.confirmPaid = async function(){
+
+// 1️⃣ Cart empty check
+if(cart.length === 0){
+alert("Your cart is empty.");
+return;
+}
+
+// 2️⃣ Total calculate
+let total = cart.reduce((sum,item)=>{
+return sum + (item.price * item.qty);
+},0);
+
+// 3️⃣ Check login
+let user = auth.currentUser;
+
+if(!user){
+alert("Please login first.");
+return;
+}
+
+try{
+
+// 4️⃣ Create order object
+let orderData = {
+userEmail: user.email,
+items: cart,
+total: total,
+status: "in-progress",
+createdAt: new Date()
+};
+
+// 5️⃣ Save in Firestore
+await addDoc(collection(db,"orders"), orderData);
+
+// 6️⃣ Clear cart
+localStorage.removeItem("pwe_cart");
+
+// 7️⃣ Redirect to Order History
+window.location.href = "order-history.html";
+
+}catch(error){
+console.error("Order save error:", error);
+alert("Something went wrong while placing order.");
+}
+
+}
 
 let cart = JSON.parse(localStorage.getItem("pwe_cart")) || [];
 
