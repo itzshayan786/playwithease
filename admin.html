@@ -1,54 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>PlayWithEase Admin</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-
-<style>
-body{
-font-family:Poppins;
-background:#0f172a;
-color:#fff;
-padding:20px;
-}
-
-.order{
-background:#1e293b;
-padding:20px;
-border-radius:12px;
-margin-bottom:15px;
-}
-
-button{
-margin-top:8px;
-padding:6px 12px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-}
-
-.save{background:#16a34a;color:#fff;}
-.delete{background:#ef4444;color:#fff;}
-</style>
+<title>Admin Panel</title>
 </head>
-
 <body>
 
-<h2>Admin Orders Dashboard</h2>
-<div id="ordersContainer"></div>
+<h2>All Orders</h2>
+<div id="orders"></div>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { 
-  getFirestore, 
-  collection, 
-  onSnapshot, 
-  doc, 
-  updateDoc, 
-  deleteDoc 
+getFirestore, 
+collection, 
+onSnapshot 
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -60,119 +26,27 @@ projectId:"playwithease"
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const container = document.getElementById("ordersContainer");
+const container = document.getElementById("orders");
 
-
-/* ================= RENDER FUNCTION ================= */
-function renderOrder(id, order){
-
-container.innerHTML += `
-<div class="order">
-
-<b>Order ID:</b> ${id}<br>
-<b>Email:</b> ${order.userEmail || "Local User"}<br>
-<b>Total:</b> ₹${order.total || 0}<br>
-
-<select onchange="updateStatus('${id}',this.value)">
-<option ${order.status==="in-progress"?"selected":""} value="in-progress">Pending</option>
-<option ${order.status==="success"?"selected":""} value="success">Success</option>
-<option ${order.status==="cancelled"?"selected":""} value="cancelled">Cancelled</option>
-<option ${order.status==="refunded"?"selected":""} value="refunded">Refunded</option>
-</select>
-
-<div style="margin-top:8px;">
-<b>Account Details</b><br>
-
-<input placeholder="Username" id="user-${id}" value="${order.credentials?.username || ""}">
-<input placeholder="Password" id="pass-${id}" value="${order.credentials?.password || ""}">
-<br>
-
-<button onclick="saveCredentials('${id}')">Save Credentials</button>
-</div>
-
-<button onclick="deleteOrder('${id}')" style="background:#ef4444;color:#fff;">
-Delete Order
-</button>
-
-</div>
-`;
-}
-
-
-/* 🔥 FIRESTORE ORDERS (REAL ORDERS) */
 onSnapshot(collection(db,"orders"), (snapshot)=>{
-container.innerHTML = "";
+
+container.innerHTML="";
 
 snapshot.forEach(docSnap=>{
-renderOrder(docSnap.id, docSnap.data());
+let order = docSnap.data();
+
+container.innerHTML += `
+<div style="border:1px solid #ccc;padding:10px;margin:10px;">
+Order ID: ${docSnap.id}<br>
+User: ${order.userEmail}<br>
+Total: ₹${order.total}<br>
+Status: ${order.status}
+</div>
+`;
+
 });
 
-/* 🔥 LOCAL STORAGE ORDERS (OLD ORDERS) */
-let localOrders = JSON.parse(localStorage.getItem("pwe_orders")) || [];
-
-localOrders.forEach((order,index)=>{
-renderOrder("local-"+index, order);
 });
-
-});
-
-
-/* ================= STATUS UPDATE ================= */
-window.updateStatus = async function(id,status){
-
-if(id.startsWith("local-")){
-alert("Local order — status change not saved.");
-return;
-}
-
-await updateDoc(doc(db,"orders",id), { status: status });
-
-};
-
-
-/* ================= SAVE CREDENTIALS ================= */
-window.saveCredentials = async function(id){
-
-let username = document.getElementById("user-"+id).value;
-let password = document.getElementById("pass-"+id).value;
-
-if(id.startsWith("local-")){
-alert("Local order — credentials not saved.");
-return;
-}
-
-await updateDoc(doc(db,"orders",id), {
-credentials: {
-username: username,
-password: password
-}
-});
-
-alert("Credentials Saved");
-
-};
-
-
-/* ================= DELETE ORDER ================= */
-window.deleteOrder = async function(id){
-
-if(!confirm("Delete this order?")) return;
-
-if(id.startsWith("local-")){
-
-let orders = JSON.parse(localStorage.getItem("pwe_orders")) || [];
-let index = parseInt(id.replace("local-",""));
-
-orders.splice(index,1);
-localStorage.setItem("pwe_orders", JSON.stringify(orders));
-
-location.reload();
-return;
-}
-
-await deleteDoc(doc(db,"orders",id));
-
-};
 
 </script>
 
