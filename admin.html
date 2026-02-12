@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlayWithEase Admin</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+font-family:Poppins;
+background:#0f172a;
+color:#fff;
+min-height:100vh;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 30px;
+background:#111827;
+}
+
+h1{font-size:20px;}
+
+.stats{
+display:flex;
+gap:20px;
+padding:20px;
+flex-wrap:wrap;
+}
+
+.stat-box{
+background:#1e293b;
+padding:15px;
+border-radius:12px;
+flex:1;
+min-width:200px;
+}
+
+.controls{
+display:flex;
+gap:15px;
+padding:20px;
+flex-wrap:wrap;
+}
+
+input,select{
+padding:8px;
+border-radius:8px;
+border:none;
+outline:none;
+}
+
+.order{
+background:#1e293b;
+margin:20px;
+padding:20px;
+border-radius:15px;
+box-shadow:0 15px 40px rgba(0,0,0,.4);
+}
+
+.order-header{
+display:flex;
+justify-content:space-between;
+flex-wrap:wrap;
+margin-bottom:10px;
+}
+
+.status-select{
+padding:6px;
+border-radius:6px;
+}
+
+.cred-box{
+margin-top:10px;
+padding:10px;
+background:#0f172a;
+border-radius:10px;
+}
+
+button{
+padding:6px 12px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+margin-top:6px;
+}
+
+.save-btn{background:#16a34a;color:#fff;}
+.delete-btn{background:#ef4444;color:#fff;}
+.copy-btn{background:#2563eb;color:#fff;}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<h1>PlayWithEase Admin Panel</h1>
+</div>
+
+<div class="stats">
+<div class="stat-box">
+<b>Total Orders</b>
+<div id="totalOrders">0</div>
+</div>
+
+<div class="stat-box">
+<b>Total Revenue</b>
+<div id="totalRevenue">₹0</div>
+</div>
+</div>
+
+<div class="controls">
+<input type="text" id="searchInput" placeholder="Search by Email or Order ID">
+<select id="filterStatus">
+<option value="">All Status</option>
+<option value="in-progress">Pending</option>
+<option value="success">Success</option>
+<option value="cancelled">Cancelled</option>
+<option value="refunded">Refunded</option>
+</select>
+</div>
+
+<div id="ordersContainer"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { 
+getFirestore, 
+collection, 
+onSnapshot, 
+doc, 
+updateDoc, 
+deleteDoc 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig={
+apiKey:"AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+authDomain:"playwithease.firebaseapp.com",
+projectId:"playwithease"
+};
+
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
+
+const container=document.getElementById("ordersContainer");
+const totalOrdersEl=document.getElementById("totalOrders");
+const totalRevenueEl=document.getElementById("totalRevenue");
+
+let allOrders=[];
+
+/* REAL TIME LISTENER */
+onSnapshot(collection(db,"orders"),(snapshot)=>{
+container.innerHTML="";
+allOrders=[];
+let totalRevenue=0;
+
+snapshot.forEach(docSnap=>{
+let order=docSnap.data();
+order.id=docSnap.id;
+allOrders.push(order);
+totalRevenue+=order.total;
+});
+
+totalOrdersEl.innerText=allOrders.length;
+totalRevenueEl.innerText="₹"+totalRevenue;
+
+renderOrders(allOrders);
+});
+
+/* RENDER */
+function renderOrders(list){
+container.innerHTML="";
+
+list.forEach(order=>{
+
+container.innerHTML+=`
+<div class="order">
+
+<div class="order-header">
+<div>
+<b>Order ID:</b> ${order.id}
+<button class="copy-btn" onclick="copyText('${order.id}')">Copy</button>
+</div>
+
+<div>
+<select class="status-select" onchange="updateStatus('${order.id}',this.value)">
+<option ${order.status==="in-progress"?"selected":""} value="in-progress">Pending</option>
+<option ${order.status==="success"?"selected":""} value="success">Success</option>
+<option ${order.status==="cancelled"?"selected":""} value="cancelled">Cancelled</option>
+<option ${order.status==="refunded"?"selected":""} value="refunded">Refunded</option>
+</select>
+</div>
+</div>
+
+<div>Email: ${order.userEmail}</div>
+<div>Total: ₹${order.total}</div>
+
+<div class="cred-box">
+<b>Account Details</b><br>
+<input type="text" placeholder="Username" id="user-${order.id}" value="${order.credentials?.username || ""}"><br>
+<input type="text" placeholder="Password" id="pass-${order.id}" value="${order.credentials?.password || ""}"><br>
+<button class="save-btn" onclick="saveCredentials('${order.id}')">
+Save Credentials
+</button>
+</div>
+
+<button class="delete-btn" onclick="deleteOrder('${order.id}')">
+Delete Order
+</button>
+
+</div>
+`;
+});
+}
+
+/* STATUS UPDATE */
+window.updateStatus=async function(id,status){
+await updateDoc(doc(db,"orders",id),{status:status});
+};
+
+/* SAVE CREDENTIALS */
+window.saveCredentials=async function(id){
+let username=document.getElementById("user-"+id).value;
+let password=document.getElementById("pass-"+id).value;
+
+await updateDoc(doc(db,"orders",id),{
+credentials:{
+username:username,
+password:password
+}
+});
+
+alert("Credentials Saved");
+};
+
+/* DELETE */
+window.deleteOrder=async function(id){
+if(confirm("Delete this order?")){
+await deleteDoc(doc(db,"orders",id));
+}
+};
+
+/* SEARCH */
+document.getElementById("searchInput").addEventListener("input",function(){
+let value=this.value.toLowerCase();
+let filtered=allOrders.filter(o=>
+o.userEmail.toLowerCase().includes(value) ||
+o.id.toLowerCase().includes(value)
+);
+renderOrders(filtered);
+});
+
+/* FILTER */
+document.getElementById("filterStatus").addEventListener("change",function(){
+let value=this.value;
+if(value===""){
+renderOrders(allOrders);
+}else{
+renderOrders(allOrders.filter(o=>o.status===value));
+}
+});
+
+/* COPY */
+window.copyText=function(text){
+navigator.clipboard.writeText(text);
+alert("Copied");
+};
+</script>
+
+</body>
+</html>
