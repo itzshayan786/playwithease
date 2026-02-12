@@ -441,6 +441,17 @@ Serving gamers across India with trusted digital access.
 
 <script>
 
+let cart = JSON.parse(localStorage.getItem("pwe_cart")) || [];
+
+function updateCartCount(){
+let count = document.getElementById("cartCount");
+if(count){
+count.innerText = cart.length;
+}
+}
+
+updateCartCount();
+
 /* MUSIC BAR */
 const musicBar=document.getElementById("musicBar");
 for(let i=0;i<60;i++){
@@ -547,6 +558,16 @@ window.location.reload();
 }
 function addToCart(btn,gameName){
 
+// 1️⃣ Cart me add karo
+cart.push(gameName);
+
+// 2️⃣ Save in localStorage
+localStorage.setItem("pwe_cart", JSON.stringify(cart));
+
+// 3️⃣ Update live count
+updateCartCount();
+
+// 4️⃣ Button animation
 btn.classList.add("clicked");
 
 setTimeout(()=>{
@@ -560,22 +581,8 @@ btn.classList.remove("success");
 btn.innerHTML="Add to Cart";
 },1800);
 
-/* PROFESSIONAL TOAST */
-let toast=document.createElement("div");
-toast.className="cart-toast";
-toast.innerHTML=`
-<h4>Added to Cart</h4>
-<p><b>${gameName}</b> is ready for checkout.</p>
-<div class="toast-price">Total: ₹999</div>
-`;
-
-document.body.appendChild(toast);
-
-setTimeout(()=>{
-toast.style.opacity="0";
-toast.style.transform="translateX(100px)";
-setTimeout(()=>toast.remove(),300);
-},2500);
+// 5️⃣ Show cart preview
+showCartPreview();
 
 }
 /* ===== DROPDOWN CLOSE FEATURES ===== */
@@ -596,7 +603,7 @@ document.getElementById("dropdown").style.display="none";
 });
 /* ===== PREMIUM THEME CYCLER ===== */
 
-const themes=["","theme-dark","theme-emerald","theme-royal"];
+const themes=["","theme-dark","theme-emerald","theme-royal","theme-elite-red"];
 let currentTheme=0;
 
 const themeBtn=document.getElementById("themeSwitcher");
@@ -610,6 +617,12 @@ currentTheme=0;
 
 document.body.className=themes[currentTheme];
 
+body.theme-elite-red{
+--bg:#14090b;
+--card:#1f1114;
+--accent:#dc2626;
+--text:#fef2f2;
+}
 /* Subtle click animation */
 themeBtn.style.transform="scale(.95)";
 setTimeout(()=>{
@@ -617,6 +630,39 @@ themeBtn.style.transform="";
 },150);
 
 });
+function toggleCart(e){
+e.preventDefault();
+const drop=document.getElementById("cartDropdown");
+drop.style.display=drop.style.display==="block"?"none":"block";
+renderCart();
+}
+
+function renderCart(){
+const drop=document.getElementById("cartDropdown");
+
+if(cart.length===0){
+drop.innerHTML="<div class='empty-cart'>Your cart is empty</div>";
+return;
+}
+
+let html="<h4>Your Cart</h4>";
+cart.forEach(item=>{
+html+=`<div class="cart-item">• ${item}</div>`;
+});
+
+html+=`<hr><div style="margin-top:8px;font-weight:600;">Total: ₹${cart.length*999}</div>`;
+drop.innerHTML=html;
+}
+
+function showCartPreview(){
+const drop=document.getElementById("cartDropdown");
+drop.style.display="block";
+renderCart();
+
+setTimeout(()=>{
+drop.style.display="none";
+},2500);
+}
 
 </script>
 
