@@ -19,7 +19,7 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'], tech: ['Rajdhani', 'sans-serif'], display: ['Orbitron', 'sans-serif'] },
                     colors: { bg: { main: 'var(--bg-main)', card: 'var(--bg-card)' }, brand: { primary: 'var(--brand-primary)', secondary: 'var(--brand-secondary)', text: 'var(--text-main)' } },
-                    animation: { 'float': 'float 6s ease-in-out infinite' },
+                    animation: { 'float': 'float 6s ease-in-out infinite', 'bounce-slow': 'bounce 3s infinite' },
                     keyframes: { float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } } }
                 }
             }
@@ -38,13 +38,50 @@
 <body class="bg-bg-main antialiased overflow-x-hidden w-full selection:bg-brand-primary selection:text-white"
       x-data="storeLogic()" :style="themeStyles">
 
-    <div class="fixed bottom-6 right-6 z-[100] flex flex-col gap-2 pointer-events-none">
+    <div class="fixed bottom-24 right-6 z-[100] flex flex-col gap-2 pointer-events-none">
         <template x-for="toast in notifications" :key="toast.id">
             <div x-show="toast.visible" class="pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl bg-bg-card border border-white/10 shadow-2xl shadow-black/50 min-w-[300px]">
                 <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" :class="toast.type === 'success' ? 'bg-green-500/20 text-green-500' : 'bg-brand-primary/20 text-brand-primary'"><i :data-lucide="toast.type === 'success' ? 'check' : 'info'" class="w-4 h-4"></i></div>
                 <div><h4 class="text-sm font-bold text-brand-text" x-text="toast.title"></h4><p class="text-xs opacity-70" x-text="toast.message"></p></div>
             </div>
         </template>
+    </div>
+
+    <div x-show="!cookiesAccepted" x-transition.opacity class="fixed bottom-0 w-full z-[90] bg-bg-card border-t border-white/10 p-4 md:p-6 shadow-2xl">
+        <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <i data-lucide="cookie" class="w-8 h-8 text-brand-secondary"></i>
+                <p class="text-sm text-gray-400">We use cookies to improve your gaming experience and store your cart locally.</p>
+            </div>
+            <div class="flex gap-3">
+                <button @click="cookiesAccepted = true; localStorage.setItem('pwe_cookies', 'true')" class="px-6 py-2 bg-brand-primary hover:bg-blue-600 text-white text-xs font-bold uppercase rounded-lg transition">Accept</button>
+                <button @click="cookiesAccepted = true" class="px-6 py-2 border border-white/10 hover:bg-white/5 text-gray-400 text-xs font-bold uppercase rounded-lg transition">Decline</button>
+            </div>
+        </div>
+    </div>
+
+    <div x-data="{ open: false }" class="fixed bottom-6 right-6 z-[95]">
+        <div x-show="open" x-cloak x-transition.scale.origin.bottom.right class="absolute bottom-16 right-0 w-80 bg-bg-card border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-96">
+            <div class="bg-brand-primary p-4 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <span class="font-bold text-sm text-white">Support Bot</span>
+                </div>
+                <button @click="open = false"><i data-lucide="x" class="w-4 h-4 text-white"></i></button>
+            </div>
+            <div class="flex-1 p-4 overflow-y-auto space-y-3 bg-black/20">
+                <div class="bg-white/10 p-3 rounded-lg rounded-tl-none text-xs text-gray-300 max-w-[80%]">
+                    Hello! How can I help you with your keys today?
+                </div>
+                </div>
+            <div class="p-3 border-t border-white/10 bg-bg-card flex gap-2">
+                <input type="text" placeholder="Type a message..." class="flex-1 bg-black/20 border border-white/10 rounded px-3 py-2 text-xs focus:border-brand-primary outline-none text-white">
+                <button class="p-2 bg-brand-primary rounded hover:bg-blue-600"><i data-lucide="send" class="w-4 h-4 text-white"></i></button>
+            </div>
+        </div>
+        <button @click="open = !open" class="w-14 h-14 bg-brand-primary hover:bg-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-brand-primary/40 transition hover:-translate-y-1">
+            <i :data-lucide="open ? 'x' : 'message-circle'" class="w-6 h-6 text-white"></i>
+        </button>
     </div>
 
     <nav class="fixed top-0 w-full z-50 glass h-16 md:h-20 transition-all duration-300 text-brand-text">
@@ -80,11 +117,11 @@
                         <div class="px-4 py-3 border-t border-brand-text/10 mt-1">
                             <div class="text-[10px] opacity-50 uppercase font-bold mb-2">Theme</div>
                             <div class="flex gap-2 justify-between">
-                                <button @click="setTheme('cyber')" class="w-8 h-8 rounded-full bg-blue-600 border border-white/20"></button>
-                                <button @click="setTheme('luxury')" class="w-8 h-8 rounded-full bg-yellow-500 border border-white/20"></button>
-                                <button @click="setTheme('toxic')" class="w-8 h-8 rounded-full bg-green-500 border border-white/20"></button>
-                                <button @click="setTheme('crimson')" class="w-8 h-8 rounded-full bg-red-600 border border-white/20"></button>
-                                <button @click="setTheme('minimal')" class="w-8 h-8 rounded-full bg-white border border-gray-300"></button>
+                                <button @click="setTheme('cyber')" class="w-8 h-8 rounded-full bg-blue-600 border border-white/20 hover:scale-110 transition"></button>
+                                <button @click="setTheme('luxury')" class="w-8 h-8 rounded-full bg-yellow-500 border border-white/20 hover:scale-110 transition"></button>
+                                <button @click="setTheme('toxic')" class="w-8 h-8 rounded-full bg-green-500 border border-white/20 hover:scale-110 transition"></button>
+                                <button @click="setTheme('crimson')" class="w-8 h-8 rounded-full bg-red-600 border border-white/20 hover:scale-110 transition"></button>
+                                <button @click="setTheme('minimal')" class="w-8 h-8 rounded-full bg-white border border-gray-300 hover:scale-110 transition"></button>
                             </div>
                         </div>
                     </div>
@@ -129,7 +166,6 @@
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-6">
             <template x-for="game in filteredGames" :key="game.id">
                 <div class="group relative bg-bg-card rounded-lg md:rounded-xl overflow-hidden border border-brand-text/5 hover:border-brand-primary/50 transition-all duration-300 shadow-lg">
-                    
                     <a :href="'product.html?id=' + game.id" class="block relative aspect-[2/3] overflow-hidden bg-gray-900 cursor-pointer">
                         <img :src="game.image" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" loading="lazy">
                         <div class="absolute top-0 right-0 bg-black/60 backdrop-blur px-2 py-1 rounded-bl-lg border-b border-l border-white/10">
@@ -137,7 +173,6 @@
                         </div>
                         <div x-show="game.discount" class="absolute top-2 left-2 bg-red-600 text-white text-[9px] md:text-[10px] font-bold px-1.5 py-0.5 rounded shadow-lg z-10"><span x-text="game.discount"></span></div>
                     </a>
-
                     <div class="p-3 md:p-4">
                         <a :href="'product.html?id=' + game.id" class="block">
                             <h3 class="font-bold truncate text-xs md:text-sm hover:text-brand-primary transition" x-text="game.title"></h3>
@@ -147,16 +182,46 @@
                                 <span class="text-[9px] md:text-[10px] opacity-50 line-through" x-show="game.oldPrice" x-text="formatPrice(game.oldPrice)"></span>
                                 <span class="text-brand-primary font-tech font-bold text-sm md:text-lg" x-text="formatPrice(game.price)"></span>
                             </div>
-                            
-                            <div class="flex gap-2">
-                                <button @click.stop="addToCart(game)" class="p-1.5 rounded-full bg-brand-primary/10 text-brand-primary hover:bg-brand-primary hover:text-white transition"><i data-lucide="plus" class="w-4 h-4"></i></button>
-                            </div>
+                            <button @click.stop="addToCart(game)" class="p-1.5 rounded-full bg-brand-primary/10 text-brand-primary hover:bg-brand-primary hover:text-white transition"><i data-lucide="plus" class="w-4 h-4"></i></button>
                         </div>
                     </div>
                 </div>
             </template>
         </div>
     </main>
+
+    <footer class="bg-black/50 border-t border-white/10 pt-16 pb-24 md:pb-16 text-brand-text">
+        <div class="max-w-[1200px] mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="space-y-4">
+                <div class="flex items-center gap-2"><div class="w-8 h-8 flex items-center justify-center bg-brand-text/5 rounded-lg"><i data-lucide="gamepad-2" class="w-5 h-5"></i></div><span class="font-display font-bold">PlayWithEase</span></div>
+                <p class="text-xs text-gray-500 leading-relaxed">The world's leading destination for digital game keys. Instant delivery, secure checkout, and 24/7 support.</p>
+            </div>
+            <div>
+                <h4 class="font-bold text-sm uppercase tracking-widest mb-4">Support</h4>
+                <ul class="space-y-2 text-xs text-gray-500">
+                    <li><a href="#" class="hover:text-brand-primary">Help Center</a></li>
+                    <li><a href="#" class="hover:text-brand-primary">Redeem Key</a></li>
+                    <li><a href="#" class="hover:text-brand-primary">Refund Policy</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-sm uppercase tracking-widest mb-4">Legal</h4>
+                <ul class="space-y-2 text-xs text-gray-500">
+                    <li><a href="#" class="hover:text-brand-primary">Terms of Service</a></li>
+                    <li><a href="#" class="hover:text-brand-primary">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-brand-primary">Cookie Settings</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-sm uppercase tracking-widest mb-4">Newsletter</h4>
+                <div class="flex gap-2">
+                    <input type="email" placeholder="Email" class="bg-black/20 border border-white/10 rounded px-3 py-2 text-xs w-full focus:border-brand-primary outline-none">
+                    <button class="bg-brand-primary px-3 rounded hover:bg-blue-600 transition"><i data-lucide="arrow-right" class="w-4 h-4 text-white"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="text-center text-[10px] text-gray-600 mt-12 border-t border-white/5 pt-8">&copy; 2026 PlayWithEase. All rights reserved. Not affiliated with Valve or Epic.</div>
+    </footer>
 
     <div x-show="keyModal.open" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4" x-transition.opacity>
         <div class="bg-bg-card border border-brand-secondary/30 w-full max-w-md rounded-2xl overflow-hidden shadow-2xl relative text-brand-text">
@@ -195,6 +260,7 @@
                 searchQuery: '',
                 notifications: [],
                 mobileSearchOpen: false,
+                cookiesAccepted: localStorage.getItem('pwe_cookies') === 'true',
                 timer: { days: '00', hours: '00', minutes: '00', seconds: '00' },
                 keyModal: { open: false, loading: false, gameTitle: '', key: '' },
 
@@ -221,7 +287,7 @@
 
                 init() { lucide.createIcons(); this.startTimer(); this.setTheme(this.currentTheme); },
                 get filteredGames() { if (this.searchQuery === '') return this.games; return this.games.filter(game => game.title.toLowerCase().includes(this.searchQuery.toLowerCase())); },
-                addToCart(game) { this.cartCount++; localStorage.setItem('pwe_cart_count', this.cartCount); let cart = JSON.parse(localStorage.getItem('pwe_cart_items')) || []; cart.push(game); localStorage.setItem('pwe_cart_items', JSON.stringify(cart)); this.notify('success', 'Added to Cart', `${game.title} added.`); },
+                addToCart(game) { this.cartCount++; localStorage.setItem('pwe_cart_count', this.cartCount); let cart = JSON.parse(localStorage.getItem('pwe_cart_items') || '[]'); cart.push(game); localStorage.setItem('pwe_cart_items', JSON.stringify(cart)); this.notify('success', 'Added to Cart', `${game.title} added.`); },
                 toggleCurrency() { this.currency = this.currency === 'USD' ? 'INR' : 'USD'; localStorage.setItem('pwe_currency', this.currency); this.notify('info', 'Currency Updated', `Switched to ${this.currency}.`); },
                 setTheme(name) { this.currentTheme = name; localStorage.setItem('pwe_theme', name); },
                 toggleSearchMobile() { this.mobileSearchOpen = !this.mobileSearchOpen; },
