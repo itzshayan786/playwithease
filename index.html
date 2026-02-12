@@ -309,6 +309,46 @@ body.theme-emerald{
 body.theme-royal{
 --accent:#7c3aed;
 }
+/* ===== PREMIUM NAV BUTTONS ===== */
+
+.nav-btn{
+text-decoration:none;
+padding:8px 18px;
+border-radius:12px;
+background:linear-gradient(135deg,var(--accent),#1d4ed8);
+color:#fff;
+font-size:14px;
+font-weight:600;
+letter-spacing:.5px;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+transition:.35s ease;
+position:relative;
+overflow:hidden;
+}
+
+/* Hover Lift */
+.nav-btn:hover{
+transform:translateY(-3px) scale(1.05);
+box-shadow:0 15px 35px rgba(37,99,235,0.45);
+}
+
+/* Shine sweep */
+.nav-btn::before{
+content:"";
+position:absolute;
+top:0;
+left:-100%;
+width:100%;
+height:100%;
+background:linear-gradient(120deg,transparent,rgba(255,255,255,.4),transparent);
+transition:.6s ease;
+}
+
+.nav-btn:hover::before{
+left:100%;
+}
 
 </style>
 
@@ -323,8 +363,8 @@ body.theme-royal{
 <header>
 <a href="index.html" class="brand">PlayWithEase<span class="tm">®</span></a>
 <div class="nav-links">
-<a href="#">Store</a>
-<a href="#">OTT</a>
+<a href="#" class="nav-btn">Store</a>
+<a href="#" class="nav-btn">OTT</a>
 
 <a href="login.html" id="loginLink">Login</a>
 
