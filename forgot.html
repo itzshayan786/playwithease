@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reset Password - PlayWithEase</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+font-family:'Poppins',sans-serif;
+background:#000;
+color:#fff;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+}
+
+.reset-box{
+width:420px;
+background:#0f172a;
+padding:50px;
+border-radius:18px;
+box-shadow:0 40px 100px rgba(0,0,0,0.8);
+text-align:center;
+}
+
+.reset-box h2{
+font-family:'Orbitron';
+margin-bottom:20px;
+}
+
+.reset-box input{
+width:100%;
+padding:14px;
+margin-bottom:18px;
+border-radius:8px;
+border:1px solid #1e293b;
+background:#1e293b;
+color:#fff;
+}
+
+.reset-box button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:8px;
+background:linear-gradient(135deg,#2563eb,#3b82f6);
+color:#fff;
+font-weight:600;
+cursor:pointer;
+}
+
+.msg{
+margin-top:15px;
+font-size:13px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="reset-box">
+<h2>Reset Password</h2>
+
+<input type="email" id="email" placeholder="Enter your registered email">
+<button onclick="reset()">Send Reset Link</button>
+
+<div class="msg" id="msgBox"></div>
+
+<p style="margin-top:15px;font-size:13px;">
+<a href="login.html" style="color:#3b82f6;">Back to Login</a>
+</p>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, sendPasswordResetEmail } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+authDomain: "playwithease.firebaseapp.com",
+projectId: "playwithease",
+storageBucket: "playwithease.firebasestorage.app",
+messagingSenderId: "189729941006",
+appId: "1:189729941006:web:362653774b92416c357e5f"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+window.reset=function(){
+const email=document.getElementById("email").value;
+const msg=document.getElementById("msgBox");
+
+sendPasswordResetEmail(auth,email)
+.then(()=>{
+msg.style.color="#22c55e";
+msg.innerText="Reset link sent successfully. Please check your inbox.";
+})
+.catch(err=>{
+msg.style.color="#ef4444";
+msg.innerText=err.message;
+});
+}
+
+</script>
+
+</body>
+</html>
