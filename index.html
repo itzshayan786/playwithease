@@ -19,11 +19,8 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'], tech: ['Rajdhani', 'sans-serif'], display: ['Orbitron', 'sans-serif'] },
                     colors: { bg: { main: 'var(--bg-main)', card: 'var(--bg-card)' }, brand: { primary: 'var(--brand-primary)', secondary: 'var(--brand-secondary)', text: 'var(--text-main)' } },
-                    animation: { 'float': 'float 6s ease-in-out infinite', 'pulse-slow': 'pulse 3s infinite', 'fade-in': 'fadeIn 0.5s ease-out' },
-                    keyframes: { 
-                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
-                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } }
-                    }
+                    animation: { 'float': 'float 6s ease-in-out infinite', 'pulse-slow': 'pulse 3s infinite' },
+                    keyframes: { float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } } }
                 }
             }
         }
@@ -36,6 +33,7 @@
         [x-cloak] { display: none !important; }
         body, div, button, span, i, nav, section, main { transition-property: color, background-color, border-color; transition-duration: 300ms; }
         
+        /* Video Container to force Aspect Ratio Fill */
         .video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 20; background: black; }
         .video-background { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; transform: translate(-50%, -50%); pointer-events: none; object-fit: cover; }
         @media (min-width: 768px) {
@@ -184,7 +182,6 @@
             <button @click="nextSlide" class="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 p-3 rounded-full hover:bg-white/10 transition group hidden md:block">
                 <i data-lucide="chevron-right" class="w-8 h-8 text-white opacity-50 group-hover:opacity-100"></i>
             </button>
-            
             <div class="flex justify-center gap-2 mt-8 md:hidden">
                 <template x-for="(s, i) in heroSlides" :key="i">
                     <button @click="changeSlide(i)" :class="activeSlide === i ? 'bg-white w-6' : 'bg-white/30 w-2'" class="h-2 rounded-full transition-all duration-300"></button>
@@ -272,7 +269,7 @@
             Alpine.data('chatBot', () => ({
                 open: false, input: '',
                 messages: [{ id: 1, text: "Welcome! Need help?", sender: 'bot' }],
-                sendMessage() { if (!this.input.trim()) return; this.messages.push({ id: Date.now(), text: this.input, sender: 'user' }); const txt = this.input.toLowerCase(); this.input = ''; setTimeout(() => { let r = "I can help with keys and refunds."; if (txt.includes('key')) r = "Check <b>Profile > My Vault</b>."; if (txt.includes('refund')) r = "Refunds are possible within 14 days if unredeemed."; if (txt.includes('hello')) r = "Hi there!"; this.messages.push({ id: Date.now()+1, text: r, sender: 'bot' }); this.$nextTick(() => document.getElementById('chatContainer').scrollTop = 9999); }, 800); }
+                sendMessage() { if (!this.input.trim()) return; this.messages.push({ id: Date.now(), text: this.input, sender: 'user' }); const txt = this.input.toLowerCase(); this.input = ''; setTimeout(() => { let r = "I can help with keys and refunds."; if (txt.includes('key')) r = "Check <b>Profile > My Vault</b>."; if (txt.includes('hello')) r = "Hi there!"; this.messages.push({ id: Date.now()+1, text: r, sender: 'bot' }); this.$nextTick(() => document.getElementById('chatContainer').scrollTop = 9999); }, 800); }
             }));
 
             Alpine.data('storeLogic', () => ({
@@ -294,9 +291,11 @@
                         date: '2026-11-19T00:00:00'
                     },
                     {
-                        image: 'https://store-images.s-microsoft.com/image/apps.43859.13860161687256860.59b6b772-59c4-4c4f-9037-f2735252d6a7.7f62024b-0444-46b0-9a3d-4c329b357d34',
+                        // FIXED FORZA POSTER (4K Landscape)
+                        image: 'https://images.hdqwalls.com/wallpapers/forza-horizon-5-4k-uo.jpg',
                         logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Forza_Horizon_logo.svg/2560px-Forza_Horizon_logo.svg.png',
-                        videoId: '8k3F7Xj7gQE',
+                        // FIXED FORZA VIDEO ID
+                        videoId: 'XG1Ll2CVhug',
                         date: '2027-05-15T00:00:00'
                     }
                 ],
@@ -351,6 +350,7 @@
                 prevSlide() { this.changeSlide((this.activeSlide - 1 + this.heroSlides.length) % this.heroSlides.length); },
                 changeSlide(index) {
                     this.activeSlide = index;
+                    this.stopTrailer(); // Stop video if changing slides
                     this.startTimer();
                 },
 
