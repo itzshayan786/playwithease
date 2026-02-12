@@ -582,7 +582,7 @@ btn.innerHTML="Add to Cart";
 },1800);
 
 // 5️⃣ Show cart preview
-showCartPreview();
+// showCartPreview();
 
 }
 /* ===== DROPDOWN CLOSE FEATURES ===== */
@@ -630,14 +630,14 @@ themeBtn.style.transform="";
 },150);
 
 });
-function toggleCart(e){
+//function toggleCart(e){
 e.preventDefault();
 const drop=document.getElementById("cartDropdown");
 drop.style.display=drop.style.display==="block"?"none":"block";
 renderCart();
 }
 
-function renderCart(){
+//function renderCart(){
 const drop=document.getElementById("cartDropdown");
 
 if(cart.length===0){
@@ -654,7 +654,7 @@ html+=`<hr><div style="margin-top:8px;font-weight:600;">Total: ₹${cart.length*
 drop.innerHTML=html;
 }
 
-function showCartPreview(){
+//function showCartPreview(){
 const drop=document.getElementById("cartDropdown");
 drop.style.display="block";
 renderCart();
