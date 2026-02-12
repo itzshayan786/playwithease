@@ -81,7 +81,6 @@ border-radius:10px;
 }
 
 .item-info{flex:1;min-width:200px;}
-
 .item-name{font-weight:600;margin-bottom:5px;}
 
 .qty-box{
@@ -140,6 +139,13 @@ cursor:pointer;
 margin-top:15px;
 }
 
+.payment-icons{
+margin-top:10px;
+text-align:center;
+font-size:14px;
+opacity:.7;
+}
+
 /* OVERLAY */
 .overlay{
 position:fixed;
@@ -171,6 +177,12 @@ border-radius:10px;
 margin-top:8px;
 font-weight:600;
 color:var(--accent);
+}
+
+.modal-note{
+margin-top:8px;
+font-size:13px;
+opacity:.8;
 }
 
 .modal-btn{
@@ -219,7 +231,12 @@ font-weight:600;
 <span id="grandTotal"></span>
 </div>
 
-<button class="checkout-btn" onclick="openPayment()">Checkout</button>
+<button class="checkout-btn" onclick="openPayment()">Secure Checkout</button>
+
+<div class="payment-icons">
+UPI • RuPay • Visa • Credit Card
+</div>
+
 </div>
 </div>
 
@@ -229,6 +246,10 @@ font-weight:600;
 <p><b>UPI ID:</b> shayanff98@okhdfcbank</p>
 <img id="upiQR">
 <div class="timer" id="countdown">10:00</div>
+<div class="modal-note">
+Scan & pay securely via UPI. Amount auto-filled.  
+Powered by PlayWithEase Secure Gateway.
+</div>
 
 <button class="modal-btn paid" onclick="confirmPaid()">I've Paid</button>
 <button class="modal-btn cancel" onclick="closePayment()">Cancel Payment</button>
@@ -291,8 +312,13 @@ totalEl.innerText="₹"+subtotal;
 window.openPayment=function(){
 let total = cart.reduce((s,i)=>s+i.price*i.qty,0);
 document.getElementById("paymentOverlay").style.display="flex";
+
+/* AUTO AMOUNT CAPTURE QR */
 document.getElementById("upiQR").src=
-`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=shayanff98@okhdfcbank&pn=PlayWithEase&am=${total}&cu=INR`;
+`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
+`upi://pay?pa=shayanff98@okhdfcbank&pn=PlayWithEase&am=${total}&cu=INR&tn=Payment%20for%20PlayWithEase%20Order`
+)}`;
+
 startTimer(600);
 };
 
@@ -328,12 +354,12 @@ createdAt:serverTimestamp()
 
 let docRef = await addDoc(collection(db,"orders"),orderData);
 
-let msg=`Hello PlayWithEase Team,%0AOrder ID: ${docRef.id}%0ATotal Paid: ₹${total}%0AUPI ID: shayanff98@okhdfcbank%0APlease confirm my order.`;
+let msg=`Hello PlayWithEase Team,%0AOrder ID: ${docRef.id}%0ATotal Paid: ₹${total}%0AUPI ID: shayanff98@okhdfcbank%0AProfessional Digital Delivery Requested.%0APlease confirm my order.`;
 
 window.location.href=`https://wa.me/917001568884?text=${msg}`;
 };
 
-/* Theme */
+/* THEME */
 const themes=["","theme-dark","theme-emerald","theme-royal","theme-elite-red"];
 let currentTheme=0;
 document.getElementById("themeSwitcher").addEventListener("click",()=>{
