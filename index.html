@@ -384,6 +384,36 @@ to{transform:translateX(0);opacity:1;}
 <a href="#">Store</a>
 <a href="#">OTT</a>
 <a href="login.html">Login</a>
+<div id="userSection">
+<a href="login.html" id="loginLink">Login</a>
+</div>
+
+<div class="user-menu" id="userMenu" style="display:none; position:relative;">
+<span style="cursor:pointer;font-size:18px;" onclick="toggleMenu()">⋮</span>
+
+<div id="dropdown" style="
+display:none;
+position:absolute;
+right:0;
+top:25px;
+background:var(--card);
+border-radius:10px;
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+padding:12px;
+min-width:200px;
+z-index:9999;
+">
+
+<div id="userEmail" style="padding:8px;font-size:12px;font-weight:600;"></div>
+<hr style="margin:8px 0;">
+<a href="#" style="display:block;padding:6px 0;">Profile</a>
+<a href="#" style="display:block;padding:6px 0;">Subscription</a>
+<a href="#" style="display:block;padding:6px 0;">Order History</a>
+<hr style="margin:8px 0;">
+<a href="#" onclick="logout()" style="display:block;padding:6px 0;color:#ef4444;">Logout</a>
+
+</div>
+</div>
 
 <div class="theme-box">
 <button class="theme-btn" id="themeBtn">Themes</button>
