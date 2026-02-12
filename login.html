@@ -3,37 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - PlayWithEase</title>
+<title>PlayWithEase Login</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 
-:root{
---bg:#f8fafc;
---card:#ffffff;
---accent:#2563eb;
---text:#0f172a;
-}
-
 body{
 font-family:'Poppins',sans-serif;
-background:var(--bg);
-color:var(--text);
+height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-height:100vh;
+overflow:hidden;
+background:#000;
 }
 
+/* ===== BACKGROUND GAMING WALL ===== */
+.bg{
+position:fixed;
+width:100%;
+height:100%;
+background:url('https://images.unsplash.com/photo-1605902711622-cfb43c44367f?q=80&w=1920&auto=format&fit=crop') center/cover;
+filter:blur(8px) brightness(0.4);
+z-index:-1;
+}
+
+/* ===== GLASS LOGIN BOX ===== */
 .login-box{
-background:var(--card);
+width:380px;
 padding:40px;
-border-radius:18px;
-width:360px;
-box-shadow:0 25px 50px rgba(0,0,0,0.1);
+border-radius:20px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,0.2);
+box-shadow:0 25px 60px rgba(0,0,0,0.6);
 text-align:center;
+color:#fff;
+animation:fadeIn .8s ease;
 }
 
 .login-box h2{
@@ -46,8 +54,10 @@ width:100%;
 padding:12px;
 margin-bottom:15px;
 border-radius:8px;
-border:1px solid #ddd;
-font-size:14px;
+border:none;
+outline:none;
+background:rgba(255,255,255,0.15);
+color:#fff;
 }
 
 .login-box button{
@@ -55,7 +65,7 @@ width:100%;
 padding:12px;
 border:none;
 border-radius:8px;
-background:linear-gradient(135deg,var(--accent),#1d4ed8);
+background:linear-gradient(135deg,#2563eb,#3b82f6);
 color:#fff;
 font-weight:600;
 cursor:pointer;
@@ -63,7 +73,8 @@ transition:.3s;
 }
 
 .login-box button:hover{
-opacity:.9;
+transform:scale(1.05);
+box-shadow:0 10px 30px rgba(59,130,246,0.5);
 }
 
 .extra{
@@ -72,13 +83,39 @@ font-size:13px;
 }
 
 .extra span{
-color:var(--accent);
+color:#3b82f6;
 cursor:pointer;
+}
+
+/* ===== SUCCESS POPUP ===== */
+.success-popup{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%) scale(0);
+background:#111;
+padding:30px;
+border-radius:16px;
+color:#fff;
+box-shadow:0 30px 60px rgba(0,0,0,0.6);
+text-align:center;
+transition:.4s;
+}
+
+.success-popup.active{
+transform:translate(-50%,-50%) scale(1);
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(20px);}
+to{opacity:1;transform:translateY(0);}
 }
 </style>
 </head>
 
 <body>
+
+<div class="bg"></div>
 
 <div class="login-box">
 <h2>PlayWithEase</h2>
@@ -93,6 +130,11 @@ New user? <span onclick="register()">Create Account</span>
 </div>
 </div>
 
+<div class="success-popup" id="successBox">
+<h3>🎉 Login Successful!</h3>
+<p>Welcome back to PlayWithEase</p>
+</div>
+
 <!-- FIREBASE -->
 <script type="module">
 
@@ -100,7 +142,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } 
 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-/* 🔥 Yahan apna old firebase config paste karna */
+/* 🔥 APNA ORIGINAL FIREBASE CONFIG YAHA PASTE KAR */
 const firebaseConfig = {
 apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
 authDomain: "playwithease.firebaseapp.com",
@@ -117,11 +159,15 @@ const password = document.getElementById("password").value;
 
 signInWithEmailAndPassword(auth, email, password)
 .then(()=>{
-alert("Login Successful 🚀");
+const box=document.getElementById("successBox");
+box.classList.add("active");
+
+setTimeout(()=>{
 window.location.href="index.html";
+},2000);
 })
 .catch(err=>{
-alert(err.message);
+alert("❌ "+err.message);
 });
 }
 
@@ -131,7 +177,7 @@ const password = document.getElementById("password").value;
 
 createUserWithEmailAndPassword(auth, email, password)
 .then(()=>{
-alert("Account Created ✅");
+alert("Account Created Successfully ✅");
 })
 .catch(err=>{
 alert(err.message);
