@@ -565,7 +565,12 @@ window.location.reload();
 function addToCart(btn,gameName){
 
 // 1️⃣ Cart me add karo
-cart.push(gameName);
+cart.push({
+name: gameName,
+image: btn.closest(".card").querySelector("img").src,
+price: 999,
+qty: 1
+});
 
 // 2️⃣ Save in localStorage
 localStorage.setItem("pwe_cart", JSON.stringify(cart));
