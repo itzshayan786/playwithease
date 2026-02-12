@@ -1,360 +1,67 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>My Orders | PlayWithEase</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlayWithEase Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
-*{box-sizing:border-box;font-family:Poppins,Arial}
-body{
-  margin:0;
-  background:linear-gradient(180deg,#f8fafc,#eef2ff);
-  color:#0f172a;
-}
-
-/* HEADER */
-header{
-  background:#2563eb;
-  color:#fff;
-  padding:16px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-header h1{
-  font-size:18px;
-  font-weight:800;
-}
-header a{
-  background:#fff;
-  color:#2563eb;
-  padding:10px 14px;
-  border-radius:10px;
-  text-decoration:none;
-  font-weight:600;
-  font-size:13px;
-}
-
-/* CONTAINER */
-.container{
-  max-width:900px;
-  margin:24px auto;
-  padding:0 14px;
-}
-
-/* ORDER CARD */
-.order{
-  background:#fff;
-  border-radius:18px;
-  padding:18px;
-  margin-bottom:18px;
-  box-shadow:0 18px 40px rgba(0,0,0,.12);
-
-  /* animation + hover */
-  animation:fadeUp .35s ease;
-  transition: transform .25s ease, box-shadow .25s ease;
-  will-change: transform;
-}
-
-/* HOVER LIFT (premium jump effect) */
-.order:hover{
-  transform: translateY(-6px);
-  box-shadow:0 26px 60px rgba(0,0,0,.18);
-}
-
-@keyframes fadeUp{
-  from{
-    opacity:0;
-    transform:translateY(14px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-/* TOP */
-.top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-}
-.order-id{
-  font-size:13px;
-  font-weight:700;
-  color:#2563eb;
-}
-
-/* STATUS */
-.status{
-  font-size:11px;
-  font-weight:700;
-  padding:6px 12px;
-  border-radius:999px;
-}
-.in-progress{background:#fff7ed;color:#c2410c}
-.success{background:#ecfdf5;color:#166534}
-.cancelled{background:#fef2f2;color:#b91c1c}
-
-/* ITEMS */
-.items{
-  margin:12px 0;
-  font-size:13px;
-}
-.items li{margin-bottom:4px}
-
-/* BOTTOM */
-.bottom{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:8px;
-}
-.amount{
-  font-size:18px;
-  font-weight:800;
-}
-.time{
-  font-size:12px;
-  color:#64748b;
-}
-
-/* ACTIONS */
-.actions{
-  margin-top:12px;
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-.btn{
-  border:none;
-  padding:8px 14px;
-  border-radius:10px;
-  font-size:12px;
-  font-weight:700;
-  cursor:pointer;
-}
-.view{
-  background:#2563eb;
-  color:#fff;
-}
-
-/* CREDENTIALS */
-.creds{
-  margin-top:14px;
-  padding:14px;
-  border-radius:14px;
-  background:#f8fafc;
-  border:1px dashed #cbd5e1;
-  display:none;
-  font-size:13px;
-}
-.cred-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:8px;
-  margin-bottom:8px;
-  word-break:break-all;
-}
-.icon-btn{
-  border:none;
-  background:#e5e7eb;
-  padding:6px 8px;
-  border-radius:8px;
-  cursor:pointer;
-  font-size:12px;
-}
-.icon-btn:hover{background:#cbd5f5}
-
-/* EMPTY */
-.empty{
-  text-align:center;
-  padding:60px 10px;
-  color:#64748b;
-}
+body{font-family:Poppins;background:#111;color:#fff;padding:30px}
+.order{background:#1e293b;padding:20px;margin-bottom:20px;border-radius:12px}
+select{margin-top:10px;padding:5px}
+button{margin-top:8px;padding:6px 12px;border:none;border-radius:8px;cursor:pointer}
 </style>
 </head>
-
 <body>
 
-<header>
-  <h1>📦 My Orders</h1>
-  <a href="index.html">← Back to Store</a>
-</header>
-
-<div class="container" id="ordersBox"></div>
+<h2>Admin Dashboard</h2>
+<div id="orders"></div>
 
 <script type="module">
-/* 🔥 FIREBASE INIT (SAME AS LOGIN & CART) */
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import {
-  getFirestore,
-  collection,
-  query,
-  where,
-  getDocs
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, updateDoc, doc } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
-  authDomain: "playwithease.firebaseapp.com",
-  projectId: "playwithease"
+const firebaseConfig={
+apiKey:"AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+authDomain:"playwithease.firebaseapp.com",
+projectId:"playwithease"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
 
-const box = document.getElementById("ordersBox");
+const container=document.getElementById("orders");
 
-/* ===== LOAD ORDERS (NO orderBy → SAFE MODE) ===== */
-onAuthStateChanged(auth, async (user)=>{
-  box.innerHTML = "";
+async function loadOrders(){
+const snapshot=await getDocs(collection(db,"orders"));
 
-  if(!user){
-    box.innerHTML = `
-      <div class="empty">
-        <h3>Please login</h3>
-        <p>You must be logged in to view orders.</p>
-      </div>
-    `;
-    return;
-  }
+snapshot.forEach(docSnap=>{
+let order=docSnap.data();
 
-  try{
-    const q = query(
-      collection(db,"orders"),
-      where("userId","==",user.uid)
-    );
+container.innerHTML+=`
+<div class="order">
+<div><b>ID:</b> ${docSnap.id}</div>
+<div><b>User:</b> ${order.userEmail}</div>
+<div><b>Total:</b> ₹${order.total}</div>
 
-    const snap = await getDocs(q);
-
-    if(snap.empty){
-      box.innerHTML = `
-        <div class="empty">
-          <h3>No orders yet</h3>
-          <p>Your purchases will appear here.</p>
-        </div>
-      `;
-      return;
-    }
-
-    snap.forEach(docSnap=>{
-      const o = docSnap.data();
-      const id = docSnap.id;
-
-      box.innerHTML += `
-        <div class="order">
-          <div class="top">
-            <span class="order-id">Order ID: ${id}</span>
-            <span class="status ${o.status}">
-              ${
-                o.status === "success"
-                  ? "✅ Success"
-                  : o.status === "cancelled"
-                  ? "❌ Cancelled"
-                  : "⏳ In Progress"
-              }
-            </span>
-          </div>
-
-          <ul class="items">
-            ${o.items.map(i=>`<li>• ${i.name}</li>`).join("")}
-          </ul>
-
-          <div class="bottom">
-            <span class="amount">₹${o.total}</span>
-            <span class="time">
-              ${o.createdAt?.toDate ? o.createdAt.toDate().toLocaleString() : ""}
-            </span>
-          </div>
-
-          ${
-            o.credentials
-            ? `
-              <div class="actions">
-                <button class="btn view" onclick="toggleCreds('${id}')">
-                  🔐 View Account Details
-                </button>
-              </div>
-
-              <div class="creds" id="creds-${id}">
-                <div class="cred-row">
-                  <span><b>Email / ID:</b> ${o.credentials.email}</span>
-                  <button class="icon-btn" onclick="copyText('${o.credentials.email}')">📋</button>
-                </div>
-
-                <div class="cred-row">
-                  <span>
-                    <b>Password:</b>
-                    <span id="pwd-${id}" data-pwd="${o.credentials.password}">
-                      ••••••••
-                    </span>
-                  </span>
-                  <div>
-                    <button class="icon-btn" onclick="togglePwd('${id}')">👁️</button>
-                    <button class="icon-btn" onclick="copyPwd('${id}')">📋</button>
-                  </div>
-                </div>
-
-                ${
-                  o.credentials.note
-                  ? `<div class="cred-row"><b>Note:</b> ${o.credentials.note}</div>`
-                  : ""
-                }
-              </div>
-            `
-            : ""
-          }
-        </div>
-      `;
-    });
-
-  }catch(err){
-    console.error("ORDER HISTORY ERROR:", err);
-    box.innerHTML = `
-      <div class="empty">
-        <h3>Error loading orders</h3>
-        <p>Check console for details</p>
-      </div>
-    `;
-  }
+<select onchange="updateStatus('${docSnap.id}',this.value)">
+<option ${order.status==="in-progress"?"selected":""}>in-progress</option>
+<option ${order.status==="success"?"selected":""}>success</option>
+<option ${order.status==="cancelled"?"selected":""}>cancelled</option>
+<option ${order.status==="refunded"?"selected":""}>refunded</option>
+</select>
+</div>
+`;
 });
-</script>
-
-<script>
-/* ===== UX FUNCTIONS (GLOBAL) ===== */
-function toggleCreds(id){
-  const el = document.getElementById("creds-"+id);
-  if(!el) return;
-  el.style.display = el.style.display === "block" ? "none" : "block";
 }
 
-function togglePwd(id){
-  const el = document.getElementById("pwd-"+id);
-  if(!el) return;
-  el.textContent = el.textContent.includes("•")
-    ? el.dataset.pwd
-    : "••••••••";
-}
+window.updateStatus=async function(id,status){
+await updateDoc(doc(db,"orders",id),{status:status});
+alert("Status Updated");
+};
 
-function copyText(text){
-  navigator.clipboard.writeText(text);
-  alert("Copied");
-}
-
-function copyPwd(id){
-  const el = document.getElementById("pwd-"+id);
-  if(!el) return;
-  navigator.clipboard.writeText(el.dataset.pwd);
-  alert("Password copied");
-}
+loadOrders();
 </script>
 
 </body>
