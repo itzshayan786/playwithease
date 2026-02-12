@@ -19,8 +19,11 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'], tech: ['Rajdhani', 'sans-serif'], display: ['Orbitron', 'sans-serif'] },
                     colors: { bg: { main: 'var(--bg-main)', card: 'var(--bg-card)' }, brand: { primary: 'var(--brand-primary)', secondary: 'var(--brand-secondary)', text: 'var(--text-main)' } },
-                    animation: { 'float': 'float 6s ease-in-out infinite', 'pulse-slow': 'pulse 3s infinite' },
-                    keyframes: { float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } } }
+                    animation: { 'float': 'float 6s ease-in-out infinite', 'pulse-slow': 'pulse 3s infinite', 'fade-in': 'fadeIn 0.5s ease-out' },
+                    keyframes: { 
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } }
+                    }
                 }
             }
         }
@@ -33,19 +36,8 @@
         [x-cloak] { display: none !important; }
         body, div, button, span, i, nav, section, main { transition-property: color, background-color, border-color; transition-duration: 300ms; }
         
-        /* --- VIDEO FIXES --- */
         .video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 20; background: black; }
-        
-        /* Default (Mobile): Fit to screen width, centered */
-        .video-background { 
-            position: absolute; top: 50%; left: 50%; 
-            width: 100%; height: 100%; 
-            transform: translate(-50%, -50%); 
-            pointer-events: none; 
-            object-fit: cover;
-        }
-
-        /* Desktop Only: Force Full Cover (Cinematic Zoom) */
+        .video-background { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; transform: translate(-50%, -50%); pointer-events: none; object-fit: cover; }
         @media (min-width: 768px) {
             .video-background { width: 100vw; height: 100vh; }
             @media (min-aspect-ratio: 16/9) { .video-background { height: 56.25vw; } }
@@ -141,39 +133,62 @@
 
     <section class="relative min-h-[70vh] w-full overflow-hidden mt-16 md:mt-20 flex items-center justify-center pb-10 text-white bg-black">
         
-        <div x-show="!trailerPlaying" x-transition.opacity.duration.500ms class="absolute inset-0 z-10">
-            <div class="absolute inset-0 bg-gradient-to-t from-bg-main via-transparent to-transparent z-10"></div>
-            <div class="absolute inset-0 bg-black/30 z-10"></div>
-            <img src="https://media-rockstargames-com.akamaized.net/mfe6/prod/__common/img/71d4d17edcd49703a5ea446cc0e588e6.jpg" class="w-full h-full object-cover animate-float scale-110 origin-center">
-        </div>
+        <template x-for="(slide, index) in heroSlides" :key="index">
+            <div x-show="activeSlide === index && !trailerPlaying" 
+                 x-transition:enter="transition ease-out duration-700"
+                 x-transition:enter-start="opacity-0 scale-105"
+                 x-transition:enter-end="opacity-100 scale-100"
+                 x-transition:leave="transition ease-in duration-300"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="absolute inset-0 z-10">
+                <div class="absolute inset-0 bg-gradient-to-t from-bg-main via-transparent to-transparent z-10"></div>
+                <div class="absolute inset-0 bg-black/30 z-10"></div>
+                <img :src="slide.image" class="w-full h-full object-cover animate-float scale-110 origin-center">
+            </div>
+        </template>
 
         <div x-show="trailerPlaying" x-transition.opacity.duration.1000ms class="video-container">
             <div id="hero-player" class="video-background"></div>
         </div>
 
-        <div x-show="!trailerPlaying" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90" 
-             class="relative z-30 text-center w-full max-w-5xl mx-auto px-4 md:px-6 pt-10">
+        <div x-show="!trailerPlaying" class="relative z-30 text-center w-full max-w-5xl mx-auto px-4 md:px-6 pt-10">
             
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded border border-white/20 bg-black/40 backdrop-blur mb-6">
-                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white">Global Premiere</span>
+            <div class="animate-fade-in">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded border border-white/20 bg-black/40 backdrop-blur mb-6">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                    <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white">Global Premiere</span>
+                </div>
+                
+                <img :src="heroSlides[activeSlide].logo" 
+                     class="h-16 md:h-32 mx-auto mb-8 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)] w-auto max-w-[80%]">
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-12 text-white mb-8 max-w-3xl mx-auto">
+                    <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black" x-text="timer.days">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Days</div></div>
+                    <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black" x-text="timer.hours">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Hours</div></div>
+                    <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black" x-text="timer.minutes">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Mins</div></div>
+                    <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black text-brand-secondary" x-text="timer.seconds">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Secs</div></div>
+                </div>
+                
+                <div class="flex flex-col md:flex-row justify-center gap-4 px-4 md:px-0">
+                    <button class="bg-white text-black px-8 py-3.5 rounded font-bold uppercase tracking-widest text-sm md:text-base hover:bg-brand-primary hover:text-white transition duration-300 w-full md:w-auto shadow-lg">Pre-Order Now</button>
+                    <button @click="playTrailer" class="px-8 py-3.5 rounded border border-white/30 backdrop-blur font-bold uppercase tracking-widest text-sm md:text-base hover:bg-white/10 transition flex items-center justify-center gap-3 w-full md:w-auto text-white">
+                        <i data-lucide="play-circle" class="w-5 h-5"></i> Watch Trailer
+                    </button>
+                </div>
             </div>
+
+            <button @click="prevSlide" class="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 p-3 rounded-full hover:bg-white/10 transition group hidden md:block">
+                <i data-lucide="chevron-left" class="w-8 h-8 text-white opacity-50 group-hover:opacity-100"></i>
+            </button>
+            <button @click="nextSlide" class="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 p-3 rounded-full hover:bg-white/10 transition group hidden md:block">
+                <i data-lucide="chevron-right" class="w-8 h-8 text-white opacity-50 group-hover:opacity-100"></i>
+            </button>
             
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg/512px-Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg.png" 
-                 class="h-16 md:h-32 mx-auto mb-8 drop-shadow-[0_0_30px_rgba(255,0,170,0.5)] w-auto max-w-[80%]">
-            
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-12 text-white mb-8 max-w-3xl mx-auto">
-                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black" x-text="timer.days">000</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Days</div></div>
-                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black" x-text="timer.hours">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Hours</div></div>
-                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black" x-text="timer.minutes">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Mins</div></div>
-                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black text-brand-secondary" x-text="timer.seconds">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Secs</div></div>
-            </div>
-            
-            <div class="flex flex-col md:flex-row justify-center gap-4 px-4 md:px-0">
-                <button class="bg-white text-black px-8 py-3.5 rounded font-bold uppercase tracking-widest text-sm md:text-base hover:bg-brand-primary hover:text-white transition duration-300 w-full md:w-auto shadow-lg">Pre-Order Now</button>
-                <button @click="playTrailer" class="px-8 py-3.5 rounded border border-white/30 backdrop-blur font-bold uppercase tracking-widest text-sm md:text-base hover:bg-white/10 transition flex items-center justify-center gap-3 w-full md:w-auto text-white">
-                    <i data-lucide="play-circle" class="w-5 h-5"></i> Watch Trailer
-                </button>
+            <div class="flex justify-center gap-2 mt-8 md:hidden">
+                <template x-for="(s, i) in heroSlides" :key="i">
+                    <button @click="changeSlide(i)" :class="activeSlide === i ? 'bg-white w-6' : 'bg-white/30 w-2'" class="h-2 rounded-full transition-all duration-300"></button>
+                </template>
             </div>
         </div>
 
@@ -269,7 +284,23 @@
                 notifications: [], mobileSearchOpen: false,
                 timer: { days: '00', hours: '00', minutes: '00', seconds: '00' },
                 
-                // VIDEO STATE
+                // HERO SLIDER STATE
+                activeSlide: 0,
+                heroSlides: [
+                    { 
+                        image: 'https://media-rockstargames-com.akamaized.net/mfe6/prod/__common/img/71d4d17edcd49703a5ea446cc0e588e6.jpg', 
+                        logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg/512px-Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg.png',
+                        videoId: 'QdBZY2fkU-0',
+                        date: '2026-11-19T00:00:00'
+                    },
+                    {
+                        image: 'https://store-images.s-microsoft.com/image/apps.43859.13860161687256860.59b6b772-59c4-4c4f-9037-f2735252d6a7.7f62024b-0444-46b0-9a3d-4c329b357d34',
+                        logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Forza_Horizon_logo.svg/2560px-Forza_Horizon_logo.svg.png',
+                        videoId: '8k3F7Xj7gQE',
+                        date: '2027-05-15T00:00:00'
+                    }
+                ],
+                
                 trailerPlaying: false,
                 isMuted: false,
 
@@ -314,17 +345,36 @@
                 get themeStyles() { return Object.entries(this.themes[this.currentTheme]).map(([k, v]) => `${k}: ${v};`).join(' '); },
                 formatPrice(p) { return this.currency === 'USD' ? '$'+p.toFixed(2) : '₹'+Math.round(p*this.exchangeRate); },
                 notify(type, title, message) { const id = Date.now(); this.notifications.push({ id, type, title, message, visible: true }); setTimeout(() => { const index = this.notifications.findIndex(n => n.id === id); if(index > -1) this.notifications[index].visible = false; }, 3000); },
-                startTimer() { const target = new Date("2026-11-19T00:00:00").getTime(); setInterval(() => { const now = new Date().getTime(), d = target - now; this.timer.days = Math.floor(d/(1000*60*60*24)); this.timer.hours = Math.floor((d%(1000*60*60*24))/(1000*60*60)); this.timer.minutes = Math.floor((d%(1000*60*60))/(1000*60)); this.timer.seconds = Math.floor((d%(1000*60))/1000); }, 1000); },
+                
+                // SLIDER LOGIC
+                nextSlide() { this.changeSlide((this.activeSlide + 1) % this.heroSlides.length); },
+                prevSlide() { this.changeSlide((this.activeSlide - 1 + this.heroSlides.length) % this.heroSlides.length); },
+                changeSlide(index) {
+                    this.activeSlide = index;
+                    this.startTimer();
+                },
+
+                startTimer() { 
+                    const target = new Date(this.heroSlides[this.activeSlide].date).getTime(); 
+                    clearInterval(this.timerInterval);
+                    this.timerInterval = setInterval(() => { 
+                        const now = new Date().getTime(), d = target - now; 
+                        this.timer.days = Math.floor(d/(1000*60*60*24)); 
+                        this.timer.hours = Math.floor((d%(1000*60*60*24))/(1000*60*60)); 
+                        this.timer.minutes = Math.floor((d%(1000*60*60))/(1000*60)); 
+                        this.timer.seconds = Math.floor((d%(1000*60))/1000); 
+                    }, 1000); 
+                },
                 
                 playTrailer() {
                     this.trailerPlaying = true;
                     if(window.ytPlayer && typeof window.ytPlayer.playVideo === 'function') {
-                        window.ytPlayer.playVideo();
+                        window.ytPlayer.loadVideoById(this.heroSlides[this.activeSlide].videoId);
                     } else {
                         window.ytPlayer = new YT.Player('hero-player', {
                             height: '100%', width: '100%',
-                            videoId: 'QdBZY2fkU-0',
-                            playerVars: { 'autoplay': 1, 'controls': 0, 'rel': 0, 'showinfo': 0, 'loop': 1, 'playlist': 'QdBZY2fkU-0', 'modestbranding': 1 },
+                            videoId: this.heroSlides[this.activeSlide].videoId,
+                            playerVars: { 'autoplay': 1, 'controls': 0, 'rel': 0, 'showinfo': 0, 'loop': 1, 'modestbranding': 1 },
                             events: {
                                 'onReady': (event) => {
                                     event.target.mute();
