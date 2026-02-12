@@ -32,13 +32,13 @@
     <style>
         :root { --bg-main: #080808; --bg-card: #101010; --text-main: #ffffff; --brand-primary: #2563eb; --brand-secondary: #ff00aa; }
         
-        /* Dynamic Header Styles */
-        .nav-transparent { background: transparent; border-color: transparent; }
-        .nav-glass { background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); height: 70px !important; }
+        /* Fixed Professional Header */
+        .nav-base { background: rgba(8, 8, 8, 0.4); border-bottom: 1px solid rgba(255, 255, 255, 0.03); height: 80px; }
+        .nav-scrolled { background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); height: 70px; }
         
         body { -webkit-tap-highlight-color: transparent; color: var(--text-main); background-color: var(--bg-main); }
         [x-cloak] { display: none !important; }
-        body, div, button, span, i, nav, section, main { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
         
         .video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 20; background: black; }
         .video-background { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; transform: translate(-50%, -50%); pointer-events: none; object-fit: cover; }
@@ -52,181 +52,112 @@
 </head>
 
 <body class="antialiased overflow-x-hidden w-full selection:bg-brand-primary selection:text-white"
-      x-data="storeLogic()" :style="themeStyles" @keydown.left="prevSlide()" @keydown.right="nextSlide()" @scroll.window="scrolled = window.pageYOffset > 20">
+      x-data="storeLogic()" :style="themeStyles" @keydown.left="prevSlide()" @keydown.right="nextSlide()" @scroll.window="scrolled = window.pageYOffset > 50">
 
-    <div class="fixed bottom-24 right-6 z-[100] flex flex-col gap-2 pointer-events-none">
-        <template x-for="toast in notifications" :key="toast.id">
-            <div x-show="toast.visible" class="pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl bg-bg-card border border-white/10 shadow-2xl shadow-black/50 min-w-[300px]">
-                <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" :class="toast.type === 'success' ? 'bg-green-500/20 text-green-500' : 'bg-brand-primary/20 text-brand-primary'"><i :data-lucide="toast.type === 'success' ? 'check' : 'info'" class="w-4 h-4"></i></div>
-                <div><h4 class="text-sm font-bold text-brand-text" x-text="toast.title"></h4><p class="text-xs opacity-70" x-text="toast.message"></p></div>
-            </div>
-        </template>
-    </div>
-
-    <nav :class="scrolled ? 'nav-glass' : 'nav-transparent'" class="fixed top-0 w-full z-50 h-20 flex items-center transition-all duration-500">
+    <nav :class="scrolled ? 'nav-scrolled' : 'nav-base'" class="fixed top-0 w-full z-50 flex items-center transition-all duration-500">
         <div class="max-w-[1600px] mx-auto px-4 md:px-8 w-full flex items-center justify-between">
             
-            <div class="flex items-center gap-4 shrink-0">
-                <a href="index.html" class="flex items-center gap-3 group">
-                    <div class="w-10 h-10 flex items-center justify-center bg-brand-primary/10 rounded-xl border border-brand-primary/20 group-hover:scale-110 transition shadow-lg shadow-brand-primary/5">
-                        <i data-lucide="gamepad-2" class="w-6 h-6 text-brand-primary"></i>
-                    </div>
-                    <div class="hidden sm:block">
-                        <h1 class="font-display text-xl tracking-tighter leading-none">PLAYWITH<span class="text-brand-primary">EASE</span></h1>
-                        <div class="flex items-center gap-1.5 mt-0.5">
-                            <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-                            <span class="text-[9px] uppercase font-bold tracking-widest text-gray-500">System Live</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="hidden md:flex flex-1 max-w-xl mx-12 relative group" x-data="{ focused: false }">
-                <div :class="focused ? 'w-full' : 'w-3/4'" class="relative transition-all duration-500 ml-auto">
-                    <i data-lucide="search" :class="focused ? 'text-brand-primary' : 'text-gray-500'" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors"></i>
-                    <input type="text" x-model="searchQuery" @focus="focused = true" @blur="focused = false"
-                           placeholder="Search from 20+ premium titles..." 
-                           class="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-11 pr-4 text-xs font-medium focus:outline-none focus:border-brand-primary/40 focus:bg-white/10 transition-all placeholder-gray-600">
-                    <div x-show="searchQuery.length > 0" class="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold bg-brand-primary/20 text-brand-primary px-2 py-0.5 rounded-md" x-text="filteredGames.length + ' found'"></div>
+            <a href="index.html" class="flex items-center gap-3 group shrink-0">
+                <div class="w-10 h-10 flex items-center justify-center bg-brand-primary/10 rounded-xl border border-brand-primary/20 group-hover:scale-110 transition shadow-lg">
+                    <i data-lucide="gamepad-2" class="w-6 h-6 text-brand-primary"></i>
                 </div>
+                <div class="hidden sm:block">
+                    <h1 class="font-display text-xl tracking-tighter leading-none text-white">PLAYWITH<span class="text-brand-primary">EASE</span></h1>
+                </div>
+            </a>
+
+            <div class="hidden md:flex flex-1 max-w-lg mx-8 relative group">
+                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-brand-primary transition-colors"></i>
+                <input type="text" x-model="searchQuery" placeholder="Search premium titles..." 
+                       class="w-full bg-white/5 border border-white/10 rounded-2xl py-2.5 pl-11 pr-4 text-xs focus:outline-none focus:border-brand-primary/40 focus:bg-white/10 transition-all text-white">
             </div>
 
-            <div class="flex items-center gap-2 md:gap-5 shrink-0">
+            <div class="flex items-center gap-3 shrink-0">
+                <button @click="mobileSearchOpen = !mobileSearchOpen" class="md:hidden p-2 text-gray-400 hover:text-white"><i data-lucide="search" class="w-5 h-5"></i></button>
                 
-                <button @click="mobileSearchOpen = !mobileSearchOpen" class="md:hidden p-2.5 rounded-xl hover:bg-white/5 text-gray-400">
-                    <i data-lucide="search" class="w-5 h-5"></i>
-                </button>
-
-                <a href="cart.html" class="relative p-2.5 rounded-xl bg-white/5 border border-white/5 hover:border-brand-primary/30 hover:bg-brand-primary/5 transition group">
+                <a href="cart.html" class="relative p-2.5 rounded-xl bg-white/5 border border-white/5 hover:border-brand-primary/30 transition group">
                     <i data-lucide="shopping-cart" class="w-5 h-5 text-gray-400 group-hover:text-brand-primary transition"></i>
-                    <span x-show="cartCount > 0" 
-                          x-transition:enter="transition cubic-bezier(0.175, 0.885, 0.32, 1.275) duration-500"
-                          x-transition:enter-start="scale-0"
-                          x-transition:enter-end="scale-100"
-                          class="absolute -top-1.5 -right-1.5 bg-brand-secondary text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow-lg shadow-brand-secondary/20 border-2 border-bg-main" 
-                          x-text="cartCount"></span>
+                    <span x-show="cartCount > 0" class="absolute -top-1 -right-1 bg-brand-secondary text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-bg-main" x-text="cartCount"></span>
                 </a>
-
-                <div class="h-8 w-px bg-white/10 mx-1 hidden sm:block"></div>
 
                 <div class="relative" x-data="{ open: false }" @click.outside="open = false">
-                    <button @click="open = !open" class="flex items-center gap-2 p-1.5 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition">
-                        <div class="w-8 h-8 rounded-xl overflow-hidden bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center border border-white/10">
+                    <button @click="open = !open" class="flex items-center gap-2 p-1 rounded-2xl hover:bg-white/5 transition">
+                        <div class="w-9 h-9 rounded-xl overflow-hidden bg-white/10 flex items-center justify-center border border-white/10">
                             <img id="userAvatarHeader" src="" class="w-full h-full object-cover hidden">
-                            <i id="userPlaceholder" data-lucide="user" class="w-4 h-4 text-gray-400"></i>
+                            <i id="userPlaceholder" data-lucide="user" class="w-5 h-5 text-gray-400"></i>
                         </div>
-                        <i data-lucide="chevron-down" :class="open ? 'rotate-180' : ''" class="w-4 h-4 text-gray-500 transition-transform hidden sm:block"></i>
                     </button>
-
-                    <div x-show="open" x-cloak 
-                         x-transition:enter="transition ease-out duration-200"
-                         x-transition:enter-start="opacity-0 translate-y-4 scale-95"
-                         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-                         class="absolute right-0 mt-3 w-64 bg-[#0f0f0f] border border-white/10 rounded-2xl shadow-2xl p-2 z-[60] overflow-hidden">
-                        
+                    <div x-show="open" x-cloak x-transition class="absolute right-0 mt-3 w-64 bg-[#0f0f0f] border border-white/10 rounded-2xl shadow-2xl p-2 z-[60]">
                         <div id="userPanelInfo" class="px-4 py-3 border-b border-white/5 mb-2 hidden">
-                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Active Account</p>
                             <p id="userDisplayName" class="text-sm font-bold truncate text-white"></p>
                         </div>
-
-                        <a href="profile.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition group text-sm font-medium">
-                            <div class="w-8 h-8 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary group-hover:bg-brand-primary group-hover:text-white transition"><i data-lucide="layout-dashboard" class="w-4 h-4"></i></div>
-                            My Library
-                        </a>
-
+                        <a href="profile.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition text-sm font-medium"><i data-lucide="key" class="w-4 h-4 text-brand-primary"></i> My Vault</a>
                         <button @click="toggleCurrency" class="w-full flex items-center justify-between px-4 py-3 rounded-xl hover:bg-white/5 transition text-sm font-medium">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-lg bg-yellow-500/10 flex items-center justify-center text-yellow-500"><i data-lucide="coins" class="w-4 h-4"></i></div>
-                                Currency
-                            </div>
+                            <div class="flex items-center gap-3"><i data-lucide="coins" class="w-4 h-4 text-yellow-500"></i> Currency</div>
                             <span class="text-xs font-black text-yellow-500" x-text="currency"></span>
                         </button>
-
-                        <div class="mt-2 pt-2 border-t border-white/5">
-                            <p class="px-4 text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-2">Switch Style</p>
-                            <div class="flex justify-between px-2 pb-2">
-                                <template x-for="(t, name) in themes" :key="name">
-                                    <button @click="setTheme(name)" :title="name" :style="'background: ' + t['--brand-primary']" class="w-8 h-8 rounded-lg border border-white/10 hover:scale-110 transition shadow-inner"></button>
-                                </template>
-                            </div>
-                        </div>
-
-                        <div id="loginSection" class="p-2">
-                             <a href="login.html" class="flex items-center justify-center gap-2 w-full py-3 bg-white text-black font-black text-xs uppercase tracking-widest rounded-xl hover:bg-brand-primary hover:text-white transition shadow-lg">
-                                <i data-lucide="log-in" class="w-4 h-4"></i> Login
-                             </a>
+                        <div id="loginSection" class="p-2 pt-4 border-t border-white/5 mt-2">
+                             <a href="login.html" class="flex justify-center w-full py-2.5 bg-white text-black font-black text-xs uppercase rounded-xl hover:bg-brand-primary hover:text-white transition">Login</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div x-show="mobileSearchOpen" x-transition.origin.top class="md:hidden absolute top-20 left-0 w-full bg-[#0a0a0a] border-b border-white/10 px-4 py-4 z-40">
-             <div class="relative">
-                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4"></i>
-                <input type="text" x-model="searchQuery" placeholder="Search games..." class="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-brand-primary outline-none text-white">
-             </div>
+        <div x-show="mobileSearchOpen" x-cloak class="md:hidden absolute top-20 left-0 w-full bg-[#0a0a0a] border-b border-white/10 p-4">
+            <input type="text" x-model="searchQuery" placeholder="Search..." class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white">
         </div>
     </nav>
 
-    <section class="relative min-h-[75vh] w-full overflow-hidden flex items-center justify-center pb-10 text-white bg-black">
+    <section class="relative min-h-[75vh] w-full overflow-hidden flex items-center justify-center text-white bg-black">
         <template x-for="(slide, index) in heroSlides" :key="index">
-            <div x-show="activeSlide === index && !trailerPlaying" x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0 scale-105" x-transition:enter-end="opacity-100 scale-100" class="absolute inset-0 z-10">
+            <div x-show="activeSlide === index && !trailerPlaying" x-transition:enter="transition duration-700" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="absolute inset-0 z-10">
                 <div class="absolute inset-0 bg-gradient-to-t from-bg-main via-transparent to-transparent z-10"></div>
                 <div class="absolute inset-0 bg-black/30 z-10"></div>
-                <img :src="slide.image" class="w-full h-full object-cover animate-float scale-110 origin-center">
+                <img :src="slide.image" class="w-full h-full object-cover animate-float scale-110">
             </div>
         </template>
         <div x-show="trailerPlaying" class="video-container"><div id="hero-player" class="video-background"></div></div>
-        <div x-show="!trailerPlaying" class="relative z-30 text-center w-full max-w-5xl mx-auto px-4 md:px-6 pt-24">
-            <div class="animate-fade-in">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded border border-white/20 bg-black/40 backdrop-blur mb-6">
-                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span><span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white">Global Premiere</span>
-                </div>
-                <img :src="heroSlides[activeSlide].logo" :class="activeSlide === 1 ? 'invert filter drop-shadow-md' : 'drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]'" class="h-16 md:h-32 mx-auto mb-8 w-auto max-w-[80%] transition-all duration-300">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-12 text-white mb-8 max-w-3xl mx-auto">
-                    <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black" x-text="timer.days">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Days</div></div>
-                    <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black" x-text="timer.hours">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Hours</div></div>
-                    <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black" x-text="timer.minutes">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Mins</div></div>
-                    <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black text-brand-secondary" x-text="timer.seconds">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Secs</div></div>
-                </div>
-                <div class="flex flex-col md:flex-row justify-center gap-4 px-4 md:px-0">
-                    <button class="bg-white text-black px-8 py-3.5 rounded font-bold uppercase tracking-widest text-sm md:text-base hover:bg-brand-primary hover:text-white transition duration-300 w-full md:w-auto shadow-lg">Pre-Order Now</button>
-                    <button @click="playTrailer" class="px-8 py-3.5 rounded border border-white/30 backdrop-blur font-bold uppercase tracking-widest text-sm md:text-base hover:bg-white/10 transition flex items-center justify-center gap-3 w-full md:w-auto text-white"><i data-lucide="play-circle" class="w-5 h-5"></i> Watch Trailer</button>
-                </div>
+        <div x-show="!trailerPlaying" class="relative z-30 text-center w-full max-w-5xl mx-auto px-4 md:px-6 pt-32">
+            <img :src="heroSlides[activeSlide].logo" :class="activeSlide === 1 ? 'invert filter' : 'drop-shadow-2xl'" class="h-16 md:h-32 mx-auto mb-8 w-auto transition-all duration-300">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-12 text-white mb-10 max-w-3xl mx-auto">
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl font-display"><div class="text-3xl md:text-5xl font-black" x-text="timer.days">00</div><div class="text-[10px] text-gray-400 uppercase font-bold">Days</div></div>
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl font-display"><div class="text-3xl md:text-5xl font-black" x-text="timer.hours">00</div><div class="text-[10px] text-gray-400 uppercase font-bold">Hours</div></div>
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl font-display"><div class="text-3xl md:text-5xl font-black" x-text="timer.minutes">00</div><div class="text-[10px] text-gray-400 uppercase font-bold">Mins</div></div>
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl font-display"><div class="text-3xl md:text-5xl font-black text-brand-secondary" x-text="timer.seconds">00</div><div class="text-[10px] text-gray-400 uppercase font-bold">Secs</div></div>
             </div>
-            <button @click="prevSlide" class="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 p-3 rounded-full hover:bg-white/10 transition hidden md:block"><i data-lucide="chevron-left" class="w-8 h-8 text-white opacity-50"></i></button>
-            <button @click="nextSlide" class="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 p-3 rounded-full hover:bg-white/10 transition hidden md:block"><i data-lucide="chevron-right" class="w-8 h-8 text-white opacity-50"></i></button>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <button class="bg-white text-black px-8 py-3.5 rounded-lg font-black uppercase text-sm hover:bg-brand-primary hover:text-white transition shadow-xl">Pre-Order</button>
+                <button @click="playTrailer" class="px-8 py-3.5 rounded-lg border border-white/30 backdrop-blur font-black uppercase text-sm hover:bg-white/10 transition flex items-center justify-center gap-2"><i data-lucide="play-circle"></i> Watch Trailer</button>
+            </div>
+            <button @click="prevSlide" class="absolute left-0 p-4 opacity-50 hover:opacity-100 hidden md:block"><i data-lucide="chevron-left" class="w-10 h-10"></i></button>
+            <button @click="nextSlide" class="absolute right-0 p-4 opacity-50 hover:opacity-100 hidden md:block"><i data-lucide="chevron-right" class="w-10 h-10"></i></button>
         </div>
-        <div x-show="trailerPlaying" x-cloak class="absolute bottom-20 md:bottom-10 right-6 md:right-10 z-40 flex gap-4 animate-fade-in"><button @click="toggleMute" class="w-10 h-10 md:w-12 md:h-12 rounded-full glass border border-white/20 flex items-center justify-center hover:bg-white/20 transition text-white"><i :data-lucide="isMuted ? 'volume-x' : 'volume-2'" class="w-4 h-4 md:w-5 md:h-5"></i></button><button @click="stopTrailer" class="px-4 md:px-6 py-2 md:py-3 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold uppercase text-[10px] md:text-xs tracking-widest transition flex items-center gap-2 shadow-lg"><i data-lucide="x" class="w-3 h-3 md:w-4 md:h-4"></i> Close</button></div>
+        <div x-show="trailerPlaying" x-cloak class="absolute bottom-10 right-10 z-40 flex gap-4">
+            <button @click="toggleMute" class="w-12 h-12 rounded-full glass border border-white/20 flex items-center justify-center text-white"><i :data-lucide="isMuted ? 'volume-x' : 'volume-2'"></i></button>
+            <button @click="stopTrailer" class="px-6 py-3 rounded-full bg-red-600 text-white font-bold uppercase text-xs">Close</button>
+        </div>
     </section>
 
-    <main class="max-w-[1600px] mx-auto px-4 md:px-6 py-12 text-brand-text">
-        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar mb-8 pb-2">
-            <button @click="activeCategory = 'All'" :class="activeCategory === 'All' ? 'bg-brand-primary text-white border-brand-primary' : 'bg-brand-text/5 border-brand-text/10 hover:bg-brand-text/10'" class="px-4 py-2 rounded-full border text-xs font-bold uppercase tracking-widest whitespace-nowrap transition">All Games</button>
+    <main class="max-w-[1600px] mx-auto px-4 md:px-6 py-12">
+        <div class="flex gap-2 overflow-x-auto no-scrollbar mb-8 pb-2">
+            <button @click="activeCategory = 'All'" :class="activeCategory === 'All' ? 'bg-brand-primary text-white' : 'bg-white/5 text-gray-400'" class="px-5 py-2 rounded-full text-xs font-bold transition">All</button>
             <template x-for="cat in ['Action', 'RPG', 'Shooter', 'Sports', 'Adventure', 'Horror']">
-                <button @click="activeCategory = cat" :class="activeCategory === cat ? 'bg-brand-primary text-white border-brand-primary' : 'bg-brand-text/5 border-brand-text/10 hover:bg-brand-text/10'" class="px-4 py-2 rounded-full border text-xs font-bold uppercase tracking-widest whitespace-nowrap transition" x-text="cat"></button>
+                <button @click="activeCategory = cat" :class="activeCategory === cat ? 'bg-brand-primary text-white' : 'bg-white/5 text-gray-400'" class="px-5 py-2 rounded-full text-xs font-bold transition" x-text="cat"></button>
             </template>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             <template x-for="game in filteredGames" :key="game.id">
-                <div class="group relative bg-bg-card rounded-lg overflow-hidden border border-brand-text/5 hover:border-brand-primary/50 transition-all duration-300 shadow-lg hover:shadow-brand-primary/20">
-                    <a :href="'product.html?id=' + game.id" class="block relative aspect-[2/3] overflow-hidden bg-gray-900 cursor-pointer">
+                <div class="group relative bg-bg-card rounded-xl overflow-hidden border border-white/5 hover:border-brand-primary/50 transition-all shadow-lg">
+                    <a :href="'product.html?id=' + game.id" class="block relative aspect-[2/3] overflow-hidden">
                         <img :src="game.image" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" loading="lazy">
-                        <div x-show="game.discount" class="absolute top-2 left-2 bg-red-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded z-10"><span x-text="game.discount"></span></div>
-                        <div class="hidden lg:flex absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition duration-200 flex-col items-center justify-center p-4 gap-2">
-                            <button @click.stop="buyNow(game)" class="w-full py-2 bg-white text-black font-bold uppercase text-[10px] tracking-wider rounded hover:bg-brand-primary hover:text-white transition">Buy Now</button>
-                            <button @click.stop="addToCart(game)" class="w-full py-2 border border-white/20 text-white font-bold uppercase text-[10px] tracking-wider rounded hover:bg-white/10 transition">Add to Cart</button>
-                        </div>
+                        <div x-show="game.discount" class="absolute top-2 left-2 bg-red-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded" x-text="game.discount"></div>
                     </a>
-                    <div class="p-2 md:p-3">
-                        <h3 class="font-bold truncate text-xs hover:text-brand-primary transition leading-tight mb-1" x-text="game.title"></h3>
-                        <div class="flex justify-between items-center">
-                            <div class="flex flex-col">
-                                <span class="text-brand-primary font-tech font-bold text-sm" x-text="formatPrice(game.price)"></span>
-                            </div>
-                            <button @click.stop="addToCart(game)" class="lg:hidden p-1.5 rounded bg-brand-text/5 text-brand-text transition"><i data-lucide="plus" class="w-3 h-3"></i></button>
+                    <div class="p-3">
+                        <h3 class="font-bold truncate text-xs text-white" x-text="game.title"></h3>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-brand-primary font-tech font-bold text-sm" x-text="formatPrice(game.price)"></span>
+                            <button @click="addToCart(game)" class="p-1.5 rounded-lg bg-white/5 hover:bg-brand-primary transition"><i data-lucide="plus" class="w-4 h-4"></i></button>
                         </div>
                     </div>
                 </div>
@@ -234,15 +165,14 @@
         </div>
     </main>
 
-    <footer class="bg-black border-t border-white/10 pt-12 pb-12 text-center text-xs opacity-50">
-        &copy; 2026 PlayWithEase. Official Digital Storefront.
-    </footer>
+    <footer class="py-12 border-t border-white/5 text-center text-xs text-gray-600">&copy; 2026 PlayWithEase. All Assets Verified.</footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         const firebaseConfig = { apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs", authDomain: "playwithease.firebaseapp.com", projectId: "playwithease", storageBucket: "playwithease.firebasestorage.app", messagingSenderId: "189729941006", appId: "1:189729941006:web:362653774b92416c357e5f", measurementId: "G-1C3B31KQ7C" };
         const app = initializeApp(firebaseConfig); const auth = getAuth(app);
+        
         onAuthStateChanged(auth, (user) => {
             const avatar = document.getElementById('userAvatarHeader');
             const placeholder = document.getElementById('userPlaceholder');
@@ -250,7 +180,7 @@
             const panel = document.getElementById('userPanelInfo');
             const nameDisp = document.getElementById('userDisplayName');
             if (user) {
-                avatar.src = user.photoURL; avatar.classList.remove('hidden'); placeholder.classList.add('hidden');
+                if(user.photoURL) { avatar.src = user.photoURL; avatar.classList.remove('hidden'); placeholder.classList.add('hidden'); }
                 loginSection.classList.add('hidden'); panel.classList.remove('hidden');
                 nameDisp.innerText = user.displayName || user.email;
             } else {
@@ -261,49 +191,41 @@
     </script>
 
     <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('chatBot', () => ({
-                open: false, input: '',
-                messages: [{ id: 1, text: "Need help with a key or game?", sender: 'bot' }],
-                sendMessage() { if (!this.input.trim()) return; this.messages.push({ id: Date.now(), text: this.input, sender: 'user' }); const txt = this.input.toLowerCase(); this.input = ''; setTimeout(() => { let r = "I can help with keys and refunds."; if (txt.includes('key')) r = "Check <b>Profile > My Vault</b>."; if (txt.includes('hello')) r = "Hi there!"; this.messages.push({ id: Date.now()+1, text: r, sender: 'bot' }); this.$nextTick(() => document.getElementById('chatContainer').scrollTop = 9999); }, 800); }
-            }));
+        var tag = document.createElement('script'); tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0]; firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        var ytPlayer; function onYouTubeIframeAPIReady() {}
 
+        document.addEventListener('alpine:init', () => {
             Alpine.data('storeLogic', () => ({
-                scrolled: false,
-                currency: localStorage.getItem('pwe_currency') || 'INR', 
+                scrolled: false, currency: localStorage.getItem('pwe_currency') || 'INR', 
                 cartCount: parseInt(localStorage.getItem('pwe_cart_count')) || 0,
-                currentTheme: localStorage.getItem('pwe_theme') || 'cyber',
                 searchQuery: '', activeCategory: 'All', notifications: [], mobileSearchOpen: false,
-                timer: { days: '00', hours: '00', minutes: '00', seconds: '00' },
-                activeSlide: 0,
+                activeSlide: 0, trailerPlaying: false, isMuted: false, timer: { days: '00', hours: '00', minutes: '00', seconds: '00' },
                 heroSlides: [
                     { image: 'https://media-rockstargames-com.akamaized.net/mfe6/prod/__common/img/71d4d17edcd49703a5ea446cc0e588e6.jpg', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg/512px-Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg.png', videoId: 'QdBZY2fkU-0', date: '2026-11-19T00:00:00' },
                     { image: 'https://cdn.forza.net/strapi-uploads/assets/xlarge_hero_fh6_f55db4cd81_53e6ca38f4.webp', logo: 'https://cdn.forza.net/strapi-uploads/assets/logo_black_fh6_700993660b.svg', videoId: 'XG1Ll2CVhug', date: '2027-05-15T00:00:00' }
                 ],
-                trailerPlaying: false, isMuted: false,
-                themes: {
-                    cyber: { '--bg-main': '#080808', '--bg-card': '#101010', '--brand-primary': '#2563eb', '--brand-secondary': '#ff00aa' },
-                    luxury: { '--bg-main': '#050505', '--bg-card': '#121212', '--brand-primary': '#fbbf24', '--brand-secondary': '#d97706' },
-                    toxic: { '--bg-main': '#0a0f0a', '--bg-card': '#141a14', '--brand-primary': '#10b981', '--brand-secondary': '#059669' },
-                    crimson: { '--bg-main': '#0f0505', '--bg-card': '#1a0b0b', '--brand-primary': '#ef4444', '--brand-secondary': '#b91c1c' },
-                    minimal: { '--bg-main': '#ffffff', '--bg-card': '#f3f4f6', '--brand-primary': '#000000', '--brand-secondary': '#374151' }
-                },
                 games: [
                     { id: 1, title: 'Grand Theft Auto V', category: 'Action', price: 14.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
                     { id: 2, title: 'Red Dead Redemption 2', category: 'Adventure', price: 19.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
                     { id: 3, title: 'Cyberpunk 2077', category: 'RPG', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg' },
+                    { id: 4, title: 'Elden Ring', category: 'RPG', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg' },
                     { id: 11, title: 'Helldivers 2', category: 'Shooter', price: 39.99, discount: 'HOT', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/library_600x900.jpg' },
-                    { id: 12, title: 'Palworld', category: 'Adventure', price: 29.99, discount: 'NEW', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1623730/library_600x900.jpg' },
-                    { id: 15, title: 'Forza Horizon 5', category: 'Sports', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551360/library_600x900.jpg' }
-                    // Add other games here as needed
+                    { id: 12, title: 'Palworld', category: 'Adventure', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1623730/library_600x900.jpg' },
+                    { id: 13, title: 'Baldur\'s Gate 3', category: 'RPG', price: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1086940/library_600x900.jpg' },
+                    { id: 14, title: 'Tekken 8', category: 'Action', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1778820/library_600x900.jpg' },
+                    { id: 15, title: 'Forza Horizon 5', category: 'Sports', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551360/library_600x900.jpg' },
+                    { id: 16, title: 'Hogwarts Legacy', category: 'RPG', price: 35.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/library_600x900.jpg' },
+                    { id: 7, title: 'EA SPORTS FC 24', category: 'Sports', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
+                    { id: 8, title: 'Resident Evil 4', category: 'Horror', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg' },
+                    { id: 9, title: 'Spider-Man', category: 'Action', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg' }
                 ],
-                init() { lucide.createIcons(); this.startTimer(); this.setTheme(this.currentTheme); },
+                init() { lucide.createIcons(); this.startTimer(); },
                 get filteredGames() { let r = this.games; if(this.activeCategory !== 'All') r = r.filter(g => g.category === this.activeCategory); if(this.searchQuery !== '') r = r.filter(g => g.title.toLowerCase().includes(this.searchQuery.toLowerCase())); return r; },
-                addToCart(game) { this.cartCount++; localStorage.setItem('pwe_cart_count', this.cartCount); let cart = JSON.parse(localStorage.getItem('pwe_cart_items') || '[]'); cart.push(game); localStorage.setItem('pwe_cart_items', JSON.stringify(cart)); this.notify('success', 'Added', `${game.title} is in cart.`); },
-                buyNow(game) { this.addToCart(game); window.location.href = 'checkout.html'; },
+                addToCart(g) { this.cartCount++; localStorage.setItem('pwe_cart_count', this.cartCount); let c = JSON.parse(localStorage.getItem('pwe_cart_items') || '[]'); c.push(g); localStorage.setItem('pwe_cart_items', JSON.stringify(c)); this.notify('success', 'Added', `${g.title} in cart.`); },
                 toggleCurrency() { this.currency = this.currency === 'USD' ? 'INR' : 'USD'; localStorage.setItem('pwe_currency', this.currency); },
                 setTheme(n) { this.currentTheme = n; localStorage.setItem('pwe_theme', n); },
-                get themeStyles() { return Object.entries(this.themes[this.currentTheme]).map(([k, v]) => `${k}: ${v};`).join(' '); },
+                get themeStyles() { return Object.entries({cyber: { '--bg-main': '#080808', '--bg-card': '#101010', '--text-main': '#ffffff', '--brand-primary': '#2563eb', '--brand-secondary': '#ff00aa' }}[this.currentTheme] || {}).map(([k, v]) => `${k}: ${v};`).join(' '); },
                 formatPrice(p) { return this.currency === 'USD' ? '$'+p.toFixed(2) : '₹'+Math.round(p*85); },
                 notify(t, h, m) { const id = Date.now(); this.notifications.push({ id, type: t, title: h, message: m, visible: true }); setTimeout(() => { const idx = this.notifications.findIndex(n => n.id === id); if(idx > -1) this.notifications[idx].visible = false; }, 3000); },
                 nextSlide() { this.changeSlide((this.activeSlide + 1) % this.heroSlides.length); },
