@@ -1,679 +1,347 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PlayWithEase</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlayWithEase | Ultimate Game Store</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;600;800&family=Orbitron:wght@900&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        tech: ['Rajdhani', 'sans-serif'],
+                        display: ['Orbitron', 'sans-serif'],
+                    },
+                    colors: {
+                        bg: { main: '#080808', card: '#101010', surface: '#181818' },
+                        brand: { 
+                            gta: '#ff00aa', 
+                            blue: '#2563eb',
+                            gold: '#fbbf24'
+                        }
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'glitch': 'glitch 1s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
-<style>
-/* ===== YOUR ORIGINAL CSS 100% UNTOUCHED ===== */
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
---bg:#f8fafc;
---glass:rgba(255,255,255,0.65);
---card:#ffffff;
---accent:#2563eb;
---text:#0f172a;
-}
-body{
-font-family:'Poppins',sans-serif;
-background:var(--bg);
-color:var(--text);
-transition:.3s;
-overflow-x:hidden;
-}
-body.theme-dark{
---bg:#0f172a;
---glass:rgba(30,41,59,0.7);
---card:#1e293b;
---accent:#3b82f6;
---text:#f1f5f9;
-}
-body.theme-red{--accent:#ef4444}
-body.theme-green{--accent:#10b981}
-body.theme-purple{--accent:#a855f7}
-body.theme-elite-red{
---bg:#14090b;
---card:#1f1114;
---accent:#dc2626;
---text:#fef2f2;
-}
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #080808; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
 
-/* MUSIC BAR */
-.music-bar{
-position:fixed;
-top:0;left:0;width:100%;height:24px;
-display:flex;align-items:flex-end;justify-content:space-between;
-background:#000;z-index:9999;
-}
-.m-bar{flex:1;margin:0 1px;height:6px;background:var(--accent);border-radius:2px;}
+        /* Glassmorphism */
+        .glass {
+            background: rgba(16, 16, 16, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
 
-/* HEADER */
-header{
-position:fixed;top:24px;width:100%;
-padding:14px 20px;
-display:flex;justify-content:space-between;align-items:center;
-background:var(--glass);backdrop-filter:blur(18px);
-border-bottom:1px solid rgba(0,0,0,0.08);z-index:5000;
-}
-.brand{font-family:'Orbitron';font-weight:900;font-size:18px;}
-.nav-links{display:flex;gap:20px;align-items:center;}
-.nav-links a{text-decoration:none;color:var(--text);font-size:14px;transition:.3s;}
-.nav-links a:hover{color:var(--accent);}
+        /* GTA VI Gradient Text */
+        .text-gta {
+            background: linear-gradient(to bottom, #d946ef, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-/* DROPDOWN */
-.user-menu{position:relative;}
-#dropdown{
-display:none;position:absolute;right:0;top:25px;
-background:var(--card);
-border-radius:10px;
-box-shadow:0 10px 25px rgba(0,0,0,0.15);
-padding:12px;min-width:200px;z-index:9999;
-}
-#dropdown a{display:block;padding:6px 0;text-decoration:none;color:var(--text);}
-#dropdown a:hover{color:var(--accent);}
-
-/* HERO */
-.hero{margin-top:110px;display:flex;align-items:center;justify-content:space-between;padding:40px 20px;gap:30px;}
-.hero-left{max-width:600px;}
-.hero-left h1{font-family:'Orbitron';font-size:34px;margin-bottom:12px;}
-.hero-left span{color:var(--accent);}
-.live-box{margin-top:20px;padding:16px;border-radius:12px;background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);font-size:14px;}
-.video-wrap{position:relative;max-width:420px;width:100%;}
-.video-wrap video{width:100%;border-radius:12px;}
-.mute-btn{position:absolute;bottom:8px;right:8px;width:32px;height:32px;border-radius:50%;border:none;background:var(--accent);color:#fff;cursor:pointer;}
-
-.section{max-width:1200px;margin:auto;padding:40px 15px;}
-.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:18px;}
-@media(max-width:900px){
-.hero{flex-direction:column;text-align:center;}
-.grid{grid-template-columns:repeat(3,1fr);}
-}
-
-/* CARD */
-.card{background:var(--card);border-radius:18px;overflow:hidden;border:1px solid rgba(0,0,0,.05);transition:.3s;cursor:pointer;position:relative;box-shadow:0 6px 18px rgba(0,0,0,0.06);}
-.card:hover{transform:translateY(-10px);box-shadow:0 18px 35px rgba(0,0,0,0.15);}
-.card img{width:100%;height:150px;object-fit:cover;transition:.3s;}
-.card:hover img{transform:scale(1.05);}
-.badge{position:absolute;top:12px;left:12px;background:var(--accent);color:#fff;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;}
-.card .info{padding:14px;font-size:14px;}
-.price{margin-top:6px;font-weight:700;color:var(--accent);}
-.card button{margin-top:10px;padding:8px;width:100%;border:none;background:var(--accent);color:#fff;border-radius:8px;cursor:pointer;font-weight:600;transition:.3s;}
-.card button:hover{opacity:.9;}
-/* ===== PREMIUM BUTTON RIPPLE EFFECT ===== */
-.card button{
-position:relative;
-overflow:hidden;
-transition:all .3s ease;
-}
-
-.card button::after{
-content:"";
-position:absolute;
-width:300%;
-height:300%;
-top:50%;
-left:50%;
-background:rgba(255,255,255,0.25);
-transform:translate(-50%,-50%) scale(0);
-border-radius:50%;
-transition:transform .6s ease;
-}
-
-.card button.clicked::after{
-transform:translate(-50%,-50%) scale(1);
-}
-
-.card button.success{
-background:linear-gradient(135deg,#16a34a,#22c55e);
-box-shadow:0 8px 20px rgba(34,197,94,0.4);
-}
-
-/* ===== PREMIUM TOAST ===== */
-.cart-toast{
-position:fixed !important;
-bottom:30px;
-right:30px;
-width:320px;
-background:var(--card);
-border-radius:14px;
-box-shadow:0 25px 60px rgba(0,0,0,0.25);
-padding:18px;
-z-index:99999;
-border-left:5px solid var(--accent);
-opacity:1;
-transform:translateX(0);
-transition:all .4s ease;
-}
-
-/* ===== IMPROVED USER MENU BUTTON ===== */
-.user-menu span{
-display:flex;
-align-items:center;
-justify-content:center;
-width:40px;
-height:40px;
-font-size:22px;
-border-radius:10px;
-cursor:pointer;
-transition:.3s;
-}
-
-.user-menu span:hover{
-background:rgba(0,0,0,0.08);
-transform:scale(1.1);
-}
-/* ===== INSANE TRUST SECTION ===== */
-
-.trust{
-margin-top:80px;
-padding:70px 20px;
-text-align:center;
-background:var(--bg);
-}
-
-.trust h2{
-font-family:'Orbitron';
-margin-bottom:40px;
-font-size:26px;
-}
-
-.trust-grid{
-display:flex;
-justify-content:center;
-gap:30px;
-flex-wrap:wrap;
-}
-
-.trust-box{
-background:var(--card);
-padding:30px;
-border-radius:16px;
-width:260px;
-box-shadow:0 15px 35px rgba(0,0,0,0.08);
-transition:.3s ease;
-}
-
-.trust-box:hover{
-transform:translateY(-10px);
-box-shadow:0 25px 50px rgba(0,0,0,0.15);
-}
-.brand{
-font-family:'Orbitron';
-font-weight:900;
-font-size:18px;
-text-decoration:none;
-color:inherit;
-display:inline-block;
-}
-
-.brand .tm{
-font-size:11px;
-vertical-align:super;
-margin-left:2px;
-}
-/* ===== PREMIUM CART BUTTON (CLEAN) ===== */
-
-.cart-btn{
-text-decoration:none;
-padding:8px 18px;
-border-radius:12px;
-background:linear-gradient(135deg,var(--accent),#1d4ed8);
-color:#fff;
-font-size:14px;
-font-weight:600;
-letter-spacing:.5px;
-display:flex;
-align-items:center;
-gap:8px;
-transition:.3s ease;
-position:relative;
-overflow:hidden;
-}
-
-.cart-btn:hover{
-transform:translateY(-3px) scale(1.04);
-box-shadow:0 15px 35px rgba(37,99,235,0.45);
-}
-
-.cart-btn::after{
-content:"";
-position:absolute;
-width:200%;
-height:200%;
-top:50%;
-left:50%;
-background:rgba(255,255,255,0.2);
-transform:translate(-50%,-50%) scale(0);
-border-radius:50%;
-transition:transform .6s ease;
-}
-
-.cart-btn:active::after{
-transform:translate(-50%,-50%) scale(1);
-}
-
-#cartCount{
-background:#fff;
-color:var(--accent);
-padding:3px 8px;
-border-radius:20px;
-font-size:12px;
-font-weight:700;
-}
-/* ===== PREMIUM THEME SWITCH BUTTON ===== */
-
-.premium-theme-btn{
-padding:8px 20px;
-border:none;
-border-radius:14px;
-background:linear-gradient(135deg,var(--accent),#1d4ed8);
-color:#fff;
-font-weight:600;
-font-size:14px;
-letter-spacing:.5px;
-cursor:pointer;
-position:relative;
-overflow:hidden;
-transition:all .35s ease;
-}
-
-/* Hover Lift + Glow */
-.premium-theme-btn:hover{
-transform:translateY(-4px) scale(1.05);
-box-shadow:0 15px 40px rgba(37,99,235,0.45);
-}
-
-/* Shine Sweep Effect */
-.premium-theme-btn::before{
-content:"";
-position:absolute;
-top:0;
-left:-100%;
-width:100%;
-height:100%;
-background:linear-gradient(120deg,transparent,rgba(255,255,255,.4),transparent);
-transition:all .6s ease;
-}
-
-.premium-theme-btn:hover::before{
-left:100%;
-}
-body.theme-dark{
---bg:#0f172a;
---card:#1e293b;
---accent:#3b82f6;
---text:#f1f5f9;
-}
-
-body.theme-emerald{
---accent:#10b981;
-}
-
-body.theme-royal{
---accent:#7c3aed;
-}
-/* ===== PREMIUM NAV BUTTONS ===== */
-
-.nav-btn{
-text-decoration:none;
-padding:8px 18px;
-border-radius:12px;
-background:linear-gradient(135deg,var(--accent),#1d4ed8);
-color:#fff;
-font-size:14px;
-font-weight:600;
-letter-spacing:.5px;
-display:inline-flex;
-align-items:center;
-justify-content:center;
-transition:.35s ease;
-position:relative;
-overflow:hidden;
-}
-
-/* Hover Lift */
-.nav-btn:hover{
-transform:translateY(-3px) scale(1.05);
-box-shadow:0 15px 35px rgba(37,99,235,0.45);
-}
-
-/* Shine sweep */
-.nav-btn::before{
-content:"";
-position:absolute;
-top:0;
-left:-100%;
-width:100%;
-height:100%;
-background:linear-gradient(120deg,transparent,rgba(255,255,255,.4),transparent);
-transition:.6s ease;
-}
-
-.nav-btn:hover::before{
-left:100%;
-}
-
-</style>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-
+        /* Matrix Key Animation */
+        .matrix-text {
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 5px #0f0;
+        }
+    </style>
 </head>
-<body>
 
-<div class="music-bar" id="musicBar"></div>
-
-<header>
-<a href="index.html" class="brand">PlayWithEase<span class="tm">®</span></a>
-<div class="nav-links">
-<a href="#" class="nav-btn">Store</a>
-<a href="#" class="nav-btn">OTT</a>
-
-<a href="login.html" id="loginLink">Login</a>
-
-<a href="cart.html" class="cart-btn">
-Cart <span id="cartCount">0</span>
-</a>
-
-<button id="themeSwitcher" class="premium-theme-btn">
-Theme
-</button>
-
-<div class="user-menu" id="userMenu" style="display:none;">
-<span onclick="toggleMenu()">⋮</span>
-
-<div id="dropdown">
-
-<div id="userEmail" style="font-size:12px;font-weight:600;"></div>
-<hr>
-
-<a href="profile.html">Profile</a>
-<a href="subscription.html">Subscription</a>
-<a href="order-history.html">Order History</a>
-
-<hr>
-<a href="#" onclick="logout()" style="color:#ef4444;">Logout</a>
-
-</div>
-
-</div>
-
-</div>
-</header>
-
-<section class="hero">
-<div class="hero-left">
-<h1>Level Up Your <span>Gaming</span></h1>
-<p>Experience next-generation digital gaming with instant access to premium titles and OTT subscriptions.</p>
-<div class="live-box">
-🚀 <b>We Are Officially Live!</b><br>
-Serving gamers across India with trusted digital access.
-</div>
-</div>
-<div class="video-wrap">
-<video id="gtaTrailer" autoplay muted loop playsinline crossorigin="anonymous">
-<source src="https://videos.rockstargames.com/v4/s6c5c8co/flv/en-us-720p.mp4">
-</video>
-<button class="mute-btn" id="muteBtn">🔇</button>
-</div>
-
-</section>
-
-<section class="section">
-<h2>🎮 Games</h2>
-<div class="grid" id="gameGrid"></div>
-</section>
-<section class="trust">
-<h2>Why Trust PlayWithEase?</h2>
-
-<div class="trust-grid">
-
-<div class="trust-box">
-<h3>🔒 Secure Payments</h3>
-<p>Fully encrypted & protected checkout system.</p>
-</div>
-
-<div class="trust-box">
-<h3>⚡ Instant Delivery</h3>
-<p>Get access within minutes of purchase.</p>
-</div>
-
-<div class="trust-box">
-<h3>✔ Verified Access</h3>
-<p>All products manually tested before dispatch.</p>
-</div>
-
-</div>
-</section>
-
-<script>
-
-let cart = JSON.parse(localStorage.getItem("pwe_cart")) || [];
-
-function updateCartCount(){
-let count = document.getElementById("cartCount");
-if(count){
-count.innerText = cart.length;
-}
-}
-
-updateCartCount();
-
-/* MUSIC BAR */
-const musicBar=document.getElementById("musicBar");
-for(let i=0;i<60;i++){
-let bar=document.createElement("div");
-bar.className="m-bar";
-musicBar.appendChild(bar);
-}
-const bars=document.querySelectorAll(".m-bar");
-
-const video=document.getElementById("gtaTrailer");
-const muteBtn=document.getElementById("muteBtn");
-
-let audioCtx, analyser, source, started=false;
-
-function startAudio(){
-if(started) return;
-video.muted=false;
-video.play();
-audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-analyser=audioCtx.createAnalyser();
-source=audioCtx.createMediaElementSource(video);
-source.connect(analyser);
-analyser.connect(audioCtx.destination);
-analyser.fftSize=128;
-started=true;
-animate();
-muteBtn.textContent="🔊";
-}
-document.addEventListener("click", startAudio);
-
-muteBtn.addEventListener("click",(e)=>{
-e.stopPropagation();
-video.muted=!video.muted;
-muteBtn.textContent=video.muted?"🔇":"🔊";
-});
-
-function animate(){
-if(!analyser) return;
-let data=new Uint8Array(analyser.frequencyBinCount);
-analyser.getByteFrequencyData(data);
-bars.forEach((bar,i)=>{
-bar.style.height=(data[i]/4+6)+"px";
-});
-requestAnimationFrame(animate);
-}
-
-/* GAMES */
-const games=[
-["GTA V",271590],
-["Red Dead Redemption 2",1174180],
-["Cyberpunk 2077",1091500],
-["God of War",1593500],
-["Elden Ring",1245620]
-];
-
-while(games.length<30){
-games.push(...games.slice(0,5));
-}
-
-const grid=document.getElementById("gameGrid");
-
-games.forEach(g=>{
-grid.innerHTML+=`
-<div class="card">
-<div class="badge">Verified</div>
-<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[1]}/header.jpg">
-<div class="info">
-${g[0]}
-<div class="price">₹999</div>
-<button onclick="addToCart(this,'${g[0]}')">Add to Cart</button>
-</div>
-</div>`;
-});
-
-/* FIREBASE AUTH (SAFE VERSION) */
-firebase.initializeApp({
-apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
-authDomain: "playwithease.firebaseapp.com",
-projectId: "playwithease"
-});
-
-const auth=firebase.auth();
-
-auth.onAuthStateChanged(function(user){
-if(user){
-document.getElementById("loginLink").style.display="none";
-document.getElementById("userMenu").style.display="block";
-document.getElementById("userEmail").innerText=user.email;
-}else{
-document.getElementById("loginLink").style.display="block";
-document.getElementById("userMenu").style.display="none";
-}
-});
-
-function toggleMenu(){
-const drop=document.getElementById("dropdown");
-drop.style.display=drop.style.display==="block"?"none":"block";
-}
-
-function logout(){
-auth.signOut().then(function(){
-window.location.reload();
-});
-}
-function addToCart(btn,gameName){
-
-// 1️⃣ Cart me add karo
-cart.push({
-name: gameName,
-image: btn.closest(".card").querySelector("img").src,
-price: 999,
-qty: 1
-});
-
-// 2️⃣ Save in localStorage
-localStorage.setItem("pwe_cart", JSON.stringify(cart));
-
-// 3️⃣ Update live count
-updateCartCount();
-
-// 4️⃣ Button animation
-btn.classList.add("clicked");
-
-setTimeout(()=>{
-btn.classList.remove("clicked");
-btn.classList.add("success");
-btn.innerHTML="✔ Added";
-},200);
-
-setTimeout(()=>{
-btn.classList.remove("success");
-btn.innerHTML="Add to Cart";
-},1800);
-
-// 5️⃣ Show cart preview
-// showCartPreview();
-
-}
-/* ===== DROPDOWN CLOSE FEATURES ===== */
-
-document.addEventListener("click", function(e){
-const menu=document.getElementById("userMenu");
-const dropdown=document.getElementById("dropdown");
-
-if(!menu.contains(e.target)){
-dropdown.style.display="none";
-}
-});
-
-document.addEventListener("keydown", function(e){
-if(e.key === "Escape"){
-document.getElementById("dropdown").style.display="none";
-}
-});
-/* ===== PREMIUM THEME CYCLER ===== */
-
-const themes=["","theme-dark","theme-emerald","theme-royal","theme-elite-red"];
-let currentTheme=0;
-
-const themeBtn=document.getElementById("themeSwitcher");
-
-themeBtn.addEventListener("click",function(){
-
-currentTheme++;
-if(currentTheme>=themes.length){
-currentTheme=0;
-}
-
-document.body.className=themes[currentTheme];
-
-/* Subtle click animation */
-themeBtn.style.transform="scale(.95)";
-setTimeout(()=>{
-themeBtn.style.transform="";
-},150);
-
-});
-function toggleCart(e){
-e.preventDefault();
-const drop=document.getElementById("cartDropdown");
-drop.style.display=drop.style.display==="block"?"none":"block";
-renderCart();
-}
-
-function renderCart(){
-const drop=document.getElementById("cartDropdown");
-
-if(cart.length===0){
-drop.innerHTML="<div class='empty-cart'>Your cart is empty</div>";
-return;
-}
-
-let html="<h4>Your Cart</h4>";
-cart.forEach(item=>{
-html+=`<div class="cart-item">• ${item}</div>`;
-});
-
-html+=`<hr><div style="margin-top:8px;font-weight:600;">Total: ₹${cart.length*999}</div>`;
-drop.innerHTML=html;
-}
-
-function showCartPreview(){
-const drop=document.getElementById("cartDropdown");
-drop.style.display="block";
-renderCart();
-
-setTimeout(()=>{
-drop.style.display="none";
-},2500);
-}
-
-</script>
-
+<body class="bg-bg-main text-white antialiased overflow-x-hidden selection:bg-brand-gta selection:text-white"
+      x-data="storeLogic()">
+
+    <nav class="fixed top-0 w-full z-50 glass border-b border-white/5 h-20 transition-all duration-300">
+        <div class="max-w-[1600px] mx-auto px-6 h-full flex items-center justify-between">
+            
+            <div class="flex items-center gap-3 cursor-pointer group">
+                <div class="relative w-12 h-12 flex items-center justify-center bg-white/5 rounded-xl border border-white/10 group-hover:border-brand-gta/50 transition duration-500 overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-brand-blue/20 to-brand-gta/20 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                    <i data-lucide="gamepad-2" class="relative z-10 w-7 h-7 text-white group-hover:scale-110 transition duration-300"></i>
+                </div>
+                <div>
+                    <h1 class="font-display text-xl tracking-wider">PLAYWITH<span class="text-brand-blue">EASE</span></h1>
+                    <div class="flex gap-2 text-[10px] font-tech uppercase tracking-[0.2em] text-gray-500">
+                        <span>Store</span>
+                        <span class="text-brand-gta">•</span>
+                        <span>Keys</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden lg:flex items-center gap-8 font-tech font-bold text-lg tracking-wide text-gray-400">
+                <a href="#" class="text-white relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-full after:h-0.5 after:bg-brand-blue after:shadow-[0_0_10px_#2563eb]">STORE</a>
+                <a href="#" class="hover:text-white transition">LIBRARY</a>
+                <a href="#" class="hover:text-white transition">COMMUNITY</a>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <button @click="toggleCurrency" 
+                        class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 transition text-xs font-bold font-tech tracking-wider group">
+                    <i data-lucide="coins" class="w-4 h-4 text-brand-gold group-hover:rotate-12 transition"></i>
+                    <span x-text="currency === 'USD' ? 'USD ($)' : 'INR (₹)'"></span>
+                </button>
+
+                <a href="cart.html" class="relative group">
+                    <i data-lucide="shopping-bag" class="w-6 h-6 text-gray-400 group-hover:text-white transition"></i>
+                    <span x-show="cartCount > 0" 
+                          x-transition:enter="transition ease-out duration-300"
+                          x-transition:enter-start="transform scale-0"
+                          x-transition:enter-end="transform scale-100"
+                          class="absolute -top-2 -right-2 bg-brand-gta text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-lg border border-black" 
+                          x-text="cartCount"></span>
+                </a>
+
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 border border-white/20 p-0.5 cursor-pointer">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Gamer" class="rounded-full bg-black">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative h-[85vh] w-full overflow-hidden mt-20 flex items-center justify-center">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-t from-bg-main via-bg-main/50 to-transparent z-10"></div>
+            <div class="absolute inset-0 bg-black/40 z-10"></div>
+            <img src="https://media-rockstargames-com.akamaized.net/mfe6/prod/__common/img/71d4d17edcd49703a5ea446cc0e588e6.jpg" 
+                 class="w-full h-full object-cover animate-float scale-110 origin-center">
+        </div>
+
+        <div class="relative z-20 text-center max-w-5xl mx-auto px-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded border border-white/20 bg-black/40 backdrop-blur mb-6 animate-pulse">
+                <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                <span class="text-xs font-bold uppercase tracking-widest">Global Premiere Event</span>
+            </div>
+
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg/512px-Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg.png" 
+                 class="h-32 md:h-48 mx-auto mb-10 drop-shadow-[0_0_30px_rgba(255,0,170,0.5)]">
+
+            <div class="grid grid-cols-4 gap-4 md:gap-12 text-white mb-12 max-w-3xl mx-auto">
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-4 rounded-xl">
+                    <div class="text-4xl md:text-6xl font-display font-black" x-text="timer.days">000</div>
+                    <div class="text-xs text-gray-400 uppercase tracking-widest font-bold mt-2">Days</div>
+                </div>
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-4 rounded-xl">
+                    <div class="text-4xl md:text-6xl font-display font-black" x-text="timer.hours">00</div>
+                    <div class="text-xs text-gray-400 uppercase tracking-widest font-bold mt-2">Hours</div>
+                </div>
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-4 rounded-xl">
+                    <div class="text-4xl md:text-6xl font-display font-black" x-text="timer.minutes">00</div>
+                    <div class="text-xs text-gray-400 uppercase tracking-widest font-bold mt-2">Mins</div>
+                </div>
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-4 rounded-xl">
+                    <div class="text-4xl md:text-6xl font-display font-black text-brand-gta" x-text="timer.seconds">00</div>
+                    <div class="text-xs text-gray-400 uppercase tracking-widest font-bold mt-2">Secs</div>
+                </div>
+            </div>
+
+            <div class="flex justify-center gap-6">
+                <button class="bg-white text-black px-8 py-4 rounded font-bold uppercase tracking-widest hover:bg-brand-gta hover:text-white transition duration-300 shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+                    Pre-Order Now
+                </button>
+                <button class="px-8 py-4 rounded border border-white/30 backdrop-blur font-bold uppercase tracking-widest hover:bg-white/10 transition flex items-center gap-3">
+                    <i data-lucide="play-circle"></i> Watch Trailer
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <main class="max-w-[1600px] mx-auto px-6 py-24">
+
+        <div class="flex items-center justify-between mb-12">
+            <h2 class="text-3xl font-display font-bold">TRENDING <span class="text-brand-blue">TITLES</span></h2>
+            <div class="flex gap-2">
+                <button class="p-2 rounded bg-white/5 hover:bg-white/10"><i data-lucide="layout-grid" class="w-5 h-5"></i></button>
+                <button class="p-2 rounded bg-transparent hover:bg-white/5 text-gray-500"><i data-lucide="list" class="w-5 h-5"></i></button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            <template x-for="game in games" :key="game.id">
+                <div class="group relative bg-bg-card rounded-xl overflow-hidden border border-white/5 hover:border-brand-blue/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(37,99,235,0.15)]">
+                    
+                    <div class="relative aspect-[2/3] overflow-hidden">
+                        <img :src="game.image" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                        
+                        <div class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col items-center justify-center gap-3 p-4">
+                            <button @click="addToCart(game)" class="w-full py-3 bg-white text-black font-bold uppercase text-xs tracking-wider rounded hover:bg-brand-blue hover:text-white transition flex items-center justify-center gap-2">
+                                <i data-lucide="shopping-cart" class="w-4 h-4"></i> Add
+                            </button>
+                            <button @click="simulateKeyReveal(game)" class="w-full py-3 border border-white/20 text-white font-bold uppercase text-xs tracking-wider rounded hover:bg-white/10 transition flex items-center justify-center gap-2">
+                                <i data-lucide="key" class="w-4 h-4"></i> Test Key
+                            </button>
+                        </div>
+                        
+                        <div x-show="game.discount" class="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-lg">
+                            <span x-text="game.discount"></span>
+                        </div>
+                    </div>
+
+                    <div class="p-4">
+                        <h3 class="font-bold text-white truncate text-sm" x-text="game.title"></h3>
+                        <div class="flex justify-between items-center mt-2">
+                            <div class="flex flex-col">
+                                <span class="text-[10px] text-gray-500 line-through" x-show="game.oldPrice" x-text="formatPrice(game.oldPrice)"></span>
+                                <span class="text-brand-blue font-tech font-bold text-lg" x-text="formatPrice(game.price)"></span>
+                            </div>
+                            <div class="flex gap-1">
+                                <i data-lucide="monitor" class="w-3 h-3 text-gray-500"></i>
+                                <i data-lucide="gamepad-2" class="w-3 h-3 text-gray-500"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </main>
+
+    <div x-show="keyModal.open" style="display: none;" 
+         class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
+         x-transition.opacity>
+        
+        <div class="bg-bg-card border border-brand-gta/30 w-full max-w-md rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(255,0,170,0.2)] relative">
+            <button @click="keyModal.open = false" class="absolute top-4 right-4 text-gray-500 hover:text-white"><i data-lucide="x"></i></button>
+
+            <div x-show="keyModal.loading" class="p-10 text-center">
+                <div class="w-16 h-16 border-4 border-brand-gta border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
+                <h3 class="text-xl font-display font-bold mb-2">Decrypting Secure Key...</h3>
+                <p class="text-gray-500 text-sm font-tech">Connecting to Publisher API</p>
+            </div>
+
+            <div x-show="!keyModal.loading" class="p-8 text-center">
+                <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6 text-green-500">
+                    <i data-lucide="check" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-1" x-text="keyModal.gameTitle"></h3>
+                <p class="text-gray-400 text-xs mb-6">Steam / Global Key</p>
+                
+                <div class="bg-black border border-white/10 rounded-lg p-4 mb-6 relative group cursor-pointer" @click="copyKey">
+                    <code class="font-mono text-lg text-brand-gta tracking-widest" x-text="keyModal.key"></code>
+                    <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition flex items-center justify-center backdrop-blur-[1px]">
+                        <span class="text-xs font-bold uppercase">Click to Copy</span>
+                    </div>
+                </div>
+
+                <button @click="keyModal.open = false" class="w-full py-3 bg-white text-black font-bold rounded hover:bg-gray-200 transition">
+                    Add to Library
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('storeLogic', () => ({
+                currency: 'INR', // Default to INR
+                exchangeRate: 85.0, 
+                cartCount: 0,
+                
+                timer: { days: '00', hours: '00', minutes: '00', seconds: '00' },
+                
+                keyModal: { open: false, loading: false, gameTitle: '', key: '' },
+
+                games: [
+                    { id: 1, title: 'Grand Theft Auto V', price: 14.99, oldPrice: 29.99, discount: '-50%', image: 'https://image.api.playstation.com/vulcan/ap/disc/2110/CUSA00411_00/H541E22.png' },
+                    { id: 2, title: 'Red Dead Redemption 2', price: 19.99, oldPrice: 59.99, discount: '-66%', image: 'https://image.api.playstation.com/vulcan/ap/disc/2110/CUSA03041_00/H494E55.png' },
+                    { id: 3, title: 'Cyberpunk 2077', price: 29.99, oldPrice: 49.99, discount: '-40%', image: 'https://image.api.playstation.com/vulcan/ap/disc/2108/CUSA16596_00/H630B37.png' },
+                    { id: 4, title: 'Elden Ring', price: 39.99, oldPrice: 59.99, discount: '-33%', image: 'https://image.api.playstation.com/vulcan/ap/disc/2106/CUSA18581_00/H423E56.png' },
+                    { id: 5, title: 'God of War Ragnarök', price: 49.99, oldPrice: 69.99, discount: '-28%', image: 'https://image.api.playstation.com/vulcan/ap/disc/2109/CUSA34384_00/H894E22.png' },
+                    { id: 6, title: 'Call of Duty: MW3', price: 69.99, oldPrice: null, discount: null, image: 'https://image.api.playstation.com/vulcan/ap/disc/2110/CUSA34394_00/H894E22.png' },
+                    { id: 7, title: 'Minecraft Legends', price: 24.99, oldPrice: 39.99, discount: '-35%', image: 'https://image.api.playstation.com/vulcan/ap/disc/2109/CUSA32646_00/H894E22.png' },
+                    { id: 8, title: 'Resident Evil 4', price: 34.99, oldPrice: 59.99, discount: '-40%', image: 'https://image.api.playstation.com/vulcan/ap/disc/2108/CUSA33385_00/H234E55.png' },
+                    { id: 9, title: 'Spider-Man 2', price: 59.99, oldPrice: null, discount: 'NEW', image: 'https://image.api.playstation.com/vulcan/ap/disc/2106/CUSA34389_00/H423E56.png' },
+                    { id: 10, title: 'The Last of Us Part I', price: 49.99, oldPrice: 69.99, discount: '-28%', image: 'https://image.api.playstation.com/vulcan/ap/disc/2107/CUSA32559_00/H214E55.png' }
+                ],
+
+                init() {
+                    lucide.createIcons();
+                    this.startTimer();
+                },
+
+                toggleCurrency() {
+                    this.currency = this.currency === 'USD' ? 'INR' : 'USD';
+                },
+
+                formatPrice(price) {
+                    if (this.currency === 'USD') {
+                        return '$' + price.toFixed(2);
+                    } else {
+                        // Intelligent rounding for INR (e.g., 14.99 -> 1299)
+                        const inr = Math.round(price * this.exchangeRate / 10) * 10 - 1; 
+                        return '₹' + inr.toLocaleString('en-IN');
+                    }
+                },
+
+                addToCart(game) {
+                    this.cartCount++;
+                },
+
+                startTimer() {
+                    const targetDate = new Date("2026-11-19T00:00:00").getTime(); // Speculated GTA 6 date
+                    
+                    setInterval(() => {
+                        const now = new Date().getTime();
+                        const distance = targetDate - now;
+
+                        this.timer.days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                        this.timer.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        this.timer.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                        this.timer.seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    }, 1000);
+                },
+
+                simulateKeyReveal(game) {
+                    this.keyModal.gameTitle = game.title;
+                    this.keyModal.open = true;
+                    this.keyModal.loading = true;
+                    
+                    // Simulate API delay
+                    setTimeout(() => {
+                        this.keyModal.loading = false;
+                        this.keyModal.key = this.generateRandomKey();
+                    }, 2000);
+                },
+
+                generateRandomKey() {
+                    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+                    const segment = () => Array(5).fill(0).map(() => chars.charAt(Math.floor(Math.random() * chars.length))).join('');
+                    return `${segment()}-${segment()}-${segment()}`;
+                },
+
+                copyKey() {
+                    navigator.clipboard.writeText(this.keyModal.key);
+                    alert("Key copied to clipboard!");
+                }
+            }))
+        });
+    </script>
 </body>
 </html>
