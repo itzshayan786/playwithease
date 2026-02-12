@@ -600,6 +600,53 @@ setTimeout(()=>toast.remove(),300);
 },2500);
 
 }
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { 
+getAuth, 
+onAuthStateChanged, 
+signOut 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+/* ===== FIREBASE CONFIG ===== */
+const firebaseConfig = {
+apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+authDomain: "playwithease.firebaseapp.com",
+projectId: "playwithease",
+storageBucket: "playwithease.firebasestorage.app",
+messagingSenderId: "189729941006",
+appId: "1:189729941006:web:362653774b92416c357e5f",
+measurementId: "G-1C3B31KQ7C"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+/* ===== AUTH STATE ===== */
+onAuthStateChanged(auth,(user)=>{
+if(user){
+document.getElementById("loginLink").style.display="none";
+document.getElementById("userMenu").style.display="block";
+document.getElementById("userEmail").innerText=user.email;
+}else{
+document.getElementById("loginLink").style.display="block";
+document.getElementById("userMenu").style.display="none";
+}
+});
+
+/* ===== MENU TOGGLE ===== */
+window.toggleMenu=function(){
+const drop=document.getElementById("dropdown");
+drop.style.display=drop.style.display==="block"?"none":"block";
+}
+
+/* ===== LOGOUT ===== */
+window.logout=function(){
+signOut(auth).then(()=>{
+window.location.reload();
+});
+}
 
 </script>
 
