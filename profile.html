@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>My Profile | PlayWithEase</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;600;800&family=Orbitron:wght@900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], tech: ['Rajdhani', 'sans-serif'], display: ['Orbitron', 'sans-serif'] },
+                    colors: { bg: { main: '#080808', card: '#101010' }, brand: { primary: '#2563eb', secondary: '#ff00aa', gold: '#fbbf24' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass { background: rgba(16, 16, 16, 0.9); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .loading-screen { position: fixed; inset: 0; background: #080808; z-index: 9999; display: flex; align-items: center; justify-content: center; }
+    </style>
+</head>
+
+<body class="bg-bg-main text-white antialiased min-h-screen pb-20">
+
+    <div id="authLoader" class="loading-screen transition-opacity duration-500">
+        <div class="flex flex-col items-center">
+            <div class="w-12 h-12 border-4 border-brand-primary border-t-transparent rounded-full animate-spin mb-4"></div>
+            <div class="text-sm font-tech tracking-widest text-gray-500 uppercase">Verifying ID...</div>
+        </div>
+    </div>
+
+    <nav class="fixed top-0 w-full z-50 glass h-16 md:h-20 flex items-center border-b border-white/5">
+        <div class="max-w-[1200px] mx-auto px-6 w-full flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 cursor-pointer group">
+                <i data-lucide="arrow-left" class="w-6 h-6 text-gray-400 group-hover:text-white transition"></i>
+                <h1 class="font-display text-xl tracking-wider">DASH<span class="text-brand-primary">BOARD</span></h1>
+            </a>
+            <button id="btnLogout" class="text-xs font-bold text-red-500 border border-red-500/20 bg-red-500/10 px-4 py-2 rounded-lg hover:bg-red-500 hover:text-white transition">
+                LOG OUT
+            </button>
+        </div>
+    </nav>
+
+    <main class="max-w-[1000px] mx-auto px-6 pt-32 space-y-8 opacity-0 transition-opacity duration-700" id="mainContent">
+
+        <div class="flex flex-col md:flex-row items-center gap-8">
+            <div class="relative">
+                <div class="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-brand-primary to-brand-secondary">
+                    <img id="userImg" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Ghost" class="w-full h-full rounded-full bg-black object-cover">
+                </div>
+                <div class="absolute bottom-2 right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-bg-main" title="Online"></div>
+            </div>
+            
+            <div class="text-center md:text-left">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-gold/10 text-brand-gold border border-brand-gold/20 text-[10px] font-bold uppercase tracking-widest mb-2">
+                    <i data-lucide="crown" class="w-3 h-3"></i> Premium Member
+                </div>
+                <h1 id="userName" class="text-4xl font-display font-bold mb-1">Welcome, Gamer</h1>
+                <p id="userEmail" class="text-gray-400 font-mono text-sm">loading...</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="glass p-6 rounded-2xl border border-white/5">
+                <div class="text-gray-500 text-xs uppercase tracking-widest font-bold mb-2">Games Owned</div>
+                <div class="text-3xl font-display font-bold text-white">12</div>
+            </div>
+            <div class="glass p-6 rounded-2xl border border-white/5">
+                <div class="text-gray-500 text-xs uppercase tracking-widest font-bold mb-2">Wallet Balance</div>
+                <div class="text-3xl font-display font-bold text-brand-primary">₹0.00</div>
+            </div>
+            <div class="glass p-6 rounded-2xl border border-white/5">
+                <div class="text-gray-500 text-xs uppercase tracking-widest font-bold mb-2">Account Age</div>
+                <div class="text-3xl font-display font-bold text-white">1 <span class="text-sm text-gray-500">Day</span></div>
+            </div>
+            <div class="glass p-6 rounded-2xl border border-white/5">
+                <div class="text-gray-500 text-xs uppercase tracking-widest font-bold mb-2">Status</div>
+                <div class="text-3xl font-display font-bold text-green-500 text-sm md:text-xl pt-2">VERIFIED</div>
+            </div>
+        </div>
+
+        <h3 class="font-display font-bold text-xl pt-4">CLOUD LIBRARY</h3>
+        <div class="glass rounded-2xl overflow-hidden border border-white/5">
+            <div class="p-4 border-b border-white/5 flex items-center justify-between hover:bg-white/5 transition group cursor-pointer">
+                <div class="flex items-center gap-4">
+                    <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/header.jpg" class="w-24 rounded-lg opacity-80 group-hover:opacity-100 transition">
+                    <div>
+                        <h4 class="font-bold text-white">Grand Theft Auto V</h4>
+                        <div class="text-xs text-gray-500">Purchased via PlayWithEase</div>
+                    </div>
+                </div>
+                <button class="px-4 py-2 bg-white text-black text-xs font-bold rounded uppercase tracking-wider hover:bg-brand-primary hover:text-white transition">Install</button>
+            </div>
+            
+            <div class="p-4 flex items-center justify-between hover:bg-white/5 transition group cursor-pointer">
+                <div class="flex items-center gap-4">
+                    <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg" class="w-24 rounded-lg opacity-80 group-hover:opacity-100 transition">
+                    <div>
+                        <h4 class="font-bold text-white">Cyberpunk 2077</h4>
+                        <div class="text-xs text-gray-500">Key Redeemed</div>
+                    </div>
+                </div>
+                <button class="px-4 py-2 bg-white text-black text-xs font-bold rounded uppercase tracking-wider hover:bg-brand-primary hover:text-white transition">Install</button>
+            </div>
+        </div>
+
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+            authDomain: "playwithease.firebaseapp.com",
+            projectId: "playwithease",
+            storageBucket: "playwithease.firebasestorage.app",
+            messagingSenderId: "189729941006",
+            appId: "1:189729941006:web:362653774b92416c357e5f",
+            measurementId: "G-1C3B31KQ7C"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // UI Elements
+        const authLoader = document.getElementById('authLoader');
+        const mainContent = document.getElementById('mainContent');
+        const userName = document.getElementById('userName');
+        const userEmail = document.getElementById('userEmail');
+        const userImg = document.getElementById('userImg');
+
+        // Check Auth
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in
+                console.log("User found:", user.email);
+                
+                // Update UI with real data
+                if(user.displayName) userName.innerText = user.displayName;
+                userEmail.innerText = user.email;
+                if(user.photoURL) userImg.src = user.photoURL;
+
+                // Hide Loader, Show Content
+                authLoader.style.opacity = '0';
+                setTimeout(() => {
+                    authLoader.style.display = 'none';
+                    mainContent.style.opacity = '1';
+                }, 500);
+            } else {
+                // No user? Kick them out
+                window.location.href = "login.html";
+            }
+        });
+
+        // Logout Logic
+        document.getElementById('btnLogout').addEventListener('click', () => {
+            signOut(auth).then(() => {
+                window.location.href = "index.html";
+            });
+        });
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>
