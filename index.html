@@ -257,6 +257,58 @@ border-radius:20px;
 font-size:12px;
 font-weight:700;
 }
+/* ===== PREMIUM THEME SWITCH BUTTON ===== */
+
+.premium-theme-btn{
+padding:8px 20px;
+border:none;
+border-radius:14px;
+background:linear-gradient(135deg,var(--accent),#1d4ed8);
+color:#fff;
+font-weight:600;
+font-size:14px;
+letter-spacing:.5px;
+cursor:pointer;
+position:relative;
+overflow:hidden;
+transition:all .35s ease;
+}
+
+/* Hover Lift + Glow */
+.premium-theme-btn:hover{
+transform:translateY(-4px) scale(1.05);
+box-shadow:0 15px 40px rgba(37,99,235,0.45);
+}
+
+/* Shine Sweep Effect */
+.premium-theme-btn::before{
+content:"";
+position:absolute;
+top:0;
+left:-100%;
+width:100%;
+height:100%;
+background:linear-gradient(120deg,transparent,rgba(255,255,255,.4),transparent);
+transition:all .6s ease;
+}
+
+.premium-theme-btn:hover::before{
+left:100%;
+}
+body.theme-dark{
+--bg:#0f172a;
+--card:#1e293b;
+--accent:#3b82f6;
+--text:#f1f5f9;
+}
+
+body.theme-emerald{
+--accent:#10b981;
+}
+
+body.theme-royal{
+--accent:#7c3aed;
+}
 
 </style>
 
@@ -501,6 +553,29 @@ document.addEventListener("keydown", function(e){
 if(e.key === "Escape"){
 document.getElementById("dropdown").style.display="none";
 }
+});
+/* ===== PREMIUM THEME CYCLER ===== */
+
+const themes=["","theme-dark","theme-emerald","theme-royal"];
+let currentTheme=0;
+
+const themeBtn=document.getElementById("themeSwitcher");
+
+themeBtn.addEventListener("click",function(){
+
+currentTheme++;
+if(currentTheme>=themes.length){
+currentTheme=0;
+}
+
+document.body.className=themes[currentTheme];
+
+/* Subtle click animation */
+themeBtn.style.transform="scale(.95)";
+setTimeout(()=>{
+themeBtn.style.transform="";
+},150);
+
 });
 
 </script>
