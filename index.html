@@ -158,30 +158,6 @@ border:1px solid rgba(37,99,235,0.25);
 font-size:14px;
 }
 
-.video-wrap{
-position:relative;
-max-width:420px;
-width:100%;
-}
-
-.video-wrap video{
-width:100%;
-border-radius:12px;
-}
-
-.mute-btn{
-position:absolute;
-bottom:8px;
-right:8px;
-width:32px;
-height:32px;
-border-radius:50%;
-border:none;
-background:var(--accent);
-color:#fff;
-cursor:pointer;
-}
-
 /* ================= GRID ================= */
 .section{
 max-width:1200px;
@@ -192,7 +168,7 @@ padding:40px 15px;
 .grid{
 display:grid;
 grid-template-columns:repeat(6,1fr);
-gap:14px;
+gap:18px;
 }
 
 @media(max-width:900px){
@@ -200,42 +176,106 @@ gap:14px;
 .grid{grid-template-columns:repeat(3,1fr);}
 }
 
+/* ================= PREMIUM CARD ================= */
 .card{
 background:var(--card);
-border-radius:12px;
+border-radius:18px;
 overflow:hidden;
-border:1px solid rgba(0,0,0,.06);
+border:1px solid rgba(0,0,0,.05);
 transition:.3s;
 cursor:pointer;
+position:relative;
+box-shadow:0 6px 18px rgba(0,0,0,0.06);
 }
 
 .card:hover{
-transform:translateY(-8px);
-box-shadow:0 15px 30px rgba(0,0,0,.12);
+transform:translateY(-10px);
+box-shadow:0 18px 35px rgba(0,0,0,0.15);
 }
 
 .card img{
 width:100%;
-height:120px;
+height:150px;
 object-fit:cover;
+transition:.3s;
+}
+
+.card:hover img{
+transform:scale(1.05);
+}
+
+.badge{
+position:absolute;
+top:12px;
+left:12px;
+background:var(--accent);
+color:#fff;
+padding:4px 10px;
+border-radius:20px;
+font-size:11px;
+font-weight:600;
 }
 
 .card .info{
-padding:12px;
-font-size:13px;
+padding:14px;
+font-size:14px;
+}
+
+.price{
+margin-top:6px;
+font-weight:700;
+color:var(--accent);
 }
 
 .card button{
-margin-top:8px;
-padding:6px;
+margin-top:10px;
+padding:8px;
 width:100%;
 border:none;
 background:var(--accent);
 color:#fff;
-border-radius:6px;
+border-radius:8px;
 cursor:pointer;
+font-weight:600;
+transition:.3s;
 }
 
+.card button:hover{
+opacity:.9;
+}
+
+/* ================= TRUST SECTION ================= */
+.trust{
+background:var(--glass);
+backdrop-filter:blur(10px);
+padding:50px 20px;
+margin-top:50px;
+text-align:center;
+}
+
+.trust h2{
+margin-bottom:30px;
+}
+
+.trust-grid{
+display:flex;
+justify-content:center;
+gap:30px;
+flex-wrap:wrap;
+}
+
+.trust-box{
+background:var(--card);
+padding:25px;
+border-radius:14px;
+width:240px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+transition:.3s;
+}
+
+.trust-box:hover{
+transform:translateY(-8px);
+}
 </style>
 </head>
 
@@ -245,118 +285,37 @@ cursor:pointer;
 
 <header>
 <div class="brand">PlayWithEase</div>
-
 <div class="nav-links">
 <a href="#">Store</a>
 <a href="#">OTT</a>
 <a href="#">Login</a>
-
-<div class="theme-box">
-<button class="theme-btn" id="themeBtn">Themes</button>
-<div class="theme-dropdown" id="themeDrop">
-<div data-theme="">Minimal</div>
-<div data-theme="theme-dark">Dark</div>
-<div data-theme="theme-red">Red</div>
-<div data-theme="theme-green">Green</div>
-<div data-theme="theme-purple">Purple</div>
-</div>
-</div>
-
 </div>
 </header>
-
-<section class="hero">
-<div class="hero-left">
-<h1>Level Up Your <span>Gaming</span></h1>
-
-<p>Experience next-generation digital gaming with instant access to premium titles and OTT subscriptions.</p>
-
-<div class="live-box">
-🚀 <b>We Are Officially Live!</b><br>
-Serving gamers across India with trusted digital access.
-</div>
-</div>
-
-<div class="video-wrap">
-<video id="gtaTrailer" autoplay muted loop playsinline crossorigin="anonymous">
-<source src="https://videos.rockstargames.com/v4/s6c5c8co/flv/en-us-720p.mp4">
-</video>
-<button class="mute-btn" id="muteBtn">🔇</button>
-</div>
-</section>
 
 <section class="section">
 <h2>🎮 Games</h2>
 <div class="grid" id="gameGrid"></div>
 </section>
 
+<section class="trust">
+<h2>Why Trust PlayWithEase?</h2>
+<div class="trust-grid">
+<div class="trust-box">
+<h3>🔒 Secure Payment</h3>
+<p>Safe & encrypted checkout process</p>
+</div>
+<div class="trust-box">
+<h3>✔ Verified Access</h3>
+<p>100% tested digital delivery</p>
+</div>
+<div class="trust-box">
+<h3>⚡ Instant Delivery</h3>
+<p>Get your product within minutes</p>
+</div>
+</div>
+</section>
+
 <script>
-/* ================= MUSIC BAR WORKING ================= */
-const musicBar=document.getElementById("musicBar");
-for(let i=0;i<60;i++){
-let bar=document.createElement("div");
-bar.className="m-bar";
-musicBar.appendChild(bar);
-}
-const bars=document.querySelectorAll(".m-bar");
-
-const video=document.getElementById("gtaTrailer");
-const muteBtn=document.getElementById("muteBtn");
-
-let audioCtx, analyser, source, started=false;
-
-function startAudio(){
-if(started) return;
-
-video.muted=false;
-video.play();
-
-audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-analyser=audioCtx.createAnalyser();
-source=audioCtx.createMediaElementSource(video);
-source.connect(analyser);
-analyser.connect(audioCtx.destination);
-analyser.fftSize=128;
-
-started=true;
-animate();
-muteBtn.textContent="🔊";
-}
-
-document.addEventListener("click", startAudio);
-
-muteBtn.addEventListener("click",(e)=>{
-e.stopPropagation();
-video.muted=!video.muted;
-muteBtn.textContent=video.muted?"🔇":"🔊";
-});
-
-function animate(){
-let data=new Uint8Array(analyser.frequencyBinCount);
-analyser.getByteFrequencyData(data);
-bars.forEach((bar,i)=>{
-bar.style.height=(data[i]/4+6)+"px";
-});
-requestAnimationFrame(animate);
-}
-
-/* ================= THEME BUTTON WORKING ================= */
-const themeBtn=document.getElementById("themeBtn");
-const themeDrop=document.getElementById("themeDrop");
-
-themeBtn.onclick=()=>{
-themeDrop.style.display=
-themeDrop.style.display==="block"?"none":"block";
-};
-
-themeDrop.querySelectorAll("div").forEach(item=>{
-item.onclick=()=>{
-document.body.className=item.dataset.theme;
-themeDrop.style.display="none";
-};
-});
-
-/* ================= GAMES ================= */
 const games=[
 ["GTA V",271590],
 ["Red Dead Redemption 2",1174180],
@@ -370,11 +329,15 @@ games.push(...games.slice(0,5));
 }
 
 const grid=document.getElementById("gameGrid");
+
 games.forEach(g=>{
 grid.innerHTML+=`
 <div class="card">
+<div class="badge">Verified</div>
 <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[1]}/header.jpg">
-<div class="info">${g[0]}
+<div class="info">
+${g[0]}
+<div class="price">₹999</div>
 <button>Add to Cart</button>
 </div>
 </div>`;
