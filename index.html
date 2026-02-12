@@ -32,12 +32,18 @@
     <style>
         :root { --bg-main: #080808; --bg-card: #101010; --text-main: #ffffff; --brand-primary: #2563eb; --brand-secondary: #ff00aa; }
         .glass { background: var(--bg-card); opacity: 0.95; backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
-        body { -webkit-tap-highlight-color: transparent; color: var(--text-main); }
+        
+        /* Denser Glass Header for Professional Starting Look */
+        .nav-base { background: rgba(10, 10, 10, 0.92); backdrop-filter: blur(18px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); height: 80px; }
+        .nav-scrolled { background: rgba(8, 8, 8, 0.98); backdrop-filter: blur(25px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); height: 70px; }
+        
+        body { -webkit-tap-highlight-color: transparent; color: var(--text-main); background-color: var(--bg-main); }
         [x-cloak] { display: none !important; }
-        body, div, button, span, i, nav, section, main { transition-property: color, background-color, border-color; transition-duration: 300ms; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
         
         .video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 20; background: black; }
-        .video-background { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; transform: translate(-50%, -50%); pointer-events: none; object-fit: cover; }
+        .video-background { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%); pointer-events: none; object-fit: cover; }
+        
         @media (min-width: 768px) {
             .video-background { width: 100vw; height: 100vh; }
             @media (min-aspect-ratio: 16/9) { .video-background { height: 56.25vw; } }
@@ -46,7 +52,7 @@
     </style>
 </head>
 
-<body class="bg-bg-main antialiased overflow-x-hidden w-full selection:bg-brand-primary selection:text-white"
+<body class="antialiased overflow-x-hidden w-full selection:bg-brand-primary selection:text-white"
       x-data="storeLogic()" :style="themeStyles" @keydown.left="prevSlide()" @keydown.right="nextSlide()" @scroll.window="scrolled = window.pageYOffset > 50">
 
     <div class="fixed bottom-24 right-6 z-[100] flex flex-col gap-2 pointer-events-none">
@@ -85,7 +91,7 @@
     <nav :class="scrolled ? 'nav-scrolled' : 'nav-base'" class="fixed top-0 w-full z-[60] flex items-center transition-all duration-300">
         <div class="max-w-[1600px] mx-auto px-6 w-full flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-3 group shrink-0">
-                <div class="w-10 h-10 flex items-center justify-center bg-brand-primary/10 rounded-xl border border-brand-primary/20 group-hover:scale-110 transition shadow-lg shadow-brand-primary/5">
+                <div class="w-10 h-10 flex items-center justify-center bg-brand-primary/10 rounded-xl border border-brand-primary/20 group-hover:scale-110 transition shadow-lg">
                     <i data-lucide="gamepad-2" class="w-6 h-6 text-brand-primary"></i>
                 </div>
                 <div class="hidden sm:block">
@@ -113,6 +119,9 @@
                         </div>
                     </button>
                     <div x-show="openMenu" x-cloak x-transition class="absolute right-0 mt-3 w-64 bg-[#0f0f0f] border border-white/10 rounded-2xl shadow-2xl p-2 z-[60]">
+                        <div id="userPanelInfo" class="px-4 py-3 border-b border-white/5 mb-2 hidden text-white">
+                            <p id="userDisplayName" class="text-sm font-bold truncate"></p>
+                        </div>
                         <a href="profile.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition group text-sm font-medium"><i data-lucide="key" class="w-4 h-4 text-brand-primary"></i> My Vault</a>
                         
                         <div class="mt-2 pt-2 border-t border-white/5">
@@ -127,7 +136,7 @@
                         </div>
 
                         <div id="loginSection" class="p-2 pt-4 border-t border-white/5 mt-2">
-                             <a href="login.html" class="flex justify-center w-full py-3 bg-white text-black font-black text-xs uppercase rounded-xl hover:bg-brand-primary hover:text-white transition">Login</a>
+                             <a href="login.html" class="flex justify-center w-full py-3 bg-white text-black font-black text-xs uppercase rounded-xl hover:bg-brand-primary hover:text-white transition shadow-lg shadow-white/5">Login</a>
                         </div>
                     </div>
                 </div>
@@ -135,12 +144,12 @@
         </div>
     </nav>
 
-    <section class="relative min-h-[70vh] w-full overflow-hidden mt-16 md:mt-0 flex items-center justify-center pb-10 text-white bg-black">
+    <section class="relative min-h-[70vh] w-full overflow-hidden flex items-center justify-center text-white bg-black">
         <template x-for="(slide, index) in heroSlides" :key="index">
             <div x-show="activeSlide === index && !trailerPlaying" x-transition.duration.700ms class="absolute inset-0 z-10">
                 <div class="absolute inset-0 bg-gradient-to-t from-bg-main via-transparent to-transparent z-10"></div>
                 <div class="absolute inset-0 bg-black/30 z-10"></div>
-                <img :src="slide.image" class="w-full h-full object-cover animate-float scale-110">
+                <img :src="slide.image" class="w-full h-full object-cover animate-float scale-110 origin-center">
             </div>
         </template>
 
@@ -148,7 +157,7 @@
 
         <div x-show="!trailerPlaying" class="relative z-30 text-center w-full max-w-5xl mx-auto px-4 md:px-6 pt-32">
             <img :src="heroSlides[activeSlide].logo" 
-                 :class="activeSlide === 1 ? 'invert filter drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]' : 'drop-shadow-2xl'" 
+                 :class="activeSlide === 1 ? 'invert filter drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]' : 'drop-shadow-2xl'" 
                  class="h-16 md:h-32 mx-auto mb-8 transition-all">
             
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-12 text-white mb-10 max-w-3xl mx-auto">
@@ -190,7 +199,7 @@
                              <div class="text-sm font-black text-white" x-text="formatPrice(game.price)"></div>
                         </div>
                     </a>
-                    <button @click="addToCart(game)" class="absolute top-4 right-4 w-10 h-10 bg-white text-black rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-brand-primary hover:text-white shadow-xl"><i data-lucide="plus"></i></button>
+                    <button @click="addToCart(game)" class="absolute top-4 right-4 w-10 h-10 bg-white text-black rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-brand-primary hover:text-white"><i data-lucide="plus"></i></button>
                 </div>
             </template>
         </div>
@@ -200,43 +209,37 @@
         <div class="max-w-[1400px] mx-auto px-8 grid grid-cols-1 md:grid-cols-4 gap-12 text-gray-400">
             <div class="space-y-6">
                 <div class="flex items-center gap-3"><div class="w-8 h-8 bg-brand-primary rounded-lg flex items-center justify-center"><i data-lucide="gamepad-2" class="w-5 h-5 text-white"></i></div><span class="font-display font-bold text-xl italic text-white leading-none">PWE</span></div>
-                <p class="text-xs leading-relaxed font-medium">Providing globally verified digital keys since 2026. Instant delivery. Secure infrastructure. 24/7 activation support.</p>
+                <p class="text-xs leading-relaxed">Providing globally verified digital keys since 2026. Instant delivery. Secure infrastructure.</p>
                 <div class="flex gap-4">
-                    <a href="#" class="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-primary hover:text-white transition"><i data-lucide="instagram" class="w-4 h-4"></i></a>
-                    <a href="#" class="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-primary hover:text-white transition"><i data-lucide="twitter" class="w-4 h-4"></i></a>
-                    <a href="#" class="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-primary hover:text-white transition"><i data-lucide="youtube" class="w-4 h-4"></i></a>
+                    <i data-lucide="instagram" class="w-5 h-5 cursor-pointer hover:text-brand-primary transition"></i>
+                    <i data-lucide="twitter" class="w-5 h-5 cursor-pointer hover:text-brand-primary transition"></i>
+                    <i data-lucide="youtube" class="w-5 h-5 cursor-pointer hover:text-brand-primary transition"></i>
                 </div>
             </div>
             <div>
                 <h4 class="text-white text-xs font-black uppercase tracking-widest mb-8">Navigation</h4>
-                <ul class="space-y-4 text-xs font-bold">
-                    <li><a href="#" class="hover:text-brand-primary transition">Privacy Policy</a></li>
-                    <li><a href="#" class="hover:text-brand-primary transition">Refund Policy</a></li>
-                    <li><a href="#" class="hover:text-brand-primary transition">Terms of Service</a></li>
-                </ul>
+                <ul class="space-y-4 text-xs font-bold"><li><a href="#">Privacy Policy</a></li><li><a href="#">Refund Policy</a></li></ul>
             </div>
             <div>
                 <h4 class="text-white text-xs font-black uppercase tracking-widest mb-8">Newsletter</h4>
                 <div class="flex gap-2 bg-white/5 p-1 rounded-xl border border-white/5 focus-within:border-brand-primary transition">
                     <input type="email" placeholder="Email address" class="bg-transparent border-none outline-none text-xs flex-1 px-3 text-white">
-                    <button class="bg-white text-black text-[10px] font-black px-4 py-2 rounded-lg">JOIN</button>
+                    <button class="bg-brand-primary text-white px-4 py-2 rounded-lg text-[10px] font-black">JOIN</button>
                 </div>
-                <div class="mt-8 flex gap-3 opacity-30 grayscale items-center"><i data-lucide="credit-card"></i><i data-lucide="bitcoin"></i><i data-lucide="shield-check"></i></div>
             </div>
             <div>
                 <div class="bg-white/5 p-6 rounded-3xl border border-white/5">
                     <div class="flex items-center gap-2 mb-4"><span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span><span class="text-xs font-black text-white leading-none">SUPPORT LIVE</span></div>
-                    <p class="text-[10px] font-medium mb-4">Response time: 2 mins</p>
-                    <button class="w-full py-3 bg-brand-primary/10 text-brand-primary font-black text-[10px] uppercase rounded-xl hover:bg-brand-primary hover:text-white transition">Get Help</button>
+                    <button class="w-full py-3 bg-brand-primary/10 text-brand-primary font-black text-[10px] uppercase rounded-xl">Get Help</button>
                 </div>
             </div>
         </div>
     </footer>
 
-    <div x-show="!cookiesAccepted" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="translate-y-full opacity-0" x-transition:enter-end="translate-y-0 opacity-100" class="fixed bottom-6 right-6 left-6 md:left-auto md:w-[400px] z-[100]">
+    <div x-show="!cookiesAccepted" class="fixed bottom-6 right-6 left-6 md:left-auto md:w-[400px] z-[100]">
         <div class="bg-white text-black p-6 rounded-3xl shadow-2xl flex items-center gap-4">
             <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center shrink-0 text-blue-600"><i data-lucide="cookie"></i></div>
-            <p class="text-xs font-medium flex-1">Essential cookies for digital delivery and account security. <button @click="acceptCookies()" class="underline font-black">Accept All</button></p>
+            <p class="text-xs font-medium flex-1">We use cookies to secure your vault. <button @click="acceptCookies()" class="underline font-black">Accept All</button></p>
         </div>
     </div>
 
@@ -245,15 +248,30 @@
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         const firebaseConfig = { apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs", authDomain: "playwithease.firebaseapp.com", projectId: "playwithease", storageBucket: "playwithease.firebasestorage.app", messagingSenderId: "189729941006", appId: "1:189729941006:web:362653774b92416c357e5f", measurementId: "G-1C3B31KQ7C" };
         const app = initializeApp(firebaseConfig); const auth = getAuth(app);
+        
         onAuthStateChanged(auth, (user) => {
-            const loginBtn = document.getElementById('loginBtn');
-            const profileBtn = document.getElementById('profileBtn');
+            const loginArea = document.getElementById('loginSection');
+            const panel = document.getElementById('userPanelInfo');
             const avatar = document.getElementById('userAvatarHeader');
+            const placeholder = document.getElementById('userPlaceholder');
+            const nameDisp = document.getElementById('userDisplayName');
+            const navLoginBtn = document.getElementById('loginBtn');
+            const navProfileBtn = document.getElementById('profileBtn');
+            
             if (user) {
-                loginBtn.classList.add('hidden'); profileBtn.classList.remove('hidden');
-                if(user.photoURL) avatar.src = user.photoURL;
+                if(navLoginBtn) navLoginBtn.classList.add('hidden');
+                if(navProfileBtn) navProfileBtn.classList.remove('hidden');
+                if(loginArea) loginArea.classList.add('hidden');
+                if(panel) panel.classList.remove('hidden');
+                if(nameDisp) nameDisp.innerText = user.displayName || user.email;
+                if(user.photoURL && avatar) { avatar.src = user.photoURL; avatar.classList.remove('hidden'); placeholder.classList.add('hidden'); }
             } else {
-                loginBtn.classList.remove('hidden'); profileBtn.classList.add('hidden');
+                if(navLoginBtn) navLoginBtn.classList.remove('hidden');
+                if(navProfileBtn) navProfileBtn.classList.add('hidden');
+                if(loginArea) loginArea.classList.remove('hidden');
+                if(panel) panel.classList.add('hidden');
+                if(avatar) avatar.classList.add('hidden'); 
+                if(placeholder) placeholder.classList.remove('hidden');
             }
         });
     </script>
@@ -262,7 +280,7 @@
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('chatBot', () => ({
-                open: false, input: '', messages: [{ id: 1, text: "Welcome! Need help?", sender: 'bot' }],
+                open: false, input: '', messages: [{ id: 1, text: "Need help?", sender: 'bot' }],
                 sendMessage() { if (!this.input.trim()) return; this.messages.push({ id: Date.now(), text: this.input, sender: 'user' }); this.input = ''; }
             }));
 
@@ -288,8 +306,8 @@
                 },
 
                 games: [
-                    { id: 1, title: 'GTA V', category: 'Action', price: 14.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
-                    { id: 2, title: 'RDR 2', category: 'Adventure', price: 19.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
+                    { id: 1, title: 'Grand Theft Auto V', category: 'Action', price: 14.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
+                    { id: 2, title: 'Red Dead Redemption 2', category: 'Adventure', price: 19.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
                     { id: 3, title: 'Cyberpunk 2077', category: 'RPG', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg' },
                     { id: 4, title: 'Elden Ring', category: 'RPG', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg' },
                     { id: 5, title: 'God of War', category: 'Action', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg' },
@@ -303,21 +321,22 @@
                     { id: 17, title: 'Starfield', category: 'RPG', price: 41.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1716740/library_600x900.jpg' },
                     { id: 18, title: 'Armored Core VI', category: 'Action', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888160/library_600x900.jpg' },
                     { id: 19, title: 'Dragon\'s Dogma 2', category: 'RPG', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2054970/library_600x900.jpg' },
-                    { id: 20, title: 'Mirage', category: 'Action', price: 24.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2355430/library_600x900.jpg' },
-                    { id: 7, title: 'FC 24', category: 'Sports', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
-                    { id: 8, title: 'RE 4', category: 'Horror', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg' },
+                    { id: 20, title: 'Assassin Mirage', category: 'Action', price: 24.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2355430/library_600x900.jpg' },
+                    { id: 7, title: 'EA SPORTS FC 24', category: 'Sports', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
+                    { id: 8, title: 'Resident Evil 4', category: 'Horror', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg' },
                     { id: 9, title: 'Spider-Man', category: 'Action', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg' },
-                    { id: 10, title: 'TLOU Part I', category: 'Adventure', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900.jpg' }
+                    { id: 10, title: 'The Last of Us', category: 'Adventure', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900.jpg' }
                 ],
-
+                
+                currency: localStorage.getItem('pwe_currency') || 'INR',
                 init() { lucide.createIcons(); this.startTimer(); this.setTheme(this.currentTheme); },
                 get themeStyles() { return Object.entries(this.themes[this.currentTheme] || {}).map(([k,v])=>`${k}:${v};`).join(''); },
                 setTheme(n) { this.currentTheme = n; localStorage.setItem('pwe_theme', n); },
+                toggleCurrency() { this.currency = this.currency === 'USD' ? 'INR' : 'USD'; localStorage.setItem('pwe_currency', this.currency); },
+                formatPrice(p) { return this.currency === 'USD' ? '$'+p.toFixed(2) : '₹'+Math.round(p*85); },
                 get filteredGames() { let r = this.games; if(this.activeCategory !== 'All') r = r.filter(g => g.category === this.activeCategory); if(this.searchQuery !== '') r = r.filter(g => g.title.toLowerCase().includes(this.searchQuery.toLowerCase())); return r; },
-                formatPrice(p) { return '₹'+Math.round(p*85); },
+                addToCart(g) { this.cartCount++; localStorage.setItem('pwe_cart_count', this.cartCount); },
                 acceptCookies() { this.cookiesAccepted = true; localStorage.setItem('pwe_cookies', 'true'); },
-                addToCart(g) { this.cartCount++; localStorage.setItem('pwe_cart_count', this.cartCount); this.notify('success', 'Added', `${g.title} added.`); },
-                buyNow(g) { this.addToCart(g); window.location.href = 'checkout.html'; },
                 nextSlide() { this.activeSlide = (this.activeSlide + 1) % this.heroSlides.length; this.stopTrailer(); this.startTimer(); },
                 prevSlide() { this.activeSlide = (this.activeSlide - 1 + this.heroSlides.length) % this.heroSlides.length; this.stopTrailer(); this.startTimer(); },
                 startTimer() { 
