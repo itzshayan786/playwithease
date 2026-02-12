@@ -1,245 +1,155 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Product | PlayWithEase</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Details | PlayWithEase</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;600;800&family=Orbitron:wght@900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-<style>
-*{box-sizing:border-box;font-family:Poppins,Arial}
-body{margin:0;background:#f8fafc;color:#0f172a}
-
-header{
-  background:#2563eb;
-  color:#fff;
-  padding:16px;
-  font-weight:800;
-}
-
-.container{
-  max-width:1100px;
-  margin:30px auto;
-  padding:0 16px;
-  display:grid;
-  grid-template-columns:1fr 1.2fr;
-  gap:30px;
-}
-
-.img-box img{
-  width:100%;
-  border-radius:18px;
-  box-shadow:0 14px 34px rgba(0,0,0,.15);
-}
-
-h1{margin:0;font-size:28px}
-.price{
-  font-size:26px;
-  font-weight:800;
-  color:#16a34a;
-  margin:10px 0;
-}
-
-.badges span{
-  display:inline-block;
-  background:#e0e7ff;
-  color:#2563eb;
-  padding:6px 12px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:700;
-  margin-right:6px;
-}
-
-.desc{
-  margin:16px 0;
-  line-height:1.6;
-  color:#475569;
-}
-
-.actions{
-  display:flex;
-  gap:12px;
-  margin-top:20px;
-}
-button{
-  border:none;
-  padding:14px 22px;
-  border-radius:12px;
-  font-size:14px;
-  font-weight:700;
-  cursor:pointer;
-}
-.cart{background:#2563eb;color:#fff}
-.whatsapp{background:#16a34a;color:#fff}
-
-@media(max-width:800px){
-  .container{grid-template-columns:1fr}
-}
-.product-img{
-  width:100%;
-  max-height:320px;
-  object-fit:contain;   /* OTT logos ke liye perfect */
-  background:#ffffff;
-  padding:24px;
-  border-radius:18px;
-  box-shadow:0 14px 34px rgba(0,0,0,.12);
-}
-  .details{
-  margin-top:20px;
-  background:#f8fafc;
-  border:1px solid #e5e7eb;
-  border-radius:14px;
-  padding:16px;
-}
-
-.details h3{
-  margin:0 0 10px;
-  font-size:16px;
-}
-
-.details ul{
-  padding-left:18px;
-  margin:0;
-  font-size:14px;
-  color:#334155;
-}
-
-.details li{
-  margin-bottom:6px;
-}
-</style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], tech: ['Rajdhani', 'sans-serif'], display: ['Orbitron', 'sans-serif'] },
+                    colors: { bg: { main: '#080808', card: '#101010' }, brand: { primary: '#2563eb', secondary: '#ff00aa' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass { background: rgba(16, 16, 16, 0.9); backdrop-filter: blur(16px); }
+        body { -webkit-tap-highlight-color: transparent; }
+    </style>
 </head>
 
-<body>
+<body class="bg-bg-main text-white antialiased min-h-screen" x-data="productLogic()">
 
-<header>
-  <a href="index.html" style="color:#fff;text-decoration:none">← Back</a>
-</header>
+    <nav class="fixed top-0 w-full z-50 glass h-20 flex items-center border-b border-white/5">
+        <div class="max-w-[1200px] mx-auto px-6 w-full flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 hover:text-brand-primary transition">
+                <i data-lucide="arrow-left"></i> <span class="font-bold">BACK TO STORE</span>
+            </a>
+            <button onclick="window.location.href='cart.html'" class="relative p-2">
+                <i data-lucide="shopping-bag"></i>
+                <span x-show="cartCount > 0" class="absolute top-0 right-0 bg-brand-secondary text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold" x-text="cartCount"></span>
+            </button>
+        </div>
+    </nav>
 
-<div class="container">
-  <div class="img-box">
-  <img id="gameImg" class="product-img">
-</div>
+    <main class="max-w-[1200px] mx-auto px-6 pt-32 pb-20" x-show="game">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            
+            <div class="space-y-8">
+                <img :src="game.image" class="w-full rounded-2xl border border-white/10 shadow-2xl">
+                
+                <div class="bg-bg-card border border-white/10 rounded-xl p-6">
+                    <h3 class="font-display font-bold mb-4 text-gray-400">SYSTEM REQUIREMENTS</h3>
+                    <div class="space-y-2 text-xs font-mono text-gray-500">
+                        <div class="flex justify-between"><span>OS:</span> <span class="text-white">Windows 10/11</span></div>
+                        <div class="flex justify-between"><span>PROCESSOR:</span> <span class="text-white">Intel Core i7</span></div>
+                        <div class="flex justify-between"><span>MEMORY:</span> <span class="text-white">16 GB RAM</span></div>
+                        <div class="flex justify-between"><span>GRAPHICS:</span> <span class="text-white">NVIDIA RTX 3060</span></div>
+                    </div>
+                </div>
+            </div>
 
-  <div>
-    <h1 id="gameName"></h1>
-    <div class="price" id="gamePrice"></div>
+            <div class="lg:col-span-2 space-y-8">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="bg-brand-primary/20 text-brand-primary border border-brand-primary/20 px-3 py-1 rounded text-xs font-bold uppercase tracking-widest" x-text="game.category || 'ACTION'"></span>
+                        <span class="flex text-yellow-500"><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i></span>
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-display font-black leading-none mb-4" x-text="game.title"></h1>
+                    <p class="text-gray-400 text-lg leading-relaxed">
+                        Experience the ultimate adventure. Immerse yourself in a world built for gamers. 
+                        Includes the base game and all digital bonus content. Verified for instant activation.
+                    </p>
+                </div>
 
-    <div class="badges">
-      <span>Instant Delivery</span>
-      <span>Trusted</span>
-      <span>WhatsApp Support</span>
-    </div>
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 backdrop-blur">
+                    <div>
+                        <div class="text-sm text-gray-500 line-through" x-text="formatPrice(game.oldPrice)"></div>
+                        <div class="text-4xl font-display font-bold text-white" x-text="formatPrice(game.price)"></div>
+                    </div>
+                    
+                    <div class="flex gap-4 w-full md:w-auto">
+                        <button @click="addToCart" class="flex-1 md:flex-none px-8 py-4 bg-brand-primary hover:bg-blue-600 text-white font-bold font-display uppercase tracking-widest rounded-xl transition shadow-lg shadow-brand-primary/20 flex items-center gap-2 justify-center">
+                            Add to Cart <i data-lucide="plus"></i>
+                        </button>
+                        <button class="w-14 h-14 border border-white/20 rounded-xl flex items-center justify-center hover:bg-white/10 transition">
+                            <i data-lucide="heart"></i>
+                        </button>
+                    </div>
+                </div>
 
-    <div class="desc" id="gameDesc"></div>
-    <div class="details">
-  <h3>Product Details</h3>
-  <ul>
-    <li>✔ Instant Digital Delivery</li>
-    <li>✔ Genuine & Verified</li>
-    <li>✔ Works on All Devices</li>
-    <li>✔ WhatsApp Support Available</li>
-    <li>✔ Replacement Warranty*</li>
-  </ul>
-</div>
-    <div class="actions">
-      <button class="cart" onclick="addToCart()">Add to Cart</button>
-      <button class="whatsapp" onclick="orderWhatsApp()">Order on WhatsApp</button>
-    </div>
-  </div>
-</div>
-<script>
-const products = {
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="flex items-center gap-3 p-4 rounded-xl bg-bg-card border border-white/5">
+                        <i data-lucide="globe" class="text-brand-secondary"></i>
+                        <span class="text-sm font-bold">Region Free</span>
+                    </div>
+                    <div class="flex items-center gap-3 p-4 rounded-xl bg-bg-card border border-white/5">
+                        <i data-lucide="zap" class="text-yellow-500"></i>
+                        <span class="text-sm font-bold">Instant Delivery</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
-  /* ===== PC GAMES ===== */
-  "271590":{
-    name:"GTA V",
-    price:199,
-    type:"Rockstar Activation Key (Global)",
-    img:"https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg",
-    desc:"GTA V PC – Rockstar Activation Key. Instant digital delivery."
-  },
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('productLogic', () => ({
+                game: {},
+                cartCount: parseInt(localStorage.getItem('pwe_cart_count')) || 0,
+                currency: localStorage.getItem('pwe_currency') || 'INR',
+                
+                // Matches index.html database exactly
+                allGames: [
+                    { id: 1, title: 'Grand Theft Auto V', category: 'action', price: 14.99, oldPrice: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
+                    { id: 2, title: 'Red Dead Redemption 2', category: 'adventure', price: 19.99, oldPrice: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
+                    { id: 3, title: 'Cyberpunk 2077', category: 'rpg', price: 29.99, oldPrice: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg' },
+                    { id: 4, title: 'Elden Ring', category: 'rpg', price: 39.99, oldPrice: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg' },
+                    { id: 5, title: 'God of War', category: 'action', price: 49.99, oldPrice: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg' },
+                    { id: 6, title: 'Call of Duty: MW3', category: 'shooter', price: 69.99, oldPrice: null, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2519060/library_600x900.jpg' },
+                    { id: 7, title: 'FIFA 24 (FC 24)', category: 'sports', price: 34.99, oldPrice: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
+                    { id: 8, title: 'Resident Evil 4', category: 'horror', price: 34.99, oldPrice: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg' },
+                    { id: 9, title: 'Marvel\'s Spider-Man', category: 'action', price: 39.99, oldPrice: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg' },
+                    { id: 10, title: 'The Last of Us Part I', category: 'adventure', price: 49.99, oldPrice: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900.jpg' },
+                ],
 
-  "1091500":{
-    name:"Cyberpunk 2077",
-    price:75,
-    type:"Steam Account",
-    img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg",
-    desc:"Cyberpunk 2077 Ultimate Edition for PC."
-  },
+                init() {
+                    lucide.createIcons();
+                    
+                    // Get ID from URL (e.g., product.html?id=1)
+                    const params = new URLSearchParams(window.location.search);
+                    const id = parseInt(params.get('id'));
+                    
+                    this.game = this.allGames.find(g => g.id === id);
+                    if(!this.game) window.location.href = 'index.html'; // Redirect if invalid
+                },
 
-  /* ===== OTT ===== */
-  "netflix":{
-    name:"Netflix Subscription",
-    price:149,
-    type:"OTT Subscription",
-    img:"https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg",
-    desc:"Netflix Premium subscription. Instant activation."
-  },
+                formatPrice(p) { 
+                    if(!p) return '';
+                    return this.currency === 'USD' ? '$'+p.toFixed(2) : '₹'+Math.round(p*85); 
+                },
 
-  "prime":{
-    name:"Amazon Prime Video",
-    price:129,
-    type:"OTT Subscription",
-    img:"https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png",
-    desc:"Amazon Prime Video subscription."
-  },
-
-  "hotstar":{
-    name:"Disney+ Hotstar",
-    price:99,
-    type:"OTT Subscription",
-    img:"https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg",
-    desc:"Disney+ Hotstar subscription."
-  },
-
-  "youtube":{
-    name:"YouTube Premium",
-    price:79,
-    type:"OTT Subscription",
-    img:"https://upload.wikimedia.org/wikipedia/commons/6/62/YouTube_social_white_square_%282024%29.svg",
-    desc:"YouTube Premium – No ads."
-  },
-
-  "crunchyroll":{
-    name:"Crunchyroll",
-    price:129,
-    type:"OTT Subscription",
-    img:"https://upload.wikimedia.org/wikipedia/commons/8/85/Crunchyroll_2024_stacked.svg",
-    desc:"Crunchyroll anime streaming subscription."
-  }
-};
-
-/* GET ID FROM URL */
-const params = new URLSearchParams(window.location.search);
-const id = params.get("id");
-
-const p = products[id];
-
-if(!p){
-  document.body.innerHTML = "Product not found";
-}else{
-  document.getElementById("gameImg").src = p.img;
-document.getElementById("gameName").textContent = p.name;
-document.getElementById("gamePrice").textContent = "₹" + p.price;
-document.getElementById("gameDesc").textContent = p.desc;
-}
-
-/* CART */
-function addToCart(){
-  let cart = JSON.parse(localStorage.getItem("cart")||"[]");
-  cart.push({name:p.name, price:p.price});
-  localStorage.setItem("cart",JSON.stringify(cart));
-  alert("Added to cart");
-}
-
-/* WHATSAPP */
-function orderWhatsApp(){
-  const msg = `Hi PlayWithEase 👋\nI want to buy ${p.name} for ₹${p.price}`;
-  window.open("https://wa.me/917001568884?text="+encodeURIComponent(msg));
-}
-</script>
-
+                addToCart() {
+                    let cart = JSON.parse(localStorage.getItem('pwe_cart_items') || '[]');
+                    cart.push(this.game);
+                    localStorage.setItem('pwe_cart_items', JSON.stringify(cart));
+                    
+                    this.cartCount++;
+                    localStorage.setItem('pwe_cart_count', this.cartCount);
+                    
+                    alert("Added to Cart!");
+                }
+            }))
+        });
+    </script>
 </body>
 </html>
