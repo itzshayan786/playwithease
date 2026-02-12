@@ -38,11 +38,7 @@
         
         /* RESPONSIVE VIDEO CONTAINER */
         .video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 20; background: black; }
-        
-        /* Mobile: Cover Mode */
         .video-background { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; transform: translate(-50%, -50%); pointer-events: none; object-fit: cover; }
-        
-        /* Desktop: Cinematic Crop */
         @media (min-width: 768px) {
             .video-background { width: 100vw; height: 100vh; }
             @media (min-aspect-ratio: 16/9) { .video-background { height: 56.25vw; } }
@@ -52,7 +48,7 @@
 </head>
 
 <body class="bg-bg-main antialiased overflow-x-hidden w-full selection:bg-brand-primary selection:text-white"
-      x-data="storeLogic()" :style="themeStyles">
+      x-data="storeLogic()" :style="themeStyles" @keydown.left="prevSlide()" @keydown.right="nextSlide()">
 
     <div class="fixed bottom-24 right-6 z-[100] flex flex-col gap-2 pointer-events-none">
         <template x-for="toast in notifications" :key="toast.id">
@@ -298,8 +294,8 @@
                         date: '2026-11-19T00:00:00'
                     },
                     {
-                        // FIXED POSTER AND VIDEO
-                        image: 'https://news.xbox.com/en-us/wp-content/uploads/sites/2/2021/11/ForzaHorizon5_KeyArt_Horiz_RGB_Final.jpg',
+                        // FIXED FORZA POSTER (Official Microsoft Asset)
+                        image: 'https://store-images.s-microsoft.com/image/apps.43859.13860161687256860.59b6b772-59c4-4c4f-9037-f2735252d6a7.7f62024b-0444-46b0-9a3d-4c329b357d34',
                         logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Forza_Horizon_logo.svg/2560px-Forza_Horizon_logo.svg.png',
                         videoId: 'XG1Ll2CVhug',
                         date: '2027-05-15T00:00:00'
@@ -381,13 +377,19 @@
                         window.ytPlayer = new YT.Player('hero-player', {
                             height: '100%', width: '100%',
                             videoId: this.heroSlides[this.activeSlide].videoId,
-                            playerVars: { 'autoplay': 1, 'controls': 0, 'rel': 0, 'showinfo': 0, 'loop': 1, 'modestbranding': 1 },
+                            playerVars: { 'autoplay': 1, 'controls': 0, 'rel': 0, 'showinfo': 0, 'modestbranding': 1 },
                             events: {
                                 'onReady': (event) => {
                                     event.target.mute();
                                     event.target.setPlaybackQuality('hd1080');
                                     event.target.playVideo();
                                     setTimeout(() => event.target.unMute(), 500);
+                                },
+                                // AUTO-CLOSE ON END (Removes "Recommended Videos")
+                                'onStateChange': (event) => {
+                                    if(event.data === YT.PlayerState.ENDED) {
+                                        this.stopTrailer();
+                                    }
                                 }
                             }
                         });
