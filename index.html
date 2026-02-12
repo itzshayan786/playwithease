@@ -300,6 +300,10 @@ transition:.3s;
 .trust-box:hover{
 transform:translateY(-8px);
 }
+@keyframes slideUp{
+from{transform:translateY(40px);opacity:0;}
+to{transform:translateY(0);opacity:1;}
+}
 </style>
 </head>
 
@@ -373,15 +377,58 @@ Serving gamers across India with trusted digital access.
 </section>
 
 <script>
-/* MUSIC BAR */
+
+/* ================= MUSIC BAR WORKING ================= */
 const musicBar=document.getElementById("musicBar");
 for(let i=0;i<60;i++){
 let bar=document.createElement("div");
 bar.className="m-bar";
 musicBar.appendChild(bar);
 }
+const bars=document.querySelectorAll(".m-bar");
 
-/* THEME BUTTON */
+const video=document.getElementById("gtaTrailer");
+const muteBtn=document.getElementById("muteBtn");
+
+let audioCtx, analyser, source, started=false;
+
+function startAudio(){
+if(started) return;
+
+video.muted=false;
+video.play();
+
+audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+analyser=audioCtx.createAnalyser();
+source=audioCtx.createMediaElementSource(video);
+source.connect(analyser);
+analyser.connect(audioCtx.destination);
+analyser.fftSize=128;
+
+started=true;
+animate();
+muteBtn.textContent="🔊";
+}
+
+document.addEventListener("click", startAudio);
+
+muteBtn.addEventListener("click",(e)=>{
+e.stopPropagation();
+video.muted=!video.muted;
+muteBtn.textContent=video.muted?"🔇":"🔊";
+});
+
+function animate(){
+if(!analyser) return;
+let data=new Uint8Array(analyser.frequencyBinCount);
+analyser.getByteFrequencyData(data);
+bars.forEach((bar,i)=>{
+bar.style.height=(data[i]/4+6)+"px";
+});
+requestAnimationFrame(animate);
+}
+
+/* ================= THEME BUTTON ================= */
 const themeBtn=document.getElementById("themeBtn");
 const themeDrop=document.getElementById("themeDrop");
 
@@ -397,7 +444,7 @@ themeDrop.style.display="none";
 };
 });
 
-/* GAMES */
+/* ================= GAMES ================= */
 const games=[
 ["GTA V",271590],
 ["Red Dead Redemption 2",1174180],
@@ -420,10 +467,46 @@ grid.innerHTML+=`
 <div class="info">
 ${g[0]}
 <div class="price">₹999</div>
-<button>Add to Cart</button>
+<button onclick="addToCart(this)">Add to Cart</button>
 </div>
 </div>`;
 });
+
+/* ================= ADD TO CART ANIMATION ================= */
+function addToCart(btn){
+
+// Button animation
+btn.innerHTML="✔ Added";
+btn.style.transform="scale(1.1)";
+btn.style.background="green";
+
+setTimeout(()=>{
+btn.innerHTML="Add to Cart";
+btn.style.transform="scale(1)";
+btn.style.background="var(--accent)";
+},1500);
+
+// Floating toast
+let toast=document.createElement("div");
+toast.innerText="🛒 Added to Cart!";
+toast.style.position="fixed";
+toast.style.bottom="30px";
+toast.style.right="30px";
+toast.style.padding="14px 20px";
+toast.style.background="var(--accent)";
+toast.style.color="#fff";
+toast.style.borderRadius="10px";
+toast.style.boxShadow="0 10px 25px rgba(0,0,0,0.2)";
+toast.style.zIndex="9999";
+toast.style.animation="slideUp 0.4s ease";
+
+document.body.appendChild(toast);
+
+setTimeout(()=>{
+toast.remove();
+},2000);
+}
+
 </script>
 
 </body>
