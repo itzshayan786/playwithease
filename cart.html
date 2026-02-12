@@ -22,12 +22,33 @@ font-family:'Poppins',sans-serif;
 background:var(--bg);
 color:var(--text);
 min-height:100vh;
+transition:.3s;
 }
 
-.container{
-max-width:1100px;
-margin:auto;
-padding:30px 20px;
+/* THEMES */
+body.theme-dark{
+--bg:#0f172a;
+--card:#1e293b;
+--accent:#3b82f6;
+--text:#f1f5f9;
+}
+
+body.theme-emerald{--accent:#10b981;}
+body.theme-royal{--accent:#7c3aed;}
+
+body.theme-elite-red{
+--bg:#14090b;
+--card:#1f1114;
+--accent:#dc2626;
+--text:#fef2f2;
+}
+
+/* HEADER */
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 30px;
 }
 
 .brand{
@@ -36,8 +57,28 @@ font-weight:900;
 font-size:22px;
 text-decoration:none;
 color:inherit;
-display:inline-block;
-margin-bottom:30px;
+}
+
+.theme-btn{
+padding:8px 18px;
+border:none;
+border-radius:12px;
+background:linear-gradient(135deg,var(--accent),#1d4ed8);
+color:#fff;
+font-weight:600;
+cursor:pointer;
+transition:.3s;
+}
+
+.theme-btn:hover{
+transform:translateY(-3px);
+box-shadow:0 15px 35px rgba(0,0,0,.3);
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:20px;
 }
 
 /* CART ITEM */
@@ -49,7 +90,7 @@ margin-bottom:20px;
 display:flex;
 gap:20px;
 align-items:center;
-box-shadow:0 15px 40px rgba(0,0,0,0.08);
+box-shadow:0 15px 40px rgba(0,0,0,.08);
 }
 
 .cart-item img{
@@ -57,13 +98,11 @@ width:140px;
 border-radius:12px;
 }
 
-.item-info{
-flex:1;
-}
+.item-info{flex:1;}
 
 .item-name{
 font-weight:600;
-margin-bottom:8px;
+margin-bottom:6px;
 }
 
 .qty-box{
@@ -97,13 +136,13 @@ margin-top:40px;
 background:var(--card);
 padding:30px;
 border-radius:20px;
-box-shadow:0 15px 40px rgba(0,0,0,0.1);
+box-shadow:0 15px 40px rgba(0,0,0,.1);
 }
 
 .summary-row{
 display:flex;
 justify-content:space-between;
-margin-bottom:12px;
+margin-bottom:10px;
 }
 
 .total{
@@ -145,33 +184,25 @@ font-size:18px;
 
 <body>
 
+<div class="header">
+<a href="index.html" class="brand">PlayWithEase®</a>
+<button id="themeSwitcher" class="theme-btn">Theme</button>
+</div>
+
 <div class="container">
 
-<a href="index.html" class="brand">PlayWithEase®</a>
-
 <h2>Your Cart</h2>
-
 <div id="cartContainer"></div>
 
 <div class="summary" id="summaryBox" style="display:none;">
-
 <div class="summary-row">
 <span>Subtotal</span>
 <span id="subtotal"></span>
 </div>
-
 <div class="summary-row">
 <span>GST (18%)</span>
 <span id="gst"></span>
 </div>
-
-<div class="summary-row">
-<span>Delivery</span>
-<span>Free</span>
-</div>
-
-<hr>
-
 <div class="summary-row total">
 <span>Total</span>
 <span id="grandTotal"></span>
@@ -193,6 +224,26 @@ font-size:18px;
 
 <script>
 let cart = JSON.parse(localStorage.getItem("pwe_cart")) || [];
+
+/* Fix old cart format */
+cart = cart.map(item=>{
+if(typeof item === "string"){
+return {
+name:item,
+image:"https://via.placeholder.com/140x80?text=Game",
+price:999,
+qty:1
+};
+}
+return {
+name:item.name,
+image:item.image || "https://via.placeholder.com/140x80?text=Game",
+price:item.price || 999,
+qty:item.qty || 1
+};
+});
+
+localStorage.setItem("pwe_cart",JSON.stringify(cart));
 
 function renderCart(){
 const container=document.getElementById("cartContainer");
@@ -224,15 +275,12 @@ container.innerHTML+=`
 <div class="item-info">
 <div class="item-name">${item.name}</div>
 <div>₹${item.price}</div>
-
 <div class="qty-box">
 <button class="qty-btn" onclick="changeQty(${index},-1)">-</button>
 <span>${item.qty}</span>
 <button class="qty-btn" onclick="changeQty(${index},1)">+</button>
 </div>
-
 <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
-
 </div>
 </div>
 `;
@@ -245,10 +293,8 @@ subtotalEl.innerText="₹"+subtotal.toFixed(0);
 gstEl.innerText="₹"+gst.toFixed(0);
 totalEl.innerText="₹"+total.toFixed(0);
 
-/* UPI QR */
 document.getElementById("upiQR").src =
 `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=shayanff98@okhdfcbank&pn=PlayWithEase&am=${total.toFixed(0)}&cu=INR`;
-
 }
 
 function changeQty(index,change){
@@ -265,6 +311,17 @@ cart.splice(index,1);
 localStorage.setItem("pwe_cart",JSON.stringify(cart));
 renderCart();
 }
+
+/* Theme Cycler */
+const themes=["","theme-dark","theme-emerald","theme-royal","theme-elite-red"];
+let currentTheme=0;
+const themeBtn=document.getElementById("themeSwitcher");
+
+themeBtn.addEventListener("click",()=>{
+currentTheme++;
+if(currentTheme>=themes.length) currentTheme=0;
+document.body.className=themes[currentTheme];
+});
 
 renderCart();
 </script>
