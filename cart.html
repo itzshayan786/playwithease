@@ -275,18 +275,12 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 window.confirmPaid = async function(){
 
-// 1️⃣ Cart empty check
 if(cart.length === 0){
 alert("Your cart is empty.");
 return;
 }
 
-// 2️⃣ Total calculate
-let total = cart.reduce((sum,item)=>{
-return sum + (item.price * item.qty);
-},0);
-
-// 3️⃣ Check login
+let total = cart.reduce((s,i)=>s+i.price*i.qty,0);
 let user = auth.currentUser;
 
 if(!user){
@@ -296,27 +290,29 @@ return;
 
 try{
 
-// 4️⃣ Create order object
 let orderData = {
 userEmail: user.email,
 items: cart,
 total: total,
 status: "in-progress",
-createdAt: new Date()
+createdAt: serverTimestamp()
 };
 
-// 5️⃣ Save in Firestore
-await addDoc(collection(db,"orders"), orderData);
+// 🔥 STEP 1: Save order first
+let docRef = await addDoc(collection(db,"orders"), orderData);
 
-// 6️⃣ Clear cart
+// 🔥 STEP 2: Clear cart
 localStorage.removeItem("pwe_cart");
 
-// 7️⃣ Redirect to Order History
-window.location.href = "order-history.html";
+// 🔥 STEP 3: THEN redirect to WhatsApp
+let msg = `Hello PlayWithEase Team,%0AOrder ID: ${docRef.id}%0ATotal Paid: ₹${total}%0AI have completed payment.`;
+
+window.location.href =
+`https://wa.me/917001568884?text=${msg}`;
 
 }catch(error){
-console.error("Order save error:", error);
-alert("Something went wrong while placing order.");
+console.error(error);
+alert("Order save failed.");
 }
 
 }
