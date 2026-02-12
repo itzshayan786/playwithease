@@ -17,15 +17,8 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        tech: ['Rajdhani', 'sans-serif'],
-                        display: ['Orbitron', 'sans-serif'],
-                    },
-                    colors: {
-                        bg: { main: 'var(--bg-main)', card: 'var(--bg-card)' },
-                        brand: { primary: 'var(--brand-primary)', secondary: 'var(--brand-secondary)', text: 'var(--text-main)' }
-                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], tech: ['Rajdhani', 'sans-serif'], display: ['Orbitron', 'sans-serif'] },
+                    colors: { bg: { main: 'var(--bg-main)', card: 'var(--bg-card)' }, brand: { primary: 'var(--brand-primary)', secondary: 'var(--brand-secondary)', text: 'var(--text-main)' } },
                     animation: { 'float': 'float 6s ease-in-out infinite' },
                     keyframes: { float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } } }
                 }
@@ -34,20 +27,10 @@
     </script>
 
     <style>
-        /* Theme Variables Default (Cyber) */
-        :root {
-            --bg-main: #080808; 
-            --bg-card: #101010;
-            --text-main: #ffffff;
-            --brand-primary: #2563eb; 
-            --brand-secondary: #ff00aa;
-        }
-
+        :root { --bg-main: #080808; --bg-card: #101010; --text-main: #ffffff; --brand-primary: #2563eb; --brand-secondary: #ff00aa; }
         .glass { background: var(--bg-card); opacity: 0.95; backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
         body { -webkit-tap-highlight-color: transparent; color: var(--text-main); }
         [x-cloak] { display: none !important; }
-        
-        /* Smooth Transitions */
         body, div, button, span, i, nav, section, main { transition-property: color, background-color, border-color; transition-duration: 300ms; }
     </style>
 </head>
@@ -57,103 +40,59 @@
 
     <div class="fixed bottom-6 right-6 z-[100] flex flex-col gap-2 pointer-events-none">
         <template x-for="toast in notifications" :key="toast.id">
-            <div x-show="toast.visible" 
-                 x-transition:enter="transition ease-out duration-300"
-                 x-transition:enter-start="translate-y-2 opacity-0"
-                 x-transition:enter-end="translate-y-0 opacity-100"
-                 x-transition:leave="transition ease-in duration-200"
-                 x-transition:leave-start="opacity-100"
-                 x-transition:leave-end="opacity-0 scale-90"
-                 class="pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl bg-bg-card border border-white/10 shadow-2xl shadow-black/50 min-w-[300px]">
-                <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
-                     :class="toast.type === 'success' ? 'bg-green-500/20 text-green-500' : 'bg-brand-primary/20 text-brand-primary'">
-                    <i :data-lucide="toast.type === 'success' ? 'check' : 'info'" class="w-4 h-4"></i>
-                </div>
-                <div>
-                    <h4 class="text-sm font-bold text-brand-text" x-text="toast.title"></h4>
-                    <p class="text-xs opacity-70" x-text="toast.message"></p>
-                </div>
+            <div x-show="toast.visible" class="pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl bg-bg-card border border-white/10 shadow-2xl shadow-black/50 min-w-[300px]">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" :class="toast.type === 'success' ? 'bg-green-500/20 text-green-500' : 'bg-brand-primary/20 text-brand-primary'"><i :data-lucide="toast.type === 'success' ? 'check' : 'info'" class="w-4 h-4"></i></div>
+                <div><h4 class="text-sm font-bold text-brand-text" x-text="toast.title"></h4><p class="text-xs opacity-70" x-text="toast.message"></p></div>
             </div>
         </template>
     </div>
 
     <nav class="fixed top-0 w-full z-50 glass h-16 md:h-20 transition-all duration-300 text-brand-text">
         <div class="max-w-[1600px] mx-auto px-4 md:px-6 h-full flex items-center justify-between relative">
-            
             <div class="flex items-center gap-3 cursor-pointer shrink-0">
-                <div class="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center bg-brand-text/5 rounded-xl border border-brand-text/10 shrink-0">
-                    <i data-lucide="gamepad-2" class="w-5 h-5 md:w-6 md:h-6 text-brand-text"></i>
-                </div>
-                <div class="hidden md:block">
-                    <h1 class="font-display text-lg md:text-xl tracking-wider leading-none">PlayWith<span class="text-brand-primary">Ease</span></h1>
-                </div>
+                <div class="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center bg-brand-text/5 rounded-xl border border-brand-text/10 shrink-0"><i data-lucide="gamepad-2" class="w-5 h-5 md:w-6 md:h-6 text-brand-text"></i></div>
+                <div class="hidden md:block"><h1 class="font-display text-lg md:text-xl tracking-wider leading-none">PlayWith<span class="text-brand-primary">Ease</span></h1></div>
             </div>
 
             <div class="hidden md:flex flex-1 max-w-md mx-8 relative group">
                 <i data-lucide="search" class="absolute left-3 top-2.5 w-5 h-5 opacity-50 group-focus-within:text-brand-primary transition"></i>
-                <input type="text" x-model="searchQuery" placeholder="Search games..." 
-                       class="w-full bg-brand-text/5 border border-brand-text/10 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-brand-primary/50 transition placeholder-brand-text/50">
+                <input type="text" x-model="searchQuery" placeholder="Search games..." class="w-full bg-brand-text/5 border border-brand-text/10 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-brand-primary/50 transition placeholder-brand-text/50">
             </div>
 
             <div class="flex items-center gap-3 md:gap-6 shrink-0">
-                
-                <button class="md:hidden p-2 opacity-70" @click="toggleSearchMobile">
-                    <i data-lucide="search" class="w-6 h-6"></i>
-                </button>
-
+                <button class="md:hidden p-2 opacity-70" @click="toggleSearchMobile"><i data-lucide="search" class="w-6 h-6"></i></button>
                 <button onclick="window.location.href='cart.html'" class="relative p-2 rounded-lg hover:bg-brand-text/5 transition group">
                     <i data-lucide="shopping-bag" class="w-6 h-6 opacity-70 group-hover:opacity-100 transition"></i>
                     <span x-show="cartCount > 0" class="absolute top-1 right-1 bg-brand-secondary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-bg-main" x-text="cartCount"></span>
                 </button>
-
-                <a id="loginBtn" href="login.html" class="hidden px-4 py-2 bg-brand-text text-bg-main text-xs font-bold uppercase rounded hover:opacity-80 transition">
-                    Login
-                </a>
-
+                <a id="loginBtn" href="login.html" class="hidden px-4 py-2 bg-brand-text text-bg-main text-xs font-bold uppercase rounded hover:opacity-80 transition">Login</a>
                 <a id="profileBtn" href="profile.html" class="hidden w-9 h-9 rounded-full bg-gradient-to-tr from-brand-primary to-brand-secondary p-0.5 cursor-pointer hover:scale-105 transition">
                     <img id="userAvatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Ghost" class="w-full h-full rounded-full bg-black object-cover">
                 </a>
-
                 <div class="relative" x-data="{ open: false }" @click.outside="open = false">
-                    <button @click="open = !open" class="p-2 rounded-lg hover:bg-brand-text/5 transition">
-                        <i data-lucide="more-vertical" class="w-6 h-6 opacity-70"></i>
-                    </button>
-
-                    <div x-show="open" x-cloak 
-                         x-transition:enter="transition ease-out duration-200"
-                         x-transition:enter-start="opacity-0 translate-y-2"
-                         x-transition:enter-end="opacity-100 translate-y-0"
-                         class="absolute right-0 top-12 w-64 bg-bg-card border border-brand-text/10 rounded-xl shadow-2xl p-2 z-50 text-brand-text">
-                        
-                        <a href="profile.html" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-brand-text/5 transition text-sm font-medium">
-                            <i data-lucide="history" class="w-4 h-4 text-brand-primary"></i> Order History
-                        </a>
-
+                    <button @click="open = !open" class="p-2 rounded-lg hover:bg-brand-text/5 transition"><i data-lucide="more-vertical" class="w-6 h-6 opacity-70"></i></button>
+                    <div x-show="open" x-cloak class="absolute right-0 top-12 w-64 bg-bg-card border border-brand-text/10 rounded-xl shadow-2xl p-2 z-50 text-brand-text glass">
+                        <a href="profile.html" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-brand-text/5 transition text-sm font-medium"><i data-lucide="history" class="w-4 h-4 text-brand-primary"></i> Order History</a>
                         <button @click="toggleCurrency" class="w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-brand-text/5 transition text-sm font-medium">
-                            <div class="flex items-center gap-3">
-                                <i data-lucide="coins" class="w-4 h-4 text-yellow-500"></i> Currency
-                            </div>
+                            <div class="flex items-center gap-3"><i data-lucide="coins" class="w-4 h-4 text-yellow-500"></i> Currency</div>
                             <span class="text-xs font-bold bg-brand-text/10 px-2 py-0.5 rounded" x-text="currency"></span>
                         </button>
-
                         <div class="px-4 py-3 border-t border-brand-text/10 mt-1">
                             <div class="text-[10px] opacity-50 uppercase font-bold mb-2">Theme</div>
                             <div class="flex gap-2 justify-between">
-                                <button @click="setTheme('cyber')" class="w-8 h-8 rounded-full bg-blue-600 border border-white/20 hover:scale-110 transition" title="Cyber"></button>
-                                <button @click="setTheme('luxury')" class="w-8 h-8 rounded-full bg-yellow-500 border border-white/20 hover:scale-110 transition" title="Luxury"></button>
-                                <button @click="setTheme('toxic')" class="w-8 h-8 rounded-full bg-green-500 border border-white/20 hover:scale-110 transition" title="Toxic"></button>
-                                <button @click="setTheme('crimson')" class="w-8 h-8 rounded-full bg-red-600 border border-white/20 hover:scale-110 transition" title="Crimson"></button>
-                                <button @click="setTheme('minimal')" class="w-8 h-8 rounded-full bg-white border border-gray-300 hover:scale-110 transition shadow-inner" title="Minimal"></button>
+                                <button @click="setTheme('cyber')" class="w-8 h-8 rounded-full bg-blue-600 border border-white/20"></button>
+                                <button @click="setTheme('luxury')" class="w-8 h-8 rounded-full bg-yellow-500 border border-white/20"></button>
+                                <button @click="setTheme('toxic')" class="w-8 h-8 rounded-full bg-green-500 border border-white/20"></button>
+                                <button @click="setTheme('crimson')" class="w-8 h-8 rounded-full bg-red-600 border border-white/20"></button>
+                                <button @click="setTheme('minimal')" class="w-8 h-8 rounded-full bg-white border border-gray-300"></button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
         <div x-show="mobileSearchOpen" class="md:hidden px-4 pb-4 animate-fade-down">
-             <input type="text" x-model="searchQuery" placeholder="Search games..." 
-                       class="w-full bg-brand-text/10 border border-brand-text/10 rounded-lg py-2 px-4 text-sm text-brand-text focus:outline-none focus:border-brand-primary/50 transition">
+             <input type="text" x-model="searchQuery" placeholder="Search games..." class="w-full bg-brand-text/10 border border-brand-text/10 rounded-lg py-2 px-4 text-sm text-brand-text focus:outline-none focus:border-brand-primary/50 transition">
         </div>
     </nav>
 
@@ -161,45 +100,22 @@
         <div class="absolute inset-0 z-0">
             <div class="absolute inset-0 bg-gradient-to-t from-bg-main via-transparent to-transparent z-10"></div>
             <div class="absolute inset-0 bg-black/40 z-10"></div>
-            <img src="https://media-rockstargames-com.akamaized.net/mfe6/prod/__common/img/71d4d17edcd49703a5ea446cc0e588e6.jpg" 
-                 class="w-full h-full object-cover animate-float scale-110 origin-center">
+            <img src="https://media-rockstargames-com.akamaized.net/mfe6/prod/__common/img/71d4d17edcd49703a5ea446cc0e588e6.jpg" class="w-full h-full object-cover animate-float scale-110 origin-center">
         </div>
-
         <div class="relative z-20 text-center w-full max-w-5xl mx-auto px-4 md:px-6 pt-10">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded border border-white/20 bg-black/40 backdrop-blur mb-6">
-                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white">Global Premiere</span>
+                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span><span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white">Global Premiere</span>
             </div>
-
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg/512px-Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg.png" 
-                 class="h-20 md:h-48 mx-auto mb-8 md:mb-10 drop-shadow-[0_0_30px_rgba(255,0,170,0.5)] w-auto max-w-[90%]">
-
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg/512px-Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg.png" class="h-20 md:h-48 mx-auto mb-8 md:mb-10 drop-shadow-[0_0_30px_rgba(255,0,170,0.5)] w-auto max-w-[90%]">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-12 text-white mb-8 md:mb-12 max-w-3xl mx-auto">
-                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl">
-                    <div class="text-3xl md:text-6xl font-display font-black" x-text="timer.days">000</div>
-                    <div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Days</div>
-                </div>
-                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl">
-                    <div class="text-3xl md:text-6xl font-display font-black" x-text="timer.hours">00</div>
-                    <div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Hours</div>
-                </div>
-                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl">
-                    <div class="text-3xl md:text-6xl font-display font-black" x-text="timer.minutes">00</div>
-                    <div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Mins</div>
-                </div>
-                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl">
-                    <div class="text-3xl md:text-6xl font-display font-black text-brand-secondary" x-text="timer.seconds">00</div>
-                    <div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Secs</div>
-                </div>
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-6xl font-display font-black" x-text="timer.days">000</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Days</div></div>
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-6xl font-display font-black" x-text="timer.hours">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Hours</div></div>
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-6xl font-display font-black" x-text="timer.minutes">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Mins</div></div>
+                <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-6xl font-display font-black text-brand-secondary" x-text="timer.seconds">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Secs</div></div>
             </div>
-
             <div class="flex flex-col md:flex-row justify-center gap-4 px-4 md:px-0">
-                <button class="bg-white text-black px-8 py-3.5 rounded font-bold uppercase tracking-widest text-sm md:text-base hover:bg-brand-primary hover:text-white transition duration-300 w-full md:w-auto shadow-lg">
-                    Pre-Order Now
-                </button>
-                <button class="px-8 py-3.5 rounded border border-white/30 backdrop-blur font-bold uppercase tracking-widest text-sm md:text-base hover:bg-white/10 transition flex items-center justify-center gap-3 w-full md:w-auto text-white">
-                    <i data-lucide="play-circle" class="w-5 h-5"></i> Watch Trailer
-                </button>
+                <button class="bg-white text-black px-8 py-3.5 rounded font-bold uppercase tracking-widest text-sm md:text-base hover:bg-brand-primary hover:text-white transition duration-300 w-full md:w-auto shadow-lg">Pre-Order Now</button>
+                <button class="px-8 py-3.5 rounded border border-white/30 backdrop-blur font-bold uppercase tracking-widest text-sm md:text-base hover:bg-white/10 transition flex items-center justify-center gap-3 w-full md:w-auto text-white"><i data-lucide="play-circle" class="w-5 h-5"></i> Watch Trailer</button>
             </div>
         </div>
     </section>
@@ -207,52 +123,34 @@
     <main class="max-w-[1600px] mx-auto px-4 md:px-6 py-12 md:py-24 text-brand-text">
         <div class="flex items-center justify-between mb-8 md:mb-12">
             <h2 class="text-2xl md:text-3xl font-display font-bold">TRENDING <span class="text-brand-primary">TITLES</span></h2>
-            <div class="flex gap-2">
-                <button class="p-2 rounded bg-brand-text/5 text-brand-text"><i data-lucide="layout-grid" class="w-5 h-5"></i></button>
-            </div>
+            <div class="flex gap-2"><button class="p-2 rounded bg-brand-text/5 text-brand-text"><i data-lucide="layout-grid" class="w-5 h-5"></i></button></div>
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-6">
             <template x-for="game in filteredGames" :key="game.id">
                 <div class="group relative bg-bg-card rounded-lg md:rounded-xl overflow-hidden border border-brand-text/5 hover:border-brand-primary/50 transition-all duration-300 shadow-lg">
                     
-                    <div class="relative aspect-[2/3] overflow-hidden bg-gray-900">
+                    <a :href="'product.html?id=' + game.id" class="block relative aspect-[2/3] overflow-hidden bg-gray-900 cursor-pointer">
                         <img :src="game.image" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" loading="lazy">
-                        
                         <div class="absolute top-0 right-0 bg-black/60 backdrop-blur px-2 py-1 rounded-bl-lg border-b border-l border-white/10">
-                            <div class="flex items-center gap-1 text-[8px] md:text-[10px] font-bold text-gray-300">
-                                <i data-lucide="globe" class="w-3 h-3 text-brand-primary"></i> GLOBAL
-                            </div>
+                            <div class="flex items-center gap-1 text-[8px] md:text-[10px] font-bold text-gray-300"><i data-lucide="globe" class="w-3 h-3 text-brand-primary"></i> GLOBAL</div>
                         </div>
-
-                        <div class="hidden md:flex absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition duration-300 flex-col items-center justify-center gap-3 p-4">
-                            <button @click="addToCart(game)" class="w-full py-3 bg-white text-black font-bold uppercase text-xs tracking-wider rounded hover:bg-brand-primary hover:text-white transition flex items-center justify-center gap-2">
-                                <i data-lucide="shopping-cart" class="w-4 h-4"></i> Add
-                            </button>
-                            <button @click="simulateKeyReveal(game)" class="w-full py-3 border border-white/20 text-white font-bold uppercase text-xs tracking-wider rounded hover:bg-white/10 transition flex items-center justify-center gap-2">
-                                <i data-lucide="key" class="w-4 h-4"></i> Test Key
-                            </button>
-                        </div>
-
-                        <button @click="addToCart(game)" class="md:hidden absolute bottom-2 right-2 bg-brand-primary text-white p-2 rounded-full shadow-lg z-10 active:scale-90 transition">
-                            <i data-lucide="plus" class="w-4 h-4"></i>
-                        </button>
-                        
-                        <div x-show="game.discount" class="absolute top-2 left-2 bg-red-600 text-white text-[9px] md:text-[10px] font-bold px-1.5 py-0.5 rounded shadow-lg z-10">
-                            <span x-text="game.discount"></span>
-                        </div>
-                    </div>
+                        <div x-show="game.discount" class="absolute top-2 left-2 bg-red-600 text-white text-[9px] md:text-[10px] font-bold px-1.5 py-0.5 rounded shadow-lg z-10"><span x-text="game.discount"></span></div>
+                    </a>
 
                     <div class="p-3 md:p-4">
-                        <h3 class="font-bold truncate text-xs md:text-sm" x-text="game.title"></h3>
+                        <a :href="'product.html?id=' + game.id" class="block">
+                            <h3 class="font-bold truncate text-xs md:text-sm hover:text-brand-primary transition" x-text="game.title"></h3>
+                        </a>
                         <div class="flex justify-between items-center mt-1 md:mt-2">
                             <div class="flex flex-col">
                                 <span class="text-[9px] md:text-[10px] opacity-50 line-through" x-show="game.oldPrice" x-text="formatPrice(game.oldPrice)"></span>
                                 <span class="text-brand-primary font-tech font-bold text-sm md:text-lg" x-text="formatPrice(game.price)"></span>
                             </div>
-                             <button @click="simulateKeyReveal(game)" class="md:hidden opacity-50 p-1">
-                                <i data-lucide="key" class="w-4 h-4"></i>
-                            </button>
+                            
+                            <div class="flex gap-2">
+                                <button @click.stop="addToCart(game)" class="p-1.5 rounded-full bg-brand-primary/10 text-brand-primary hover:bg-brand-primary hover:text-white transition"><i data-lucide="plus" class="w-4 h-4"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -260,23 +158,17 @@
         </div>
     </main>
 
-    <div x-show="keyModal.open" x-cloak
-         class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
-         x-transition.opacity>
+    <div x-show="keyModal.open" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4" x-transition.opacity>
         <div class="bg-bg-card border border-brand-secondary/30 w-full max-w-md rounded-2xl overflow-hidden shadow-2xl relative text-brand-text">
             <button @click="keyModal.open = false" class="absolute top-4 right-4 opacity-50 hover:opacity-100 z-20"><i data-lucide="x"></i></button>
             <div x-show="keyModal.loading" class="p-10 text-center">
                 <div class="w-12 h-12 border-4 border-brand-secondary border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
-                <h3 class="text-lg font-bold mb-2">Generating Key...</h3>
-                <p class="opacity-50 text-xs font-tech">Connecting to Publisher Server</p>
+                <h3 class="text-lg font-bold mb-2">Generating Key...</h3><p class="opacity-50 text-xs font-tech">Connecting to Publisher Server</p>
             </div>
             <div x-show="!keyModal.loading" class="p-8 text-center">
                 <div class="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4 text-green-500"><i data-lucide="check" class="w-6 h-6"></i></div>
                 <h3 class="font-bold mb-1 truncate" x-text="keyModal.gameTitle"></h3>
-                <div class="bg-black border border-white/10 rounded-lg p-3 mb-4 relative cursor-pointer" @click="copyKey">
-                    <code class="font-mono text-lg text-brand-secondary tracking-widest" x-text="keyModal.key"></code>
-                    <div class="text-[10px] text-gray-500 uppercase mt-2">Tap to Copy</div>
-                </div>
+                <div class="bg-black border border-white/10 rounded-lg p-3 mb-4 relative cursor-pointer" @click="copyKey"><code class="font-mono text-lg text-brand-secondary tracking-widest" x-text="keyModal.key"></code></div>
                 <button @click="keyModal.open = false" class="w-full py-3 bg-brand-text text-bg-main font-bold rounded hover:opacity-80">Close</button>
             </div>
         </div>
@@ -285,43 +177,17 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
-            authDomain: "playwithease.firebaseapp.com",
-            projectId: "playwithease",
-            storageBucket: "playwithease.firebasestorage.app",
-            messagingSenderId: "189729941006",
-            appId: "1:189729941006:web:362653774b92416c357e5f",
-            measurementId: "G-1C3B31KQ7C"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        // Auth State Listener
+        const firebaseConfig = { apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs", authDomain: "playwithease.firebaseapp.com", projectId: "playwithease", storageBucket: "playwithease.firebasestorage.app", messagingSenderId: "189729941006", appId: "1:189729941006:web:362653774b92416c357e5f", measurementId: "G-1C3B31KQ7C" };
+        const app = initializeApp(firebaseConfig); const auth = getAuth(app);
         onAuthStateChanged(auth, (user) => {
-            const loginBtn = document.getElementById('loginBtn');
-            const profileBtn = document.getElementById('profileBtn');
-            const userAvatar = document.getElementById('userAvatar');
-
-            if (user) {
-                // User is Logged In
-                loginBtn.classList.add('hidden');
-                profileBtn.classList.remove('hidden');
-                if(user.photoURL) userAvatar.src = user.photoURL;
-            } else {
-                // User is Logged Out
-                loginBtn.classList.remove('hidden');
-                profileBtn.classList.add('hidden');
-            }
+            if (user) { document.getElementById('loginBtn').classList.add('hidden'); document.getElementById('profileBtn').classList.remove('hidden'); if(user.photoURL) document.getElementById('userAvatar').src = user.photoURL; }
+            else { document.getElementById('loginBtn').classList.remove('hidden'); document.getElementById('profileBtn').classList.add('hidden'); }
         });
     </script>
 
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('storeLogic', () => ({
-                // STATE
                 currency: localStorage.getItem('pwe_currency') || 'INR', 
                 exchangeRate: 85.0, 
                 cartCount: parseInt(localStorage.getItem('pwe_cart_count')) || 0,
@@ -329,7 +195,6 @@
                 searchQuery: '',
                 notifications: [],
                 mobileSearchOpen: false,
-                
                 timer: { days: '00', hours: '00', minutes: '00', seconds: '00' },
                 keyModal: { open: false, loading: false, gameTitle: '', key: '' },
 
@@ -341,7 +206,6 @@
                     minimal: { '--bg-main': '#ffffff', '--bg-card': '#f3f4f6', '--text-main': '#111827', '--brand-primary': '#000000', '--brand-secondary': '#374151' }
                 },
 
-                // DATABASE
                 games: [
                     { id: 1, title: 'Grand Theft Auto V', category: 'action', price: 14.99, oldPrice: 29.99, discount: '-50%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
                     { id: 2, title: 'Red Dead Redemption 2', category: 'adventure', price: 19.99, oldPrice: 59.99, discount: '-66%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
@@ -355,80 +219,18 @@
                     { id: 10, title: 'The Last of Us Part I', category: 'adventure', price: 49.99, oldPrice: 69.99, discount: '-28%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900.jpg' },
                 ],
 
-                // INIT
-                init() { 
-                    lucide.createIcons(); 
-                    this.startTimer();
-                    this.setTheme(this.currentTheme);
-                },
-
-                get filteredGames() {
-                    if (this.searchQuery === '') return this.games;
-                    return this.games.filter(game => game.title.toLowerCase().includes(this.searchQuery.toLowerCase()));
-                },
-
-                addToCart(game) { 
-                    this.cartCount++;
-                    localStorage.setItem('pwe_cart_count', this.cartCount);
-                    
-                    let cart = JSON.parse(localStorage.getItem('pwe_cart_items')) || [];
-                    cart.push(game);
-                    localStorage.setItem('pwe_cart_items', JSON.stringify(cart));
-
-                    this.notify('success', 'Added to Cart', `${game.title} added.`);
-                },
-
-                toggleCurrency() { 
-                    this.currency = this.currency === 'USD' ? 'INR' : 'USD'; 
-                    localStorage.setItem('pwe_currency', this.currency);
-                    this.notify('info', 'Currency Updated', `Switched to ${this.currency}.`);
-                },
-
-                setTheme(name) { 
-                    this.currentTheme = name; 
-                    localStorage.setItem('pwe_theme', name);
-                },
-                
-                toggleSearchMobile() {
-                    this.mobileSearchOpen = !this.mobileSearchOpen;
-                },
-
-                get themeStyles() {
-                    return Object.entries(this.themes[this.currentTheme]).map(([k, v]) => `${k}: ${v};`).join(' ');
-                },
-
+                init() { lucide.createIcons(); this.startTimer(); this.setTheme(this.currentTheme); },
+                get filteredGames() { if (this.searchQuery === '') return this.games; return this.games.filter(game => game.title.toLowerCase().includes(this.searchQuery.toLowerCase())); },
+                addToCart(game) { this.cartCount++; localStorage.setItem('pwe_cart_count', this.cartCount); let cart = JSON.parse(localStorage.getItem('pwe_cart_items')) || []; cart.push(game); localStorage.setItem('pwe_cart_items', JSON.stringify(cart)); this.notify('success', 'Added to Cart', `${game.title} added.`); },
+                toggleCurrency() { this.currency = this.currency === 'USD' ? 'INR' : 'USD'; localStorage.setItem('pwe_currency', this.currency); this.notify('info', 'Currency Updated', `Switched to ${this.currency}.`); },
+                setTheme(name) { this.currentTheme = name; localStorage.setItem('pwe_theme', name); },
+                toggleSearchMobile() { this.mobileSearchOpen = !this.mobileSearchOpen; },
+                get themeStyles() { return Object.entries(this.themes[this.currentTheme]).map(([k, v]) => `${k}: ${v};`).join(' '); },
                 formatPrice(p) { return this.currency === 'USD' ? '$'+p.toFixed(2) : '₹'+Math.round(p*this.exchangeRate); },
-
-                notify(type, title, message) {
-                    const id = Date.now();
-                    this.notifications.push({ id, type, title, message, visible: true });
-                    setTimeout(() => {
-                        const index = this.notifications.findIndex(n => n.id === id);
-                        if(index > -1) this.notifications[index].visible = false;
-                    }, 3000);
-                },
-
-                startTimer() {
-                    const target = new Date("2026-11-19T00:00:00").getTime();
-                    setInterval(() => {
-                        const now = new Date().getTime(), d = target - now;
-                        this.timer.days = Math.floor(d/(1000*60*60*24));
-                        this.timer.hours = Math.floor((d%(1000*60*60*24))/(1000*60*60));
-                        this.timer.minutes = Math.floor((d%(1000*60*60))/(1000*60));
-                        this.timer.seconds = Math.floor((d%(1000*60))/1000);
-                    }, 1000);
-                },
-
-                simulateKeyReveal(g) {
-                    this.keyModal.gameTitle = g.title; this.keyModal.open = true; this.keyModal.loading = true;
-                    setTimeout(() => { this.keyModal.loading = false; this.keyModal.key = 'XXXX-XXXX-XXXX'; }, 2000);
-                },
-                
-                copyKey() { 
-                    navigator.clipboard.writeText(this.keyModal.key);
-                    this.notify('success', 'Key Copied!', 'Redeem code copied.');
-                    this.keyModal.open = false;
-                }
+                notify(type, title, message) { const id = Date.now(); this.notifications.push({ id, type, title, message, visible: true }); setTimeout(() => { const index = this.notifications.findIndex(n => n.id === id); if(index > -1) this.notifications[index].visible = false; }, 3000); },
+                startTimer() { const target = new Date("2026-11-19T00:00:00").getTime(); setInterval(() => { const now = new Date().getTime(), d = target - now; this.timer.days = Math.floor(d/(1000*60*60*24)); this.timer.hours = Math.floor((d%(1000*60*60*24))/(1000*60*60)); this.timer.minutes = Math.floor((d%(1000*60*60))/(1000*60)); this.timer.seconds = Math.floor((d%(1000*60))/1000); }, 1000); },
+                simulateKeyReveal(g) { this.keyModal.gameTitle = g.title; this.keyModal.open = true; this.keyModal.loading = true; setTimeout(() => { this.keyModal.loading = false; this.keyModal.key = 'XXXX-XXXX-XXXX'; }, 2000); },
+                copyKey() { navigator.clipboard.writeText(this.keyModal.key); this.notify('success', 'Key Copied!', 'Redeem code copied.'); this.keyModal.open = false; }
             }))
         });
     </script>
