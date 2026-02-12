@@ -16,7 +16,7 @@ background:#000;
 overflow:hidden;
 }
 
-/* ===== GAMING POSTER WALL ===== */
+/* ===== POSTER WALL ===== */
 .poster-wall{
 position:fixed;
 top:0;
@@ -24,39 +24,45 @@ left:0;
 width:100%;
 height:100%;
 display:grid;
-grid-template-columns:repeat(auto-fill, minmax(120px,1fr));
+grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
 grid-auto-rows:160px;
 gap:4px;
 z-index:-1;
+animation:slowMove 60s linear infinite;
 }
 
 .poster-wall img{
 width:100%;
 height:100%;
 object-fit:cover;
-filter:brightness(0.35);
+filter:brightness(0.5) blur(2px);
 }
 
-/* ===== LOGIN CONTAINER ===== */
+@keyframes slowMove{
+0%{transform:translateY(0);}
+50%{transform:translateY(-20px);}
+100%{transform:translateY(0);}
+}
+
+/* ===== LOGIN BOX ===== */
 .login-container{
 position:absolute;
 top:50%;
 left:50%;
 transform:translate(-50%,-50%);
-width:420px;
+width:450px;
 background:#0f172a;
-padding:50px 40px;
+padding:55px 45px;
 border-radius:20px;
-box-shadow:0 30px 80px rgba(0,0,0,0.8);
+box-shadow:0 30px 90px rgba(0,0,0,0.9);
 color:#fff;
 text-align:center;
-animation:fadeUp .6s ease;
 }
 
 .login-container h2{
 font-family:'Orbitron';
 margin-bottom:25px;
-font-size:24px;
+font-size:26px;
 }
 
 .login-container input{
@@ -82,6 +88,11 @@ cursor:pointer;
 transition:.3s;
 }
 
+.login-container button:disabled{
+opacity:0.6;
+cursor:not-allowed;
+}
+
 .login-container button:hover{
 transform:scale(1.05);
 box-shadow:0 10px 30px rgba(59,130,246,0.6);
@@ -94,14 +105,10 @@ font-size:12px;
 margin-bottom:18px;
 }
 
-.options label{
-cursor:pointer;
-}
-
 .error-msg{
 color:#ef4444;
 font-size:13px;
-margin-bottom:10px;
+margin-bottom:12px;
 display:none;
 }
 
@@ -121,11 +128,23 @@ transition:.4s;
 
 .success-popup.active{
 transform:translate(-50%,-50%) scale(1);
+box-shadow:0 0 40px #3b82f6;
 }
 
-@keyframes fadeUp{
-from{opacity:0;transform:translate(-50%,-40%);}
-to{opacity:1;transform:translate(-50%,-50%);}
+.spinner{
+border:3px solid rgba(255,255,255,0.2);
+border-top:3px solid #fff;
+border-radius:50%;
+width:18px;
+height:18px;
+animation:spin 1s linear infinite;
+display:inline-block;
+vertical-align:middle;
+margin-left:8px;
+}
+
+@keyframes spin{
+100%{transform:rotate(360deg);}
 }
 </style>
 </head>
@@ -147,7 +166,7 @@ to{opacity:1;transform:translate(-50%,-50%);}
 <label><input type="checkbox"> Remember Me</label>
 </div>
 
-<button onclick="login()">Login</button>
+<button id="loginBtn" onclick="login()">Login</button>
 
 <p style="margin-top:15px;font-size:13px;">
 New user? <span onclick="register()" style="color:#3b82f6;cursor:pointer;">Create Account</span>
@@ -156,7 +175,7 @@ New user? <span onclick="register()" style="color:#3b82f6;cursor:pointer;">Creat
 
 <div class="success-popup" id="successBox">
 <h3>🎉 Login Successful!</h3>
-<p>Redirecting to PlayWithEase...</p>
+<p>Redirecting...</p>
 </div>
 
 <script type="module">
@@ -165,7 +184,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } 
 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-/* 🔥 APNA REAL FIREBASE CONFIG YAHA PASTE KAR */
+/* 🔥 PASTE REAL CONFIG */
 const firebaseConfig = {
 apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
 authDomain: "playwithease.firebaseapp.com",
@@ -176,13 +195,31 @@ appId: "1:189729941006:web:362653774b92416c357e5f"
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+/* ===== POPULAR WORKING GAME IDS ===== */
+const gameIDs=[
+271590,1174180,1091500,1593500,1245620,570,730,578080,
+292030,377160,440,945360,1817070,1086940,739630,
+990080,601150,394360,252950,976730,812140
+];
+
+const posterWall=document.getElementById("posterWall");
+
+for(let i=0;i<120;i++){
+let img=document.createElement("img");
+img.src=`https://cdn.cloudflare.steamstatic.com/steam/apps/${gameIDs[i%gameIDs.length]}/header.jpg`;
+posterWall.appendChild(img);
+}
+
 /* ===== LOGIN ===== */
-window.login = function(){
+window.login=function(){
+const btn=document.getElementById("loginBtn");
 const email=document.getElementById("email").value;
 const password=document.getElementById("password").value;
 const errorBox=document.getElementById("errorBox");
 
 errorBox.style.display="none";
+btn.disabled=true;
+btn.innerHTML="Logging in <span class='spinner'></span>";
 
 signInWithEmailAndPassword(auth,email,password)
 .then(()=>{
@@ -192,31 +229,22 @@ setTimeout(()=>window.location.href="index.html",2000);
 .catch(err=>{
 errorBox.innerText=err.message;
 errorBox.style.display="block";
+btn.disabled=false;
+btn.innerHTML="Login";
 });
 }
 
-/* ===== REGISTER ===== */
 window.register=function(){
 const email=document.getElementById("email").value;
 const password=document.getElementById("password").value;
-
 createUserWithEmailAndPassword(auth,email,password)
-.then(()=>alert("Account Created Successfully"))
+.then(()=>alert("Account Created"))
 .catch(err=>alert(err.message));
 }
 
-/* ===== SHOW PASSWORD ===== */
 window.togglePass=function(){
 const pass=document.getElementById("password");
 pass.type=pass.type==="password"?"text":"password";
-}
-
-/* ===== GENERATE 100+ GAME POSTERS ===== */
-const posterWall=document.getElementById("posterWall");
-for(let i=100;i<220;i++){
-let img=document.createElement("img");
-img.src=`https://cdn.cloudflare.steamstatic.com/steam/apps/${i}/header.jpg`;
-posterWall.appendChild(img);
 }
 
 </script>
