@@ -162,7 +162,8 @@
                 </div>
                 
                 <img :src="heroSlides[activeSlide].logo" 
-                     class="h-16 md:h-32 mx-auto mb-8 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)] w-auto max-w-[80%]">
+                     :class="activeSlide === 1 ? 'invert brightness-0 filter drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]' : 'drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]'"
+                     class="h-16 md:h-32 mx-auto mb-8 w-auto max-w-[80%] transition-all duration-300">
                 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-12 text-white mb-8 max-w-3xl mx-auto">
                     <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl"><div class="text-3xl md:text-5xl font-display font-black" x-text="timer.days">00</div><div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Days</div></div>
@@ -295,8 +296,8 @@
                     },
                     {
                         // 100% RELIABLE FORZA POSTER (Xbox Assets)
-                        image: 'https://assets.xboxservices.com/assets/2d/86/2d867e33-7226-4ca9-b903-5d556557606e.jpg?n=Forza-Horizon-5_GLP-Page-Hero-1084_1920x1080.jpg',
-                        logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Forza_Horizon_logo.svg/2560px-Forza_Horizon_logo.svg.png',
+                        image: 'https://cdn.forza.net/strapi-uploads/assets/xlarge_hero_fh6_f55db4cd81_53e6ca38f4.webp',
+                        logo: 'https://cdn.forza.net/strapi-uploads/assets/logo_black_fh6_700993660b.svg',
                         videoId: 'XG1Ll2CVhug',
                         date: '2027-05-15T00:00:00'
                     }
