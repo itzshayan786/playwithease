@@ -17,14 +17,8 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'], tech: ['Rajdhani', 'sans-serif'], display: ['Orbitron', 'sans-serif'] },
                     colors: { bg: { main: '#080808', card: '#101010' }, brand: { primary: '#2563eb', secondary: '#ff00aa', gold: '#fbbf24' } },
-                    animation: {
-                        'fade-in': 'fadeIn 0.5s ease-out forwards',
-                        'slide-up': 'slideUp 0.5s ease-out forwards',
-                    },
-                    keyframes: {
-                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-                        slideUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } }
-                    }
+                    animation: { 'fade-in': 'fadeIn 0.5s ease-out forwards', 'slide-up': 'slideUp 0.5s ease-out forwards' },
+                    keyframes: { fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } }, slideUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } } }
                 }
             }
         }
@@ -76,12 +70,7 @@
                         
                         <h1 class="text-3xl md:text-5xl font-display font-black leading-tight mb-4 text-white" x-text="game?.title"></h1>
                         
-                        <p class="text-gray-400 text-sm md:text-base leading-relaxed mb-6">
-                            Immerse yourself in this award-winning experience. Includes standard digital bonuses. 
-                            Verified secure global key for Steam/Epic Games.
-                        </p>
-
-                        <div class="flex justify-center md:justify-start gap-6 border-t border-white/10 pt-4">
+                        <div class="flex justify-center md:justify-start gap-6 border-y border-white/10 py-4 mb-4">
                             <div class="text-center md:text-left">
                                 <div class="text-[10px] text-gray-500 uppercase font-bold">Rating</div>
                                 <div class="flex text-brand-gold"><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i></div>
@@ -98,47 +87,81 @@
                     </div>
                 </div>
 
-                <div class="mt-8">
-                    <div class="flex border-b border-white/10" x-data="{ activeTab: 'sysreq' }">
-                        <button class="px-6 py-3 text-xs font-bold uppercase tracking-widest border-b-2 border-brand-primary text-white">System Requirements</button>
-                        <button class="px-6 py-3 text-xs font-bold uppercase tracking-widest border-b-2 border-transparent text-gray-500 hover:text-gray-300 disabled:opacity-50">About</button>
+                <div class="mt-8" x-data="{ activeTab: 'about' }">
+                    <div class="flex border-b border-white/10 overflow-x-auto">
+                        <button @click="activeTab = 'about'" :class="activeTab === 'about' ? 'border-brand-primary text-white' : 'border-transparent text-gray-500 hover:text-gray-300'" class="px-6 py-3 text-xs font-bold uppercase tracking-widest border-b-2 transition whitespace-nowrap">About</button>
+                        <button @click="activeTab = 'specs'" :class="activeTab === 'specs' ? 'border-brand-primary text-white' : 'border-transparent text-gray-500 hover:text-gray-300'" class="px-6 py-3 text-xs font-bold uppercase tracking-widest border-b-2 transition whitespace-nowrap">System Reqs</button>
+                        <button @click="activeTab = 'reviews'" :class="activeTab === 'reviews' ? 'border-brand-primary text-white' : 'border-transparent text-gray-500 hover:text-gray-300'" class="px-6 py-3 text-xs font-bold uppercase tracking-widest border-b-2 transition whitespace-nowrap">Reviews</button>
                     </div>
 
-                    <div class="bg-white/5 rounded-b-xl border-x border-b border-white/5 p-6 animate-fade-in">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
-                            <div class="space-y-3">
-                                <h4 class="font-bold text-gray-500 uppercase text-xs mb-2">Minimum</h4>
-                                <div class="flex justify-between border-b border-white/5 pb-1">
-                                    <span class="text-gray-500">OS</span><span class="text-gray-300" x-text="specs.min.os"></span>
-                                </div>
-                                <div class="flex justify-between border-b border-white/5 pb-1">
-                                    <span class="text-gray-500">CPU</span><span class="text-gray-300" x-text="specs.min.cpu"></span>
-                                </div>
-                                <div class="flex justify-between border-b border-white/5 pb-1">
-                                    <span class="text-gray-500">RAM</span><span class="text-gray-300" x-text="specs.min.ram"></span>
-                                </div>
-                                <div class="flex justify-between border-b border-white/5 pb-1">
-                                    <span class="text-gray-500">GPU</span><span class="text-gray-300" x-text="specs.min.gpu"></span>
-                                </div>
+                    <div x-show="activeTab === 'about'" class="bg-white/5 rounded-b-xl border-x border-b border-white/5 p-6 animate-fade-in text-gray-300 leading-relaxed text-sm md:text-base">
+                        <p class="mb-4">Experience the ultimate gaming adventure. Immerse yourself in a world built for gamers. Includes the base game and all digital bonus content. Verified for instant activation on Steam, Epic Games, or Origin.</p>
+                        <p>This product is a unique digital code. It is 100% verified and supports global activation. No VPN required.</p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mt-6">
+                            <div class="flex items-center gap-3 p-3 bg-black/20 rounded border border-white/5">
+                                <i data-lucide="shield-check" class="text-brand-primary"></i> <span class="text-xs font-bold uppercase">Official Key</span>
                             </div>
-                            <div class="space-y-3">
-                                <h4 class="font-bold text-brand-primary uppercase text-xs mb-2">Recommended</h4>
-                                <div class="flex justify-between border-b border-white/5 pb-1">
-                                    <span class="text-gray-500">OS</span><span class="text-gray-300" x-text="specs.rec.os"></span>
-                                </div>
-                                <div class="flex justify-between border-b border-white/5 pb-1">
-                                    <span class="text-gray-500">CPU</span><span class="text-gray-300" x-text="specs.rec.cpu"></span>
-                                </div>
-                                <div class="flex justify-between border-b border-white/5 pb-1">
-                                    <span class="text-gray-500">RAM</span><span class="text-gray-300" x-text="specs.rec.ram"></span>
-                                </div>
-                                <div class="flex justify-between border-b border-white/5 pb-1">
-                                    <span class="text-gray-500">GPU</span><span class="text-gray-300" x-text="specs.rec.gpu"></span>
-                                </div>
+                            <div class="flex items-center gap-3 p-3 bg-black/20 rounded border border-white/5">
+                                <i data-lucide="cloud" class="text-brand-secondary"></i> <span class="text-xs font-bold uppercase">Cloud Save</span>
                             </div>
                         </div>
                     </div>
+
+                    <div x-show="activeTab === 'specs'" class="bg-white/5 rounded-b-xl border-x border-b border-white/5 p-6 animate-fade-in" style="display: none;">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+                            <div class="space-y-3">
+                                <h4 class="font-bold text-gray-500 uppercase text-xs mb-2">Minimum</h4>
+                                <div class="flex justify-between border-b border-white/5 pb-1"><span class="text-gray-500">OS</span><span class="text-gray-300" x-text="specs.min.os"></span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-1"><span class="text-gray-500">CPU</span><span class="text-gray-300" x-text="specs.min.cpu"></span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-1"><span class="text-gray-500">RAM</span><span class="text-gray-300" x-text="specs.min.ram"></span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-1"><span class="text-gray-500">GPU</span><span class="text-gray-300" x-text="specs.min.gpu"></span></div>
+                            </div>
+                            <div class="space-y-3">
+                                <h4 class="font-bold text-brand-primary uppercase text-xs mb-2">Recommended</h4>
+                                <div class="flex justify-between border-b border-white/5 pb-1"><span class="text-gray-500">OS</span><span class="text-gray-300" x-text="specs.rec.os"></span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-1"><span class="text-gray-500">CPU</span><span class="text-gray-300" x-text="specs.rec.cpu"></span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-1"><span class="text-gray-500">RAM</span><span class="text-gray-300" x-text="specs.rec.ram"></span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-1"><span class="text-gray-500">GPU</span><span class="text-gray-300" x-text="specs.rec.gpu"></span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div x-show="activeTab === 'reviews'" class="bg-white/5 rounded-b-xl border-x border-b border-white/5 p-6 animate-fade-in space-y-4" style="display: none;">
+                         <div class="flex gap-4 border-b border-white/5 pb-4">
+                             <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center font-bold">JD</div>
+                             <div>
+                                 <div class="flex text-yellow-500 w-20"><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i></div>
+                                 <h5 class="font-bold text-sm">John Doe</h5>
+                                 <p class="text-xs text-gray-400 mt-1">Instant delivery. Code worked perfectly on Steam. Highly recommend!</p>
+                             </div>
+                         </div>
+                         <div class="flex gap-4 border-b border-white/5 pb-4">
+                             <div class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center font-bold">G</div>
+                             <div>
+                                 <div class="flex text-yellow-500 w-20"><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i></div>
+                                 <h5 class="font-bold text-sm">Gamer123</h5>
+                                 <p class="text-xs text-gray-400 mt-1">Best price I could find online. Will buy again.</p>
+                             </div>
+                         </div>
+                    </div>
                 </div>
+                
+                <div class="pt-8 border-t border-white/10">
+                    <h3 class="font-display font-bold text-xl mb-6">YOU MIGHT ALSO LIKE</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                         <template x-for="related in getRelated()" :key="related.id">
+                             <a :href="'product.html?id=' + related.id" class="group block bg-bg-card rounded-xl overflow-hidden border border-white/10 hover:border-brand-primary/50 transition">
+                                 <img :src="related.image" class="aspect-[2/3] object-cover group-hover:scale-110 transition duration-700">
+                                 <div class="p-3">
+                                     <div class="truncate font-bold text-xs" x-text="related.title"></div>
+                                     <div class="text-brand-primary font-bold text-sm" x-text="formatPrice(related.price)"></div>
+                                 </div>
+                             </a>
+                         </template>
+                    </div>
+                </div>
+
             </div>
 
             <div class="lg:col-span-4 relative">
@@ -147,12 +170,17 @@
                         
                         <div class="absolute top-0 right-0 w-32 h-32 bg-brand-primary/10 blur-[50px] rounded-full"></div>
 
-                        <div class="flex justify-between items-end mb-6 relative z-10">
+                        <div class="flex justify-between items-end mb-4 relative z-10">
                             <div>
                                 <div class="text-sm text-gray-500 line-through font-mono" x-text="formatPrice(game?.oldPrice)"></div>
                                 <div class="text-4xl font-display font-black text-white" x-text="formatPrice(game?.price)"></div>
                             </div>
                             <div x-show="game?.discount" class="bg-brand-secondary text-white text-xs font-bold px-2 py-1 rounded shadow-lg animate-pulse" x-text="game?.discount"></div>
+                        </div>
+
+                        <div class="flex items-center gap-2 mb-6 text-xs font-bold text-yellow-500 bg-yellow-500/10 p-2 rounded border border-yellow-500/20">
+                            <i data-lucide="zap" class="w-3 h-3 fill-current"></i>
+                            <span>Hurry! Only 4 keys left at this price.</span>
                         </div>
 
                         <button @click="addToCart" class="w-full py-4 bg-brand-primary hover:bg-blue-600 text-white font-bold font-display uppercase tracking-widest rounded-xl transition shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] flex items-center justify-center gap-2 mb-4 group">
@@ -167,17 +195,6 @@
                             <button class="flex-1 py-3 border border-white/10 rounded-lg text-xs font-bold text-gray-400 hover:text-white hover:bg-white/5 transition flex items-center justify-center gap-2">
                                 <i data-lucide="share-2" class="w-3 h-3"></i> Share
                             </button>
-                        </div>
-
-                        <div class="mt-6 pt-6 border-t border-white/10 space-y-3">
-                            <div class="flex items-center gap-3 text-xs text-gray-500">
-                                <div class="w-6 h-6 rounded bg-white/5 flex items-center justify-center text-green-500"><i data-lucide="shield-check" class="w-3 h-3"></i></div>
-                                <span>Official Distributor</span>
-                            </div>
-                            <div class="flex items-center gap-3 text-xs text-gray-500">
-                                <div class="w-6 h-6 rounded bg-white/5 flex items-center justify-center text-blue-500"><i data-lucide="credit-card" class="w-3 h-3"></i></div>
-                                <span>Secure Checkout</span>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -224,10 +241,16 @@
                     if (id) {
                         this.game = this.allGames.find(g => g.id === id);
                     }
-                    if(!this.game) {
-                        // Redirect home if invalid ID to prevent broken page
-                        window.location.href = 'index.html'; 
-                    }
+                    if(!this.game) window.location.href = 'index.html';
+                },
+
+                getRelated() {
+                    // Get 4 random games excluding current
+                    if(!this.game) return [];
+                    return this.allGames
+                        .filter(g => g.id !== this.game.id)
+                        .sort(() => 0.5 - Math.random())
+                        .slice(0, 4);
                 },
 
                 formatPrice(p) { 
