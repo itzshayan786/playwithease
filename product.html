@@ -18,154 +18,122 @@
                     fontFamily: { sans: ['Inter', 'sans-serif'], tech: ['Rajdhani', 'sans-serif'], display: ['Orbitron', 'sans-serif'] },
                     colors: { bg: { main: '#080808', card: '#101010' }, brand: { primary: '#2563eb', secondary: '#ff00aa', gold: '#fbbf24' } },
                     animation: {
-                        'fade-in': 'fadeIn 0.8s ease-out forwards',
-                        'slide-up': 'slideUp 0.8s ease-out forwards',
-                        'float': 'float 6s ease-in-out infinite',
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'slide-up': 'slideUp 0.5s ease-out forwards',
                     },
                     keyframes: {
                         fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-                        slideUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
-                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } }
+                        slideUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } }
                     }
                 }
             }
         }
     </script>
     <style>
-        .glass { background: rgba(16, 16, 16, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .hero-mask { mask-image: linear-gradient(to bottom, black 50%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%); }
+        .glass { background: rgba(16, 16, 16, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
         body { background-color: #080808; color: white; -webkit-tap-highlight-color: transparent; }
         [x-cloak] { display: none !important; }
-        /* Custom Scrollbar for specs table */
-        .specs-scroll::-webkit-scrollbar { height: 6px; }
-        .specs-scroll::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
     </style>
 </head>
 
 <body class="antialiased min-h-screen relative" x-data="productPageLogic()">
 
     <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <img :src="game?.image" class="w-full h-full object-cover opacity-20 blur-[100px] scale-110">
-        <div class="absolute inset-0 bg-gradient-to-t from-bg-main via-bg-main/90 to-transparent"></div>
+        <img :src="game?.image" class="w-full h-full object-cover opacity-10 blur-[80px]">
+        <div class="absolute inset-0 bg-gradient-to-t from-bg-main via-bg-main/95 to-bg-main/80"></div>
     </div>
 
-    <nav class="fixed top-0 w-full z-50 glass h-20 flex items-center border-b border-white/5 transition-all duration-300">
-        <div class="max-w-[1400px] mx-auto px-6 w-full flex items-center justify-between">
-            <a href="index.html" class="flex items-center gap-2 hover:text-brand-primary transition group">
-                <div class="p-2 bg-white/5 rounded-lg group-hover:bg-white/10 transition"><i data-lucide="arrow-left" class="w-5 h-5"></i></div>
-                <span class="font-bold text-sm tracking-widest hidden md:block">STORE</span>
+    <nav class="fixed top-0 w-full z-50 glass h-16 md:h-20 flex items-center transition-all duration-300">
+        <div class="max-w-[1200px] mx-auto px-4 md:px-6 w-full flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 hover:text-brand-primary transition group text-sm font-bold tracking-widest">
+                <i data-lucide="arrow-left" class="w-5 h-5 text-gray-400 group-hover:text-brand-primary"></i> STORE
             </a>
             
-            <div class="flex items-center gap-4">
-                <button onclick="window.location.href='cart.html'" class="relative p-3 bg-white/5 rounded-xl hover:bg-white/10 transition border border-white/5 group">
-                    <i data-lucide="shopping-bag" class="w-5 h-5 text-gray-300 group-hover:text-white"></i>
-                    <span x-show="cartCount > 0" class="absolute -top-1 -right-1 bg-brand-secondary text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold shadow-lg" x-text="cartCount"></span>
-                </button>
-            </div>
+            <button onclick="window.location.href='cart.html'" class="relative p-2 rounded-lg hover:bg-white/5 transition group">
+                <i data-lucide="shopping-bag" class="w-6 h-6 text-gray-400 group-hover:text-white transition"></i>
+                <span x-show="cartCount > 0" class="absolute top-0 right-0 bg-brand-secondary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-black" x-text="cartCount"></span>
+            </button>
         </div>
     </nav>
 
-    <main class="relative z-10 max-w-[1400px] mx-auto px-4 md:px-6 pt-32 pb-20" x-show="game" x-transition.opacity>
+    <main class="relative z-10 max-w-[1200px] mx-auto px-4 md:px-6 pt-24 md:pt-32 pb-20" x-show="game" x-transition.opacity>
         
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
             <div class="lg:col-span-8 space-y-8 animate-fade-in">
-                <div class="relative aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
-                    <img :src="game?.image" class="w-full h-full object-cover transition duration-1000 group-hover:scale-105">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                    <div class="absolute bottom-6 left-6 md:bottom-10 md:left-10">
-                        <div class="flex items-center gap-3 mb-3">
-                            <span class="px-3 py-1 bg-brand-primary text-white text-[10px] font-bold uppercase tracking-widest rounded-md shadow-lg shadow-blue-900/50">Base Game</span>
-                            <span class="px-3 py-1 bg-white/10 backdrop-blur text-white text-[10px] font-bold uppercase tracking-widest rounded-md border border-white/10" x-text="game?.category"></span>
+                
+                <div class="flex flex-col md:flex-row gap-6 md:gap-8">
+                    <div class="shrink-0 mx-auto md:mx-0 w-48 md:w-64 aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 relative group">
+                        <img :src="game?.image" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]"></div>
+                    </div>
+
+                    <div class="flex-1 text-center md:text-left pt-2">
+                        <div class="flex flex-wrap justify-center md:justify-start gap-2 mb-3">
+                            <span class="px-2 py-0.5 bg-brand-primary/20 text-brand-primary border border-brand-primary/20 text-[10px] font-bold uppercase tracking-widest rounded">Base Game</span>
+                            <span class="px-2 py-0.5 bg-white/10 text-gray-300 border border-white/10 text-[10px] font-bold uppercase tracking-widest rounded" x-text="game?.category"></span>
                         </div>
-                        <h1 class="text-4xl md:text-6xl font-display font-black leading-none drop-shadow-xl" x-text="game?.title"></h1>
+                        
+                        <h1 class="text-3xl md:text-5xl font-display font-black leading-tight mb-4 text-white" x-text="game?.title"></h1>
+                        
+                        <p class="text-gray-400 text-sm md:text-base leading-relaxed mb-6">
+                            Immerse yourself in this award-winning experience. Includes standard digital bonuses. 
+                            Verified secure global key for Steam/Epic Games.
+                        </p>
+
+                        <div class="flex justify-center md:justify-start gap-6 border-t border-white/10 pt-4">
+                            <div class="text-center md:text-left">
+                                <div class="text-[10px] text-gray-500 uppercase font-bold">Rating</div>
+                                <div class="flex text-brand-gold"><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i></div>
+                            </div>
+                            <div class="text-center md:text-left">
+                                <div class="text-[10px] text-gray-500 uppercase font-bold">Region</div>
+                                <div class="text-xs font-bold text-white flex items-center gap-1"><i data-lucide="globe" class="w-3 h-3"></i> Global</div>
+                            </div>
+                            <div class="text-center md:text-left">
+                                <div class="text-[10px] text-gray-500 uppercase font-bold">Delivery</div>
+                                <div class="text-xs font-bold text-brand-green flex items-center gap-1"><i data-lucide="zap" class="w-3 h-3"></i> Instant</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="flex border-b border-white/10" x-data="{ activeTab: 'overview' }">
-                    <button @click="activeTab = 'overview'" :class="activeTab === 'overview' ? 'border-brand-primary text-white' : 'border-transparent text-gray-500 hover:text-gray-300'" class="px-6 py-4 text-sm font-bold uppercase tracking-widest border-b-2 transition">Overview</button>
-                    <button @click="activeTab = 'specs'" :class="activeTab === 'specs' ? 'border-brand-primary text-white' : 'border-transparent text-gray-500 hover:text-gray-300'" class="px-6 py-4 text-sm font-bold uppercase tracking-widest border-b-2 transition">System Reqs</button>
-                    <button @click="activeTab = 'reviews'" :class="activeTab === 'reviews' ? 'border-brand-primary text-white' : 'border-transparent text-gray-500 hover:text-gray-300'" class="px-6 py-4 text-sm font-bold uppercase tracking-widest border-b-2 transition">Reviews</button>
-                    
-                    <div class="hidden">
-                        </div>
-                </div>
-
-                <div class="prose prose-invert max-w-none text-gray-300 leading-relaxed space-y-6">
-                    <p class="text-lg">Experience the ultimate gaming adventure. This title features stunning next-gen graphics, an immersive open-world environment, and a gripping narrative that adapts to your choices.</p>
-                    
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-4">
-                        <div class="p-4 rounded-xl bg-white/5 border border-white/5 text-center hover:bg-white/10 transition">
-                            <i data-lucide="users" class="w-6 h-6 mx-auto mb-2 text-brand-gold"></i>
-                            <div class="text-xs font-bold uppercase text-gray-500">Players</div>
-                            <div class="text-sm font-bold text-white">Single / Multi</div>
-                        </div>
-                        <div class="p-4 rounded-xl bg-white/5 border border-white/5 text-center hover:bg-white/10 transition">
-                            <i data-lucide="gamepad-2" class="w-6 h-6 mx-auto mb-2 text-brand-primary"></i>
-                            <div class="text-xs font-bold uppercase text-gray-500">Controller</div>
-                            <div class="text-sm font-bold text-white">Full Support</div>
-                        </div>
-                        <div class="p-4 rounded-xl bg-white/5 border border-white/5 text-center hover:bg-white/10 transition">
-                            <i data-lucide="cloud" class="w-6 h-6 mx-auto mb-2 text-brand-secondary"></i>
-                            <div class="text-xs font-bold uppercase text-gray-500">Cloud Saves</div>
-                            <div class="text-sm font-bold text-white">Supported</div>
-                        </div>
-                        <div class="p-4 rounded-xl bg-white/5 border border-white/5 text-center hover:bg-white/10 transition">
-                            <i data-lucide="trophy" class="w-6 h-6 mx-auto mb-2 text-green-500"></i>
-                            <div class="text-xs font-bold uppercase text-gray-500">Achievements</div>
-                            <div class="text-sm font-bold text-white">Yes</div>
-                        </div>
+                <div class="mt-8">
+                    <div class="flex border-b border-white/10" x-data="{ activeTab: 'sysreq' }">
+                        <button class="px-6 py-3 text-xs font-bold uppercase tracking-widest border-b-2 border-brand-primary text-white">System Requirements</button>
+                        <button class="px-6 py-3 text-xs font-bold uppercase tracking-widest border-b-2 border-transparent text-gray-500 hover:text-gray-300 disabled:opacity-50">About</button>
                     </div>
 
-                    <div id="specs-section" class="pt-8">
-                        <h3 class="text-2xl font-display font-bold text-white mb-6">SYSTEM REQUIREMENTS</h3>
-                        <div class="bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
-                            <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-white/10">
-                                <div class="p-6 space-y-4">
-                                    <div class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-4">Minimum</div>
-                                    <div>
-                                        <span class="block text-xs text-gray-500 uppercase">OS</span>
-                                        <span class="text-sm font-mono text-white" x-text="specs.min.os">Windows 10 64-bit</span>
-                                    </div>
-                                    <div>
-                                        <span class="block text-xs text-gray-500 uppercase">Processor</span>
-                                        <span class="text-sm font-mono text-white" x-text="specs.min.cpu">Intel Core i5-4460</span>
-                                    </div>
-                                    <div>
-                                        <span class="block text-xs text-gray-500 uppercase">Memory</span>
-                                        <span class="text-sm font-mono text-white" x-text="specs.min.ram">8 GB RAM</span>
-                                    </div>
-                                    <div>
-                                        <span class="block text-xs text-gray-500 uppercase">Graphics</span>
-                                        <span class="text-sm font-mono text-white" x-text="specs.min.gpu">NVIDIA GTX 960 4GB</span>
-                                    </div>
-                                    <div>
-                                        <span class="block text-xs text-gray-500 uppercase">Storage</span>
-                                        <span class="text-sm font-mono text-white" x-text="specs.storage">100 GB available space</span>
-                                    </div>
+                    <div class="bg-white/5 rounded-b-xl border-x border-b border-white/5 p-6 animate-fade-in">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+                            <div class="space-y-3">
+                                <h4 class="font-bold text-gray-500 uppercase text-xs mb-2">Minimum</h4>
+                                <div class="flex justify-between border-b border-white/5 pb-1">
+                                    <span class="text-gray-500">OS</span><span class="text-gray-300" x-text="specs.min.os"></span>
                                 </div>
-                                <div class="p-6 space-y-4 bg-white/5">
-                                    <div class="text-sm font-bold text-brand-primary uppercase tracking-widest mb-4">Recommended</div>
-                                    <div>
-                                        <span class="block text-xs text-gray-500 uppercase">OS</span>
-                                        <span class="text-sm font-mono text-white" x-text="specs.rec.os">Windows 10/11 64-bit</span>
-                                    </div>
-                                    <div>
-                                        <span class="block text-xs text-gray-500 uppercase">Processor</span>
-                                        <span class="text-sm font-mono text-white" x-text="specs.rec.cpu">Intel Core i7-8700K</span>
-                                    </div>
-                                    <div>
-                                        <span class="block text-xs text-gray-500 uppercase">Memory</span>
-                                        <span class="text-sm font-mono text-white" x-text="specs.rec.ram">16 GB RAM</span>
-                                    </div>
-                                    <div>
-                                        <span class="block text-xs text-gray-500 uppercase">Graphics</span>
-                                        <span class="text-sm font-mono text-white" x-text="specs.rec.gpu">NVIDIA RTX 2070 Super</span>
-                                    </div>
-                                    <div>
-                                        <span class="block text-xs text-gray-500 uppercase">Storage</span>
-                                        <span class="text-sm font-mono text-white" x-text="specs.storage">SSD Recommended</span>
-                                    </div>
+                                <div class="flex justify-between border-b border-white/5 pb-1">
+                                    <span class="text-gray-500">CPU</span><span class="text-gray-300" x-text="specs.min.cpu"></span>
+                                </div>
+                                <div class="flex justify-between border-b border-white/5 pb-1">
+                                    <span class="text-gray-500">RAM</span><span class="text-gray-300" x-text="specs.min.ram"></span>
+                                </div>
+                                <div class="flex justify-between border-b border-white/5 pb-1">
+                                    <span class="text-gray-500">GPU</span><span class="text-gray-300" x-text="specs.min.gpu"></span>
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <h4 class="font-bold text-brand-primary uppercase text-xs mb-2">Recommended</h4>
+                                <div class="flex justify-between border-b border-white/5 pb-1">
+                                    <span class="text-gray-500">OS</span><span class="text-gray-300" x-text="specs.rec.os"></span>
+                                </div>
+                                <div class="flex justify-between border-b border-white/5 pb-1">
+                                    <span class="text-gray-500">CPU</span><span class="text-gray-300" x-text="specs.rec.cpu"></span>
+                                </div>
+                                <div class="flex justify-between border-b border-white/5 pb-1">
+                                    <span class="text-gray-500">RAM</span><span class="text-gray-300" x-text="specs.rec.ram"></span>
+                                </div>
+                                <div class="flex justify-between border-b border-white/5 pb-1">
+                                    <span class="text-gray-500">GPU</span><span class="text-gray-300" x-text="specs.rec.gpu"></span>
                                 </div>
                             </div>
                         </div>
@@ -174,58 +142,44 @@
             </div>
 
             <div class="lg:col-span-4 relative">
-                <div class="sticky top-24 space-y-6 animate-slide-up">
-                    
-                    <div class="flex justify-center mb-4 lg:hidden">
-                        <img :src="game?.image" class="w-32 rounded-lg shadow-lg">
-                    </div>
+                <div class="sticky top-24 animate-slide-up">
+                    <div class="bg-bg-card border border-white/10 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
+                        
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-brand-primary/10 blur-[50px] rounded-full"></div>
 
-                    <div class="glass rounded-2xl p-6 border border-white/10 shadow-2xl shadow-brand-primary/10">
-                        <div class="flex justify-between items-start mb-6">
-                            <span class="bg-white/10 text-[10px] font-bold px-2 py-1 rounded text-gray-300">GLOBAL KEY</span>
-                            <div x-show="game?.discount" class="bg-brand-secondary text-white text-xs font-bold px-2 py-1 rounded animate-pulse" x-text="game?.discount"></div>
+                        <div class="flex justify-between items-end mb-6 relative z-10">
+                            <div>
+                                <div class="text-sm text-gray-500 line-through font-mono" x-text="formatPrice(game?.oldPrice)"></div>
+                                <div class="text-4xl font-display font-black text-white" x-text="formatPrice(game?.price)"></div>
+                            </div>
+                            <div x-show="game?.discount" class="bg-brand-secondary text-white text-xs font-bold px-2 py-1 rounded shadow-lg animate-pulse" x-text="game?.discount"></div>
                         </div>
 
-                        <div class="mb-8">
-                            <div class="text-sm text-gray-500 line-through" x-text="formatPrice(game?.oldPrice)"></div>
-                            <div class="text-5xl font-display font-black text-white" x-text="formatPrice(game?.price)"></div>
-                            <div class="text-xs text-gray-400 mt-2">One-time payment. Lifetime access.</div>
-                        </div>
-
-                        <button @click="addToCart" class="w-full py-4 bg-brand-primary hover:bg-blue-600 text-white font-bold font-display uppercase tracking-widest rounded-xl transition shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] hover:-translate-y-1 flex items-center justify-center gap-3">
-                            <span>Add to Cart</span>
-                            <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                        <button @click="addToCart" class="w-full py-4 bg-brand-primary hover:bg-blue-600 text-white font-bold font-display uppercase tracking-widest rounded-xl transition shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] flex items-center justify-center gap-2 mb-4 group">
+                            <span x-text="added ? 'ADDED' : 'ADD TO CART'"></span>
+                            <i :data-lucide="added ? 'check' : 'shopping-cart'" class="w-5 h-5 group-hover:scale-110 transition"></i>
                         </button>
 
-                        <div class="mt-4 flex gap-2">
-                            <button class="flex-1 py-3 border border-white/10 hover:bg-white/5 rounded-xl font-bold text-xs uppercase tracking-wider transition">Wishlist</button>
-                            <button class="flex-1 py-3 border border-white/10 hover:bg-white/5 rounded-xl font-bold text-xs uppercase tracking-wider transition">Gift</button>
+                        <div class="flex gap-2">
+                            <button class="flex-1 py-3 border border-white/10 rounded-lg text-xs font-bold text-gray-400 hover:text-white hover:bg-white/5 transition flex items-center justify-center gap-2">
+                                <i data-lucide="heart" class="w-3 h-3"></i> Wishlist
+                            </button>
+                            <button class="flex-1 py-3 border border-white/10 rounded-lg text-xs font-bold text-gray-400 hover:text-white hover:bg-white/5 transition flex items-center justify-center gap-2">
+                                <i data-lucide="share-2" class="w-3 h-3"></i> Share
+                            </button>
                         </div>
 
                         <div class="mt-6 pt-6 border-t border-white/10 space-y-3">
-                            <div class="flex items-center gap-3 text-xs text-gray-400">
-                                <i data-lucide="shield-check" class="w-4 h-4 text-green-500"></i>
-                                <span>100% Official & Secure Keys</span>
+                            <div class="flex items-center gap-3 text-xs text-gray-500">
+                                <div class="w-6 h-6 rounded bg-white/5 flex items-center justify-center text-green-500"><i data-lucide="shield-check" class="w-3 h-3"></i></div>
+                                <span>Official Distributor</span>
                             </div>
-                            <div class="flex items-center gap-3 text-xs text-gray-400">
-                                <i data-lucide="zap" class="w-4 h-4 text-yellow-500"></i>
-                                <span>Instant Digital Delivery</span>
-                            </div>
-                            <div class="flex items-center gap-3 text-xs text-gray-400">
-                                <i data-lucide="headphones" class="w-4 h-4 text-brand-secondary"></i>
-                                <span>24/7 Customer Support</span>
+                            <div class="flex items-center gap-3 text-xs text-gray-500">
+                                <div class="w-6 h-6 rounded bg-white/5 flex items-center justify-center text-blue-500"><i data-lucide="credit-card" class="w-3 h-3"></i></div>
+                                <span>Secure Checkout</span>
                             </div>
                         </div>
                     </div>
-
-                    <div class="glass rounded-xl p-4 border border-white/10 flex justify-between items-center text-gray-400 text-xs font-bold uppercase tracking-widest">
-                        <span>Platform</span>
-                        <div class="flex gap-2 text-white">
-                            <i data-lucide="monitor" class="w-5 h-5"></i>
-                            <span>Windows</span>
-                        </div>
-                    </div>
-
                 </div>
             </div>
 
@@ -236,44 +190,31 @@
         document.addEventListener('alpine:init', () => {
             Alpine.data('productPageLogic', () => ({
                 game: null,
+                added: false,
                 cartCount: parseInt(localStorage.getItem('pwe_cart_count')) || 0,
                 currency: localStorage.getItem('pwe_currency') || 'INR',
                 
                 // Detailed Specs Database
                 specsDB: {
-                    default: {
-                        min: { os: 'Windows 10 64-bit', cpu: 'Intel Core i5-4460 or AMD FX-6300', ram: '8 GB', gpu: 'NVIDIA GTX 960 4GB' },
-                        rec: { os: 'Windows 10/11 64-bit', cpu: 'Intel Core i7-8700K or AMD Ryzen 5 3600X', ram: '16 GB', gpu: 'NVIDIA RTX 2060 Super' },
-                        storage: '70 GB available space'
-                    },
-                    1: { // GTA V
-                        min: { os: 'Windows 10 64 Bit', cpu: 'Intel Core 2 Quad CPU Q6600', ram: '4 GB', gpu: 'NVIDIA 9800 GT 1GB' },
-                        rec: { os: 'Windows 10 64 Bit', cpu: 'Intel Core i5 3470 @ 3.2GHZ', ram: '8 GB', gpu: 'NVIDIA GTX 660 2GB' },
-                        storage: '72 GB available space'
-                    },
-                    3: { // Cyberpunk
-                        min: { os: 'Windows 10', cpu: 'Core i7-6700 or Ryzen 5 1600', ram: '12 GB', gpu: 'GTX 1060 6GB' },
-                        rec: { os: 'Windows 10', cpu: 'Core i7-12700 or Ryzen 7 7800X3D', ram: '16 GB', gpu: 'RTX 2060 SUPER' },
-                        storage: '70 GB SSD'
-                    }
+                    default: { min: { os: 'Win 10', cpu: 'Core i5', ram: '8GB', gpu: 'GTX 960' }, rec: { os: 'Win 11', cpu: 'Core i7', ram: '16GB', gpu: 'RTX 2060' } },
+                    1: { min: { os: 'Win 10', cpu: 'Core 2 Quad', ram: '4GB', gpu: '9800 GT' }, rec: { os: 'Win 10', cpu: 'Core i5', ram: '8GB', gpu: 'GTX 660' } },
+                    3: { min: { os: 'Win 10', cpu: 'Core i7-6700', ram: '12GB', gpu: 'GTX 1060' }, rec: { os: 'Win 11', cpu: 'Core i7-12700', ram: '16GB', gpu: 'RTX 3060' } }
                 },
 
-                get specs() {
-                    return this.specsDB[this.game?.id] || this.specsDB['default'];
-                },
+                get specs() { return this.specsDB[this.game?.id] || this.specsDB['default']; },
 
-                // Full Database (Synced manually with index.html)
+                // FULL GAMES LIST (Must match index.html)
                 allGames: [
-                    { id: 1, title: 'Grand Theft Auto V', category: 'action', price: 14.99, oldPrice: 29.99, discount: '-50%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
-                    { id: 2, title: 'Red Dead Redemption 2', category: 'adventure', price: 19.99, oldPrice: 59.99, discount: '-66%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
-                    { id: 3, title: 'Cyberpunk 2077', category: 'rpg', price: 29.99, oldPrice: 49.99, discount: '-40%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg' },
-                    { id: 4, title: 'Elden Ring', category: 'rpg', price: 39.99, oldPrice: 59.99, discount: '-33%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg' },
-                    { id: 5, title: 'God of War', category: 'action', price: 49.99, oldPrice: 69.99, discount: '-28%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg' },
-                    { id: 6, title: 'Call of Duty: MW3', category: 'shooter', price: 69.99, oldPrice: null, discount: null, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2519060/library_600x900.jpg' },
-                    { id: 7, title: 'FIFA 24 (FC 24)', category: 'sports', price: 34.99, oldPrice: 69.99, discount: '-50%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
-                    { id: 8, title: 'Resident Evil 4', category: 'horror', price: 34.99, oldPrice: 59.99, discount: '-40%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg' },
-                    { id: 9, title: 'Marvel\'s Spider-Man', category: 'action', price: 39.99, oldPrice: 59.99, discount: '-30%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg' },
-                    { id: 10, title: 'The Last of Us Part I', category: 'adventure', price: 49.99, oldPrice: 69.99, discount: '-28%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900.jpg' },
+                    { id: 1, title: 'Grand Theft Auto V', category: 'Action', price: 14.99, oldPrice: 29.99, discount: '-50%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
+                    { id: 2, title: 'Red Dead Redemption 2', category: 'Adventure', price: 19.99, oldPrice: 59.99, discount: '-66%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
+                    { id: 3, title: 'Cyberpunk 2077', category: 'RPG', price: 29.99, oldPrice: 49.99, discount: '-40%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg' },
+                    { id: 4, title: 'Elden Ring', category: 'RPG', price: 39.99, oldPrice: 59.99, discount: '-33%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg' },
+                    { id: 5, title: 'God of War', category: 'Action', price: 49.99, oldPrice: 69.99, discount: '-28%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg' },
+                    { id: 6, title: 'Call of Duty: MW3', category: 'Shooter', price: 69.99, oldPrice: null, discount: null, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2519060/library_600x900.jpg' },
+                    { id: 7, title: 'FIFA 24 (FC 24)', category: 'Sports', price: 34.99, oldPrice: 69.99, discount: '-50%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
+                    { id: 8, title: 'Resident Evil 4', category: 'Horror', price: 34.99, oldPrice: 59.99, discount: '-40%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg' },
+                    { id: 9, title: 'Marvel\'s Spider-Man', category: 'Action', price: 39.99, oldPrice: 59.99, discount: '-30%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg' },
+                    { id: 10, title: 'The Last of Us Part I', category: 'Adventure', price: 49.99, oldPrice: 69.99, discount: '-28%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900.jpg' },
                 ],
 
                 init() {
@@ -283,9 +224,9 @@
                     if (id) {
                         this.game = this.allGames.find(g => g.id === id);
                     }
-                    if (!this.game) {
-                        // Fallback logic could go here, or remain hidden (safety)
-                        console.error("Game ID not found");
+                    if(!this.game) {
+                        // Redirect home if invalid ID to prevent broken page
+                        window.location.href = 'index.html'; 
                     }
                 },
 
@@ -303,16 +244,8 @@
                     this.cartCount++;
                     localStorage.setItem('pwe_cart_count', this.cartCount);
                     
-                    // Visual feedback
-                    const btn = document.querySelector('button[click="addToCart"]');
-                    if(btn) {
-                        const originalText = btn.innerHTML;
-                        btn.innerHTML = 'Added! <i data-lucide="check"></i>';
-                        lucide.createIcons();
-                        setTimeout(() => btn.innerHTML = originalText, 2000);
-                    } else {
-                        alert("Added to Cart!");
-                    }
+                    this.added = true;
+                    setTimeout(() => this.added = false, 2000);
                 }
             }))
         });
