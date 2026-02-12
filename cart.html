@@ -1,422 +1,268 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PlayWithEase - Cart</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart | PlayWithEase</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;600;800&family=Orbitron:wght@900&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        tech: ['Rajdhani', 'sans-serif'],
+                        display: ['Orbitron', 'sans-serif'],
+                    },
+                    colors: {
+                        bg: { main: '#080808', card: '#101010', surface: '#181818' },
+                        brand: { 
+                            gta: '#ff00aa', 
+                            blue: '#2563eb',
+                            gold: '#fbbf24',
+                            green: '#10b981'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #080808; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
 
-:root{
---bg:#f8fafc;
---card:#ffffff;
---accent:#2563eb;
---text:#0f172a;
-}
+        /* Glassmorphism */
+        .glass {
+            background: rgba(16, 16, 16, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
 
-body{
-font-family:'Poppins',sans-serif;
-background:var(--bg);
-color:var(--text);
-transition:.3s;
-min-height:100vh;
-}
-
-body.theme-dark{--bg:#0f172a;--card:#1e293b;--accent:#3b82f6;--text:#f1f5f9;}
-body.theme-emerald{--accent:#10b981;}
-body.theme-royal{--accent:#7c3aed;}
-body.theme-elite-red{--bg:#14090b;--card:#1f1114;--accent:#dc2626;--text:#fef2f2;}
-
-.header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:20px;
-flex-wrap:wrap;
-}
-
-.brand{
-font-family:'Orbitron';
-font-size:20px;
-font-weight:900;
-text-decoration:none;
-color:inherit;
-}
-
-.theme-btn{
-padding:8px 16px;
-border:none;
-border-radius:10px;
-background:linear-gradient(135deg,var(--accent),#1d4ed8);
-color:#fff;
-font-weight:600;
-cursor:pointer;
-margin-top:10px;
-}
-
-.container{
-max-width:1000px;
-margin:auto;
-padding:20px;
-}
-
-.cart-item{
-background:var(--card);
-border-radius:15px;
-padding:15px;
-margin-bottom:15px;
-display:flex;
-gap:15px;
-align-items:center;
-box-shadow:0 10px 25px rgba(0,0,0,.08);
-flex-wrap:wrap;
-}
-
-.cart-item img{
-width:120px;
-border-radius:10px;
-}
-
-.item-info{flex:1;min-width:200px;}
-.item-name{font-weight:600;margin-bottom:5px;}
-
-.qty-box{
-display:flex;
-gap:8px;
-margin-top:8px;
-}
-
-.qty-btn{
-background:var(--accent);
-border:none;
-color:#fff;
-padding:4px 10px;
-border-radius:6px;
-cursor:pointer;
-}
-
-.remove-btn{
-background:#ef4444;
-border:none;
-color:#fff;
-padding:5px 10px;
-border-radius:6px;
-cursor:pointer;
-margin-top:8px;
-}
-
-.summary{
-margin-top:25px;
-background:var(--card);
-padding:20px;
-border-radius:15px;
-box-shadow:0 10px 25px rgba(0,0,0,.1);
-}
-
-.summary-row{
-display:flex;
-justify-content:space-between;
-margin-bottom:8px;
-}
-
-.total{
-font-weight:700;
-font-size:18px;
-}
-
-.checkout-btn{
-width:100%;
-padding:12px;
-border:none;
-border-radius:10px;
-background:linear-gradient(135deg,var(--accent),#1d4ed8);
-color:#fff;
-font-weight:700;
-cursor:pointer;
-margin-top:15px;
-}
-
-.payment-icons{
-margin-top:10px;
-text-align:center;
-font-size:14px;
-opacity:.7;
-}
-
-/* OVERLAY */
-.overlay{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.6);
-display:none;
-align-items:center;
-justify-content:center;
-z-index:9999;
-padding:15px;
-}
-
-.modal{
-background:var(--card);
-padding:20px;
-border-radius:15px;
-width:100%;
-max-width:360px;
-text-align:center;
-}
-
-.modal img{
-width:180px;
-margin-top:10px;
-border-radius:10px;
-}
-
-.timer{
-margin-top:8px;
-font-weight:600;
-color:var(--accent);
-}
-
-.modal-note{
-margin-top:8px;
-font-size:13px;
-opacity:.8;
-}
-
-.modal-btn{
-width:100%;
-margin-top:8px;
-padding:8px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-font-weight:600;
-}
-
-.cancel{background:#ef4444;color:#fff;}
-.paid{background:var(--accent);color:#fff;}
-.back{background:#111;color:#fff;}
-
-@media(max-width:600px){
-.cart-item{flex-direction:column;align-items:flex-start;}
-.cart-item img{width:100%;}
-}
-</style>
+        .neon-shadow:hover {
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.4);
+        }
+    </style>
 </head>
 
-<body>
+<body class="bg-bg-main text-white antialiased overflow-x-hidden" x-data="cartLogic()">
 
-<div class="header">
-<a href="index.html" class="brand">PlayWithEase®</a>
-<button id="themeSwitcher" class="theme-btn">Theme</button>
-</div>
+    <nav class="fixed top-0 w-full z-50 glass border-b border-white/5 h-20">
+        <div class="max-w-[1200px] mx-auto px-6 h-full flex items-center justify-between">
+            
+            <a href="index.html" class="flex items-center gap-3 cursor-pointer group hover:opacity-80 transition">
+                <i data-lucide="arrow-left" class="w-6 h-6 text-gray-400 group-hover:text-white group-hover:-translate-x-1 transition"></i>
+                <div class="relative w-10 h-10 flex items-center justify-center bg-white/5 rounded-xl border border-white/10 overflow-hidden">
+                    <i data-lucide="gamepad-2" class="relative z-10 w-6 h-6 text-white"></i>
+                </div>
+                <h1 class="font-display text-xl tracking-wider hidden md:block">PLAYWITH<span class="text-brand-blue">EASE</span></h1>
+            </a>
 
-<div class="container">
-<h2>Your Cart</h2>
-<div id="cartContainer"></div>
+            <div class="flex items-center gap-4 text-sm font-tech tracking-wider">
+                <div class="flex items-center gap-2 text-white font-bold">
+                    <span class="w-6 h-6 rounded-full bg-brand-blue flex items-center justify-center text-[10px]">1</span>
+                    <span>CART</span>
+                </div>
+                <div class="w-12 h-px bg-white/10"></div>
+                <div class="flex items-center gap-2 text-gray-500">
+                    <span class="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center text-[10px]">2</span>
+                    <span>PAYMENT</span>
+                </div>
+            </div>
 
-<div class="summary" id="summaryBox" style="display:none;">
-<div class="summary-row">
-<span>Subtotal</span>
-<span id="subtotal"></span>
-</div>
-<div class="summary-row">
-<span>GST</span>
-<span>Not Applicable</span>
-</div>
-<div class="summary-row total">
-<span>Total</span>
-<span id="grandTotal"></span>
-</div>
+            <button @click="toggleCurrency" 
+                    class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 transition text-xs font-bold font-tech tracking-wider">
+                <span x-text="currency === 'USD' ? 'USD ($)' : 'INR (₹)'"></span>
+            </button>
+        </div>
+    </nav>
 
-<button class="checkout-btn" onclick="openPayment()">Secure Checkout</button>
+    <main class="max-w-[1200px] mx-auto px-6 pt-32 pb-20 grid grid-cols-1 lg:grid-cols-3 gap-12">
 
-<div class="payment-icons">
-UPI • RuPay • Visa • Credit Card
-</div>
+        <div class="lg:col-span-2 space-y-6">
+            <h2 class="text-3xl font-display font-bold flex items-center gap-3">
+                MY CART <span class="text-brand-blue" x-text="'(' + cartItems.length + ')'"></span>
+            </h2>
 
-</div>
-</div>
+            <div x-show="cartItems.length === 0" class="text-center py-20 border border-dashed border-white/10 rounded-2xl bg-white/5">
+                <i data-lucide="ghost" class="w-16 h-16 text-gray-600 mx-auto mb-4"></i>
+                <h3 class="text-xl font-bold text-gray-400">Your cart is empty</h3>
+                <a href="index.html" class="mt-4 inline-block text-brand-blue hover:text-white underline">Browse Store</a>
+            </div>
 
-<div class="overlay" id="paymentOverlay">
-<div class="modal">
-<h3>Complete Your Payment</h3>
-<p><b>UPI ID:</b> shayanff98@okhdfcbank</p>
-<img id="upiQR">
-<div class="timer" id="countdown">10:00</div>
-<div class="modal-note">
-Scan & pay securely via UPI. Amount auto-filled.  
-Powered by PlayWithEase Secure Gateway.
-</div>
+            <template x-for="(item, index) in cartItems" :key="item.id">
+                <div class="group relative flex gap-4 md:gap-6 p-4 rounded-xl bg-bg-card border border-white/5 hover:border-brand-blue/30 transition-all duration-300">
+                    
+                    <div class="w-24 h-32 md:w-32 md:h-44 flex-shrink-0 rounded-lg overflow-hidden relative">
+                        <img :src="item.image" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    </div>
 
-<button class="modal-btn paid" onclick="confirmPaid()">I've Paid</button>
-<button class="modal-btn cancel" onclick="closePayment()">Cancel Payment</button>
-<button class="modal-btn back" onclick="window.location.href='index.html'">Back to Store</button>
-</div>
-</div>
+                    <div class="flex-1 flex flex-col justify-between py-1">
+                        <div>
+                            <div class="flex justify-between items-start">
+                                <h3 class="font-bold text-lg md:text-xl text-white font-display tracking-wide" x-text="item.title"></h3>
+                                <button @click="removeItem(index)" class="text-gray-500 hover:text-red-500 transition"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
+                            </div>
+                            <div class="flex items-center gap-2 mt-2 text-xs text-gray-400 font-tech uppercase tracking-wider">
+                                <span class="bg-white/10 px-2 py-0.5 rounded flex items-center gap-1"><i data-lucide="monitor" class="w-3 h-3"></i> PC</span>
+                                <span class="bg-brand-blue/10 text-brand-blue px-2 py-0.5 rounded">Digital Key</span>
+                            </div>
+                        </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { 
-getFirestore, 
-collection, 
-addDoc, 
-serverTimestamp 
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { getAuth } 
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+                        <div class="flex justify-between items-end">
+                            <label class="flex items-center gap-2 cursor-pointer group/gift">
+                                <input type="checkbox" class="w-4 h-4 bg-transparent border-gray-600 rounded text-brand-blue focus:ring-0">
+                                <span class="text-sm text-gray-400 group-hover/gift:text-white transition">Buy as Gift</span>
+                            </label>
+                            
+                            <div class="text-right">
+                                <div x-show="item.oldPrice" class="text-xs text-gray-500 line-through mb-0.5" x-text="formatPrice(item.oldPrice)"></div>
+                                <div class="text-2xl font-bold font-tech text-white" x-text="formatPrice(item.price)"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
 
-const firebaseConfig = {
-apiKey:"AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
-authDomain:"playwithease.firebaseapp.com",
-projectId:"playwithease"
-};
+        <div class="lg:col-span-1">
+            <div class="glass rounded-2xl p-6 sticky top-28 border border-white/10">
+                <h3 class="font-display font-bold text-xl mb-6 border-b border-white/10 pb-4">ORDER SUMMARY</h3>
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+                <div class="space-y-3 mb-6 text-sm font-tech tracking-wide">
+                    <div class="flex justify-between text-gray-400">
+                        <span>Official Price</span>
+                        <span class="line-through" x-text="formatPrice(totalOldPrice)"></span>
+                    </div>
+                    <div class="flex justify-between text-white">
+                        <span>Store Price</span>
+                        <span x-text="formatPrice(totalPrice)"></span>
+                    </div>
+                    <div class="flex justify-between text-green-500">
+                        <span>You Save</span>
+                        <span x-text="formatPrice(totalOldPrice - totalPrice)"></span>
+                    </div>
+                </div>
 
+                <div class="relative mb-6">
+                    <input type="text" x-model="promoCode" placeholder="Promo Code" class="w-full bg-black/50 border border-white/10 rounded-lg py-3 px-4 text-sm focus:outline-none focus:border-brand-blue/50 uppercase placeholder-gray-600">
+                    <button @click="applyPromo" class="absolute right-2 top-1.5 bottom-1.5 px-3 bg-white/10 hover:bg-brand-blue text-white text-xs font-bold rounded transition">APPLY</button>
+                    <p x-show="promoMessage" class="text-xs mt-2" :class="promoSuccess ? 'text-green-500' : 'text-red-500'" x-text="promoMessage"></p>
+                </div>
 
-/* 🔥 NEW CONFIRM PAID FUNCTION */
-window.confirmPaid = async function(){
+                <div class="flex justify-between items-end border-t border-white/10 pt-4 mb-8">
+                    <span class="text-gray-400 font-bold uppercase text-sm">Total</span>
+                    <span class="text-3xl font-display font-black text-brand-blue" x-text="formatPrice(finalTotal)"></span>
+                </div>
 
-let cart = JSON.parse(localStorage.getItem("pwe_cart")) || [];
+                <button class="w-full py-4 bg-brand-blue hover:bg-blue-600 text-white font-bold font-display tracking-widest uppercase rounded-xl transition shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] flex items-center justify-center gap-2 group">
+                    Secure Checkout <i data-lucide="lock" class="w-4 h-4 group-hover:scale-110 transition"></i>
+                </button>
 
-if(cart.length === 0){
-alert("Cart empty");
-return;
-}
+                <div class="mt-6 flex justify-center gap-4 opacity-50 grayscale hover:grayscale-0 transition duration-500">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1200px-UPI-Logo-vector.svg.png" class="h-6 object-contain">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" class="h-6 object-contain">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" class="h-6 object-contain">
+                </div>
+            </div>
+        </div>
 
-let total = cart.reduce((sum,item)=>sum + item.price*item.qty,0);
+    </main>
 
-let user = auth.currentUser;
+    <footer class="bg-black border-t border-white/5 py-8 text-center text-gray-600 text-xs">
+        <p>&copy; 2026 PlayWithEase. 256-bit SSL Secured Transaction.</p>
+    </footer>
 
-if(!user){
-alert("Login required");
-return;
-}
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('cartLogic', () => ({
+                currency: 'INR', // Default INR
+                exchangeRate: 85.0,
+                promoCode: '',
+                promoMessage: '',
+                promoSuccess: false,
+                discountMultiplier: 1,
 
-try{
+                // Simulated Items (In a real app, this comes from localStorage/Database)
+                cartItems: [
+                    { 
+                        id: 1, 
+                        title: 'Grand Theft Auto V: Premium', 
+                        price: 14.99, 
+                        oldPrice: 29.99, 
+                        image: 'https://image.api.playstation.com/vulcan/ap/disc/2110/CUSA00411_00/H541E22.png' 
+                    },
+                    { 
+                        id: 3, 
+                        title: 'Cyberpunk 2077: Ultimate', 
+                        price: 29.99, 
+                        oldPrice: 49.99, 
+                        image: 'https://image.api.playstation.com/vulcan/ap/disc/2108/CUSA16596_00/H630B37.png' 
+                    }
+                ],
 
-await addDoc(collection(db,"orders"), {
-userEmail: user.email,
-items: cart,
-total: total,
-status: "in-progress",
-createdAt: serverTimestamp()
-});
+                init() {
+                    lucide.createIcons();
+                },
 
-alert("Order placed successfully!");
+                toggleCurrency() {
+                    this.currency = this.currency === 'USD' ? 'INR' : 'USD';
+                },
 
-localStorage.removeItem("pwe_cart");
+                get totalPrice() {
+                    return this.cartItems.reduce((sum, item) => sum + item.price, 0);
+                },
 
-window.location.href = "order-history.html";
+                get totalOldPrice() {
+                    return this.cartItems.reduce((sum, item) => sum + (item.oldPrice || item.price), 0);
+                },
 
-}catch(err){
-console.error(err);
-alert("Order save failed");
-}
+                get finalTotal() {
+                    return this.totalPrice * this.discountMultiplier;
+                },
 
-}
+                removeItem(index) {
+                    this.cartItems.splice(index, 1);
+                },
 
-let cart = JSON.parse(localStorage.getItem("pwe_cart")) || [];
+                applyPromo() {
+                    if (this.promoCode.toUpperCase() === 'GTA6') {
+                        this.discountMultiplier = 0.8; // 20% off
+                        this.promoSuccess = true;
+                        this.promoMessage = 'CODE APPLIED! 20% OFF';
+                    } else {
+                        this.discountMultiplier = 1;
+                        this.promoSuccess = false;
+                        this.promoMessage = 'INVALID CODE';
+                    }
+                },
 
-function renderCart(){
-const container=document.getElementById("cartContainer");
-const subtotalEl=document.getElementById("subtotal");
-const totalEl=document.getElementById("grandTotal");
-const summary=document.getElementById("summaryBox");
-
-container.innerHTML="";
-if(cart.length===0){summary.style.display="none";return;}
-summary.style.display="block";
-
-let subtotal=0;
-cart.forEach((item,index)=>{
-subtotal+=item.price*item.qty;
-container.innerHTML+=`
-<div class="cart-item">
-<img src="${item.image}">
-<div class="item-info">
-<div class="item-name">${item.name}</div>
-<div>₹${item.price}</div>
-<div class="qty-box">
-<button class="qty-btn" onclick="changeQty(${index},-1)">-</button>
-<span>${item.qty}</span>
-<button class="qty-btn" onclick="changeQty(${index},1)">+</button>
-</div>
-<button class="remove-btn" onclick="removeItem(${index})">Remove</button>
-</div>
-</div>`;
-});
-
-subtotalEl.innerText="₹"+subtotal;
-totalEl.innerText="₹"+subtotal;
-}
-
-window.openPayment=function(){
-let total = cart.reduce((s,i)=>s+i.price*i.qty,0);
-document.getElementById("paymentOverlay").style.display="flex";
-
-/* AUTO AMOUNT CAPTURE QR */
-document.getElementById("upiQR").src=
-`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
-`upi://pay?pa=shayanff98@okhdfcbank&pn=PlayWithEase&am=${total}&cu=INR&tn=Payment%20for%20PlayWithEase%20Order`
-)}`;
-
-startTimer(600);
-};
-
-window.closePayment=function(){
-document.getElementById("paymentOverlay").style.display="none";
-clearInterval(timerInterval);
-};
-
-let timerInterval;
-function startTimer(seconds){
-let time=seconds;
-timerInterval=setInterval(()=>{
-let min=Math.floor(time/60);
-let sec=time%60;
-document.getElementById("countdown").innerText=
-(min<10?"0":"")+min+":"+(sec<10?"0":"")+sec;
-time--;
-if(time<0)clearInterval(timerInterval);
-},1000);
-}
-
-window.confirmPaid = async function(){
-let total = cart.reduce((s,i)=>s+i.price*i.qty,0);
-let user = auth.currentUser;
-
-let orderData={
-userEmail:user?user.email:"Guest",
-items:cart,
-total:total,
-status:"Pending",
-createdAt:serverTimestamp()
-};
-
-let docRef = await addDoc(collection(db,"orders"),orderData);
-
-let msg=`Hello PlayWithEase Team,%0AOrder ID: ${docRef.id}%0ATotal Paid: ₹${total}%0AUPI ID: shayanff98@okhdfcbank%0AProfessional Digital Delivery Requested.%0APlease confirm my order.`;
-
-window.location.href=`https://wa.me/917001568884?text=${msg}`;
-};
-
-/* THEME */
-const themes=["","theme-dark","theme-emerald","theme-royal","theme-elite-red"];
-let currentTheme=0;
-document.getElementById("themeSwitcher").addEventListener("click",()=>{
-currentTheme++;
-if(currentTheme>=themes.length)currentTheme=0;
-document.body.className=themes[currentTheme];
-});
-
-renderCart();
-</script>
-
+                formatPrice(price) {
+                    if (this.currency === 'USD') {
+                        return '$' + price.toFixed(2);
+                    } else {
+                        // Intelligent rounding for INR (e.g., 14.99 -> 1299)
+                        const inr = Math.round(price * this.exchangeRate / 10) * 10 - 1; 
+                        return '₹' + (inr > 0 ? inr.toLocaleString('en-IN') : 0);
+                    }
+                }
+            }))
+        });
+    </script>
 </body>
 </html>
