@@ -23,11 +23,16 @@
                         display: ['Orbitron', 'sans-serif'],
                     },
                     colors: {
-                        bg: { main: '#080808', card: '#101010', surface: '#181818' },
+                        // Dynamic Colors mapped to CSS Variables
+                        bg: { 
+                            main: 'var(--bg-main)', 
+                            card: 'var(--bg-card)', 
+                            surface: 'var(--bg-surface)' 
+                        },
                         brand: { 
-                            gta: '#ff00aa', 
-                            blue: '#2563eb',
-                            gold: '#fbbf24'
+                            primary: 'var(--brand-primary)', 
+                            secondary: 'var(--brand-secondary)',
+                            accent: 'var(--brand-accent)'
                         }
                     },
                     animation: {
@@ -45,21 +50,40 @@
     </script>
 
     <style>
+        /* CSS Variables for Themes */
+        :root {
+            --bg-main: #080808;
+            --bg-card: #101010;
+            --bg-surface: #181818;
+            --brand-primary: #2563eb;   /* Blue */
+            --brand-secondary: #ff00aa; /* Pink */
+            --brand-accent: #fbbf24;    /* Gold */
+        }
+
         ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #080808; }
+        ::-webkit-scrollbar-track { background: var(--bg-main); }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        
         .glass {
             background: rgba(16, 16, 16, 0.9);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
+        
+        /* Smooth color transition */
+        body, div, button, span, i {
+            transition-property: color, background-color, border-color;
+            transition-duration: 300ms;
+        }
+
         body { -webkit-tap-highlight-color: transparent; }
     </style>
 </head>
 
-<body class="bg-bg-main text-white antialiased overflow-x-hidden w-full selection:bg-brand-gta selection:text-white"
-      x-data="storeLogic()">
+<body class="bg-bg-main text-white antialiased overflow-x-hidden w-full selection:bg-brand-primary selection:text-white"
+      x-data="storeLogic()"
+      :style="themeStyles">
 
     <nav class="fixed top-0 w-full z-50 glass h-16 md:h-20 transition-all duration-300">
         <div class="max-w-[1600px] mx-auto px-4 md:px-6 h-full flex items-center justify-between">
@@ -69,29 +93,49 @@
                     <i data-lucide="gamepad-2" class="relative z-10 w-5 h-5 md:w-7 md:h-7 text-white"></i>
                 </div>
                 <div class="hidden md:block">
-                    <h1 class="font-display text-lg md:text-xl tracking-wider leading-none">PLAY<span class="text-brand-blue">EASE</span></h1>
+                    <h1 class="font-display text-lg md:text-xl tracking-wider leading-none">PlayWith<span class="text-brand-primary">Ease</span></h1>
                     <span class="text-[10px] text-gray-500 font-tech uppercase tracking-widest">Store • Keys</span>
                 </div>
             </div>
 
             <div class="hidden lg:flex items-center gap-8 font-tech font-bold text-lg tracking-wide text-gray-400">
-                <a href="#" class="text-white">STORE</a>
+                <a href="#" class="text-white hover:text-brand-primary transition">STORE</a>
                 <a href="#" class="hover:text-white transition">LIBRARY</a>
                 <a href="#" class="hover:text-white transition">COMMUNITY</a>
             </div>
 
-            <div class="flex items-center gap-3 md:gap-6 shrink-0">
+            <div class="flex items-center gap-2 md:gap-4 shrink-0">
                 
+                <div class="relative" x-data="{ open: false }" @click.outside="open = false">
+                    <button @click="open = !open" class="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition">
+                        <i data-lucide="palette" class="w-4 h-4 md:w-5 md:h-5 text-gray-400"></i>
+                    </button>
+                    
+                    <div x-show="open" 
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 scale-95"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         class="absolute right-0 top-12 bg-bg-card border border-white/10 rounded-xl p-2 w-32 shadow-xl z-50 glass">
+                        <div class="text-[10px] text-gray-500 font-bold px-2 mb-2 uppercase">Select Theme</div>
+                        <div class="grid grid-cols-4 gap-2">
+                            <button @click="setTheme('cyber')" class="w-6 h-6 rounded-full bg-blue-600 border-2 border-transparent hover:scale-110 transition" :class="currentTheme === 'cyber' ? 'border-white' : ''" title="Cyber"></button>
+                            <button @click="setTheme('luxury')" class="w-6 h-6 rounded-full bg-yellow-500 border-2 border-transparent hover:scale-110 transition" :class="currentTheme === 'luxury' ? 'border-white' : ''" title="Luxury"></button>
+                            <button @click="setTheme('toxic')" class="w-6 h-6 rounded-full bg-green-500 border-2 border-transparent hover:scale-110 transition" :class="currentTheme === 'toxic' ? 'border-white' : ''" title="Toxic"></button>
+                            <button @click="setTheme('crimson')" class="w-6 h-6 rounded-full bg-red-600 border-2 border-transparent hover:scale-110 transition" :class="currentTheme === 'crimson' ? 'border-white' : ''" title="Crimson"></button>
+                        </div>
+                    </div>
+                </div>
+
                 <button @click="toggleCurrency" 
                         class="flex items-center justify-center w-8 h-8 md:w-auto md:h-auto md:px-3 md:py-1.5 rounded-lg bg-white/5 border border-white/5 text-[10px] md:text-xs font-bold font-tech tracking-wider">
-                    <i data-lucide="coins" class="w-4 h-4 text-brand-gold"></i>
+                    <i data-lucide="coins" class="w-4 h-4 text-brand-accent"></i>
                     <span class="hidden md:inline ml-1.5" x-text="currency === 'USD' ? 'USD' : 'INR'"></span>
                 </button>
 
-                <button onclick="window.location.href='cart.html'" class="relative w-10 h-10 flex items-center justify-center shrink-0">
-                    <i data-lucide="shopping-bag" class="w-6 h-6 text-gray-400 hover:text-white transition"></i>
+                <button onclick="window.location.href='cart.html'" class="relative w-8 h-8 md:w-10 md:h-10 flex items-center justify-center shrink-0">
+                    <i data-lucide="shopping-bag" class="w-5 h-5 md:w-6 md:h-6 text-gray-400 hover:text-white transition"></i>
                     <span x-show="cartCount > 0" 
-                          class="absolute top-1 right-1 bg-brand-gta text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-black" 
+                          class="absolute top-0 right-0 bg-brand-secondary text-white text-[10px] font-bold w-3.5 h-3.5 md:w-4 md:h-4 rounded-full flex items-center justify-center border border-black" 
                           x-text="cartCount"></span>
                 </button>
 
@@ -133,13 +177,13 @@
                     <div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Mins</div>
                 </div>
                 <div class="bg-black/40 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-xl">
-                    <div class="text-3xl md:text-6xl font-display font-black text-brand-gta" x-text="timer.seconds">00</div>
+                    <div class="text-3xl md:text-6xl font-display font-black text-brand-secondary" x-text="timer.seconds">00</div>
                     <div class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold">Secs</div>
                 </div>
             </div>
 
             <div class="flex flex-col md:flex-row justify-center gap-4 px-4 md:px-0">
-                <button class="bg-white text-black px-8 py-3.5 rounded font-bold uppercase tracking-widest text-sm md:text-base hover:bg-brand-gta hover:text-white transition duration-300 w-full md:w-auto">
+                <button class="bg-white text-black px-8 py-3.5 rounded font-bold uppercase tracking-widest text-sm md:text-base hover:bg-brand-primary hover:text-white transition duration-300 w-full md:w-auto">
                     Pre-Order Now
                 </button>
                 <button class="px-8 py-3.5 rounded border border-white/30 backdrop-blur font-bold uppercase tracking-widest text-sm md:text-base hover:bg-white/10 transition flex items-center justify-center gap-3 w-full md:w-auto">
@@ -151,7 +195,7 @@
 
     <main class="max-w-[1600px] mx-auto px-4 md:px-6 py-12 md:py-24">
         <div class="flex items-center justify-between mb-8 md:mb-12">
-            <h2 class="text-2xl md:text-3xl font-display font-bold">TRENDING <span class="text-brand-blue">TITLES</span></h2>
+            <h2 class="text-2xl md:text-3xl font-display font-bold">TRENDING <span class="text-brand-primary">TITLES</span></h2>
             <div class="flex gap-2">
                 <button class="p-2 rounded bg-white/5 text-white"><i data-lucide="layout-grid" class="w-5 h-5"></i></button>
             </div>
@@ -159,13 +203,13 @@
 
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-6">
             <template x-for="game in games" :key="game.id">
-                <div class="group relative bg-bg-card rounded-lg md:rounded-xl overflow-hidden border border-white/5 hover:border-brand-blue/50 transition-all duration-300">
+                <div class="group relative bg-bg-card rounded-lg md:rounded-xl overflow-hidden border border-white/5 hover:border-brand-primary/50 transition-all duration-300">
                     
                     <div class="relative aspect-[2/3] overflow-hidden bg-gray-900">
                         <img :src="game.image" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" loading="lazy">
                         
                         <div class="hidden md:flex absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition duration-300 flex-col items-center justify-center gap-3 p-4">
-                            <button @click="addToCart(game)" class="w-full py-3 bg-white text-black font-bold uppercase text-xs tracking-wider rounded hover:bg-brand-blue hover:text-white transition flex items-center justify-center gap-2">
+                            <button @click="addToCart(game)" class="w-full py-3 bg-white text-black font-bold uppercase text-xs tracking-wider rounded hover:bg-brand-primary hover:text-white transition flex items-center justify-center gap-2">
                                 <i data-lucide="shopping-cart" class="w-4 h-4"></i> Add
                             </button>
                             <button @click="simulateKeyReveal(game)" class="w-full py-3 border border-white/20 text-white font-bold uppercase text-xs tracking-wider rounded hover:bg-white/10 transition flex items-center justify-center gap-2">
@@ -173,7 +217,7 @@
                             </button>
                         </div>
 
-                        <button @click="addToCart(game)" class="md:hidden absolute bottom-2 right-2 bg-brand-blue text-white p-2 rounded-full shadow-lg z-10">
+                        <button @click="addToCart(game)" class="md:hidden absolute bottom-2 right-2 bg-brand-primary text-white p-2 rounded-full shadow-lg z-10">
                             <i data-lucide="plus" class="w-4 h-4"></i>
                         </button>
                         
@@ -187,9 +231,9 @@
                         <div class="flex justify-between items-center mt-1 md:mt-2">
                             <div class="flex flex-col">
                                 <span class="text-[9px] md:text-[10px] text-gray-500 line-through" x-show="game.oldPrice" x-text="formatPrice(game.oldPrice)"></span>
-                                <span class="text-brand-blue font-tech font-bold text-sm md:text-lg" x-text="formatPrice(game.price)"></span>
+                                <span class="text-brand-primary font-tech font-bold text-sm md:text-lg" x-text="formatPrice(game.price)"></span>
                             </div>
-                            <button @click="simulateKeyReveal(game)" class="md:hidden text-gray-500 p-1">
+                             <button @click="simulateKeyReveal(game)" class="md:hidden text-gray-500 p-1">
                                 <i data-lucide="key" class="w-4 h-4"></i>
                             </button>
                         </div>
@@ -203,11 +247,11 @@
          class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
          x-transition.opacity>
         
-        <div class="bg-bg-card border border-brand-gta/30 w-full max-w-md rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(255,0,170,0.2)] relative">
+        <div class="bg-bg-card border border-brand-secondary/30 w-full max-w-md rounded-2xl overflow-hidden shadow-2xl relative">
             <button @click="keyModal.open = false" class="absolute top-4 right-4 text-gray-500 hover:text-white z-20"><i data-lucide="x"></i></button>
 
             <div x-show="keyModal.loading" class="p-10 text-center">
-                <div class="w-12 h-12 md:w-16 md:h-16 border-4 border-brand-gta border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
+                <div class="w-12 h-12 md:w-16 md:h-16 border-4 border-brand-secondary border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
                 <h3 class="text-lg md:text-xl font-display font-bold mb-2">Decrypting...</h3>
                 <p class="text-gray-500 text-xs md:text-sm font-tech">Connecting to API</p>
             </div>
@@ -220,7 +264,7 @@
                 <p class="text-gray-400 text-xs mb-6">Steam / Global Key</p>
                 
                 <div class="bg-black border border-white/10 rounded-lg p-3 md:p-4 mb-6 relative cursor-pointer active:scale-95 transition" @click="copyKey">
-                    <code class="font-mono text-sm md:text-lg text-brand-gta tracking-widest break-all" x-text="keyModal.key"></code>
+                    <code class="font-mono text-sm md:text-lg text-brand-secondary tracking-widest break-all" x-text="keyModal.key"></code>
                     <div class="mt-2 text-[10px] text-gray-500 uppercase">Tap to Copy</div>
                 </div>
 
@@ -237,9 +281,57 @@
                 currency: 'INR', 
                 exchangeRate: 85.0, 
                 cartCount: 0,
+                currentTheme: 'cyber',
                 
                 timer: { days: '00', hours: '00', minutes: '00', seconds: '00' },
                 keyModal: { open: false, loading: false, gameTitle: '', key: '' },
+
+                // Theme Definitions
+                themes: {
+                    cyber: { // Blue & Pink (Default)
+                        '--bg-main': '#080808', 
+                        '--bg-card': '#101010', 
+                        '--bg-surface': '#181818',
+                        '--brand-primary': '#2563eb', 
+                        '--brand-secondary': '#ff00aa',
+                        '--brand-accent': '#fbbf24'
+                    },
+                    luxury: { // Gold & Black
+                        '--bg-main': '#050505', 
+                        '--bg-card': '#121212', 
+                        '--bg-surface': '#1a1a1a',
+                        '--brand-primary': '#fbbf24', 
+                        '--brand-secondary': '#d97706',
+                        '--brand-accent': '#ffffff'
+                    },
+                    toxic: { // Green & Grey
+                        '--bg-main': '#0a0f0a', 
+                        '--bg-card': '#141a14', 
+                        '--bg-surface': '#1e261e',
+                        '--brand-primary': '#10b981', 
+                        '--brand-secondary': '#059669',
+                        '--brand-accent': '#34d399'
+                    },
+                    crimson: { // Red & Black
+                        '--bg-main': '#0f0505', 
+                        '--bg-card': '#1a0b0b', 
+                        '--bg-surface': '#261010',
+                        '--brand-primary': '#ef4444', 
+                        '--brand-secondary': '#b91c1c',
+                        '--brand-accent': '#fca5a5'
+                    }
+                },
+
+                get themeStyles() {
+                    const colors = this.themes[this.currentTheme];
+                    return Object.entries(colors)
+                        .map(([key, value]) => `${key}: ${value};`)
+                        .join(' ');
+                },
+
+                setTheme(themeName) {
+                    this.currentTheme = themeName;
+                },
 
                 games: [
                     { id: 1, title: 'Grand Theft Auto V', price: 14.99, oldPrice: 29.99, discount: '-50%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
