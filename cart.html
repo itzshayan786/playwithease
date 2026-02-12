@@ -2,12 +2,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PlayWithEase - Cart</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
-/* ===== YOUR EXISTING DESIGN SAME ===== */
 *{margin:0;padding:0;box-sizing:border-box}
 
 :root{
@@ -25,7 +25,6 @@ transition:.3s;
 min-height:100vh;
 }
 
-/* THEMES (UNCHANGED) */
 body.theme-dark{--bg:#0f172a;--card:#1e293b;--accent:#3b82f6;--text:#f1f5f9;}
 body.theme-emerald{--accent:#10b981;}
 body.theme-royal{--accent:#7c3aed;}
@@ -35,105 +34,163 @@ body.theme-elite-red{--bg:#14090b;--card:#1f1114;--accent:#dc2626;--text:#fef2f2
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:20px 30px;
+padding:20px;
+flex-wrap:wrap;
 }
 
 .brand{
 font-family:'Orbitron';
+font-size:20px;
 font-weight:900;
-font-size:22px;
 text-decoration:none;
 color:inherit;
 }
 
 .theme-btn{
-padding:8px 18px;
+padding:8px 16px;
 border:none;
-border-radius:12px;
+border-radius:10px;
 background:linear-gradient(135deg,var(--accent),#1d4ed8);
 color:#fff;
 font-weight:600;
 cursor:pointer;
+margin-top:10px;
 }
 
-/* CART UI SAME */
-.container{max-width:1100px;margin:auto;padding:20px;}
+.container{
+max-width:1000px;
+margin:auto;
+padding:20px;
+}
+
 .cart-item{
 background:var(--card);
-border-radius:18px;
-padding:20px;
-margin-bottom:20px;
+border-radius:15px;
+padding:15px;
+margin-bottom:15px;
 display:flex;
-gap:20px;
+gap:15px;
 align-items:center;
-box-shadow:0 15px 40px rgba(0,0,0,.08);
-}
-.cart-item img{width:140px;border-radius:12px;}
-.item-info{flex:1;}
-.item-name{font-weight:600;margin-bottom:6px;}
-.qty-box{display:flex;gap:10px;margin-top:10px;}
-.qty-btn{
-background:var(--accent);
-border:none;color:#fff;
-padding:5px 12px;border-radius:8px;cursor:pointer;
-}
-.remove-btn{
-background:#ef4444;border:none;color:#fff;
-padding:6px 12px;border-radius:8px;cursor:pointer;margin-top:10px;
-}
-.summary{
-margin-top:40px;
-background:var(--card);
-padding:30px;
-border-radius:20px;
-box-shadow:0 15px 40px rgba(0,0,0,.1);
-}
-.summary-row{display:flex;justify-content:space-between;margin-bottom:10px;}
-.total{font-size:20px;font-weight:700;}
-.checkout-btn{
-width:100%;
-padding:14px;
-border:none;
-border-radius:14px;
-background:linear-gradient(135deg,var(--accent),#1d4ed8);
-color:#fff;
-font-size:16px;
-font-weight:700;
-cursor:pointer;
-margin-top:20px;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+flex-wrap:wrap;
 }
 
-/* OVERLAY SAME */
+.cart-item img{
+width:120px;
+border-radius:10px;
+}
+
+.item-info{flex:1;min-width:200px;}
+
+.item-name{font-weight:600;margin-bottom:5px;}
+
+.qty-box{
+display:flex;
+gap:8px;
+margin-top:8px;
+}
+
+.qty-btn{
+background:var(--accent);
+border:none;
+color:#fff;
+padding:4px 10px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.remove-btn{
+background:#ef4444;
+border:none;
+color:#fff;
+padding:5px 10px;
+border-radius:6px;
+cursor:pointer;
+margin-top:8px;
+}
+
+.summary{
+margin-top:25px;
+background:var(--card);
+padding:20px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,.1);
+}
+
+.summary-row{
+display:flex;
+justify-content:space-between;
+margin-bottom:8px;
+}
+
+.total{
+font-weight:700;
+font-size:18px;
+}
+
+.checkout-btn{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+background:linear-gradient(135deg,var(--accent),#1d4ed8);
+color:#fff;
+font-weight:700;
+cursor:pointer;
+margin-top:15px;
+}
+
+/* OVERLAY */
 .overlay{
-position:fixed;inset:0;
+position:fixed;
+inset:0;
 background:rgba(0,0,0,.6);
 display:none;
 align-items:center;
 justify-content:center;
 z-index:9999;
+padding:15px;
 }
+
 .modal{
 background:var(--card);
-padding:30px;
-border-radius:20px;
-width:360px;
+padding:20px;
+border-radius:15px;
+width:100%;
+max-width:360px;
 text-align:center;
-box-shadow:0 30px 80px rgba(0,0,0,.4);
 }
-.modal img{width:200px;margin-top:10px;border-radius:12px;}
-.timer{margin-top:10px;font-weight:600;color:var(--accent);}
+
+.modal img{
+width:180px;
+margin-top:10px;
+border-radius:10px;
+}
+
+.timer{
+margin-top:8px;
+font-weight:600;
+color:var(--accent);
+}
+
 .modal-btn{
 width:100%;
-margin-top:10px;
-padding:10px;
+margin-top:8px;
+padding:8px;
 border:none;
-border-radius:10px;
+border-radius:8px;
 cursor:pointer;
 font-weight:600;
 }
+
 .cancel{background:#ef4444;color:#fff;}
 .paid{background:var(--accent);color:#fff;}
 .back{background:#111;color:#fff;}
+
+@media(max-width:600px){
+.cart-item{flex-direction:column;align-items:flex-start;}
+.cart-item img{width:100%;}
+}
 </style>
 </head>
 
@@ -172,13 +229,13 @@ font-weight:600;
 <p><b>UPI ID:</b> shayanff98@okhdfcbank</p>
 <img id="upiQR">
 <div class="timer" id="countdown">10:00</div>
+
 <button class="modal-btn paid" onclick="confirmPaid()">I've Paid</button>
 <button class="modal-btn cancel" onclick="closePayment()">Cancel Payment</button>
 <button class="modal-btn back" onclick="window.location.href='index.html'">Back to Store</button>
 </div>
 </div>
 
-<!-- ===== SCRIPT ===== -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc, serverTimestamp } 
@@ -186,7 +243,6 @@ from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { getAuth } 
 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-/* FIREBASE */
 const firebaseConfig = {
 apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
 authDomain: "playwithease.firebaseapp.com",
@@ -197,14 +253,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-/* CART LOGIC SAME */
 let cart = JSON.parse(localStorage.getItem("pwe_cart")) || [];
-cart = cart.map(item=>{
-if(typeof item==="string"){
-return {name:item,image:"https://via.placeholder.com/140x80?text=Game",price:999,qty:1};
-}
-return {name:item.name,image:item.image||"",price:item.price||999,qty:item.qty||1};
-});
 
 function renderCart(){
 const container=document.getElementById("cartContainer");
@@ -234,12 +283,38 @@ container.innerHTML+=`
 </div>
 </div>`;
 });
+
 subtotalEl.innerText="₹"+subtotal;
 totalEl.innerText="₹"+subtotal;
 }
 
-window.confirmPaid = async function(){
+window.openPayment=function(){
+let total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+document.getElementById("paymentOverlay").style.display="flex";
+document.getElementById("upiQR").src=
+`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=shayanff98@okhdfcbank&pn=PlayWithEase&am=${total}&cu=INR`;
+startTimer(600);
+};
 
+window.closePayment=function(){
+document.getElementById("paymentOverlay").style.display="none";
+clearInterval(timerInterval);
+};
+
+let timerInterval;
+function startTimer(seconds){
+let time=seconds;
+timerInterval=setInterval(()=>{
+let min=Math.floor(time/60);
+let sec=time%60;
+document.getElementById("countdown").innerText=
+(min<10?"0":"")+min+":"+(sec<10?"0":"")+sec;
+time--;
+if(time<0)clearInterval(timerInterval);
+},1000);
+}
+
+window.confirmPaid = async function(){
 let total = cart.reduce((s,i)=>s+i.price*i.qty,0);
 let user = auth.currentUser;
 
@@ -253,12 +328,12 @@ createdAt:serverTimestamp()
 
 let docRef = await addDoc(collection(db,"orders"),orderData);
 
-let msg=`Hello PlayWithEase Team,%0A%0AOrder ID: ${docRef.id}%0ATotal Paid: ₹${total}%0AUPI ID: shayanff98@okhdfcbank%0A%0APlease confirm my order.`;
+let msg=`Hello PlayWithEase Team,%0AOrder ID: ${docRef.id}%0ATotal Paid: ₹${total}%0AUPI ID: shayanff98@okhdfcbank%0APlease confirm my order.`;
 
 window.location.href=`https://wa.me/917001568884?text=${msg}`;
 };
 
-/* THEME SAME */
+/* Theme */
 const themes=["","theme-dark","theme-emerald","theme-royal","theme-elite-red"];
 let currentTheme=0;
 document.getElementById("themeSwitcher").addEventListener("click",()=>{
