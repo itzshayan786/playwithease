@@ -210,7 +210,7 @@ const errorBox=document.getElementById("errorBox");
 
 errorBox.style.display="none";
 btn.disabled=true;
-btn.innerHTML="Authenticating...";
+btn.innerHTML="Authenticating <span class='spinner'></span>";
 
 signInWithEmailAndPassword(auth,email,password)
 .then(()=>{
