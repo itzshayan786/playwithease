@@ -19,7 +19,7 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'], tech: ['Rajdhani', 'sans-serif'], display: ['Orbitron', 'sans-serif'] },
                     colors: { bg: { main: 'var(--bg-main)', card: 'var(--bg-card)' }, brand: { primary: 'var(--brand-primary)', secondary: 'var(--brand-secondary)', text: 'var(--text-main)' } },
-                    animation: { 'float': 'float 6s ease-in-out infinite', 'bounce-slow': 'bounce 3s infinite' },
+                    animation: { 'float': 'float 6s ease-in-out infinite', 'pulse-slow': 'pulse 3s infinite' },
                     keyframes: { float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } } }
                 }
             }
@@ -32,6 +32,12 @@
         body { -webkit-tap-highlight-color: transparent; color: var(--text-main); }
         [x-cloak] { display: none !important; }
         body, div, button, span, i, nav, section, main { transition-property: color, background-color, border-color; transition-duration: 300ms; }
+        
+        /* Chat Bubble Animation */
+        .typing-dot { animation: typing 1.4s infinite ease-in-out both; }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
     </style>
 </head>
 
@@ -51,36 +57,62 @@
         <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-4">
                 <i data-lucide="cookie" class="w-8 h-8 text-brand-secondary"></i>
-                <p class="text-sm text-gray-400">We use cookies to improve your gaming experience and store your cart locally.</p>
+                <p class="text-sm text-gray-400">We use cookies to secure your keys and cart data.</p>
             </div>
             <div class="flex gap-3">
                 <button @click="cookiesAccepted = true; localStorage.setItem('pwe_cookies', 'true')" class="px-6 py-2 bg-brand-primary hover:bg-blue-600 text-white text-xs font-bold uppercase rounded-lg transition">Accept</button>
-                <button @click="cookiesAccepted = true" class="px-6 py-2 border border-white/10 hover:bg-white/5 text-gray-400 text-xs font-bold uppercase rounded-lg transition">Decline</button>
             </div>
         </div>
     </div>
 
-    <div x-data="{ open: false }" class="fixed bottom-6 right-6 z-[95]">
-        <div x-show="open" x-cloak x-transition.scale.origin.bottom.right class="absolute bottom-16 right-0 w-80 bg-bg-card border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-96">
-            <div class="bg-brand-primary p-4 flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                    <span class="font-bold text-sm text-white">Support Bot</span>
+    <div x-data="chatBot()" class="fixed bottom-6 right-6 z-[95]">
+        <div x-show="open" x-cloak x-transition.scale.origin.bottom.right class="absolute bottom-16 right-0 w-80 md:w-96 bg-bg-card border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[500px]">
+            <div class="bg-brand-primary p-4 flex justify-between items-center shadow-lg z-10">
+                <div class="flex items-center gap-3">
+                    <div class="relative">
+                        <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-brand-primary font-bold"><i data-lucide="bot" class="w-5 h-5"></i></div>
+                        <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 rounded-full border-2 border-brand-primary"></div>
+                    </div>
+                    <div>
+                        <span class="font-bold text-sm text-white block">PWE Assistant</span>
+                        <span class="text-[10px] text-blue-100 flex items-center gap-1">Online <span class="animate-pulse">●</span></span>
+                    </div>
                 </div>
-                <button @click="open = false"><i data-lucide="x" class="w-4 h-4 text-white"></i></button>
+                <button @click="open = false" class="hover:bg-white/20 p-1 rounded transition"><i data-lucide="x" class="w-5 h-5 text-white"></i></button>
             </div>
-            <div class="flex-1 p-4 overflow-y-auto space-y-3 bg-black/20">
-                <div class="bg-white/10 p-3 rounded-lg rounded-tl-none text-xs text-gray-300 max-w-[80%]">
-                    Hello! How can I help you with your keys today?
+            
+            <div class="flex-1 p-4 overflow-y-auto space-y-4 bg-black/20" id="chatContainer">
+                <template x-for="msg in messages" :key="msg.id">
+                    <div :class="msg.sender === 'bot' ? 'flex justify-start' : 'flex justify-end'">
+                        <div :class="msg.sender === 'bot' ? 'bg-white/10 text-gray-200 rounded-tl-none' : 'bg-brand-primary text-white rounded-tr-none'" class="p-3 rounded-2xl text-xs max-w-[85%] leading-relaxed shadow-md">
+                            <span x-html="msg.text"></span>
+                            <div class="text-[9px] opacity-50 mt-1 text-right" x-text="msg.time"></div>
+                        </div>
+                    </div>
+                </template>
+                
+                <div x-show="isTyping" class="flex justify-start animate-fade-in">
+                    <div class="bg-white/10 p-3 rounded-2xl rounded-tl-none flex gap-1 items-center h-8">
+                        <div class="w-1.5 h-1.5 bg-gray-400 rounded-full typing-dot"></div>
+                        <div class="w-1.5 h-1.5 bg-gray-400 rounded-full typing-dot"></div>
+                        <div class="w-1.5 h-1.5 bg-gray-400 rounded-full typing-dot"></div>
+                    </div>
                 </div>
-                </div>
-            <div class="p-3 border-t border-white/10 bg-bg-card flex gap-2">
-                <input type="text" placeholder="Type a message..." class="flex-1 bg-black/20 border border-white/10 rounded px-3 py-2 text-xs focus:border-brand-primary outline-none text-white">
-                <button class="p-2 bg-brand-primary rounded hover:bg-blue-600"><i data-lucide="send" class="w-4 h-4 text-white"></i></button>
+            </div>
+
+            <div class="p-3 border-t border-white/10 bg-bg-card">
+                <form @submit.prevent="sendMessage" class="flex gap-2 relative">
+                    <input type="text" x-model="input" placeholder="Ask about keys, refunds, etc..." class="flex-1 bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-xs focus:border-brand-primary outline-none text-white transition placeholder-gray-600">
+                    <button type="submit" class="absolute right-2 top-2 p-1.5 bg-brand-primary rounded-lg hover:bg-blue-600 transition shadow-lg disabled:opacity-50" :disabled="!input.trim()">
+                        <i data-lucide="send" class="w-4 h-4 text-white"></i>
+                    </button>
+                </form>
             </div>
         </div>
-        <button @click="open = !open" class="w-14 h-14 bg-brand-primary hover:bg-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-brand-primary/40 transition hover:-translate-y-1">
-            <i :data-lucide="open ? 'x' : 'message-circle'" class="w-6 h-6 text-white"></i>
+
+        <button @click="open = !open; hasUnread = false" class="relative w-14 h-14 bg-brand-primary hover:bg-blue-600 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(37,99,235,0.5)] transition hover:-translate-y-1 group">
+            <i :data-lucide="open ? 'chevron-down' : 'message-circle'" class="w-7 h-7 text-white transition transform group-hover:scale-110"></i>
+            <span x-show="hasUnread && !open" class="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full border-2 border-bg-main animate-bounce"></span>
         </button>
     </div>
 
@@ -93,7 +125,7 @@
 
             <div class="hidden md:flex flex-1 max-w-md mx-8 relative group">
                 <i data-lucide="search" class="absolute left-3 top-2.5 w-5 h-5 opacity-50 group-focus-within:text-brand-primary transition"></i>
-                <input type="text" x-model="searchQuery" placeholder="Search games..." class="w-full bg-brand-text/5 border border-brand-text/10 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-brand-primary/50 transition placeholder-brand-text/50">
+                <input type="text" x-model="searchQuery" placeholder="Search 20+ games..." class="w-full bg-brand-text/5 border border-brand-text/10 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-brand-primary/50 transition placeholder-brand-text/50">
             </div>
 
             <div class="flex items-center gap-3 md:gap-6 shrink-0">
@@ -117,11 +149,11 @@
                         <div class="px-4 py-3 border-t border-brand-text/10 mt-1">
                             <div class="text-[10px] opacity-50 uppercase font-bold mb-2">Theme</div>
                             <div class="flex gap-2 justify-between">
-                                <button @click="setTheme('cyber')" class="w-8 h-8 rounded-full bg-blue-600 border border-white/20 hover:scale-110 transition"></button>
-                                <button @click="setTheme('luxury')" class="w-8 h-8 rounded-full bg-yellow-500 border border-white/20 hover:scale-110 transition"></button>
-                                <button @click="setTheme('toxic')" class="w-8 h-8 rounded-full bg-green-500 border border-white/20 hover:scale-110 transition"></button>
-                                <button @click="setTheme('crimson')" class="w-8 h-8 rounded-full bg-red-600 border border-white/20 hover:scale-110 transition"></button>
-                                <button @click="setTheme('minimal')" class="w-8 h-8 rounded-full bg-white border border-gray-300 hover:scale-110 transition"></button>
+                                <button @click="setTheme('cyber')" class="w-8 h-8 rounded-full bg-blue-600 border border-white/20"></button>
+                                <button @click="setTheme('luxury')" class="w-8 h-8 rounded-full bg-yellow-500 border border-white/20"></button>
+                                <button @click="setTheme('toxic')" class="w-8 h-8 rounded-full bg-green-500 border border-white/20"></button>
+                                <button @click="setTheme('crimson')" class="w-8 h-8 rounded-full bg-red-600 border border-white/20"></button>
+                                <button @click="setTheme('minimal')" class="w-8 h-8 rounded-full bg-white border border-gray-300"></button>
                             </div>
                         </div>
                     </div>
@@ -159,7 +191,7 @@
 
     <main class="max-w-[1600px] mx-auto px-4 md:px-6 py-12 md:py-24 text-brand-text">
         <div class="flex items-center justify-between mb-8 md:mb-12">
-            <h2 class="text-2xl md:text-3xl font-display font-bold">TRENDING <span class="text-brand-primary">TITLES</span></h2>
+            <h2 class="text-2xl md:text-3xl font-display font-bold">LATEST <span class="text-brand-primary">DROPS</span></h2>
             <div class="flex gap-2"><button class="p-2 rounded bg-brand-text/5 text-brand-text"><i data-lucide="layout-grid" class="w-5 h-5"></i></button></div>
         </div>
 
@@ -196,46 +228,18 @@
                 <div class="flex items-center gap-2"><div class="w-8 h-8 flex items-center justify-center bg-brand-text/5 rounded-lg"><i data-lucide="gamepad-2" class="w-5 h-5"></i></div><span class="font-display font-bold">PlayWithEase</span></div>
                 <p class="text-xs text-gray-500 leading-relaxed">The world's leading destination for digital game keys. Instant delivery, secure checkout, and 24/7 support.</p>
             </div>
-            <div>
-                <h4 class="font-bold text-sm uppercase tracking-widest mb-4">Support</h4>
-                <ul class="space-y-2 text-xs text-gray-500">
-                    <li><a href="#" class="hover:text-brand-primary">Help Center</a></li>
-                    <li><a href="#" class="hover:text-brand-primary">Redeem Key</a></li>
-                    <li><a href="#" class="hover:text-brand-primary">Refund Policy</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-bold text-sm uppercase tracking-widest mb-4">Legal</h4>
-                <ul class="space-y-2 text-xs text-gray-500">
-                    <li><a href="#" class="hover:text-brand-primary">Terms of Service</a></li>
-                    <li><a href="#" class="hover:text-brand-primary">Privacy Policy</a></li>
-                    <li><a href="#" class="hover:text-brand-primary">Cookie Settings</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-bold text-sm uppercase tracking-widest mb-4">Newsletter</h4>
-                <div class="flex gap-2">
-                    <input type="email" placeholder="Email" class="bg-black/20 border border-white/10 rounded px-3 py-2 text-xs w-full focus:border-brand-primary outline-none">
-                    <button class="bg-brand-primary px-3 rounded hover:bg-blue-600 transition"><i data-lucide="arrow-right" class="w-4 h-4 text-white"></i></button>
-                </div>
-            </div>
+            <div><h4 class="font-bold text-sm uppercase tracking-widest mb-4">Support</h4><ul class="space-y-2 text-xs text-gray-500"><li><a href="#" class="hover:text-brand-primary">Help Center</a></li><li><a href="#" class="hover:text-brand-primary">Redeem Key</a></li><li><a href="#" class="hover:text-brand-primary">Refund Policy</a></li></ul></div>
+            <div><h4 class="font-bold text-sm uppercase tracking-widest mb-4">Legal</h4><ul class="space-y-2 text-xs text-gray-500"><li><a href="#" class="hover:text-brand-primary">Terms</a></li><li><a href="#" class="hover:text-brand-primary">Privacy</a></li></ul></div>
+            <div><h4 class="font-bold text-sm uppercase tracking-widest mb-4">Newsletter</h4><div class="flex gap-2"><input type="email" placeholder="Email" class="bg-black/20 border border-white/10 rounded px-3 py-2 text-xs w-full focus:border-brand-primary outline-none"><button class="bg-brand-primary px-3 rounded hover:bg-blue-600 transition"><i data-lucide="arrow-right" class="w-4 h-4 text-white"></i></button></div></div>
         </div>
-        <div class="text-center text-[10px] text-gray-600 mt-12 border-t border-white/5 pt-8">&copy; 2026 PlayWithEase. All rights reserved. Not affiliated with Valve or Epic.</div>
+        <div class="text-center text-[10px] text-gray-600 mt-12 border-t border-white/5 pt-8">&copy; 2026 PlayWithEase.</div>
     </footer>
 
     <div x-show="keyModal.open" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4" x-transition.opacity>
         <div class="bg-bg-card border border-brand-secondary/30 w-full max-w-md rounded-2xl overflow-hidden shadow-2xl relative text-brand-text">
             <button @click="keyModal.open = false" class="absolute top-4 right-4 opacity-50 hover:opacity-100 z-20"><i data-lucide="x"></i></button>
-            <div x-show="keyModal.loading" class="p-10 text-center">
-                <div class="w-12 h-12 border-4 border-brand-secondary border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
-                <h3 class="text-lg font-bold mb-2">Generating Key...</h3><p class="opacity-50 text-xs font-tech">Connecting to Publisher Server</p>
-            </div>
-            <div x-show="!keyModal.loading" class="p-8 text-center">
-                <div class="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4 text-green-500"><i data-lucide="check" class="w-6 h-6"></i></div>
-                <h3 class="font-bold mb-1 truncate" x-text="keyModal.gameTitle"></h3>
-                <div class="bg-black border border-white/10 rounded-lg p-3 mb-4 relative cursor-pointer" @click="copyKey"><code class="font-mono text-lg text-brand-secondary tracking-widest" x-text="keyModal.key"></code></div>
-                <button @click="keyModal.open = false" class="w-full py-3 bg-brand-text text-bg-main font-bold rounded hover:opacity-80">Close</button>
-            </div>
+            <div x-show="keyModal.loading" class="p-10 text-center"><div class="w-12 h-12 border-4 border-brand-secondary border-t-transparent rounded-full animate-spin mx-auto mb-6"></div><h3 class="text-lg font-bold mb-2">Generating Key...</h3></div>
+            <div x-show="!keyModal.loading" class="p-8 text-center"><div class="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4 text-green-500"><i data-lucide="check" class="w-6 h-6"></i></div><h3 class="font-bold mb-1 truncate" x-text="keyModal.gameTitle"></h3><div class="bg-black border border-white/10 rounded-lg p-3 mb-4 relative cursor-pointer" @click="copyKey"><code class="font-mono text-lg text-brand-secondary tracking-widest" x-text="keyModal.key"></code></div><button @click="keyModal.open = false" class="w-full py-3 bg-brand-text text-bg-main font-bold rounded hover:opacity-80">Close</button></div>
         </div>
     </div>
 
@@ -244,14 +248,57 @@
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         const firebaseConfig = { apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs", authDomain: "playwithease.firebaseapp.com", projectId: "playwithease", storageBucket: "playwithease.firebasestorage.app", messagingSenderId: "189729941006", appId: "1:189729941006:web:362653774b92416c357e5f", measurementId: "G-1C3B31KQ7C" };
         const app = initializeApp(firebaseConfig); const auth = getAuth(app);
-        onAuthStateChanged(auth, (user) => {
-            if (user) { document.getElementById('loginBtn').classList.add('hidden'); document.getElementById('profileBtn').classList.remove('hidden'); if(user.photoURL) document.getElementById('userAvatar').src = user.photoURL; }
-            else { document.getElementById('loginBtn').classList.remove('hidden'); document.getElementById('profileBtn').classList.add('hidden'); }
-        });
+        onAuthStateChanged(auth, (user) => { if (user) { document.getElementById('loginBtn').classList.add('hidden'); document.getElementById('profileBtn').classList.remove('hidden'); if(user.photoURL) document.getElementById('userAvatar').src = user.photoURL; } else { document.getElementById('loginBtn').classList.remove('hidden'); document.getElementById('profileBtn').classList.add('hidden'); } });
     </script>
 
     <script>
         document.addEventListener('alpine:init', () => {
+            
+            // CHATBOT LOGIC
+            Alpine.data('chatBot', () => ({
+                open: false,
+                input: '',
+                isTyping: false,
+                hasUnread: true,
+                messages: [
+                    { id: 1, text: "Hi there! 👋 Welcome to PlayWithEase.", sender: 'bot', time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) },
+                    { id: 2, text: "I can help you find games, track keys, or answer support questions.", sender: 'bot', time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) }
+                ],
+                
+                sendMessage() {
+                    if (!this.input.trim()) return;
+                    
+                    // Add User Message
+                    this.messages.push({ id: Date.now(), text: this.input, sender: 'user', time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
+                    const userText = this.input.toLowerCase();
+                    this.input = '';
+                    
+                    // Scroll to bottom
+                    this.$nextTick(() => { const container = document.getElementById('chatContainer'); container.scrollTop = container.scrollHeight; });
+
+                    // Simulate AI Thinking
+                    this.isTyping = true;
+                    
+                    setTimeout(() => {
+                        this.isTyping = false;
+                        let reply = "I'm not sure about that. Try asking about 'keys', 'refunds', or 'games'.";
+                        
+                        // Simple Keyword Engine
+                        if (userText.includes('hello') || userText.includes('hi')) reply = "Hello! Ready to game? 🎮";
+                        else if (userText.includes('key') || userText.includes('code')) reply = "Your keys are stored in your <b>Profile > My Vault</b> immediately after purchase.";
+                        else if (userText.includes('refund') || userText.includes('money')) reply = "You can request a refund within 14 days if the key hasn't been revealed.";
+                        else if (userText.includes('safe') || userText.includes('legit')) reply = "Yes! We are an authorized global reseller. All keys come directly from publishers.";
+                        else if (userText.includes('price') || userText.includes('cost')) reply = "We offer the best regional pricing. Use the currency toggle in the menu!";
+                        else if (userText.includes('gta')) reply = "GTA VI is currently available for Pre-Order! Check the homepage.";
+
+                        this.messages.push({ id: Date.now() + 1, text: reply, sender: 'bot', time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
+                        
+                        this.$nextTick(() => { const container = document.getElementById('chatContainer'); container.scrollTop = container.scrollHeight; });
+                    }, 1500);
+                }
+            }));
+
+            // STORE LOGIC
             Alpine.data('storeLogic', () => ({
                 currency: localStorage.getItem('pwe_currency') || 'INR', 
                 exchangeRate: 85.0, 
@@ -272,17 +319,28 @@
                     minimal: { '--bg-main': '#ffffff', '--bg-card': '#f3f4f6', '--text-main': '#111827', '--brand-primary': '#000000', '--brand-secondary': '#374151' }
                 },
 
+                // EXPANDED GAME DB (20 Games)
                 games: [
-                    { id: 1, title: 'Grand Theft Auto V', category: 'action', price: 14.99, oldPrice: 29.99, discount: '-50%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
-                    { id: 2, title: 'Red Dead Redemption 2', category: 'adventure', price: 19.99, oldPrice: 59.99, discount: '-66%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
-                    { id: 3, title: 'Cyberpunk 2077', category: 'rpg', price: 29.99, oldPrice: 49.99, discount: '-40%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg' },
-                    { id: 4, title: 'Elden Ring', category: 'rpg', price: 39.99, oldPrice: 59.99, discount: '-33%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg' },
-                    { id: 5, title: 'God of War', category: 'action', price: 49.99, oldPrice: 69.99, discount: '-28%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg' },
-                    { id: 6, title: 'Call of Duty: MW3', category: 'shooter', price: 69.99, oldPrice: null, discount: null, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2519060/library_600x900.jpg' },
-                    { id: 7, title: 'FIFA 24 (FC 24)', category: 'sports', price: 34.99, oldPrice: 69.99, discount: '-50%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
-                    { id: 8, title: 'Resident Evil 4', category: 'horror', price: 34.99, oldPrice: 59.99, discount: '-40%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg' },
-                    { id: 9, title: 'Marvel\'s Spider-Man', category: 'action', price: 39.99, oldPrice: 59.99, discount: '-30%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg' },
-                    { id: 10, title: 'The Last of Us Part I', category: 'adventure', price: 49.99, oldPrice: 69.99, discount: '-28%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900.jpg' },
+                    { id: 1, title: 'Grand Theft Auto V', price: 14.99, oldPrice: 29.99, discount: '-50%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
+                    { id: 2, title: 'Red Dead Redemption 2', price: 19.99, oldPrice: 59.99, discount: '-66%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
+                    { id: 3, title: 'Cyberpunk 2077', price: 29.99, oldPrice: 49.99, discount: '-40%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg' },
+                    { id: 4, title: 'Elden Ring', price: 39.99, oldPrice: 59.99, discount: '-33%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg' },
+                    { id: 5, title: 'God of War', price: 49.99, oldPrice: 69.99, discount: '-28%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg' },
+                    { id: 6, title: 'Call of Duty: MW3', price: 69.99, oldPrice: null, discount: null, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2519060/library_600x900.jpg' },
+                    { id: 7, title: 'EA SPORTS FC 24', price: 34.99, oldPrice: 69.99, discount: '-50%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
+                    { id: 8, title: 'Resident Evil 4', price: 34.99, oldPrice: 59.99, discount: '-40%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg' },
+                    { id: 9, title: 'Marvel\'s Spider-Man', price: 39.99, oldPrice: 59.99, discount: '-30%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg' },
+                    { id: 10, title: 'The Last of Us Part I', price: 49.99, oldPrice: 69.99, discount: '-28%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900.jpg' },
+                    { id: 11, title: 'Helldivers 2', price: 39.99, oldPrice: null, discount: 'HOT', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/library_600x900.jpg' },
+                    { id: 12, title: 'Palworld', price: 29.99, oldPrice: null, discount: 'NEW', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1623730/library_600x900.jpg' },
+                    { id: 13, title: 'Baldur\'s Gate 3', price: 59.99, oldPrice: null, discount: 'GOTY', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1086940/library_600x900.jpg' },
+                    { id: 14, title: 'Tekken 8', price: 69.99, oldPrice: null, discount: 'NEW', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1778820/library_600x900.jpg' },
+                    { id: 15, title: 'Forza Horizon 5', price: 29.99, oldPrice: 59.99, discount: '-50%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551360/library_600x900.jpg' },
+                    { id: 16, title: 'Hogwarts Legacy', price: 35.99, oldPrice: 59.99, discount: '-40%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/library_600x900.jpg' },
+                    { id: 17, title: 'Starfield', price: 41.99, oldPrice: 69.99, discount: '-40%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1716740/library_600x900.jpg' },
+                    { id: 18, title: 'Armored Core VI', price: 39.99, oldPrice: 59.99, discount: '-33%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888160/library_600x900.jpg' },
+                    { id: 19, title: 'Dragon\'s Dogma 2', price: 69.99, oldPrice: null, discount: 'NEW', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2054970/library_600x900.jpg' },
+                    { id: 20, title: 'Assassin\'s Creed Mirage', price: 24.99, oldPrice: 49.99, discount: '-50%', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2355430/library_600x900.jpg' }
                 ],
 
                 init() { lucide.createIcons(); this.startTimer(); this.setTheme(this.currentTheme); },
