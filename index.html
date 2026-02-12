@@ -19,8 +19,11 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'], tech: ['Rajdhani', 'sans-serif'], display: ['Orbitron', 'sans-serif'] },
                     colors: { bg: { main: 'var(--bg-main)', card: 'var(--bg-card)' }, brand: { primary: 'var(--brand-primary)', secondary: 'var(--brand-secondary)', text: 'var(--text-main)' } },
-                    animation: { 'float': 'float 6s ease-in-out infinite', 'pulse-slow': 'pulse 3s infinite' },
-                    keyframes: { float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } } }
+                    animation: { 'float': 'float 6s ease-in-out infinite', 'pulse-slow': 'pulse 3s infinite', 'fade-in': 'fadeIn 0.5s ease-out' },
+                    keyframes: { 
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } }
+                    }
                 }
             }
         }
@@ -33,9 +36,13 @@
         [x-cloak] { display: none !important; }
         body, div, button, span, i, nav, section, main { transition-property: color, background-color, border-color; transition-duration: 300ms; }
         
-        /* Video Container to force Aspect Ratio Fill */
+        /* RESPONSIVE VIDEO CONTAINER */
         .video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 20; background: black; }
+        
+        /* Mobile: Cover Mode */
         .video-background { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; transform: translate(-50%, -50%); pointer-events: none; object-fit: cover; }
+        
+        /* Desktop: Cinematic Crop */
         @media (min-width: 768px) {
             .video-background { width: 100vw; height: 100vh; }
             @media (min-aspect-ratio: 16/9) { .video-background { height: 56.25vw; } }
@@ -269,7 +276,7 @@
             Alpine.data('chatBot', () => ({
                 open: false, input: '',
                 messages: [{ id: 1, text: "Welcome! Need help?", sender: 'bot' }],
-                sendMessage() { if (!this.input.trim()) return; this.messages.push({ id: Date.now(), text: this.input, sender: 'user' }); const txt = this.input.toLowerCase(); this.input = ''; setTimeout(() => { let r = "I can help with keys and refunds."; if (txt.includes('key')) r = "Check <b>Profile > My Vault</b>."; if (txt.includes('hello')) r = "Hi there!"; this.messages.push({ id: Date.now()+1, text: r, sender: 'bot' }); this.$nextTick(() => document.getElementById('chatContainer').scrollTop = 9999); }, 800); }
+                sendMessage() { if (!this.input.trim()) return; this.messages.push({ id: Date.now(), text: this.input, sender: 'user' }); const txt = this.input.toLowerCase(); this.input = ''; setTimeout(() => { let r = "I can help with keys and refunds."; if (txt.includes('key')) r = "Check <b>Profile > My Vault</b>."; if (txt.includes('refund')) r = "Refunds are possible within 14 days if unredeemed."; if (txt.includes('hello')) r = "Hi there!"; this.messages.push({ id: Date.now()+1, text: r, sender: 'bot' }); this.$nextTick(() => document.getElementById('chatContainer').scrollTop = 9999); }, 800); }
             }));
 
             Alpine.data('storeLogic', () => ({
@@ -291,10 +298,9 @@
                         date: '2026-11-19T00:00:00'
                     },
                     {
-                        // FIXED FORZA POSTER (4K Landscape)
-                        image: 'https://images.hdqwalls.com/wallpapers/forza-horizon-5-4k-uo.jpg',
+                        // FIXED POSTER AND VIDEO
+                        image: 'https://news.xbox.com/en-us/wp-content/uploads/sites/2/2021/11/ForzaHorizon5_KeyArt_Horiz_RGB_Final.jpg',
                         logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Forza_Horizon_logo.svg/2560px-Forza_Horizon_logo.svg.png',
-                        // FIXED FORZA VIDEO ID
                         videoId: 'XG1Ll2CVhug',
                         date: '2027-05-15T00:00:00'
                     }
@@ -369,6 +375,7 @@
                 playTrailer() {
                     this.trailerPlaying = true;
                     if(window.ytPlayer && typeof window.ytPlayer.playVideo === 'function') {
+                        // LOAD NEW VIDEO ID BASED ON ACTIVE SLIDE
                         window.ytPlayer.loadVideoById(this.heroSlides[this.activeSlide].videoId);
                     } else {
                         window.ytPlayer = new YT.Player('hero-player', {
