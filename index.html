@@ -34,11 +34,9 @@
         .nav-base { background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); height: 75px; }
         .nav-scrolled { background: rgba(8, 8, 8, 0.98); border-bottom: 1px solid rgba(255, 255, 255, 0.1); height: 65px; }
         @media (min-width: 768px) { .nav-base { height: 85px; } .nav-scrolled { height: 75px; } }
-        
         body { -webkit-tap-highlight-color: transparent; color: var(--text-main); background-color: var(--bg-main); overflow-x: hidden; }
         [x-cloak] { display: none !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        
         .video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 20; background: black; }
         .video-background { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%); pointer-events: none; object-fit: cover; }
         svg.lucide { display: inline-block !important; vertical-align: middle; }
@@ -154,25 +152,17 @@
                          <a :href="'product.html?id=' + game.id" class="absolute inset-0 z-10"></a>
                          <div class="absolute bottom-4 left-4 z-20"><div class="text-sm font-black text-white" x-text="formatPrice(game.price)"></div></div>
                      </div>
+                     <div class="p-4 pt-2">
+                         <h3 class="text-[10px] font-bold text-white/80 uppercase tracking-tighter truncate" x-text="game.title"></h3>
+                     </div>
                  </div>
              </template>
          </div>
      </main>
  
      <footer class="bg-[#050505] border-t border-white/10 mt-20 text-white">
-        <div class="max-w-[1600px] mx-auto px-4 md:px-6 py-14 md:py-16">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-                <div class="space-y-4">
-                    <a href="index.html" class="flex items-center gap-2 w-fit">
-                        <div class="w-9 h-9 flex items-center justify-center bg-brand-primary/10 rounded-xl border border-brand-primary/20"><i data-lucide="gamepad-2" class="text-brand-primary"></i></div>
-                        <h2 class="font-display text-lg tracking-tight uppercase italic font-black">PLAYWITH<span class="text-brand-primary">EASE</span></h2>
-                    </a>
-                    <p class="text-sm text-white/60 leading-relaxed">Premium digital game marketplace delivering instant keys and verified sellers.</p>
-                </div>
-            </div>
-            <div class="mt-10 pt-6 border-t border-white/10 text-center text-xs text-white/40">
-                <p>&copy; 2026 PlayWithEase Digital. All rights reserved.</p>
-            </div>
+        <div class="max-w-[1600px] mx-auto px-4 md:px-6 py-14 md:py-16 text-center">
+            <p class="text-xs text-white/40">&copy; 2026 PlayWithEase Digital. All rights reserved.</p>
         </div>
      </footer>
  
@@ -196,15 +186,11 @@
      <script>
          document.addEventListener('alpine:init', () => {
              Alpine.data('chatBot', () => ({
-                 open: false, input: '', messages: [{ id: 1, text: "Hello! How can I help you?", sender: 'bot' }],
+                 open: false, input: '', messages: [{ id: 1, text: "Hello! Support active.", sender: 'bot' }],
                  sendMessage() {
                      if (!this.input.trim()) return;
                      this.messages.push({ id: Date.now(), text: this.input, sender: 'user' });
                      this.input = ''; this.scrollToBottom();
-                     setTimeout(() => {
-                         this.messages.push({ id: Date.now()+1, text: "Support is active.", sender: 'bot' });
-                         this.scrollToBottom(); lucide.createIcons();
-                     }, 1000);
                  },
                  scrollToBottom() { this.$nextTick(() => { const c = document.getElementById('chatContainer'); if (c) c.scrollTo({ top: c.scrollHeight, behavior: 'smooth' }); }); }
              }));
@@ -212,8 +198,7 @@
              Alpine.data('storeLogic', () => ({
                  scrolled: false, activeSlide: 0, trailerPlaying: false, isMuted: false,
                  cartCount: parseInt(localStorage.getItem('pwe_cart_count'), 10) || 0,
-                 activeCategory: 'All', notifications: [],
-                 currentTheme: localStorage.getItem('pwe_theme') || 'cyber',
+                 activeCategory: 'All', notifications: [], currentTheme: localStorage.getItem('pwe_theme') || 'cyber',
                  timer: { days: '00', hours: '00', minutes: '00', seconds: '00' },
                  heroSlides: [
                      { image: 'https://media-rockstargames-com.akamaized.net/mfe6/prod/__common/img/71d4d17edcd49703a5ea446cc0e588e6.jpg', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg/512px-Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg.png', videoId: 'QdBZY2fkU-0', date: '2026-11-19T00:00:00' },
@@ -227,22 +212,22 @@
                      minimal: { '--bg-main': '#ffffff', '--bg-card': '#f3f4f6', '--brand-primary': '#000000', '--brand-secondary': '#374151' }
                  },
                  games: [
-                    // --- GAMES (30) ---
+                    // --- GAMES (Steam CDN Fix) ---
                     { id: 1, title: 'GTA V', category: 'Action', price: 14.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
                     { id: 2, title: 'RDR 2', category: 'Action', price: 19.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
                     { id: 3, title: 'Cyberpunk 2077', category: 'RPG', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg' },
                     { id: 4, title: 'Elden Ring', category: 'RPG', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg' },
                     { id: 5, title: 'God of War', category: 'Action', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg' },
-                    { id: 6, title: 'Modern Warfare 3', category: 'Shooter', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2519060/library_600x900.jpg' },
+                    { id: 6, title: 'MW3', category: 'Shooter', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2519060/library_600x900.jpg' },
                     { id: 7, title: 'FC 24', category: 'Sports', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
-                    { id: 8, title: 'Resident Evil 4', category: 'Horror', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg' },
-                    { id: 9, title: 'Spider-Man Remastered', category: 'Action', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg' },
-                    { id: 10, title: 'The Last of Us', category: 'Action', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900.jpg' },
+                    { id: 8, title: 'RE 4 Remake', category: 'Horror', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg' },
+                    { id: 9, title: 'Spider-Man', category: 'Action', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg' },
+                    { id: 10, title: 'TLOU Part I', category: 'Action', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900.jpg' },
                     { id: 11, title: 'Helldivers 2', category: 'Shooter', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/library_600x900.jpg' },
-                    { id: 12, title: 'Palworld', category: 'RPG', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1623730/library_600x900.jpg' },
+                    { id: 12, title: 'Palworld', category: 'Action', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1623730/library_600x900.jpg' },
                     { id: 13, title: 'Baldurs Gate 3', category: 'RPG', price: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1086940/library_600x900.jpg' },
                     { id: 14, title: 'Tekken 8', category: 'Action', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1778820/library_600x900.jpg' },
-                    { id: 15, title: 'Forza Horizon 5', category: 'Sports', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551360/library_600x900.jpg' },
+                    { id: 15, title: 'Forza 5', category: 'Sports', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551360/library_600x900.jpg' },
                     { id: 16, title: 'Hogwarts Legacy', category: 'RPG', price: 35.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/library_600x900.jpg' },
                     { id: 17, title: 'Starfield', category: 'RPG', price: 41.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1716740/library_600x900.jpg' },
                     { id: 18, title: 'Armored Core VI', category: 'Action', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888160/library_600x900.jpg' },
@@ -250,7 +235,7 @@
                     { id: 20, title: 'AC Mirage', category: 'Action', price: 24.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2355430/library_600x900.jpg' },
                     { id: 21, title: 'Sekiro', category: 'Action', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/814380/library_600x900.jpg' },
                     { id: 22, title: 'Horizon', category: 'Action', price: 44.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2420110/library_600x900.jpg' },
-                    { id: 23, title: 'Ghost of Tsushima', category: 'Action', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2215430/library_600x900.jpg' },
+                    { id: 23, title: 'Uncharted', category: 'Action', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1659420/library_600x900.jpg' },
                     { id: 24, title: 'Days Gone', category: 'Horror', price: 14.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1259420/library_600x900.jpg' },
                     { id: 25, title: 'Alan Wake 2', category: 'Horror', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
                     { id: 26, title: 'Dead Space', category: 'Horror', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1693980/library_600x900.jpg' },
@@ -259,39 +244,20 @@
                     { id: 29, title: 'Battlefield 2042', category: 'Shooter', price: 19.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1517290/library_600x900.jpg' },
                     { id: 30, title: 'Halo Infinite', category: 'Shooter', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1240440/library_600x900.jpg' },
                     
-                    // --- OTT (6) ---
-                    { id: 101, title: 'Netflix 4K Premium', category: 'OTT', price: 2.99, image: 'https://images.ctfassets.net/4cd45et68cgf/4nBn7ncuG0gQUuEguKWg8w/8394ad21cd033a35d03a3f0f37c35a27/Netflix-Logo.jpg' },
+                    // --- OTT & SUBS ---
+                    { id: 101, title: 'Netflix Premium', category: 'OTT', price: 2.99, image: 'https://www.edigitalagency.com.au/wp-content/uploads/Netflix-logo-red-black-png.png' },
                     { id: 102, title: 'YouTube Premium', category: 'OTT', price: 1.49, image: 'https://upload.wikimedia.org/wikipedia/commons/e/e1/Logo_of_YouTube_Premium.svg' },
-                    { id: 103, title: 'Prime Video', category: 'OTT', price: 1.29, image: 'https://upload.wikimedia.org/wikipedia/commons/1/11/Amazon_Prime_Video_logo.svg' },
+                    { id: 103, title: 'Amazon Prime', category: 'OTT', price: 1.29, image: 'https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png' },
                     { id: 104, title: 'Disney+ Hotstar', category: 'OTT', price: 1.99, image: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_Hotstar_logo.svg' },
-                    { id: 105, title: 'HBO Max', category: 'OTT', price: 2.29, image: 'https://upload.wikimedia.org/wikipedia/commons/d/de/HBO_Max_Logo.svg' },
-                    { id: 106, title: 'Crunchyroll', category: 'OTT', price: 1.19, image: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Crunchyroll_Logo.svg' },
-
-                    // --- SUBSCRIPTIONS (6) ---
-                    { id: 201, title: 'Discord Nitro', category: 'Subscriptions', price: 4.99, image: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Discord_Nitro_Logo.svg' },
-                    { id: 202, title: 'Xbox Game Pass', category: 'Subscriptions', price: 8.99, image: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg' },
-                    { id: 203, title: 'PS Plus Deluxe', category: 'Subscriptions', price: 9.99, image: 'https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_Plus_logo.svg' },
-                    { id: 204, title: 'Spotify Premium', category: 'Subscriptions', price: 0.99, image: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg' },
-                    { id: 205, title: 'Canva Pro 1Y', category: 'Subscriptions', price: 2.49, image: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Canva_logo.svg' },
-                    { id: 206, title: 'ChatGPT Plus', category: 'Subscriptions', price: 19.99, image: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg' }
+                    { id: 201, title: 'Xbox Game Pass', category: 'Subscriptions', price: 8.99, image: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg' },
+                    { id: 202, title: 'Discord Nitro', category: 'Subscriptions', price: 4.99, image: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Discord_Nitro_Logo.svg' }
                  ],
-                 init() { 
-                     this.startTimer(); this.setTheme(this.currentTheme);
-                     window.addEventListener('load', () => lucide.createIcons());
-                 },
+                 init() { this.startTimer(); this.setTheme(this.currentTheme); window.addEventListener('load', () => lucide.createIcons()); },
                  get themeStyles() { return Object.entries(this.themes[this.currentTheme] || {}).map(([k,v])=>`${k}:${v};`).join(''); },
                  setTheme(n) { this.currentTheme = n; localStorage.setItem('pwe_theme', n); },
                  formatPrice(p) { return '₹'+Math.round(p*85); },
-                 get filteredGames() { 
-                     let r = this.games; 
-                     if(this.activeCategory !== 'All') r = r.filter(g => g.category === this.activeCategory); 
-                     return r; 
-                 },
-                 addToCart(g) { 
-                     this.cartCount++; 
-                     localStorage.setItem('pwe_cart_count', this.cartCount);
-                     this.notify('Success', g.title + ' added.');
-                 },
+                 get filteredGames() { return this.activeCategory === 'All' ? this.games : this.games.filter(g => g.category === this.activeCategory); },
+                 addToCart(g) { this.cartCount++; localStorage.setItem('pwe_cart_count', this.cartCount); this.notify('Success', g.title + ' added.'); },
                  buyNow(g) { this.addToCart(g); window.location.href = 'checkout.html'; },
                  nextSlide() { this.activeSlide = (this.activeSlide + 1) % this.heroSlides.length; this.stopTrailer(); this.startTimer(); },
                  prevSlide() { this.activeSlide = (this.activeSlide - 1 + this.heroSlides.length) % this.heroSlides.length; this.stopTrailer(); this.startTimer(); },
@@ -299,7 +265,7 @@
                      const target = new Date(this.heroSlides[this.activeSlide].date).getTime(); 
                      clearInterval(this.timerInterval);
                      this.timerInterval = setInterval(() => { 
-                        const now = new Date().getTime(), d = Math.max(0, target - now);
+                        const d = Math.max(0, target - new Date().getTime());
                         this.timer.days = String(Math.floor(d/(1000*60*60*24))).padStart(2, '0');
                         this.timer.hours = String(Math.floor((d%(1000*60*60*24))/(1000*60*60))).padStart(2, '0');
                         this.timer.minutes = String(Math.floor((d%(1000*60*60))/(1000*60))).padStart(2, '0');
@@ -309,11 +275,7 @@
                  playTrailer() {
                      this.trailerPlaying = true;
                      setTimeout(() => {
-                        window.ytPlayer = new YT.Player('hero-player', {
-                            height: '100%', width: '100%', videoId: this.heroSlides[this.activeSlide].videoId,
-                            playerVars: { 'autoplay': 1, 'controls': 0, 'rel': 0, 'modestbranding': 1 },
-                            events: { 'onReady': (e) => e.target.playVideo(), 'onStateChange': (e) => { if(e.data === YT.PlayerState.ENDED) this.stopTrailer(); } }
-                        });
+                        window.ytPlayer = new YT.Player('hero-player', { height: '100%', width: '100%', videoId: this.heroSlides[this.activeSlide].videoId, playerVars: { 'autoplay': 1, 'controls': 0, 'rel': 0, 'modestbranding': 1 }, events: { 'onReady': (e) => e.target.playVideo() } });
                      }, 100);
                  },
                  stopTrailer() { this.trailerPlaying = false; if(window.ytPlayer?.stopVideo) window.ytPlayer.stopVideo(); },
