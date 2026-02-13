@@ -30,8 +30,8 @@
                     },
                     colors: { 
                         // Brand Identity: "Midnight Cobalt"
-                        primary: { 50: '#eff6ff', 100: '#dbeafe', 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a', 950: '#172554' },
-                        surface: { 50: '#f8fafc', 100: '#f1f5f9', 800: '#1e293b', 900: '#0f172a', 950: '#020617' },
+                        primary: { 50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd', 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a', 950: '#172554' },
+                        surface: { 50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a', 950: '#020617' },
                         accent: { purple: '#8b5cf6', teal: '#14b8a6', rose: '#f43f5e', cyber: '#00f0ff' },
                         status: { success: '#10b981', warning: '#f59e0b', error: '#ef4444', info: '#3b82f6' }
                     },
@@ -69,13 +69,19 @@
     </script>
 
     <style>
-        /* === SYSTEM RESET === */
-        html, body { 
+        /* === SYSTEM RESET & BASE STYLES === */
+        html { 
+            scroll-behavior: smooth; 
+            width: 100%;
+            overflow-x: hidden;
+        }
+        body { 
             background-color: #020617; 
             color: #f1f5f9; 
             overflow-x: hidden; 
             width: 100%;
             max-width: 100vw;
+            position: relative;
         }
         [x-cloak] { display: none !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -95,7 +101,9 @@
         }
 
         /* === CINEMATIC VIDEO (SCALED & CENTERED) === */
-        .video-wrapper { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+        .video-wrapper { 
+            position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; 
+        }
         .video-iframe { 
             position: absolute; top: 50%; left: 50%; 
             width: 100vw; height: 56.25vw; /* 16:9 AR based on width */
@@ -137,6 +145,12 @@
         }
         .group:hover .card-hologram { opacity: 1; }
 
+        /* === SCROLLBAR STYLING === */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
         svg.lucide { display: inline-block; vertical-align: text-bottom; }
     </style>
 </head>
@@ -168,6 +182,58 @@
                        class="w-full bg-transparent border-b-2 border-surface-800 text-3xl md:text-5xl font-display font-bold text-white py-6 pl-14 outline-none focus:border-primary-600 placeholder-surface-800 transition-colors">
             </div>
             <button @click="ui.searchOpen = false" class="absolute -right-4 -top-20 p-4 text-surface-400 hover:text-white transition"><i data-lucide="x" class="w-10 h-10"></i></button>
+        </div>
+    </div>
+
+    <div x-show="ui.authOpen" class="fixed inset-0 z-[250] flex items-center justify-center px-4" x-cloak>
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" @click="ui.authOpen = false" x-transition.opacity></div>
+        <div x-show="ui.authOpen" x-transition:enter="transition ease-out duration-400" x-transition:enter-start="opacity-0 scale-90 translate-y-8" x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+             class="relative w-full max-w-md bg-surface-950 border border-surface-700 rounded-3xl shadow-2xl p-8 overflow-hidden group">
+            
+            <button @click="ui.authOpen = false" class="absolute top-4 right-4 text-surface-500 hover:text-white transition z-20"><i data-lucide="x" class="w-5 h-5"></i></button>
+
+            <div class="text-center mb-8 relative z-10">
+                <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-surface-900 border border-surface-700 mb-5 shadow-xl">
+                    <i data-lucide="fingerprint" class="w-7 h-7 text-primary-500"></i>
+                </div>
+                <h2 class="text-3xl font-display font-bold text-white mb-2">Identity Verification</h2>
+                <p class="text-sm text-surface-400">Secure access to the Apex Vault.</p>
+            </div>
+
+            <div class="flex p-1.5 bg-surface-900 rounded-xl mb-8 relative z-10 border border-surface-800">
+                <button @click="authTab = 'login'" :class="authTab === 'login' ? 'bg-surface-800 text-white shadow-lg' : 'text-surface-500 hover:text-surface-300'" class="flex-1 py-2.5 text-xs font-bold uppercase tracking-wider rounded-lg transition-all">Sign In</button>
+                <button @click="authTab = 'register'" :class="authTab === 'register' ? 'bg-surface-800 text-white shadow-lg' : 'text-surface-500 hover:text-surface-300'" class="flex-1 py-2.5 text-xs font-bold uppercase tracking-wider rounded-lg transition-all">New Agent</button>
+            </div>
+
+            <form @submit.prevent="handleAuth" class="space-y-5 relative z-10">
+                <div x-show="authTab === 'register'" x-transition>
+                    <label class="block text-xs font-bold text-primary-400 uppercase tracking-widest mb-2 ml-1">Codename</label>
+                    <div class="relative">
+                        <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-500"></i>
+                        <input type="text" x-model="authForm.name" class="w-full bg-surface-900/50 border border-surface-700 rounded-xl px-4 py-3.5 pl-11 text-white focus:border-primary-500 focus:bg-surface-900 outline-none transition text-sm font-medium placeholder-surface-600" placeholder="e.g. Ghost_One">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-primary-400 uppercase tracking-widest mb-2 ml-1">Email Protocol</label>
+                    <div class="relative">
+                        <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-500"></i>
+                        <input type="email" x-model="authForm.email" required class="w-full bg-surface-900/50 border border-surface-700 rounded-xl px-4 py-3.5 pl-11 text-white focus:border-primary-500 focus:bg-surface-900 outline-none transition text-sm font-medium placeholder-surface-600" placeholder="agent@playwithease.com">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-primary-400 uppercase tracking-widest mb-2 ml-1">Security Key</label>
+                    <div class="relative">
+                        <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-500"></i>
+                        <input type="password" x-model="authForm.password" required class="w-full bg-surface-900/50 border border-surface-700 rounded-xl px-4 py-3.5 pl-11 text-white focus:border-primary-500 focus:bg-surface-900 outline-none transition text-sm font-medium placeholder-surface-600" placeholder="••••••••••••">
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-primary w-full py-4 mt-4 flex items-center justify-center gap-2 group/btn" :disabled="authLoading">
+                    <span x-show="!authLoading" x-text="authTab === 'login' ? 'Authenticate' : 'Initialize Account'"></span>
+                    <span x-show="!authLoading"><i data-lucide="arrow-right" class="w-4 h-4 group-hover/btn:translate-x-1 transition"></i></span>
+                    <span x-show="authLoading" class="animate-spin"><i data-lucide="loader-2" class="w-5 h-5"></i></span>
+                </button>
+            </form>
         </div>
     </div>
 
@@ -239,19 +305,20 @@
                 <div class="absolute inset-0 bg-gradient-to-t from-surface-900 via-transparent to-transparent"></div>
             </div>
 
-            <div class="w-full md:w-7/12 p-8 md:p-10 flex flex-col overflow-y-auto bg-surface-900 custom-scrollbar">
+            <div class="w-full md:w-7/12 p-8 md:p-10 flex flex-col overflow-y-auto bg-surface-900 custom-scrollbar" x-data="{ tab: 'desc' }">
                 <div class="mb-6">
                     <span class="px-3 py-1 rounded bg-primary-900/30 text-primary-400 text-xs font-bold border border-primary-500/20 uppercase tracking-widest" x-text="ui.activeProduct?.pillar"></span>
                     <h2 class="text-3xl md:text-4xl font-display font-black text-white mt-4 mb-2 leading-tight" x-text="ui.activeProduct?.title"></h2>
                 </div>
 
-                <div class="flex border-b border-surface-700 mb-6" x-data="{ tab: 'desc' }">
+                <div class="flex border-b border-surface-700 mb-6">
                     <button @click="tab = 'desc'" :class="tab === 'desc' ? 'border-primary-500 text-white' : 'border-transparent text-surface-500 hover:text-surface-300'" class="pb-3 px-4 text-sm font-bold border-b-2 transition">Overview</button>
                     <button @click="tab = 'specs'" :class="tab === 'specs' ? 'border-primary-500 text-white' : 'border-transparent text-surface-500 hover:text-surface-300'" class="pb-3 px-4 text-sm font-bold border-b-2 transition">System Specs</button>
                 </div>
 
                 <div class="flex-1">
-                    <div x-show="true" class="space-y-4"> <p class="text-surface-300 text-sm leading-relaxed" x-text="ui.activeProduct?.description"></p>
+                    <div x-show="tab === 'desc'" class="space-y-4 animate-fade-in-up">
+                        <p class="text-surface-300 text-sm leading-relaxed" x-text="ui.activeProduct?.description"></p>
                         
                         <div class="grid grid-cols-2 gap-4 mt-6">
                             <div class="p-4 rounded-xl bg-surface-800 border border-surface-700">
@@ -262,6 +329,17 @@
                                 <div class="text-xs text-surface-500 uppercase font-bold mb-1">Platform</div>
                                 <div class="text-sm font-bold text-white">Global Key</div>
                             </div>
+                        </div>
+                    </div>
+
+                    <div x-show="tab === 'specs'" class="space-y-6 animate-fade-in-up">
+                        <div class="p-4 rounded-xl bg-surface-800/50 border border-surface-700">
+                            <h4 class="text-xs font-bold text-primary-400 uppercase mb-2">Minimum Requirements</h4>
+                            <p class="text-sm text-surface-300 font-mono" x-text="ui.activeProduct?.specs?.min || 'Standard configuration required.'"></p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-surface-800/50 border border-surface-700">
+                            <h4 class="text-xs font-bold text-accent-teal uppercase mb-2">Recommended</h4>
+                            <p class="text-sm text-surface-300 font-mono" x-text="ui.activeProduct?.specs?.rec || 'High-performance configuration recommended.'"></p>
                         </div>
                     </div>
                 </div>
@@ -306,7 +384,16 @@
                     <button @click="ui.authOpen = true" class="hidden sm:block text-xs font-bold text-white bg-primary-600 hover:bg-primary-700 px-5 py-2.5 rounded-lg transition shadow-lg">Sign In</button>
                 </template>
                 <template x-if="user">
-                    <button @click="handleLogout" class="hidden sm:block text-xs font-bold text-surface-300 hover:text-white border border-surface-700 px-4 py-2 rounded-lg">Sign Out</button>
+                    <div class="relative" x-data="{ open: false }" @click.outside="open = false">
+                        <button @click="open = !open" class="flex items-center gap-3 hover:opacity-80 transition">
+                            <div class="w-9 h-9 rounded-full bg-primary-900 border border-primary-700 flex items-center justify-center text-white text-xs font-bold">
+                                <span x-text="user.displayName ? user.displayName.charAt(0) : 'U'"></span>
+                            </div>
+                        </button>
+                        <div x-show="open" class="absolute right-0 mt-2 w-48 bg-surface-900 border border-surface-700 rounded-xl shadow-xl p-2">
+                            <button @click="handleLogout" class="w-full text-left px-4 py-2 text-xs font-bold text-red-400 hover:bg-surface-800 rounded-lg">Log Out</button>
+                        </div>
+                    </div>
                 </template>
             </div>
         </div>
@@ -326,9 +413,9 @@
             </template>
         </div>
 
-        <div class="relative z-20 w-full max-w-[1700px] mx-auto px-6 h-full flex flex-col justify-center pt-24 pb-12 pointer-events-none">
+        <div class="relative z-20 w-full max-w-[1700px] mx-auto px-6 h-full flex flex-col justify-center pt-32 pb-12 pointer-events-none">
             <template x-for="(slide, index) in heroSlides">
-                <div x-show="activeSlide === index" class="max-w-4xl animate-fade-in-up pointer-events-auto flex flex-col items-start gap-6">
+                <div x-show="activeSlide === index" class="max-w-4xl animate-fade-in-up pointer-events-auto flex flex-col items-start gap-8">
                     
                     <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-[10px] md:text-xs font-bold text-white uppercase tracking-widest shadow-xl">
                         <span class="relative flex h-2.5 w-2.5">
@@ -340,7 +427,7 @@
                         <span class="text-primary-400" x-text="slide.dateLabel"></span>
                     </div>
 
-                    <img :src="slide.logo" class="h-24 md:h-48 lg:h-64 object-contain self-start drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)]" alt="Game Title">
+                    <img :src="slide.logo" class="h-28 md:h-52 lg:h-64 object-contain self-start drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)]" alt="Game Title">
 
                     <p class="text-base md:text-xl text-surface-200 font-light leading-relaxed max-w-2xl drop-shadow-md border-l-4 border-primary-500 pl-6 bg-gradient-to-r from-black/40 to-transparent pr-4 py-2 rounded-r-lg" x-text="slide.desc"></p>
                     
@@ -381,6 +468,14 @@
                         </button>
                     </template>
                 </div>
+            </div>
+
+            <div class="flex gap-3 overflow-x-auto pb-6 mb-8 no-scrollbar mask-linear">
+                <template x-for="cat in subFilters">
+                    <button @click="activeCategory = cat" 
+                            :class="activeCategory === cat ? 'bg-primary-600 border-primary-500 text-white shadow-glow-primary' : 'bg-transparent border-surface-800 text-surface-400 hover:border-surface-600 hover:text-white'"
+                            class="px-6 py-2.5 rounded-full border text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all" x-text="cat"></button>
+                </template>
             </div>
 
             <div class="min-h-[600px]">
@@ -491,10 +586,25 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         const VAULT_DATABASE = [
+            // Games
             { id: 1, title: 'Grand Theft Auto VI', category: 'Open World', pillar: 'Games (PS5 Digital)', price: 79.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg', description: 'Welcome to Leonida. GTA VI pushes the boundaries of open-world immersion with the most realistic physics and lighting engines ever created.', specs: { min: 'PS5 Digital / Xbox Series S', rec: 'PS5 Pro / PC RTX 5080' } },
             { id: 2, title: 'Elden Ring: Shadow of the Erdtree', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg', description: 'Venture into the Land of Shadow. A massive expansion featuring a new map, 100+ new weapons, and the hardest bosses in FromSoftware history.', specs: { min: 'Core i5-8400, GTX 1060', rec: 'Core i7-8700K, RTX 3070' } },
-            { id: 101, title: 'Netflix Premium 4K (1 Year)', category: 'Streaming', pillar: 'OTT', price: 29.99, image: 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Netflix-new-icon.png', description: 'Private profile on a shared Enterprise Node. 4K UHD streaming supported. 1-Year warranty.', specs: { min: 'Smart TV / Browser', rec: '4K Display, 25Mbps Net' } },
-            { id: 201, title: 'Xbox Game Pass Ultimate', category: 'Gaming', pillar: 'Subscriptions', price: 14.99, image: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg', description: 'Access 100+ high-quality games on console, PC, and cloud. Includes EA Play membership.', specs: { min: 'Xbox One / Win 10', rec: 'Xbox Series X' } }
+            { id: 3, title: 'Call of Duty: MW3 Vault Edition', category: 'Shooter', pillar: 'Games (PS5 Digital)', price: 99.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2519060/library_600x900.jpg', description: 'Includes Nemesis Operator Pack, 2 Weapon Vaults, BlackCell (1 Season) + 30 Tier Skips.', specs: { min: 'i5-6600K / GTX 960', rec: 'i7-8700K / RTX 3080' } },
+            { id: 4, title: 'Cyberpunk 2077: Ultimate', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg', description: 'The definitive Cyberpunk experience. Includes Phantom Liberty expansion and all updates.', specs: { min: 'Ryzen 5 3600 / RX 5600 XT', rec: 'Ryzen 7 7800X3D / RTX 4080' } },
+            { id: 5, title: 'God of War Ragnarök', category: 'Action', pillar: 'Games (PS5 Digital)', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg', description: 'Kratos and Atreus must journey to each of the Nine Realms in search of answers as Asgardian forces prepare for a prophesied battle.', specs: { min: 'PS4 / PS5', rec: 'PS5 Performance Mode' } },
+            { id: 6, title: 'Helldivers 2 Super Citizen', category: 'Shooter', pillar: 'Games (PS5 Digital)', price: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/library_600x900.jpg', description: 'Join the Helldivers and fight for freedom across a hostile galaxy in this third-person shooter.', specs: { min: 'i7-4790K / GTX 1050 Ti', rec: 'i7-9700K / RTX 2060' } },
+            { id: 7, title: 'Baldur\'s Gate 3', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1086940/library_600x900.jpg', description: 'Gather your party and return to the Forgotten Realms in a tale of fellowship and betrayal, sacrifice and survival, and the lure of absolute power.', specs: { min: 'i5-4690 / GTX 970', rec: 'i7-8700K / RTX 3060' } },
+            { id: 8, title: 'Tekken 8 Ultimate', category: 'Fighting', pillar: 'Games (PS5 Digital)', price: 109.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1778820/library_600x900.jpg', description: 'The longest-running video game storyline comes to a dramatic conclusion.', specs: { min: 'i5-6600K / GTX 1050Ti', rec: 'i7-7700K / RTX 2070' } },
+            
+            // OTT
+            { id: 101, title: 'Netflix Premium (4K) 1Y', category: 'Streaming', pillar: 'OTT', price: 29.99, image: 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Netflix-new-icon.png', description: 'Private profile on a shared Enterprise Node. 4K UHD streaming supported. 1-Year warranty.', specs: { min: 'Smart TV / Browser', rec: '4K Display, 25Mbps Net' } },
+            { id: 102, title: 'YouTube Premium Family 1Y', category: 'Video', pillar: 'OTT', price: 19.99, image: 'https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg', description: 'Ad-free YouTube and YouTube Music. Background play and downloads enabled.', specs: { min: 'Android / iOS', rec: 'Unlimited Data Plan' } },
+            { id: 103, title: 'Disney+ Bundle 1Y', category: 'Streaming', pillar: 'OTT', price: 24.99, image: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_Hotstar_logo.svg', description: 'Includes Disney+, Hulu, and ESPN+. Access global libraries via VPN.', specs: { min: 'Any Browser', rec: 'Smart TV App' } },
+            
+            // Subscriptions
+            { id: 201, title: 'Xbox Game Pass Ultimate', category: 'Gaming', pillar: 'Subscriptions', price: 14.99, image: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg', description: 'Access 100+ high-quality games on console, PC, and cloud. Includes EA Play membership.', specs: { min: 'Xbox One / Win 10', rec: 'Xbox Series X' } },
+            { id: 202, title: 'ChatGPT Plus (Shared)', category: 'AI Tools', pillar: 'Subscriptions', price: 9.99, image: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg', description: 'Access GPT-4 and DALL-E 3. Shared enterprise login.', specs: { min: 'Modern Browser', rec: 'Chrome / Edge' } },
+            { id: 203, title: 'Adobe Creative Cloud', category: 'Design', pillar: 'Subscriptions', price: 39.99, image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Adobe_Creative_Cloud_logo.svg', description: 'Full suite access: Photoshop, Illustrator, Premiere Pro, After Effects, and more.', specs: { min: '16GB RAM', rec: '32GB RAM, M2 Chip / RTX 3060' } }
         ];
 
         document.addEventListener('alpine:init', () => {
