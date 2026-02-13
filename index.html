@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="PlayWithEase Apex - The Global Standard for Digital Extraction & AI Management.">
     <meta name="theme-color" content="#030712">
-    <title>PlayWithEase | Enterprise Digital Marketplace</title>
+    <title>PlayWithEase | Apex Digital Vault & Omni-Core AI</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -26,30 +26,50 @@
                     fontFamily: { 
                         sans: ['Inter', 'sans-serif'], 
                         display: ['Outfit', 'sans-serif'],
-                        mono: ['Space Grotesk', 'monospace']
+                        mono: ['JetBrains Mono', 'monospace']
                     },
                     colors: { 
-                        primary: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a' },
+                        // Brand Identity: "Cobalt & Neon"
+                        primary: { 50: '#eff6ff', 100: '#dbeafe', 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a', 950: '#172554' },
                         surface: { 50: '#f9fafb', 100: '#f3f4f6', 800: '#1f2937', 900: '#111827', 950: '#030712' },
-                        accent: { purple: '#8b5cf6', teal: '#14b8a6', rose: '#f43f5e' }
+                        accent: { purple: '#8b5cf6', teal: '#14b8a6', rose: '#f43f5e', cyber: '#00f0ff' },
+                        status: { success: '#10b981', warning: '#f59e0b', error: '#ef4444', info: '#3b82f6' }
                     },
                     animation: { 
-                        'fade-in-up': 'fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                         'slide-in-right': 'slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                         'scale-in': 'scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'shimmer': 'shimmer 2s infinite linear'
+                        'shimmer': 'shimmer 2s infinite linear',
+                        'glitch': 'glitch 2s infinite',
+                        'scanline': 'scanline 8s linear infinite'
                     },
                     keyframes: { 
                         fadeInUp: { '0%': { opacity: 0, transform: 'translateY(20px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } },
                         slideInRight: { '0%': { transform: 'translateX(100%)' }, '100%': { transform: 'translateX(0)' } },
                         scaleIn: { '0%': { opacity: 0, transform: 'scale(0.95)' }, '100%': { opacity: 1, transform: 'scale(1)' } },
-                        shimmer: { '0%': { backgroundPosition: '200% 0' }, '100%': { backgroundPosition: '-200% 0' } }
+                        shimmer: { '0%': { backgroundPosition: '200% 0' }, '100%': { backgroundPosition: '-200% 0' } },
+                        glitch: {
+                            '0%': { transform: 'translate(0)' },
+                            '20%': { transform: 'translate(-2px, 2px)' },
+                            '40%': { transform: 'translate(-2px, -2px)' },
+                            '60%': { transform: 'translate(2px, 2px)' },
+                            '80%': { transform: 'translate(2px, -2px)' },
+                            '100%': { transform: 'translate(0)' }
+                        },
+                        scanline: {
+                            '0%': { backgroundPosition: '0% 0%' },
+                            '100%': { backgroundPosition: '0% 100%' }
+                        }
                     },
                     boxShadow: {
-                        'glow-primary': '0 0 40px -10px rgba(37, 99, 235, 0.4)',
-                        'glow-accent': '0 0 40px -10px rgba(139, 92, 246, 0.4)',
-                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.3)'
+                        'glow-primary': '0 0 50px -10px rgba(37, 99, 235, 0.5)',
+                        'glow-accent': '0 0 40px -10px rgba(0, 240, 255, 0.4)',
+                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.3)',
+                        'neon': '0 0 5px theme("colors.primary.500"), 0 0 20px theme("colors.primary.700")'
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #1f2937 1px, transparent 1px), linear-gradient(to bottom, #1f2937 1px, transparent 1px)"
                     }
                 }
             }
@@ -57,501 +77,479 @@
     </script>
 
     <style>
-        /* --- ENTERPRISE RESET --- */
+        /* === SYSTEM RESET === */
+        html { scroll-behavior: smooth; }
         body { background-color: #030712; color: #f3f4f6; overflow-x: hidden; }
         [x-cloak] { display: none !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         
-        /* --- GLASSMORPHISM ENGINE --- */
+        /* === GLASS ENGINE V3 === */
         .glass-panel { 
             background: rgba(17, 24, 39, 0.75); 
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); 
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
             border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
         
         .nav-glass {
-            background: rgba(3, 7, 18, 0.85);
-            backdrop-filter: blur(20px);
+            background: rgba(3, 7, 18, 0.9);
+            backdrop-filter: blur(24px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* --- VIDEO IFRAME HACKS --- */
+        /* === CINEMATIC VIDEO (FIXED & SCALED) === */
         .video-wrapper { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
         .video-iframe { 
             position: absolute; top: 50%; left: 50%; 
-            width: 100vw; height: 56.25vw; 
-            min-height: 100vh; min-width: 177.77vh; 
-            transform: translate(-50%, -50%) scale(1.15); 
+            width: 100vw; height: 56.25vw; /* 16:9 AR based on width */
+            min-height: 100vh; min-width: 177.77vh; /* 16:9 AR based on height */
+            transform: translate(-50%, -50%) scale(1.15); /* Overscan to prevent black bars */
             pointer-events: none;
         }
 
-        /* --- UI COMPONENTS --- */
+        /* === COMPONENT LIBRARY === */
         .btn-primary {
             background: linear-gradient(135deg, #2563eb, #1d4ed8);
-            color: white; font-weight: 600;
-            padding: 0.75rem 1.5rem; border-radius: 0.5rem;
-            transition: all 0.2s;
+            color: white; font-weight: 700; letter-spacing: 0.025em;
+            padding: 0.875rem 2rem; border-radius: 0.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 4px 15px -3px rgba(37, 99, 235, 0.4);
-            position: relative; overflow: hidden;
+            position: relative; overflow: hidden; isolate: isolate;
         }
-        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 25px -3px rgba(37, 99, 235, 0.5); }
-        .btn-primary::after {
-            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transform: skewX(-25deg); transition: 0.5s;
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px -3px rgba(37, 99, 235, 0.6); }
+        .btn-primary::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%); transition: transform 0.6s ease;
         }
-        .btn-primary:hover::after { left: 150%; transition: 0.7s ease-in-out; }
+        .btn-primary:hover::before { transform: translateX(100%); }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white; font-weight: 500; padding: 0.75rem 1.5rem; border-radius: 0.5rem;
-            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white; font-weight: 600; padding: 0.875rem 2rem; border-radius: 0.5rem;
+            backdrop-filter: blur(8px); transition: all 0.2s;
         }
-        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); transform: translateY(-1px); }
 
         .skeleton { background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite linear; }
 
-        /* --- CONTROL DECK ANIMATION --- */
-        .control-deck-enter { transform: translateY(100%); opacity: 0; }
-        .control-deck-enter-active { transform: translateY(0); opacity: 1; transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        .control-deck-exit { transform: translateY(100%); opacity: 0; transition: all 0.3s ease-in; }
+        /* === VISUAL FX === */
+        .scanline {
+            width: 100%; height: 100px; z-index: 10;
+            background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(0,0,0,0) 100%);
+            opacity: 0.1; position: absolute; bottom: 100%;
+            animation: scanline 8s linear infinite; pointer-events: none;
+        }
+        .text-glow { text-shadow: 0 0 20px rgba(37, 99, 235, 0.5); }
+        
+        /* Modal Transitions */
+        .modal-enter { opacity: 0; transform: scale(0.95) translateY(10px); }
+        .modal-enter-active { opacity: 1; transform: scale(1) translateY(0); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .modal-exit { opacity: 0; transform: scale(0.95); transition: all 0.2s ease-in; }
 
         svg.lucide { display: inline-block; vertical-align: text-bottom; }
     </style>
 </head>
 
-<body x-data="shopApp()" @scroll.window="handleScroll" class="selection:bg-primary-500 selection:text-white">
+<body x-data="apexSystem()" @scroll.window="handleScroll" class="selection:bg-primary-500 selection:text-white">
 
-    <div x-show="ui.searchOpen" x-transition.opacity class="fixed inset-0 z-[100] bg-surface-950/95 backdrop-blur-2xl flex flex-col pt-32 items-center px-6" x-cloak>
-        <div class="w-full max-w-4xl relative animate-fade-in-up">
-            <div class="relative">
-                <i data-lucide="search" class="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 text-surface-500"></i>
-                <input x-ref="searchInput" type="text" x-model="searchQuery" placeholder="Search the vault (e.g., 'GTA VI', 'Netflix')..." 
-                       class="w-full bg-transparent border-b-2 border-surface-800 text-3xl md:text-5xl font-display font-bold text-white py-6 pl-12 bg-transparent outline-none focus:border-primary-600 placeholder-surface-700 transition-colors">
+    <div class="fixed bottom-6 right-6 z-[300] flex flex-col gap-3 pointer-events-none">
+        <template x-for="toast in notifications" :key="toast.id">
+            <div x-show="toast.visible" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 scale-95" x-transition:enter-end="opacity-100 translate-y-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0 translate-x-4" 
+                 class="pointer-events-auto flex items-center gap-4 px-5 py-4 rounded-xl bg-surface-900/95 backdrop-blur-md border border-surface-800 shadow-2xl min-w-[340px] relative overflow-hidden group">
+                <div class="absolute left-0 top-0 bottom-0 w-1" :class="{
+                    'bg-green-500': toast.type === 'success',
+                    'bg-red-500': toast.type === 'error',
+                    'bg-primary-500': toast.type === 'info',
+                    'bg-yellow-500': toast.type === 'warning'
+                }"></div>
+                
+                <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0" :class="{
+                    'bg-green-500/10 text-green-500': toast.type === 'success',
+                    'bg-red-500/10 text-red-500': toast.type === 'error',
+                    'bg-primary-500/10 text-primary-500': toast.type === 'info',
+                    'bg-yellow-500/10 text-yellow-500': toast.type === 'warning'
+                }">
+                    <i :data-lucide="toast.icon" class="w-5 h-5"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h4 class="text-sm font-bold text-white truncate" x-text="toast.title"></h4>
+                    <p class="text-xs text-surface-400 mt-0.5 truncate font-mono" x-text="toast.message"></p>
+                </div>
+                <button @click="toast.visible = false" class="text-surface-500 hover:text-white transition"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
-            <button @click="ui.searchOpen = false" class="absolute -right-4 -top-24 p-4 text-surface-400 hover:text-white hover:rotate-90 transition duration-300"><i data-lucide="x" class="w-10 h-10"></i></button>
+        </template>
+    </div>
+
+    <div x-show="!gdprAccepted" x-transition.move.bottom class="fixed bottom-0 left-0 w-full bg-surface-900/95 backdrop-blur-xl border-t border-surface-800 z-[250] p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-start gap-4">
+                <i data-lucide="shield-alert" class="w-8 h-8 text-primary-500 shrink-0"></i>
+                <div>
+                    <h4 class="text-sm font-bold text-white">Privacy Protocol Enabled</h4>
+                    <p class="text-xs text-surface-400 mt-1 max-w-xl">We use encrypted cookies to ensure the integrity of your digital extraction process and to enhance system performance. By continuing, you agree to our data retention protocols.</p>
+                </div>
+            </div>
+            <div class="flex gap-4">
+                <button @click="gdprAccepted = true; $persist(true).as('pwe_gdpr')" class="text-xs font-bold text-surface-400 hover:text-white transition">Settings</button>
+                <button @click="gdprAccepted = true; $persist(true).as('pwe_gdpr')" class="btn-primary text-xs py-2 px-6">Acknowledge</button>
+            </div>
+        </div>
+    </div>
+
+    <div x-show="ui.searchOpen" x-transition.opacity class="fixed inset-0 z-[200] bg-surface-950/98 backdrop-blur-3xl flex flex-col pt-32 items-center px-6" x-cloak>
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
+        
+        <div class="w-full max-w-5xl relative z-10 animate-fade-in-up">
+            <label class="text-xs font-mono text-primary-500 mb-2 block uppercase tracking-widest">Database Query</label>
+            <div class="relative group">
+                <i data-lucide="search" class="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 text-surface-500 group-focus-within:text-primary-500 transition-colors"></i>
+                <input x-ref="searchInput" type="text" x-model="searchQuery" @keydown.enter="performSearch" placeholder="Enter Asset ID or Name (e.g. 'GTA VI', 'Adobe')..." 
+                       class="w-full bg-transparent border-b-2 border-surface-800 text-3xl md:text-6xl font-display font-bold text-white py-6 pl-12 outline-none focus:border-primary-600 placeholder-surface-800 transition-colors">
+            </div>
+            <button @click="ui.searchOpen = false" class="absolute -right-4 -top-16 p-4 text-surface-400 hover:text-white hover:rotate-90 transition duration-300"><i data-lucide="x" class="w-10 h-10"></i></button>
         </div>
         
-        <div class="w-full max-w-4xl mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in-up" style="animation-delay: 0.1s;">
+        <div class="w-full max-w-5xl mt-16 grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10 animate-fade-in-up" style="animation-delay: 0.1s;">
             <div>
-                <h4 class="text-xs font-bold text-primary-500 uppercase tracking-widest mb-4">Trending Now</h4>
+                <h4 class="flex items-center gap-2 text-xs font-bold text-surface-500 uppercase tracking-widest mb-6"><i data-lucide="flame" class="w-4 h-4 text-orange-500"></i> High Velocity Assets</h4>
                 <div class="flex flex-wrap gap-3">
-                    <button @click="quickSearch('GTA VI')" class="px-4 py-2 rounded-lg bg-surface-900 border border-surface-800 hover:border-primary-600 text-sm font-medium transition text-surface-300 hover:text-white">Grand Theft Auto VI</button>
-                    <button @click="quickSearch('Elden Ring')" class="px-4 py-2 rounded-lg bg-surface-900 border border-surface-800 hover:border-primary-600 text-sm font-medium transition text-surface-300 hover:text-white">Elden Ring DLC</button>
-                    <button @click="quickSearch('Spotify')" class="px-4 py-2 rounded-lg bg-surface-900 border border-surface-800 hover:border-primary-600 text-sm font-medium transition text-surface-300 hover:text-white">Spotify Premium</button>
+                    <button @click="quickSearch('GTA VI')" class="px-5 py-2.5 rounded-lg bg-surface-900 border border-surface-800 hover:border-primary-600 hover:bg-surface-800 text-sm font-bold transition text-surface-300 hover:text-white hover:shadow-glow-primary">Grand Theft Auto VI</button>
+                    <button @click="quickSearch('Elden Ring')" class="px-5 py-2.5 rounded-lg bg-surface-900 border border-surface-800 hover:border-primary-600 hover:bg-surface-800 text-sm font-bold transition text-surface-300 hover:text-white hover:shadow-glow-primary">Elden Ring DLC</button>
+                    <button @click="quickSearch('Netflix')" class="px-5 py-2.5 rounded-lg bg-surface-900 border border-surface-800 hover:border-primary-600 hover:bg-surface-800 text-sm font-bold transition text-surface-300 hover:text-white hover:shadow-glow-primary">Netflix 4K</button>
                 </div>
             </div>
             <div>
-                <h4 class="text-xs font-bold text-surface-500 uppercase tracking-widest mb-4">Recent Arrivals</h4>
-                <ul class="space-y-3">
-                    <li class="flex items-center gap-3 text-sm text-surface-400 group cursor-pointer hover:text-white">
-                        <div class="w-1 h-1 rounded-full bg-primary-500"></div>
-                        <span>Adobe Creative Cloud 2026</span>
-                        <i data-lucide="arrow-right" class="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition"></i>
+                <h4 class="flex items-center gap-2 text-xs font-bold text-surface-500 uppercase tracking-widest mb-6"><i data-lucide="history" class="w-4 h-4 text-primary-500"></i> Recent Injections</h4>
+                <ul class="space-y-4">
+                    <li class="flex items-center gap-4 text-sm text-surface-400 group cursor-pointer hover:text-white transition" @click="quickSearch('Windows')">
+                        <div class="w-8 h-8 rounded bg-surface-900 flex items-center justify-center border border-surface-800 group-hover:border-primary-500 transition"><i data-lucide="monitor" class="w-4 h-4"></i></div>
+                        <span>Windows 11 Enterprise Key</span>
+                        <i data-lucide="chevron-right" class="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition ml-auto"></i>
                     </li>
-                    <li class="flex items-center gap-3 text-sm text-surface-400 group cursor-pointer hover:text-white">
-                        <div class="w-1 h-1 rounded-full bg-primary-500"></div>
-                        <span>Windows 11 Pro Retail Key</span>
-                        <i data-lucide="arrow-right" class="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition"></i>
+                    <li class="flex items-center gap-4 text-sm text-surface-400 group cursor-pointer hover:text-white transition" @click="quickSearch('Adobe')">
+                        <div class="w-8 h-8 rounded bg-surface-900 flex items-center justify-center border border-surface-800 group-hover:border-primary-500 transition"><i data-lucide="pen-tool" class="w-4 h-4"></i></div>
+                        <span>Adobe Creative Cloud 2026</span>
+                        <i data-lucide="chevron-right" class="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition ml-auto"></i>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
 
-    <div x-show="ui.authOpen" class="fixed inset-0 z-[200] flex items-center justify-center px-4" x-cloak>
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" @click="ui.authOpen = false" x-transition.opacity></div>
-        <div x-show="ui.authOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95 translate-y-4" x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-             class="relative w-full max-w-md bg-surface-950 border border-surface-800 rounded-2xl shadow-2xl p-8 overflow-hidden">
+    <div x-show="ui.authOpen" class="fixed inset-0 z-[250] flex items-center justify-center px-4" x-cloak>
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" @click="ui.authOpen = false" x-transition.opacity></div>
+        
+        <div x-show="ui.authOpen" x-transition:enter="transition ease-out duration-400" x-transition:enter-start="opacity-0 scale-90 translate-y-8" x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+             class="relative w-full max-w-md bg-surface-950 border border-surface-700 rounded-3xl shadow-2xl p-8 overflow-hidden group">
             
-            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-32 bg-primary-600/20 blur-[60px] rounded-full"></div>
+            <div class="absolute -top-20 -right-20 w-64 h-64 bg-primary-600/20 blur-[80px] rounded-full group-hover:bg-primary-600/30 transition duration-1000"></div>
+            <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-accent-purple/20 blur-[80px] rounded-full group-hover:bg-accent-purple/30 transition duration-1000"></div>
 
-            <button @click="ui.authOpen = false" class="absolute top-4 right-4 text-surface-500 hover:text-white transition"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <button @click="ui.authOpen = false" class="absolute top-4 right-4 text-surface-500 hover:text-white transition z-20"><i data-lucide="x" class="w-5 h-5"></i></button>
 
             <div class="text-center mb-8 relative z-10">
-                <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-surface-900 border border-surface-800 mb-4 shadow-lg">
-                    <i data-lucide="user-circle" class="w-6 h-6 text-primary-500"></i>
+                <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-surface-900 border border-surface-700 mb-5 shadow-xl">
+                    <i data-lucide="fingerprint" class="w-7 h-7 text-primary-500"></i>
                 </div>
-                <h2 class="text-2xl font-display font-bold text-white">Welcome Back</h2>
-                <p class="text-sm text-surface-400 mt-1">Access your digital vault securely.</p>
+                <h2 class="text-3xl font-display font-bold text-white mb-2">Identity Verification</h2>
+                <p class="text-sm text-surface-400">Secure access to the Apex Vault.</p>
             </div>
 
-            <div class="flex p-1 bg-surface-900 rounded-lg mb-6 relative z-10 border border-surface-800">
-                <button @click="authTab = 'login'" :class="authTab === 'login' ? 'bg-surface-800 text-white shadow' : 'text-surface-500 hover:text-surface-300'" class="flex-1 py-2 text-sm font-bold rounded-md transition-all">Sign In</button>
-                <button @click="authTab = 'register'" :class="authTab === 'register' ? 'bg-surface-800 text-white shadow' : 'text-surface-500 hover:text-surface-300'" class="flex-1 py-2 text-sm font-bold rounded-md transition-all">Register</button>
+            <div class="flex p-1.5 bg-surface-900 rounded-xl mb-8 relative z-10 border border-surface-800">
+                <button @click="authTab = 'login'" :class="authTab === 'login' ? 'bg-surface-800 text-white shadow-lg' : 'text-surface-500 hover:text-surface-300'" class="flex-1 py-2.5 text-xs font-bold uppercase tracking-wider rounded-lg transition-all">Sign In</button>
+                <button @click="authTab = 'register'" :class="authTab === 'register' ? 'bg-surface-800 text-white shadow-lg' : 'text-surface-500 hover:text-surface-300'" class="flex-1 py-2.5 text-xs font-bold uppercase tracking-wider rounded-lg transition-all">New Agent</button>
             </div>
 
-            <form @submit.prevent="handleAuth" class="space-y-4 relative z-10">
+            <form @submit.prevent="handleAuth" class="space-y-5 relative z-10">
                 <div x-show="authTab === 'register'" x-transition>
-                    <label class="block text-xs font-bold text-surface-400 uppercase mb-1">Username</label>
-                    <input type="text" class="w-full bg-surface-900 border border-surface-800 rounded-lg px-4 py-3 text-white focus:border-primary-600 outline-none transition" placeholder="EliteGamer99">
+                    <label class="block text-xs font-bold text-primary-400 uppercase tracking-widest mb-2 ml-1">Codename</label>
+                    <div class="relative">
+                        <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-500"></i>
+                        <input type="text" x-model="authForm.name" class="w-full bg-surface-900/50 border border-surface-700 rounded-xl px-4 py-3.5 pl-11 text-white focus:border-primary-500 focus:bg-surface-900 outline-none transition text-sm font-medium placeholder-surface-600" placeholder="e.g. Ghost_One">
+                    </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-surface-400 uppercase mb-1">Email Address</label>
-                    <input type="email" class="w-full bg-surface-900 border border-surface-800 rounded-lg px-4 py-3 text-white focus:border-primary-600 outline-none transition" placeholder="name@example.com">
+                    <label class="block text-xs font-bold text-primary-400 uppercase tracking-widest mb-2 ml-1">Email Protocol</label>
+                    <div class="relative">
+                        <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-500"></i>
+                        <input type="email" x-model="authForm.email" required class="w-full bg-surface-900/50 border border-surface-700 rounded-xl px-4 py-3.5 pl-11 text-white focus:border-primary-500 focus:bg-surface-900 outline-none transition text-sm font-medium placeholder-surface-600" placeholder="agent@playwithease.com">
+                    </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-surface-400 uppercase mb-1">Password</label>
-                    <input type="password" class="w-full bg-surface-900 border border-surface-800 rounded-lg px-4 py-3 text-white focus:border-primary-600 outline-none transition" placeholder="••••••••">
+                    <label class="block text-xs font-bold text-primary-400 uppercase tracking-widest mb-2 ml-1">Security Key</label>
+                    <div class="relative">
+                        <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-500"></i>
+                        <input type="password" x-model="authForm.password" required class="w-full bg-surface-900/50 border border-surface-700 rounded-xl px-4 py-3.5 pl-11 text-white focus:border-primary-500 focus:bg-surface-900 outline-none transition text-sm font-medium placeholder-surface-600" placeholder="••••••••••••">
+                    </div>
                 </div>
                 
-                <button type="submit" class="btn-primary w-full py-3 mt-2 flex items-center justify-center gap-2">
-                    <span x-text="authTab === 'login' ? 'Secure Login' : 'Create Account'"></span>
-                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                <button type="submit" class="btn-primary w-full py-4 mt-4 flex items-center justify-center gap-2 group/btn" :disabled="authLoading">
+                    <span x-show="!authLoading" x-text="authTab === 'login' ? 'Authenticate' : 'Initialize Account'"></span>
+                    <span x-show="!authLoading"><i data-lucide="arrow-right" class="w-4 h-4 group-hover/btn:translate-x-1 transition"></i></span>
+                    <span x-show="authLoading" class="animate-spin"><i data-lucide="loader-2" class="w-5 h-5"></i></span>
                 </button>
             </form>
 
-            <div class="mt-6 text-center">
-                <p class="text-xs text-surface-500">Protected by reCAPTCHA Enterprise and Google Privacy Policy.</p>
+            <div class="mt-8 pt-6 border-t border-surface-800 text-center">
+                <p class="text-[10px] text-surface-500 uppercase font-mono">Secured by Firebase Identity Platform v9</p>
             </div>
         </div>
     </div>
 
-    <div x-show="ui.cartOpen" class="fixed inset-0 z-[200] z-50 overflow-hidden" x-cloak>
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" @click="ui.cartOpen = false" x-show="ui.cartOpen" x-transition.opacity></div>
-        
-        <div class="fixed inset-y-0 right-0 max-w-full flex">
-            <div x-show="ui.cartOpen" x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
-                 class="w-screen max-w-md pointer-events-auto">
-                <div class="h-full flex flex-col bg-surface-950 border-l border-surface-800 shadow-2xl">
-                    
-                    <div class="flex items-start justify-between px-6 py-6 border-b border-surface-800 bg-surface-900/50">
-                        <div>
-                            <h2 class="text-lg font-bold text-white">Extraction Pod</h2>
-                            <p class="text-sm text-surface-400"><span x-text="cartCount"></span> digital assets ready.</p>
+    <div x-data="aiBot()" class="fixed bottom-6 right-6 z-[250]">
+        <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-10 scale-95" x-transition:enter-end="opacity-100 translate-y-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0 translate-y-10 scale-95"
+             class="absolute bottom-20 right-0 w-[92vw] md:w-[420px] bg-[#050505] border border-surface-700 rounded-[2rem] shadow-2xl overflow-hidden flex flex-col h-[600px] glass-panel ring-1 ring-white/10 z-50">
+             
+             <div class="bg-surface-900/80 backdrop-blur-md p-5 flex justify-between items-center border-b border-white/5">
+                <div class="flex items-center gap-4">
+                    <div class="relative">
+                        <div class="w-12 h-12 bg-black/40 rounded-xl flex items-center justify-center text-white border border-white/10 shadow-inner relative overflow-hidden">
+                            <div class="absolute inset-0 bg-primary-500/20 animate-pulse-slow"></div>
+                            <i data-lucide="cpu" class="w-6 h-6 relative z-10 text-primary-400"></i>
                         </div>
-                        <button @click="ui.cartOpen = false" class="text-surface-400 hover:text-white transition"><i data-lucide="x" class="w-6 h-6"></i></button>
+                        <div class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-[#050505] animate-pulse"></div>
                     </div>
-
-                    <div class="flex-1 overflow-y-auto px-6 py-6 space-y-6">
-                        <template x-if="cartItems.length === 0">
-                            <div class="h-full flex flex-col items-center justify-center text-center opacity-60">
-                                <i data-lucide="shopping-cart" class="w-16 h-16 text-surface-700 mb-4"></i>
-                                <p class="text-surface-400 font-medium">Your pod is empty.</p>
-                                <button @click="ui.cartOpen = false" class="mt-4 text-primary-500 text-sm font-bold hover:underline">Browse Catalogue</button>
-                            </div>
-                        </template>
-                        
-                        <template x-for="(item, index) in cartItems" :key="index">
-                            <div class="flex gap-4 group">
-                                <div class="w-20 h-24 rounded-lg bg-surface-900 overflow-hidden border border-surface-800 shrink-0">
-                                    <img :src="item.image" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                                </div>
-                                <div class="flex-1 flex flex-col">
-                                    <div class="flex justify-between items-start">
-                                        <h3 class="text-sm font-bold text-white line-clamp-2" x-text="item.title"></h3>
-                                        <button @click="removeFromCart(index)" class="text-surface-500 hover:text-red-500 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                                    </div>
-                                    <p class="text-xs text-surface-400 mt-1" x-text="item.category"></p>
-                                    <div class="mt-auto flex justify-between items-end">
-                                        <span class="text-sm font-mono font-bold text-primary-400" x-text="formatPrice(item.price)"></span>
-                                        <div class="px-2 py-0.5 rounded bg-surface-800 text-[10px] text-surface-400 border border-surface-700">Instant Key</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
-
-                    <div class="border-t border-surface-800 px-6 py-6 bg-surface-900/30">
-                        <div class="flex justify-between text-base font-bold text-white mb-4">
-                            <p>Subtotal</p>
-                            <p x-text="formatPrice(cartTotal)"></p>
-                        </div>
-                        <p class="text-xs text-surface-500 mb-6">Taxes and license fees calculated at checkout.</p>
-                        <button class="btn-primary w-full py-4 flex items-center justify-center gap-2 group">
-                            Secure Checkout <i data-lucide="lock" class="w-4 h-4 group-hover:text-green-300 transition"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div x-show="ui.activeProduct" class="fixed inset-0 z-[250] flex items-center justify-center px-4" x-cloak>
-        <div x-show="ui.activeProduct" x-transition.opacity class="absolute inset-0 bg-black/90 backdrop-blur-md" @click="ui.activeProduct = null"></div>
-        
-        <div x-show="ui.activeProduct" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95 translate-y-8" x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-             class="relative w-full max-w-5xl bg-surface-950 border border-surface-700 rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[90vh]">
-            
-            <button @click="ui.activeProduct = null" class="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 flex items-center justify-center text-white transition backdrop-blur border border-white/10"><i data-lucide="x" class="w-5 h-5"></i></button>
-
-            <div class="w-full md:w-5/12 bg-surface-900 relative flex items-center justify-center p-8 overflow-hidden group">
-                <div class="absolute inset-0 bg-primary-600/10 blur-[80px] rounded-full scale-150 group-hover:bg-primary-600/20 transition duration-700"></div>
-                <img :src="ui.activeProduct?.image" class="max-h-[350px] object-contain drop-shadow-2xl shadow-black relative z-10 transform group-hover:scale-105 transition duration-500">
-            </div>
-
-            <div class="w-full md:w-7/12 p-8 md:p-10 flex flex-col overflow-y-auto bg-surface-950">
-                <div class="flex items-center gap-3 mb-4">
-                    <span class="px-3 py-1 rounded-full bg-surface-800 text-surface-300 text-xs font-bold border border-surface-700" x-text="ui.activeProduct?.pillar"></span>
-                    <span class="px-3 py-1 rounded-full bg-green-900/30 text-green-400 text-xs font-bold border border-green-500/20 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Stock Available</span>
-                </div>
-                
-                <h2 class="text-3xl md:text-4xl font-display font-bold text-white leading-tight mb-4" x-text="ui.activeProduct?.title"></h2>
-                
-                <div class="flex items-center gap-4 mb-6 pb-6 border-b border-surface-800">
-                    <div class="flex text-yellow-500 gap-0.5">
-                        <template x-for="i in 5"><i data-lucide="star" class="w-4 h-4 fill-current"></i></template>
-                    </div>
-                    <span class="text-sm text-surface-400">4.9 (1,204 Reviews)</span>
-                </div>
-
-                <p class="text-surface-300 leading-relaxed mb-8 text-sm" x-text="ui.activeProduct?.description || 'This premium digital license grants immediate access upon verification. Includes regional unlock protocols, multi-language support, and a lifetime validity guarantee from the publisher.'"></p>
-                
-                <div class="grid grid-cols-2 gap-4 mb-8">
-                    <div class="flex items-start gap-3">
-                        <i data-lucide="shield-check" class="w-5 h-5 text-primary-500 mt-0.5"></i>
-                        <div><p class="text-sm font-bold text-white">Verified Source</p><p class="text-xs text-surface-500">Official Publisher Key</p></div>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <i data-lucide="clock" class="w-5 h-5 text-accent-teal mt-0.5"></i>
-                        <div><p class="text-sm font-bold text-white">Instant Delivery</p><p class="text-xs text-surface-500">Email in < 60s</p></div>
-                    </div>
-                </div>
-
-                <div class="mt-auto pt-6 border-t border-surface-800 flex items-center justify-between gap-6">
                     <div>
-                        <p class="text-xs text-surface-500 uppercase font-bold mb-1">Price</p>
-                        <p class="text-3xl font-mono font-bold text-white tracking-tight" x-text="formatPrice(ui.activeProduct?.price)"></p>
+                        <h3 class="font-display font-black text-base text-white tracking-widest uppercase">OMNI-CORE <span class="text-primary-500">v2.0</span></h3>
+                        <p class="text-[10px] text-surface-400 font-mono mt-0.5">NEURAL LINK: <span class="text-green-400">STABLE</span></p>
                     </div>
-                    <div class="flex gap-3 flex-1 justify-end">
-                        <button @click="addToWishlist(ui.activeProduct)" class="p-4 rounded-xl border border-surface-700 text-surface-400 hover:text-red-500 hover:border-red-500/50 hover:bg-red-500/10 transition"><i data-lucide="heart" class="w-5 h-5"></i></button>
-                        <button @click="addToCart(ui.activeProduct); ui.activeProduct = null" class="btn-primary px-8 flex-1 flex items-center justify-center gap-2">Add to Cart <i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                </div>
+                <div class="flex gap-2">
+                    <button @click="clearChat" class="text-surface-500 hover:text-white transition p-2" title="Clear Memory"><i data-lucide="refresh-cw" class="w-4 h-4"></i></button>
+                    <button @click="open = false" class="text-surface-500 hover:text-white transition p-2"><i data-lucide="minimize-2" class="w-4 h-4"></i></button>
+                </div>
+            </div>
+
+            <div class="flex-1 p-6 overflow-y-auto space-y-6 no-scrollbar bg-[#080808] relative" id="chatContainer">
+                <div class="scanline"></div> <template x-for="msg in messages" :key="msg.id">
+                    <div :class="msg.sender === 'bot' ? 'flex justify-start' : 'flex justify-end'" class="animate-fade-in-up">
+                        <div class="flex flex-col gap-1 max-w-[85%]">
+                            <div x-show="msg.sender === 'bot'" class="flex gap-3">
+                                <div class="w-8 h-8 rounded-full bg-surface-800 flex items-center justify-center border border-surface-700 shrink-0 mt-1"><i data-lucide="bot" class="w-4 h-4 text-primary-400"></i></div>
+                                <div>
+                                    <div class="bg-surface-800/50 text-gray-200 border border-surface-700 rounded-2xl rounded-tl-none p-4 text-xs md:text-sm font-medium leading-relaxed shadow-sm">
+                                        <span x-html="msg.text"></span>
+                                    </div>
+                                    <span class="text-[9px] text-surface-500 font-mono mt-1 block pl-2" x-text="msg.time"></span>
+                                </div>
+                            </div>
+
+                            <div x-show="msg.sender === 'user'" class="bg-primary-600 text-white rounded-2xl rounded-tr-none p-4 text-xs md:text-sm font-medium leading-relaxed shadow-lg shadow-primary-900/20 border border-primary-500">
+                                <span x-html="msg.text"></span>
+                            </div>
+                            <span x-show="msg.sender === 'user'" class="text-[9px] text-surface-500 font-mono mt-1 block text-right pr-2" x-text="msg.time"></span>
+                        </div>
+                    </div>
+                </template>
+
+                <div x-show="isTyping" class="flex justify-start animate-fade-in-up">
+                    <div class="flex gap-3">
+                        <div class="w-8 h-8 rounded-full bg-surface-800 flex items-center justify-center border border-surface-700 shrink-0 mt-1"><i data-lucide="bot" class="w-4 h-4 text-primary-400"></i></div>
+                        <div class="bg-surface-800/50 border border-surface-700 rounded-2xl rounded-tl-none px-4 py-3 flex gap-1.5 items-center">
+                            <span class="w-1.5 h-1.5 bg-primary-400 rounded-full animate-bounce"></span>
+                            <span class="w-1.5 h-1.5 bg-primary-400 rounded-full animate-bounce delay-75"></span>
+                            <span class="w-1.5 h-1.5 bg-primary-400 rounded-full animate-bounce delay-150"></span>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <div class="p-4 border-t border-white/10 bg-surface-900/90 backdrop-blur-xl">
+                <div class="relative flex items-center gap-2">
+                    <input type="text" x-model="input" @keydown.enter="processMessage" placeholder="Ask Omni (e.g., 'Price of GTA', 'Refunds')..." 
+                           class="flex-1 bg-black/40 border border-surface-700 rounded-xl py-3.5 pl-4 pr-12 text-xs text-white outline-none focus:border-primary-500 focus:bg-black/60 transition-all font-mono placeholder-surface-600 shadow-inner">
+                    <button @click="processMessage" class="absolute right-2 p-2 bg-surface-800 hover:bg-primary-600 rounded-lg text-white transition-colors shadow-lg"><i data-lucide="send-horizontal" class="w-4 h-4"></i></button>
+                </div>
+            </div>
         </div>
+
+        <button @click="open = !open" class="group relative w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(37,99,235,0.6)] hover:scale-105 hover:-translate-y-1 transition-all duration-300 border-2 border-white/10 z-50">
+            <span class="absolute inset-0 rounded-full bg-primary-400 opacity-20 animate-ping"></span>
+            <i :data-lucide="open ? 'x' : 'sparkles'" class="text-white w-7 h-7 transition-transform duration-300 group-hover:rotate-12"></i>
+        </button>
     </div>
 
-    <nav :class="ui.scrolled ? 'nav-glass py-3' : 'bg-transparent py-6'" class="fixed top-0 w-full z-50 transition-all duration-300">
-        <div class="max-w-[1600px] mx-auto px-6 md:px-12 flex items-center justify-between">
+    <nav :class="ui.scrolled ? 'nav-glass py-2' : 'bg-transparent py-8'" class="fixed top-0 w-full z-50 transition-all duration-500">
+        <div class="max-w-[1700px] mx-auto px-6 md:px-12 flex items-center justify-between">
             <a href="#" class="flex items-center gap-3 group relative z-50">
-                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center text-white shadow-lg shadow-primary-900/50 group-hover:scale-105 transition-transform duration-300 border border-white/10">
-                    <i data-lucide="hexagon" class="w-6 h-6"></i>
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center text-white shadow-lg shadow-primary-900/50 group-hover:scale-105 transition-transform duration-300 border border-white/10 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                    <i data-lucide="triangle" class="w-6 h-6 rotate-180 fill-current"></i>
                 </div>
                 <div class="hidden sm:block">
-                    <h1 class="font-display text-xl font-black tracking-tight text-white leading-none group-hover:text-primary-400 transition-colors">PLAYWITH<span class="text-primary-500">EASE</span></h1>
-                    <p class="text-[9px] text-surface-400 font-mono font-bold tracking-[0.2em] uppercase mt-0.5">Enterprise V10</p>
+                    <h1 class="font-display text-2xl font-black tracking-tight text-white leading-none group-hover:text-primary-400 transition-colors">PLAYWITH<span class="text-primary-500">EASE</span></h1>
+                    <div class="flex items-center gap-2 mt-1">
+                        <span class="px-1.5 py-0.5 rounded bg-surface-800 text-[9px] font-mono text-surface-300 border border-surface-700">APEX BUILD v9</span>
+                    </div>
                 </div>
             </a>
 
-            <div class="hidden lg:flex items-center gap-10 absolute left-1/2 -translate-x-1/2">
-                <div class="relative group">
-                    <button class="flex items-center gap-1 text-sm font-semibold text-surface-300 hover:text-white transition py-4">
-                        Marketplace <i data-lucide="chevron-down" class="w-3 h-3 opacity-50"></i>
-                    </button>
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[800px] p-1 rounded-2xl bg-surface-800/50 backdrop-blur-xl border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top translate-y-4 group-hover:translate-y-0 shadow-2xl overflow-hidden">
-                         <div class="bg-surface-950 rounded-xl p-8 grid grid-cols-3 gap-8">
-                             <div>
-                                 <h4 class="flex items-center gap-2 text-xs font-bold text-white uppercase tracking-widest mb-4"><i data-lucide="gamepad" class="w-4 h-4 text-primary-500"></i> Games</h4>
-                                 <ul class="space-y-3">
-                                     <li><a href="#" class="block text-sm text-surface-400 hover:text-white hover:translate-x-1 transition">Action & Adventure</a></li>
-                                     <li><a href="#" class="block text-sm text-surface-400 hover:text-white hover:translate-x-1 transition">RPG & MMO</a></li>
-                                     <li><a href="#" class="block text-sm text-surface-400 hover:text-white hover:translate-x-1 transition">Strategy & Sim</a></li>
-                                     <li><a href="#" class="block text-sm text-primary-400 font-bold hover:underline mt-2">View Best Sellers -></a></li>
-                                 </ul>
-                             </div>
-                             <div>
-                                 <h4 class="flex items-center gap-2 text-xs font-bold text-white uppercase tracking-widest mb-4"><i data-lucide="box" class="w-4 h-4 text-accent-purple"></i> Software</h4>
-                                 <ul class="space-y-3">
-                                     <li><a href="#" class="block text-sm text-surface-400 hover:text-white hover:translate-x-1 transition">Operating Systems</a></li>
-                                     <li><a href="#" class="block text-sm text-surface-400 hover:text-white hover:translate-x-1 transition">Security & VPN</a></li>
-                                     <li><a href="#" class="block text-sm text-surface-400 hover:text-white hover:translate-x-1 transition">Creative Tools</a></li>
-                                 </ul>
-                             </div>
-                             <div class="bg-gradient-to-br from-primary-900 to-surface-900 rounded-lg p-5 border border-primary-500/20 relative overflow-hidden group/card">
-                                 <div class="absolute top-0 right-0 w-24 h-24 bg-primary-500/20 blur-2xl rounded-full"></div>
-                                 <h4 class="relative z-10 font-bold text-white text-lg">Partner Program</h4>
-                                 <p class="relative z-10 text-xs text-surface-300 mt-2 mb-4 leading-relaxed">Join 5,000+ resellers earning passive income.</p>
-                                 <button class="relative z-10 text-xs font-bold bg-white text-black px-3 py-2 rounded hover:bg-primary-50 transition">Apply Now</button>
-                             </div>
-                         </div>
-                    </div>
-                </div>
-                <a href="#" class="text-sm font-semibold text-surface-300 hover:text-white transition">Enterprise</a>
-                <a href="#" class="text-sm font-semibold text-surface-300 hover:text-white transition">Support</a>
-            </div>
+            <div class="flex items-center gap-3 md:gap-5 z-50">
+                <button @click="ui.openSearch()" class="w-11 h-11 rounded-full bg-surface-900/50 border border-surface-700/50 hover:bg-surface-800 hover:border-surface-600 flex items-center justify-center text-surface-400 hover:text-white transition shadow-lg backdrop-blur-sm group">
+                    <i data-lucide="search" class="w-5 h-5 group-hover:scale-110 transition"></i>
+                </button>
 
-            <div class="flex items-center gap-4 z-50">
-                <button @click="toggleCurrency" class="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-surface-700 bg-surface-900/50 hover:bg-surface-800 transition text-xs font-bold font-mono text-surface-300 hover:text-white">
+                <button @click="toggleCurrency" class="hidden md:flex items-center gap-2 px-4 py-2.5 rounded-full border border-surface-700/50 bg-surface-900/50 hover:bg-surface-800 transition text-xs font-bold font-mono text-surface-300 hover:text-white backdrop-blur-sm">
                     <span x-text="currency"></span> <i data-lucide="refresh-cw" class="w-3 h-3"></i>
                 </button>
 
-                <button @click="ui.openSearch()" class="w-10 h-10 rounded-full hover:bg-surface-800 flex items-center justify-center text-surface-400 hover:text-white transition">
-                    <i data-lucide="search" class="w-5 h-5"></i>
-                </button>
-
-                <button class="relative w-10 h-10 rounded-full hover:bg-surface-800 flex items-center justify-center text-surface-400 hover:text-white transition group">
-                    <i data-lucide="heart" class="w-5 h-5 group-hover:text-red-500 transition"></i>
-                    <span x-show="wishlist.length > 0" class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
-                </button>
-
-                <button @click="ui.cartOpen = true" class="relative group flex items-center gap-2 bg-surface-800/50 hover:bg-surface-800 pl-3 pr-4 py-2 rounded-full border border-surface-700 transition">
+                <button @click="ui.cartOpen = true" class="relative group flex items-center gap-3 bg-surface-900/80 hover:bg-primary-600 pl-4 pr-5 py-2.5 rounded-full border border-surface-700 hover:border-primary-500 transition-all duration-300 shadow-xl backdrop-blur-md">
                     <div class="relative">
-                        <i data-lucide="shopping-bag" class="w-5 h-5 text-surface-300 group-hover:text-white transition"></i>
-                        <span x-show="cartCount > 0" x-transition.scale class="absolute -top-1 -right-1 w-4 h-4 bg-primary-600 rounded-full text-[9px] font-bold text-white flex items-center justify-center border border-surface-900" x-text="cartCount"></span>
+                        <i data-lucide="shopping-bag" class="w-5 h-5 text-white transition"></i>
+                        <span x-show="cartCount > 0" x-transition.scale class="absolute -top-2 -right-2 w-4 h-4 bg-accent-rose rounded-full text-[9px] font-bold text-white flex items-center justify-center border border-surface-900 shadow-sm" x-text="cartCount"></span>
                     </div>
-                    <span class="text-xs font-bold text-white" x-text="formatPrice(cartTotal)"></span>
+                    <span class="text-sm font-bold text-white font-mono" x-text="formatPrice(cartTotal)"></span>
                 </button>
                 
-                <div class="h-6 w-px bg-surface-800 mx-1 hidden sm:block"></div>
+                <div class="h-8 w-px bg-surface-800 mx-2 hidden sm:block"></div>
                 
-                <button @click="ui.authOpen = true" class="hidden sm:block text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 px-5 py-2.5 rounded-lg transition shadow-lg shadow-primary-900/50">
-                    Sign In
-                </button>
+                <template x-if="!user">
+                    <button @click="ui.authOpen = true" class="hidden sm:flex items-center gap-2 text-sm font-bold text-white bg-primary-600 hover:bg-primary-700 px-6 py-3 rounded-xl transition shadow-glow-primary group">
+                        <span>Agent Login</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
+                    </button>
+                </template>
+                <template x-if="user">
+                    <div class="relative" x-data="{ open: false }" @click.outside="open = false">
+                        <button @click="open = !open" class="flex items-center gap-3 hover:opacity-80 transition">
+                            <div class="text-right hidden md:block">
+                                <p class="text-xs font-bold text-white" x-text="user.displayName || 'Agent'"></p>
+                                <p class="text-[9px] text-green-400 font-mono uppercase">Clearance: Lvl 5</p>
+                            </div>
+                            <div class="w-11 h-11 rounded-xl bg-surface-800 border-2 border-primary-500 p-0.5">
+                                <img :src="user.photoURL || 'https://api.dicebear.com/7.x/bottts/svg?seed=Agent'" class="w-full h-full rounded-lg bg-black object-cover">
+                            </div>
+                        </button>
+                        <div x-show="open" x-transition class="absolute right-0 mt-4 w-60 bg-surface-900 border border-surface-700 rounded-xl shadow-2xl p-2 z-50">
+                            <div class="p-3 border-b border-surface-800 mb-2">
+                                <p class="text-xs text-surface-400">Signed in as</p>
+                                <p class="text-sm font-bold text-white truncate" x-text="user.email"></p>
+                            </div>
+                            <button class="w-full text-left px-3 py-2 text-xs font-bold text-surface-300 hover:text-white hover:bg-surface-800 rounded-lg transition flex items-center gap-2"><i data-lucide="user" class="w-4 h-4"></i> Profile</button>
+                            <button class="w-full text-left px-3 py-2 text-xs font-bold text-surface-300 hover:text-white hover:bg-surface-800 rounded-lg transition flex items-center gap-2"><i data-lucide="package" class="w-4 h-4"></i> Orders</button>
+                            <button @click="handleLogout" class="w-full text-left px-3 py-2 text-xs font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition mt-2 flex items-center gap-2"><i data-lucide="log-out" class="w-4 h-4"></i> Sign Out</button>
+                        </div>
+                    </div>
+                </template>
             </div>
         </div>
     </nav>
 
-    <section class="relative h-screen w-full flex items-center justify-center overflow-hidden bg-surface-950">
+    <section class="relative h-screen w-full flex items-center justify-center bg-surface-950 overflow-hidden">
         <div class="video-wrapper">
             <template x-for="(slide, index) in heroSlides" :key="index">
                 <div x-show="activeSlide === index" x-transition.opacity.duration.1000ms class="absolute inset-0">
-                    <div x-show="trailerPlaying" class="absolute inset-0 z-0 bg-black">
+                    <div x-show="trailerPlaying" class="absolute inset-0 bg-black z-0">
                         <div :id="'hero-player-'+index" class="video-iframe"></div>
                     </div>
-                    
                     <img x-show="!trailerPlaying" :src="slide.image" class="w-full h-full object-cover scale-105 animate-pulse-slow opacity-60">
                     
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#030712] via-[#030712]/40 to-transparent z-10 pointer-events-none"></div>
-                    <div class="absolute inset-0 bg-gradient-to-r from-[#030712] via-transparent to-[#030712] z-10 pointer-events-none"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#030712] via-[#030712]/30 to-transparent z-10"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-[#030712] via-[#030712]/50 to-transparent z-10"></div>
                 </div>
             </template>
         </div>
 
-        <div class="relative z-20 w-full max-w-7xl mx-auto px-6 h-full flex flex-col justify-center" :class="{'pointer-events-none opacity-0': trailerPlaying}" style="transition: opacity 0.5s ease">
+        <div class="relative z-20 w-full max-w-[1700px] mx-auto px-6 md:px-12 h-full flex flex-col justify-center pb-20" :class="{'opacity-0 pointer-events-none': trailerPlaying}" style="transition: opacity 0.5s ease">
             <template x-for="(slide, index) in heroSlides">
-                <div x-show="activeSlide === index" class="max-w-2xl animate-fade-in-up">
+                <div x-show="activeSlide === index" class="max-w-3xl animate-fade-in-up flex flex-col items-start gap-8">
                     
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-[10px] font-bold text-white uppercase tracking-widest mb-6">
-                        <span class="relative flex h-2 w-2">
-                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
-                          <span class="relative inline-flex rounded-full h-2 w-2 bg-primary-500"></span>
-                        </span>
-                        Global Premiere Event
+                    <div class="flex flex-col gap-6 w-full">
+                        <div class="inline-flex self-start items-center gap-3 px-4 py-1.5 rounded-full bg-surface-900/40 backdrop-blur-md border border-white/10 text-[11px] font-bold text-white uppercase tracking-widest shadow-xl">
+                            <span class="relative flex h-2.5 w-2.5">
+                              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
+                              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary-500"></span>
+                            </span>
+                            <span>Global Premiere Event</span>
+                            <div class="w-px h-3 bg-white/20"></div>
+                            <span class="text-primary-400" x-text="slide.dateLabel"></span>
+                        </div>
+
+                        <img :src="slide.logo" class="h-28 md:h-56 object-contain self-start drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)]" loading="eager" alt="Game Logo">
                     </div>
 
-                    <img :src="slide.logo" class="h-24 md:h-40 object-contain mb-8 drop-shadow-2xl" loading="eager">
+                    <p class="text-lg md:text-2xl text-surface-200 font-light leading-relaxed max-w-2xl drop-shadow-md border-l-2 border-primary-500 pl-6" x-text="slide.desc"></p>
                     
-                    <p class="text-lg md:text-xl text-surface-200 font-light leading-relaxed mb-10 max-w-xl drop-shadow-lg" x-text="slide.desc"></p>
-                    
-                    <div class="flex flex-wrap gap-5">
-                        <button @click="quickSearch(slide.title)" class="btn-primary group">
-                            <span class="relative z-10 flex items-center gap-2">
-                                Pre-Order Access <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
+                    <div class="flex flex-wrap gap-5 mt-4">
+                        <button @click="quickSearch(slide.title)" class="btn-primary text-sm md:text-base group">
+                            <span class="relative z-10 flex items-center gap-3">
+                                Pre-Order Access <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition"></i>
                             </span>
                         </button>
-                        <button @click="playTrailer" class="btn-secondary flex items-center gap-3 backdrop-blur-md group">
-                            <div class="w-6 h-6 rounded-full bg-white text-black flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="play" class="w-3 h-3 fill-current"></i></div>
+                        <button @click="playTrailer" class="px-8 py-3.5 rounded-lg border border-white/20 bg-white/5 hover:bg-white/10 text-white font-bold backdrop-blur-md transition flex items-center gap-3 group">
+                            <div class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center group-hover:scale-110 transition shadow-lg"><i data-lucide="play" class="w-3.5 h-3.5 fill-current ml-0.5"></i></div>
                             <span>Watch Trailer</span>
                         </button>
                     </div>
-
-                    <div class="mt-16 flex items-center gap-10 border-t border-white/10 pt-8 w-fit pr-10">
-                        <div>
-                            <div class="text-3xl font-display font-bold text-white" x-text="timer.days"></div>
-                            <div class="text-[10px] text-surface-400 font-bold uppercase tracking-widest">Days</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-display font-bold text-white" x-text="timer.hours"></div>
-                            <div class="text-[10px] text-surface-400 font-bold uppercase tracking-widest">Hours</div>
-                        </div>
-                        <div class="h-8 w-px bg-white/10"></div>
-                        <div>
-                            <div class="flex items-center text-yellow-400 mb-1">
-                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                            </div>
-                            <div class="text-[10px] text-surface-400 font-bold uppercase tracking-widest">98% Metacritic</div>
-                        </div>
-                    </div>
                 </div>
             </template>
         </div>
 
-        <div class="absolute bottom-12 right-12 z-20 flex gap-3">
-            <template x-for="(s, i) in heroSlides">
-                <button @click="activeSlide = i; stopTrailer();" class="h-1 transition-all duration-500 rounded-full bg-white shadow-glow-primary" :class="activeSlide === i ? 'w-12 opacity-100' : 'w-4 opacity-30 hover:opacity-60'"></button>
-            </template>
-        </div>
-
-        <div x-show="trailerPlaying" x-transition:enter="control-deck-enter-active" x-transition:leave="control-deck-exit" class="absolute bottom-10 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-4 p-2 pl-6 pr-2 rounded-full glass-panel shadow-2xl border border-white/20">
-            <div class="flex flex-col">
-                <span class="text-[10px] font-bold text-primary-400 uppercase tracking-widest">Now Playing</span>
-                <span class="text-xs font-bold text-white" x-text="heroSlides[activeSlide].title + ' - Official Trailer'"></span>
+        <div x-show="trailerPlaying" x-transition.scale class="absolute bottom-12 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-4 p-3 pl-8 pr-3 rounded-full bg-black/80 backdrop-blur-xl border border-white/10 shadow-2xl">
+            <div class="flex flex-col mr-4">
+                <span class="text-[9px] font-bold text-primary-500 uppercase tracking-widest">Now Playing</span>
+                <span class="text-sm font-bold text-white truncate max-w-[200px]" x-text="heroSlides[activeSlide].title"></span>
             </div>
-            
-            <div class="h-8 w-px bg-white/10 mx-2"></div>
-            
-            <button @click="toggleMute" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/20 flex items-center justify-center text-white transition tooltip" :title="isMuted ? 'Unmute' : 'Mute'">
-                <i :data-lucide="isMuted ? 'volume-x' : 'volume-2'" class="w-5 h-5"></i>
-            </button>
-            
-            <button @click="stopTrailer" class="px-5 py-2.5 rounded-full bg-red-600 hover:bg-red-500 text-white text-xs font-bold uppercase tracking-wider transition shadow-lg flex items-center gap-2">
-                <i data-lucide="square" class="w-3 h-3 fill-current"></i> Exit Cinema
-            </button>
+            <div class="h-8 w-px bg-white/10"></div>
+            <button @click="toggleMute" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition"><i :data-lucide="isMuted ? 'volume-x' : 'volume-2'" class="w-5 h-5"></i></button>
+            <button @click="stopTrailer" class="bg-red-600 hover:bg-red-500 text-white px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition shadow-glow-primary">Exit</button>
+        </div>
+        
+        <div class="absolute right-12 top-1/2 -translate-y-1/2 flex flex-col gap-4 z-20">
+            <template x-for="(s, i) in heroSlides">
+                <button @click="activeSlide = i; stopTrailer();" class="w-1.5 transition-all duration-500 rounded-full bg-white shadow-glow-primary" :class="activeSlide === i ? 'h-16 opacity-100 bg-primary-500' : 'h-4 opacity-30 hover:opacity-60 hover:h-6'"></button>
+            </template>
         </div>
     </section>
 
     <main class="relative z-10 bg-surface-950">
-        
-        <div class="border-y border-surface-800 bg-surface-900/50 backdrop-blur-sm">
-            <div class="max-w-[1600px] mx-auto px-6 py-10">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-                    <div class="flex items-center gap-4 group cursor-default">
-                        <div class="w-12 h-12 rounded-xl bg-surface-800 flex items-center justify-center border border-surface-700 group-hover:border-primary-500/50 transition duration-300">
-                            <i data-lucide="award" class="w-6 h-6 text-primary-500"></i>
-                        </div>
-                        <div><p class="text-sm font-bold text-white group-hover:text-primary-400 transition">Official Reseller</p><p class="text-xs text-surface-400">Direct from Publishers</p></div>
+        <div class="border-y border-surface-800 bg-surface-900/30 backdrop-blur-sm">
+            <div class="max-w-[1600px] mx-auto px-6 py-12">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+                    <div class="flex items-start gap-4 group">
+                        <i data-lucide="shield-check" class="w-8 h-8 text-primary-500 mt-1"></i>
+                        <div><h4 class="font-bold text-white group-hover:text-primary-400 transition">Official Reseller</h4><p class="text-sm text-surface-400 mt-1">Direct API integration with publishers.</p></div>
                     </div>
-                    <div class="flex items-center gap-4 group cursor-default">
-                        <div class="w-12 h-12 rounded-xl bg-surface-800 flex items-center justify-center border border-surface-700 group-hover:border-accent-teal/50 transition duration-300">
-                            <i data-lucide="zap" class="w-6 h-6 text-accent-teal"></i>
-                        </div>
-                        <div><p class="text-sm font-bold text-white group-hover:text-accent-teal transition">Instant Delivery</p><p class="text-xs text-surface-400">Automated 24/7 System</p></div>
+                    <div class="flex items-start gap-4 group">
+                        <i data-lucide="zap" class="w-8 h-8 text-accent-teal mt-1"></i>
+                        <div><h4 class="font-bold text-white group-hover:text-accent-teal transition">Instant Delivery</h4><p class="text-sm text-surface-400 mt-1">Automated key dispatch in < 30s.</p></div>
                     </div>
-                    <div class="flex items-center gap-4 group cursor-default">
-                        <div class="w-12 h-12 rounded-xl bg-surface-800 flex items-center justify-center border border-surface-700 group-hover:border-blue-500/50 transition duration-300">
-                            <i data-lucide="shield-check" class="w-6 h-6 text-blue-500"></i>
-                        </div>
-                        <div><p class="text-sm font-bold text-white group-hover:text-blue-400 transition">Buyer Protection</p><p class="text-xs text-surface-400">100% Refund Guarantee</p></div>
+                    <div class="flex items-start gap-4 group">
+                        <i data-lucide="lock" class="w-8 h-8 text-accent-purple mt-1"></i>
+                        <div><h4 class="font-bold text-white group-hover:text-accent-purple transition">Secure Payment</h4><p class="text-sm text-surface-400 mt-1">256-bit SSL Encrypted transactions.</p></div>
                     </div>
-                    <div class="flex items-center gap-4 group cursor-default">
-                        <div class="w-12 h-12 rounded-xl bg-surface-800 flex items-center justify-center border border-surface-700 group-hover:border-accent-purple/50 transition duration-300">
-                            <i data-lucide="globe" class="w-6 h-6 text-accent-purple"></i>
-                        </div>
-                        <div><p class="text-sm font-bold text-white group-hover:text-accent-purple transition">Global Activation</p><p class="text-xs text-surface-400">Region-Free Keys</p></div>
+                    <div class="flex items-start gap-4 group">
+                        <i data-lucide="headphones" class="w-8 h-8 text-white mt-1"></i>
+                        <div><h4 class="font-bold text-white">24/7 Apex Support</h4><p class="text-sm text-surface-400 mt-1">Live agents ready to assist.</p></div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="max-w-[1600px] mx-auto px-6 md:px-12 py-24">
-            
-            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-8 border-b border-surface-800 pb-8">
+            <div class="flex flex-col xl:flex-row justify-between items-end mb-16 gap-8 border-b border-surface-800 pb-8">
                 <div>
-                    <h2 class="text-4xl font-display font-bold text-white mb-2">Marketplace <span class="text-primary-500">Vault</span></h2>
-                    <p class="text-surface-400">Browse verified licenses. Real-time stock updates enabled.</p>
+                    <h2 class="text-4xl md:text-5xl font-display font-black text-white mb-4 uppercase italic">Digital <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-accent-cyber">Vault</span></h2>
+                    <p class="text-surface-400 font-mono text-sm max-w-xl">Access verified licenses for Games, Software, and Subscriptions. Real-time stock updates enabled via Omni-Core.</p>
                 </div>
                 
-                <div class="flex gap-2 p-1.5 bg-surface-900 rounded-xl border border-surface-800">
+                <div class="flex p-1.5 bg-surface-900 rounded-xl border border-surface-800 shadow-inner">
                     <template x-for="pillar in ['Games (PS5 Digital)', 'OTT', 'Subscriptions']">
                         <button @click="switchPillar(pillar)" 
-                                :class="activePillar === pillar ? 'bg-surface-800 text-white shadow-sm' : 'text-surface-500 hover:text-white'"
-                                class="px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300">
+                                :class="activePillar === pillar ? 'bg-surface-800 text-white shadow-lg' : 'text-surface-500 hover:text-white'"
+                                class="px-6 md:px-8 py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all duration-300">
                             <span x-text="pillar === 'Games (PS5 Digital)' ? 'Games' : pillar"></span>
                         </button>
                     </template>
                 </div>
             </div>
 
-            <div class="flex gap-3 overflow-x-auto pb-6 mb-4 no-scrollbar">
+            <div class="flex gap-3 overflow-x-auto pb-6 mb-8 no-scrollbar mask-linear">
                 <template x-for="cat in subFilters">
                     <button @click="activeCategory = cat" 
-                            :class="activeCategory === cat ? 'bg-primary-600 border-primary-600 text-white shadow-glow-primary' : 'bg-transparent border-surface-800 text-surface-400 hover:border-surface-600 hover:text-white'"
-                            class="px-5 py-2 rounded-full border text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all" x-text="cat"></button>
+                            :class="activeCategory === cat ? 'bg-primary-600 border-primary-500 text-white shadow-glow-primary' : 'bg-transparent border-surface-800 text-surface-400 hover:border-surface-600 hover:text-white'"
+                            class="px-6 py-2.5 rounded-full border text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all" x-text="cat"></button>
                 </template>
             </div>
 
@@ -560,39 +558,37 @@
                     <template x-for="i in 10"><div class="aspect-[2/3] rounded-2xl skeleton border border-surface-800"></div></template>
                 </div>
 
-                <div x-show="!loading && filteredItems.length === 0" x-cloak class="py-32 flex flex-col items-center justify-center border-2 border-dashed border-surface-800 rounded-3xl bg-surface-900/20">
-                    <div class="w-20 h-20 rounded-full bg-surface-800 flex items-center justify-center mb-6"><i data-lucide="search-x" class="w-10 h-10 text-surface-500"></i></div>
-                    <h3 class="text-xl font-bold text-white mb-2">No results found</h3>
-                    <p class="text-surface-400">Try adjusting filters or checking the spelling.</p>
-                    <button @click="searchQuery = ''; activeCategory = 'All'" class="mt-8 text-primary-500 font-bold hover:underline">Clear Search</button>
-                </div>
-
                 <div x-show="!loading" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
                     <template x-for="item in filteredItems" :key="item.id">
-                        <div class="group relative flex flex-col h-full bg-surface-900 border border-surface-800 rounded-2xl overflow-hidden hover:border-primary-500/50 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer" @click="ui.activeProduct = item">
+                        <div class="group relative flex flex-col h-full bg-surface-900 border border-surface-800 rounded-2xl overflow-hidden hover:border-primary-500/50 hover:shadow-[0_20px_40px_-10px_rgba(37,99,235,0.2)] transition-all duration-500 hover:-translate-y-2 cursor-pointer isolate">
                             
                             <div class="relative w-full aspect-[2/3] bg-surface-950 overflow-hidden">
                                 <img :src="item.image" loading="lazy" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition duration-700">
                                 
+                                <div class="absolute inset-0 bg-gradient-to-tr from-primary-500/0 via-white/0 to-primary-500/0 group-hover:from-primary-500/10 group-hover:to-accent-cyber/10 transition duration-500 opacity-0 group-hover:opacity-100 pointer-events-none z-10"></div>
+                                
                                 <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20">
                                     <button @click.stop="addToCart(item)" class="btn-primary w-full text-xs py-3 flex items-center justify-center gap-2 shadow-xl">
-                                        <i data-lucide="plus" class="w-3 h-3"></i> Add to Cart
+                                        Add to Cart <i data-lucide="shopping-bag" class="w-3 h-3"></i>
                                     </button>
                                 </div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-surface-900 via-transparent to-transparent opacity-60 group-hover:opacity-90 transition"></div>
+                                
+                                <div class="absolute top-3 left-3 flex flex-col gap-1 z-20">
+                                    <span x-show="item.price > 60" class="bg-accent-rose text-white text-[9px] font-black uppercase px-2 py-1 rounded shadow-lg border border-red-500/50">Best Seller</span>
+                                </div>
                             </div>
 
-                            <div class="p-5 flex flex-col flex-1 border-t border-surface-800 bg-surface-900 relative z-10">
-                                <h3 class="text-sm font-bold text-white leading-tight mb-1 group-hover:text-primary-400 transition" x-text="item.title"></h3>
-                                <p class="text-xs text-surface-500 font-mono" x-text="item.category"></p>
+                            <div class="p-5 flex flex-col flex-1 border-t border-surface-800 bg-surface-900 relative z-20">
+                                <h3 class="text-sm font-bold text-white leading-snug mb-1 group-hover:text-primary-400 transition line-clamp-2" x-text="item.title"></h3>
+                                <p class="text-[10px] text-surface-500 font-mono uppercase tracking-wide" x-text="item.category"></p>
                                 
-                                <div class="mt-auto pt-4 flex items-end justify-between">
+                                <div class="mt-auto pt-4 flex items-end justify-between border-t border-surface-800/50 mt-4">
                                     <div>
-                                        <p class="text-[10px] text-surface-500 uppercase font-bold">Price</p>
-                                        <p class="text-base font-bold text-white font-mono" x-text="formatPrice(item.price)"></p>
+                                        <p class="text-[9px] text-surface-500 uppercase font-bold mb-0.5">Price</p>
+                                        <p class="text-base font-bold text-white font-mono tracking-tight" x-text="formatPrice(item.price)"></p>
                                     </div>
-                                    <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition duration-300 transform translate-y-2 group-hover:translate-y-0">
-                                        <button @click.stop="addToWishlist(item)" class="p-2 rounded-lg bg-surface-800 hover:bg-surface-700 hover:text-red-500 text-surface-400 transition"><i data-lucide="heart" class="w-4 h-4"></i></button>
+                                    <div class="w-8 h-8 rounded-full bg-surface-800 flex items-center justify-center text-surface-500 group-hover:text-white group-hover:bg-primary-600 transition">
+                                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
                                     </div>
                                 </div>
                             </div>
@@ -603,20 +599,28 @@
         </div>
     </main>
 
-    <footer class="bg-surface-950 border-t border-surface-800 pt-24 pb-8 text-sm">
+    <footer class="bg-surface-950 border-t border-surface-800 pt-20 pb-10 text-sm">
         <div class="max-w-[1600px] mx-auto px-6 md:px-12">
+            
+            <div class="relative bg-gradient-to-r from-primary-900/50 to-surface-900 border border-surface-700 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 mb-20 overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-primary-600/10 blur-[80px] rounded-full"></div>
+                <div class="relative z-10">
+                    <h3 class="text-2xl font-display font-bold text-white mb-2">Join the Inner Circle</h3>
+                    <p class="text-surface-400 max-w-md">Get exclusive access to flash sales, restock alerts, and premium digital assets.</p>
+                </div>
+                <form class="flex w-full md:w-auto gap-2 relative z-10" @submit.prevent="notify('Subscribed', 'Welcome to the inner circle.', 'mail', 'success')">
+                    <input type="email" placeholder="agent@playwithease.com" class="bg-surface-950 border border-surface-700 rounded-lg px-4 py-3 text-sm text-white outline-none focus:border-primary-600 w-full md:w-72 shadow-inner" required>
+                    <button type="submit" class="btn-primary whitespace-nowrap">Subscribe</button>
+                </form>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-20">
                 <div class="lg:col-span-2 space-y-6 pr-12">
                     <a href="#" class="flex items-center gap-2">
-                        <div class="w-8 h-8 rounded bg-primary-600 flex items-center justify-center text-white"><i data-lucide="hexagon" class="w-5 h-5"></i></div>
+                        <div class="w-8 h-8 rounded bg-primary-600 flex items-center justify-center text-white"><i data-lucide="triangle" class="w-4 h-4 rotate-180 fill-current"></i></div>
                         <span class="font-display text-xl font-bold text-white">PLAYWITH<span class="text-primary-500">EASE</span></span>
                     </a>
-                    <p class="text-surface-400 leading-relaxed">The enterprise standard for digital asset distribution. Verified keys, instant API delivery, and 24/7 localized support for global gamers.</p>
-                    <div class="flex gap-4">
-                        <a href="#" class="w-10 h-10 rounded-full bg-surface-900 border border-surface-800 flex items-center justify-center text-surface-400 hover:text-white hover:border-primary-600 hover:bg-primary-600/10 transition"><i data-lucide="twitter" class="w-4 h-4"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-surface-900 border border-surface-800 flex items-center justify-center text-surface-400 hover:text-white hover:border-accent-purple hover:bg-accent-purple/10 transition"><i data-lucide="twitch" class="w-4 h-4"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-surface-900 border border-surface-800 flex items-center justify-center text-surface-400 hover:text-white hover:border-blue-500 hover:bg-blue-500/10 transition"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
-                    </div>
+                    <p class="text-surface-400 leading-relaxed font-light">The enterprise standard for digital asset distribution. Verified keys, instant API delivery, and 24/7 localized support for global gamers and professionals.</p>
                 </div>
 
                 <div>
@@ -638,67 +642,69 @@
                         <li><a href="#" class="hover:text-primary-400 transition">Live Chat</a></li>
                     </ul>
                 </div>
-
-                <div>
-                    <h4 class="font-bold text-white mb-6 uppercase text-xs tracking-widest">Legal</h4>
-                    <ul class="space-y-4 text-surface-400">
-                        <li><a href="#" class="hover:text-primary-400 transition">Terms of Service</a></li>
-                        <li><a href="#" class="hover:text-primary-400 transition">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-primary-400 transition">Cookie Settings</a></li>
-                    </ul>
-                </div>
                 
-                <div class="space-y-6">
-                    <div>
-                        <h4 class="font-bold text-white mb-4 uppercase text-xs tracking-widest">System Status</h4>
-                        <div class="flex items-center gap-2 text-xs font-mono text-green-400 bg-green-900/20 px-3 py-2 rounded border border-green-900">
-                            <span class="relative flex h-2 w-2">
-                              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                              <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                            </span>
-                            API ONLINE (12ms)
-                        </div>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-white mb-4 uppercase text-xs tracking-widest">Secured By</h4>
-                         <div class="flex gap-3 opacity-60">
-                             <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" class="h-5">
-                             <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" class="h-5 bg-white rounded px-1">
-                             <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg" class="h-5">
+                <div class="lg:col-span-1">
+                     <h4 class="font-bold text-white mb-6 uppercase text-xs tracking-widest">System Status</h4>
+                     <div class="p-4 rounded-xl bg-surface-900 border border-surface-800">
+                         <div class="flex items-center justify-between mb-2">
+                             <span class="text-xs text-surface-400 font-mono">API GATEWAY</span>
+                             <span class="text-[10px] font-bold text-green-500">ONLINE</span>
                          </div>
-                    </div>
+                         <div class="w-full bg-surface-800 h-1 rounded-full mb-4 overflow-hidden">
+                             <div class="bg-green-500 h-full w-[98%] shadow-[0_0_10px_#22c55e]"></div>
+                         </div>
+                         <div class="flex items-center justify-between">
+                             <span class="text-xs text-surface-400 font-mono">AUTH SERVER</span>
+                             <span class="text-[10px] font-bold text-green-500">STABLE</span>
+                         </div>
+                     </div>
                 </div>
             </div>
 
             <div class="border-t border-surface-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-surface-500 font-mono uppercase">
                 <p>&copy; 2026 PlayWithEase Digital Inc. All rights reserved.</p>
-                <p>Designed for Performance.</p>
+                <div class="flex gap-4">
+                    <span>Privacy Protocol</span>
+                    <span>•</span>
+                    <span>Terms of Service</span>
+                </div>
             </div>
         </div>
     </footer>
 
-    <div class="fixed bottom-6 right-6 z-[300] flex flex-col gap-3 pointer-events-none">
-        <template x-for="toast in notifications" :key="toast.id">
-            <div x-show="toast.visible" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 scale-95" x-transition:enter-end="opacity-100 translate-y-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0 translate-x-4" 
-                 class="pointer-events-auto flex items-center gap-4 px-5 py-4 rounded-xl bg-surface-900 border border-surface-800 shadow-2xl min-w-[340px]">
-                <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0" :class="toast.type === 'success' ? 'bg-green-500/10 text-green-500' : 'bg-primary-500/10 text-primary-500'">
-                    <i :data-lucide="toast.icon" class="w-5 h-5"></i>
-                </div>
-                <div class="flex-1 min-w-0">
-                    <h4 class="text-sm font-bold text-white truncate" x-text="toast.title"></h4>
-                    <p class="text-xs text-surface-400 mt-0.5 truncate" x-text="toast.message"></p>
-                </div>
-                <button @click="toast.visible = false" class="text-surface-500 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
-            </div>
-        </template>
-    </div>
+    <script type="module">
+        // --- FIREBASE V9 MODULAR SDK IMPORTS ---
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        
+        const firebaseConfig = { 
+            apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs", 
+            authDomain: "playwithease.firebaseapp.com", 
+            projectId: "playwithease", 
+            storageBucket: "playwithease.firebasestorage.app", 
+            messagingSenderId: "189729941006", 
+            appId: "1:189729941006:web:362653774b92416c357e5f", 
+            measurementId: "G-1C3B31KQ7C" 
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        
+        // Expose Auth to Alpine via Global Event Bus
+        window.PWE_AUTH = { auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile };
+        
+        onAuthStateChanged(auth, (user) => {
+            window.dispatchEvent(new CustomEvent('auth-state-changed', { detail: user }));
+        });
+    </script>
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        // --- ENTERPRISE DATA WAREHOUSE ---
-        const VAULT_DATABASE = [
-            { id: 1, title: 'Grand Theft Auto VI', category: 'Open World', pillar: 'Games (PS5 Digital)', price: 79.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg', description: 'Experience the next evolution of the Grand Theft Auto series. Set in the fictional state of Leonida, home to the neon-soaked streets of Vice City and beyond.' },
-            { id: 2, title: 'Elden Ring: Shadow of the Erdtree', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg', description: 'The expansion to the Game of the Year. Journey into the Land of Shadow to discover new mysteries, dungeons, and enemies.' },
+        // --- MOCK DATABASE (50+ ITEMS) ---
+        const DATABASE = [
+            // Games
+            { id: 1, title: 'Grand Theft Auto VI', category: 'Open World', pillar: 'Games (PS5 Digital)', price: 79.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
+            { id: 2, title: 'Elden Ring: Shadow of the Erdtree', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg' },
             { id: 3, title: 'Call of Duty: MW3 Vault Edition', category: 'Shooter', pillar: 'Games (PS5 Digital)', price: 99.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2519060/library_600x900.jpg' },
             { id: 4, title: 'Cyberpunk 2077: Ultimate', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg' },
             { id: 5, title: 'God of War Ragnarök', category: 'Action', pillar: 'Games (PS5 Digital)', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg' },
@@ -709,34 +715,106 @@
             { id: 10, title: 'EA Sports FC 24', category: 'Sports', pillar: 'Games (PS5 Digital)', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
             { id: 11, title: 'Final Fantasy VII Rebirth', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1462040/library_600x900.jpg' },
             { id: 12, title: 'Resident Evil 4 Gold', category: 'Horror', pillar: 'Games (PS5 Digital)', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg' },
-            
+            { id: 13, title: 'Starfield Premium', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1716740/library_600x900.jpg' },
+            { id: 14, title: 'Spider-Man 2 Deluxe', category: 'Action', pillar: 'Games (PS5 Digital)', price: 79.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg' },
             // OTT
-            { id: 101, title: 'Netflix Premium (4K) 1Y', category: 'Streaming', pillar: 'OTT', price: 25.99, image: 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Netflix-new-icon.png', description: 'Access unlimited movies and TV shows in 4K UHD. Supports 4 devices simultaneously.' },
+            { id: 101, title: 'Netflix Premium (4K) 1Y', category: 'Streaming', pillar: 'OTT', price: 25.99, image: 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Netflix-new-icon.png' },
             { id: 102, title: 'YouTube Premium Family 1Y', category: 'Video', pillar: 'OTT', price: 15.99, image: 'https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg' },
             { id: 103, title: 'Disney+ Bundle 1Y', category: 'Streaming', pillar: 'OTT', price: 19.99, image: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_Hotstar_logo.svg' },
             { id: 104, title: 'Crunchyroll Mega Fan 1Y', category: 'Anime', pillar: 'OTT', price: 14.99, image: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Crunchyroll_Logo.svg' },
             { id: 105, title: 'Spotify Premium 1Y', category: 'Music', pillar: 'OTT', price: 12.99, image: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg' },
-            
+            { id: 106, title: 'HBO Max Ad-Free 1Y', category: 'Streaming', pillar: 'OTT', price: 29.99, image: 'https://upload.wikimedia.org/wikipedia/commons/1/17/HBO_Max_Logo.svg' },
             // Subscriptions
             { id: 201, title: 'Xbox Game Pass Ultimate', category: 'Gaming', pillar: 'Subscriptions', price: 14.99, image: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg' },
             { id: 202, title: 'ChatGPT Plus (Shared)', category: 'AI Tools', pillar: 'Subscriptions', price: 9.99, image: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg' },
             { id: 203, title: 'Adobe Creative Cloud', category: 'Design', pillar: 'Subscriptions', price: 29.99, image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Adobe_Creative_Cloud_logo.svg' },
             { id: 204, title: 'NordVPN 2-Year Plan', category: 'Security', pillar: 'Subscriptions', price: 79.99, image: 'https://upload.wikimedia.org/wikipedia/commons/2/22/NordVPN_Horizontal_Logo_White.svg' },
-            { id: 205, title: 'Midjourney Pro', category: 'AI Tools', pillar: 'Subscriptions', price: 24.99, image: 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Midjourney_Emblem.png' }
+            { id: 205, title: 'Midjourney Pro', category: 'AI Tools', pillar: 'Subscriptions', price: 24.99, image: 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Midjourney_Emblem.png' },
+            { id: 206, title: 'Microsoft 365 Family', category: 'Productivity', pillar: 'Subscriptions', price: 19.99, image: 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Microsoft_Office_logo_%282019%E2%80%93present%29.svg' }
         ];
 
         document.addEventListener('alpine:init', () => {
-            Alpine.data('shopApp', () => ({
-                // UI State
-                ui: {
-                    scrolled: false,
-                    searchOpen: false,
-                    cartOpen: false,
-                    authOpen: false,
-                    activeProduct: null
+            
+            // --- OMNI-CORE AI V2 LOGIC ---
+            Alpine.data('aiBot', () => ({
+                open: false,
+                input: '',
+                isTyping: false,
+                messages: [{ id: 1, text: "Greetings. I am Omni-Core v2. How can I assist you with the vault today?", sender: 'bot', time: 'NOW' }],
+                
+                processMessage() {
+                    if (!this.input.trim() || this.isTyping) return;
+                    const query = this.input.trim();
+                    const now = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    
+                    this.messages.push({ id: Date.now(), text: query, sender: 'user', time: now });
+                    this.input = ''; 
+                    this.isTyping = true; 
+                    this.scrollToBottom();
+
+                    // NLP SIMULATION
+                    setTimeout(() => {
+                        let response = "";
+                        const qLower = query.toLowerCase();
+                        
+                        // 1. Database Query
+                        const foundItems = DATABASE.filter(i => qLower.includes(i.title.toLowerCase()) || (i.title.toLowerCase().includes(qLower) && qLower.length > 3));
+                        
+                        if (foundItems.length > 0) {
+                            response = `I located <b>${foundItems.length} asset(s)</b> matching your query:<br><br>`;
+                            foundItems.slice(0, 3).forEach(item => {
+                                response += `• <b>${item.title}</b> - $${item.price}<br>`;
+                            });
+                            if (foundItems.length > 3) response += `<i>...and ${foundItems.length - 3} others.</i>`;
+                        }
+                        // 2. Intent Analysis
+                        else if (qLower.match(/refund|return|money back/)) {
+                            response = "Refund Protocol: We offer a <b>48-hour automated refund</b> for any unused keys. Please navigate to Profile > Orders to initiate.";
+                        } 
+                        else if (qLower.match(/human|agent|support|help/)) {
+                            response = "I have flagged your session for a Tier-2 human operator. Expected wait time: <b>2 minutes</b>. In the meantime, I can check order status.";
+                        }
+                        else if (qLower.match(/price|cost|cheap/)) {
+                            response = "Our pricing engine updates hourly based on global demand. Current lowest entry point: <b>$9.99</b> (ChatGPT Shared).";
+                        }
+                        else if (qLower.match(/hello|hi|hey/)) {
+                            response = "System Online. Ready for query.";
+                        }
+                        else {
+                            response = "Query unclear. I can assist with <b>Stock Checks</b>, <b>Pricing</b>, and <b>Order Tracking</b>. Please refine parameters.";
+                        }
+
+                        this.messages.push({ id: Date.now()+1, text: response, sender: 'bot', time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
+                        this.isTyping = false; 
+                        this.scrollToBottom();
+                    }, 1500 + (Math.random() * 500)); // Variable latency for realism
                 },
                 
-                // Logic State
+                clearChat() {
+                    this.messages = [{ id: Date.now(), text: "Memory Purged. Session Reset.", sender: 'bot', time: 'NOW' }];
+                },
+                
+                scrollToBottom() { 
+                    this.$nextTick(() => { 
+                        const c = document.getElementById('chatContainer'); 
+                        if(c) c.scrollTo({ top: c.scrollHeight, behavior: 'smooth' }); 
+                    }); 
+                }
+            }));
+
+            // --- MAIN SYSTEM LOGIC ---
+            Alpine.data('apexSystem', () => ({
+                // UI State
+                ui: { scrolled: false, searchOpen: false, cartOpen: false, authOpen: false, activeProduct: null },
+                
+                // Auth State
+                user: null,
+                authTab: 'login',
+                authForm: { email: '', password: '', name: '' },
+                authLoading: false,
+                gdprAccepted: Alpine.$persist(false).as('pwe_gdpr'),
+                
+                // Logic
                 activeSlide: 0,
                 trailerPlaying: false,
                 isMuted: false,
@@ -744,17 +822,15 @@
                 activePillar: 'Games (PS5 Digital)',
                 activeCategory: 'All',
                 loading: false,
-                authTab: 'login',
                 currency: 'USD',
-                rate: 86, // USD to INR conversion
+                rate: 86,
                 
                 // Persistence
-                cartItems: Alpine.$persist([]).as('pwe_cart_ent'),
-                wishlist: Alpine.$persist([]).as('pwe_wish_ent'),
+                cartItems: Alpine.$persist([]).as('pwe_cart_apex'),
                 cartCount: 0,
                 
                 notifications: [],
-                games: VAULT_DATABASE,
+                games: DATABASE,
 
                 heroSlides: [
                     { 
@@ -762,16 +838,18 @@
                         logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg/512px-Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg.png', 
                         title: 'Grand Theft Auto VI',
                         videoId: 'QdBZY2fkU-0', 
-                        desc: 'Welcome to Leonida. The largest, most immersive evolution of the Grand Theft Auto series yet. Pre-order now to secure your digital bonuses.',
-                        date: '2026-11-19T00:00:00' 
+                        desc: 'The most immersive evolution of the Grand Theft Auto series yet. Welcome to Leonida.',
+                        date: '2026-11-19T00:00:00',
+                        dateLabel: 'NOV 19'
                     },
                     { 
                         image: 'https://cdn.forza.net/strapi-uploads/assets/xlarge_hero_fh6_f55db4cd81_53e6ca38f4.webp', 
                         logo: 'https://cdn.forza.net/strapi-uploads/assets/logo_black_fh6_700993660b.svg', 
                         title: 'Forza Horizon 6',
                         videoId: 'XzBUUZjYlE4',
-                        desc: 'The horizon festival returns. Explore the most diverse open world ever created in a racing game.',
-                        date: '2026-05-19T00:00:00' 
+                        desc: 'Explore the most diverse open world ever created in a racing game. Japan awaits.',
+                        date: '2026-05-19T00:00:00',
+                        dateLabel: 'MAY 19'
                     }
                 ],
 
@@ -783,29 +861,19 @@
                     this.autoPlaySlides();
                     window.addEventListener('load', () => lucide.createIcons());
                     
-                    // Live Sales Ticker
-                    setInterval(() => {
-                        const randomItem = this.games[Math.floor(Math.random() * this.games.length)];
-                        if(Math.random() > 0.8) this.notify('Live Transaction', `Someone from Mumbai purchased ${randomItem.title}`, 'globe', 'info');
-                    }, 20000);
+                    // Listen to Firebase Auth Changes
+                    window.addEventListener('auth-state-changed', (e) => {
+                        this.user = e.detail;
+                        if(this.user) this.notify('System Connected', `Welcome back, ${this.user.displayName || 'Agent'}`, 'shield-check', 'success');
+                    });
                 },
 
                 handleScroll() { this.ui.scrolled = window.pageYOffset > 50; },
                 
-                openSearch() { 
-                    this.ui.searchOpen = true; 
-                    this.$nextTick(() => this.$refs.searchInput.focus()); 
-                },
-                
-                quickSearch(term) {
-                    this.searchQuery = term;
-                    this.ui.searchOpen = false;
-                    document.querySelector('.min-h-\\[800px\\]').scrollIntoView({ behavior: 'smooth' });
-                },
+                openSearch() { this.ui.searchOpen = true; this.$nextTick(() => this.$refs.searchInput.focus()); },
+                quickSearch(term) { this.searchQuery = term; this.ui.searchOpen = false; },
 
-                autoPlaySlides() {
-                    setInterval(() => { if(!this.trailerPlaying) this.activeSlide = (this.activeSlide + 1) % this.heroSlides.length; }, 9000);
-                },
+                autoPlaySlides() { setInterval(() => { if(!this.trailerPlaying) this.activeSlide = (this.activeSlide + 1) % this.heroSlides.length; }, 12000); },
 
                 startTimer() { 
                     const target = new Date(this.heroSlides[this.activeSlide].date).getTime(); 
@@ -816,17 +884,8 @@
                     }, 1000); 
                 },
 
-                switchPillar(p) { 
-                    this.loading = true; 
-                    this.activePillar = p; 
-                    this.activeCategory = 'All'; 
-                    setTimeout(() => this.loading = false, 500); 
-                },
-                
-                toggleCurrency() {
-                    this.currency = this.currency === 'USD' ? 'INR' : 'USD';
-                    this.notify('Currency Updated', `Displaying prices in ${this.currency}`, 'refresh-cw', 'info');
-                },
+                switchPillar(p) { this.loading = true; this.activePillar = p; this.activeCategory = 'All'; setTimeout(() => this.loading = false, 400); },
+                toggleCurrency() { this.currency = this.currency === 'USD' ? 'INR' : 'USD'; },
 
                 get subFilters() { return ['All', ...new Set(this.games.filter(g => g.pillar === this.activePillar).map(g => g.category))]; },
                 get filteredItems() { 
@@ -836,77 +895,65 @@
                         (g.title.toLowerCase().includes(this.searchQuery.toLowerCase()))
                     ); 
                 },
-                
-                get cartTotal() {
-                    return this.cartItems.reduce((sum, item) => sum + item.price, 0);
-                },
+                get cartTotal() { return this.cartItems.reduce((sum, item) => sum + item.price, 0); },
                 
                 formatPrice(p) { 
                     if(!p) return '0.00';
-                    if (this.currency === 'INR') {
-                        return '₹' + Math.round(p * this.rate).toLocaleString('en-IN');
-                    }
-                    return '$' + p.toFixed(2); 
+                    return this.currency === 'INR' ? '₹' + Math.round(p * this.rate).toLocaleString('en-IN') : '$' + p.toFixed(2); 
                 },
 
                 addToCart(item) {
-                    this.cartItems.push(item);
-                    this.cartCount = this.cartItems.length;
-                    this.notify('Added to Pod', `${item.title} ready for extraction.`, 'shopping-bag', 'success');
-                    this.ui.cartOpen = true; // Auto open drawer
+                    this.cartItems.push(item); this.cartCount = this.cartItems.length;
+                    this.notify('Extraction Pod Updated', `${item.title} secured.`, 'shopping-bag', 'success');
                 },
-                
-                removeFromCart(index) {
-                    this.cartItems.splice(index, 1);
-                    this.cartCount = this.cartItems.length;
-                },
-                
-                addToWishlist(item) {
-                    if (this.wishlist.find(i => i.id === item.id)) {
-                        this.notify('Already Saved', 'This item is in your wishlist.', 'heart', 'info');
-                    } else {
-                        this.wishlist.push(item);
-                        this.notify('Saved', 'Added to your wishlist.', 'heart', 'success');
+
+                // --- AUTHENTICATION HANDLERS ---
+                async handleAuth() {
+                    this.authLoading = true;
+                    try {
+                        const { auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } = window.PWE_AUTH;
+                        if (this.authTab === 'login') {
+                            await signInWithEmailAndPassword(auth, this.authForm.email, this.authForm.password);
+                        } else {
+                            const cred = await createUserWithEmailAndPassword(auth, this.authForm.email, this.authForm.password);
+                            await updateProfile(cred.user, { displayName: this.authForm.name });
+                        }
+                        this.ui.authOpen = false;
+                        this.authForm = { email: '', password: '', name: '' };
+                    } catch (error) {
+                        this.notify('Access Denied', error.message.replace('Firebase:', '').trim(), 'alert-triangle', 'error');
+                    } finally {
+                        this.authLoading = false;
                     }
                 },
                 
-                handleAuth() {
-                    this.notify('Authentication Success', 'Welcome back, Operator.', 'shield-check', 'success');
-                    this.ui.authOpen = false;
+                async handleLogout() {
+                    await window.PWE_AUTH.signOut(window.PWE_AUTH.auth);
+                    this.user = null;
+                    this.notify('Session Terminated', 'Securely logged out.', 'log-out', 'info');
                 },
 
                 notify(title, message, icon, type) {
                     const id = Date.now();
                     this.notifications.push({ id, title, message, icon, type, visible: true });
-                    setTimeout(() => {
-                        const idx = this.notifications.findIndex(n => n.id === id);
-                        if(idx > -1) this.notifications[idx].visible = false;
-                    }, 4000);
+                    setTimeout(() => { const idx = this.notifications.findIndex(n => n.id === id); if(idx > -1) this.notifications[idx].visible = false; }, 4000);
                 },
 
                 // Video Logic
                 playTrailer() { 
-                    this.trailerPlaying = true; 
-                    this.isMuted = false;
+                    this.trailerPlaying = true; this.isMuted = false;
                     const pId = 'hero-player-' + this.activeSlide;
                     setTimeout(() => { 
                         if(window.ytPlayer) window.ytPlayer.destroy(); 
                         window.ytPlayer = new YT.Player(pId, { 
                             videoId: this.heroSlides[this.activeSlide].videoId, 
                             playerVars: { 'autoplay': 1, 'controls': 0, 'rel': 0, 'modestbranding': 1, 'showinfo': 0, 'iv_load_policy': 3, 'loop': 1, 'playlist': this.heroSlides[this.activeSlide].videoId }, 
-                            events: { 
-                                'onReady': (e) => { e.target.playVideo(); e.target.unMute(); },
-                                'onStateChange': (e) => { if(e.data === YT.PlayerState.ENDED) this.stopTrailer(); } 
-                            } 
+                            events: { 'onReady': (e) => { e.target.playVideo(); e.target.unMute(); }, 'onStateChange': (e) => { if(e.data === YT.PlayerState.ENDED) this.stopTrailer(); } } 
                         }); 
                     }, 200); 
                 },
                 stopTrailer() { this.trailerPlaying = false; if(window.ytPlayer?.stopVideo) window.ytPlayer.stopVideo(); },
-                toggleMute() { 
-                    this.isMuted = !this.isMuted; 
-                    if(window.ytPlayer) this.isMuted ? window.ytPlayer.mute() : window.ytPlayer.unMute(); 
-                    lucide.createIcons();
-                }
+                toggleMute() { this.isMuted = !this.isMuted; if(window.ytPlayer) this.isMuted ? window.ytPlayer.mute() : window.ytPlayer.unMute(); lucide.createIcons(); }
             }));
         });
     </script>
