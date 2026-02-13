@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth antialiased">
+<html lang="en" class="scroll-smooth antialiased h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="description" content="PlayWithEase - The Premier Digital Asset Marketplace. Verified Keys, Instant Delivery.">
+    <meta name="description" content="PlayWithEase - The Global Standard for Digital Asset Extraction.">
     <meta name="theme-color" content="#020617">
-    <title>PlayWithEase | Diamond Digital Vault</title>
+    <title>PlayWithEase | Titanium Digital Vault</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,7 +29,7 @@
                         mono: ['JetBrains Mono', 'monospace']
                     },
                     colors: { 
-                        // "Midnight Diamond" Palette
+                        // "Midnight Titanium" Palette
                         brand: { 50: '#f0f9ff', 100: '#e0f2fe', 400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1', 900: '#0c4a6e', 950: '#082f49' },
                         surface: { 50: '#f8fafc', 100: '#f1f5f9', 800: '#1e293b', 900: '#0f172a', 950: '#020617' },
                         accent: { cyber: '#00f0ff', rose: '#f43f5e', violet: '#8b5cf6', gold: '#fbbf24' },
@@ -72,24 +72,27 @@
         
         [x-cloak] { display: none !important; }
         
-        /* === MOBILE-FIRST VIDEO ENGINE === */
+        /* === MOBILE-FIRST VIDEO ENGINE v5 (THE FIX) === */
         .video-wrapper { 
             position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; 
         }
-        /* The "Cover" Hack for Iframes */
+        /* Desktop: Wide 16:9 scaling */
         .video-iframe { 
             position: absolute; top: 50%; left: 50%; 
             width: 100vw; height: 100vh;
-            /* Force aspect ratio to cover vertically */
-            min-width: 177.77vh; 
-            min-height: 56.25vw; 
-            transform: translate(-50%, -50%) scale(1.3); 
+            min-width: 177.77vh; /* Force 16:9 height ratio */
+            min-height: 56.25vw; /* Force 16:9 width ratio */
+            transform: translate(-50%, -50%) scale(1.3); /* Overscan to prevent black bars */
             pointer-events: none;
         }
+        /* Mobile Portrait: Tall scaling (Fixes "Not Fitting" issue) */
         @media (max-aspect-ratio: 16/9) {
             .video-iframe {
                 min-width: 100vw;
-                min-height: 177.77vw;
+                min-height: 100vh;
+                width: auto;
+                height: 100vh;
+                transform: translate(-50%, -50%) scale(3); /* Zoom in on center of video for mobile */
             }
         }
 
@@ -147,14 +150,22 @@
     </style>
 </head>
 
-<body x-data="diamondSystem()" @scroll.window="handleScroll" class="selection:bg-brand-500 selection:text-white">
+<body x-data="titaniumStore()" @scroll.window="handleScroll" class="selection:bg-brand-500 selection:text-white">
 
     <div class="fixed top-24 right-4 md:right-8 z-[300] flex flex-col gap-3 pointer-events-none safe-top">
         <template x-for="toast in notifications" :key="toast.id">
             <div x-show="toast.visible" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0 translate-x-4" 
                  class="pointer-events-auto flex items-center gap-4 px-5 py-4 rounded-xl bg-surface-900/95 backdrop-blur-xl border border-surface-800 shadow-glass-lg min-w-[300px] max-w-sm relative overflow-hidden group">
-                <div class="absolute left-0 top-0 bottom-0 w-1" :class="{ 'bg-status-success': toast.type === 'success', 'bg-status-error': toast.type === 'error', 'bg-brand-500': toast.type === 'info' }"></div>
-                <div class="w-9 h-9 rounded-full flex items-center justify-center shrink-0" :class="{ 'bg-status-success/10 text-status-success': toast.type === 'success', 'bg-status-error/10 text-status-error': toast.type === 'error', 'bg-brand-500/10 text-brand-500': toast.type === 'info' }">
+                <div class="absolute left-0 top-0 bottom-0 w-1" :class="{
+                    'bg-green-500': toast.type === 'success',
+                    'bg-red-500': toast.type === 'error',
+                    'bg-brand-500': toast.type === 'info'
+                }"></div>
+                <div class="w-9 h-9 rounded-full flex items-center justify-center shrink-0" :class="{
+                    'bg-green-500/10 text-green-500': toast.type === 'success',
+                    'bg-red-500/10 text-red-500': toast.type === 'error',
+                    'bg-brand-500/10 text-brand-500': toast.type === 'info'
+                }">
                     <i :data-lucide="toast.icon" class="w-4 h-4"></i>
                 </div>
                 <div class="flex-1 min-w-0">
@@ -178,7 +189,7 @@
         </div>
         
         <div class="w-full max-w-4xl mt-12 relative z-10 animate-fade-in-up" style="animation-delay: 0.1s">
-            <h4 class="text-[10px] font-bold text-brand-500 uppercase tracking-widest mb-4">Trending Now</h4>
+            <h4 class="text-[10px] font-bold text-brand-500 uppercase tracking-widest mb-4">Trending Assets</h4>
             <div class="flex flex-wrap gap-3">
                 <button @click="quickSearch('GTA VI')" class="px-4 py-2 rounded-lg bg-surface-900 border border-surface-800 hover:border-brand-500 text-xs font-bold uppercase tracking-wider transition text-surface-400 hover:text-white">GTA VI</button>
                 <button @click="quickSearch('Netflix')" class="px-4 py-2 rounded-lg bg-surface-900 border border-surface-800 hover:border-brand-500 text-xs font-bold uppercase tracking-wider transition text-surface-400 hover:text-white">Netflix 4K</button>
@@ -190,11 +201,13 @@
     <div x-show="ui.authOpen" class="fixed inset-0 z-[250] flex items-center justify-center px-4" x-cloak>
         <div class="absolute inset-0 bg-black/90 backdrop-blur-md" @click="ui.authOpen = false" x-transition.opacity></div>
         <div x-show="ui.authOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95 translate-y-4" x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-             class="relative w-full max-w-md bg-surface-900 border border-surface-700 rounded-3xl shadow-glass-lg p-8 overflow-hidden">
+             class="relative w-full max-w-md bg-surface-900 border border-surface-700 rounded-3xl shadow-glass-lg p-8 overflow-hidden group">
             
-            <button @click="ui.authOpen = false" class="absolute top-5 right-5 text-surface-500 hover:text-white transition"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <div class="absolute -top-20 -right-20 w-64 h-64 bg-brand-500/20 blur-[80px] rounded-full group-hover:bg-brand-500/30 transition duration-1000"></div>
+            
+            <button @click="ui.authOpen = false" class="absolute top-4 right-4 text-surface-500 hover:text-white transition z-20"><i data-lucide="x" class="w-5 h-5"></i></button>
 
-            <div class="text-center mb-8">
+            <div class="text-center mb-8 relative z-10">
                 <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-surface-950 border border-surface-800 mb-4 shadow-lg">
                     <i data-lucide="shield-check" class="w-7 h-7 text-brand-500"></i>
                 </div>
@@ -202,12 +215,12 @@
                 <p class="text-sm text-surface-400 mt-1">Authenticate to proceed.</p>
             </div>
 
-            <div class="flex p-1 bg-surface-950 rounded-xl mb-6 border border-surface-800">
+            <div class="flex p-1 bg-surface-950 rounded-xl mb-6 relative z-10 border border-surface-800">
                 <button @click="authTab = 'login'" :class="authTab === 'login' ? 'bg-surface-800 text-white shadow-md' : 'text-surface-500 hover:text-surface-300'" class="flex-1 py-2.5 text-xs font-bold uppercase tracking-wider rounded-lg transition-all">Log In</button>
                 <button @click="authTab = 'register'" :class="authTab === 'register' ? 'bg-surface-800 text-white shadow-md' : 'text-surface-500 hover:text-surface-300'" class="flex-1 py-2.5 text-xs font-bold uppercase tracking-wider rounded-lg transition-all">Sign Up</button>
             </div>
 
-            <form @submit.prevent="handleAuth" class="space-y-4">
+            <form @submit.prevent="handleAuth" class="space-y-4 relative z-10">
                 <div x-show="authTab === 'register'" x-transition>
                     <label class="block text-xs font-bold text-brand-400 uppercase tracking-widest mb-1.5 ml-1">Username</label>
                     <div class="relative">
@@ -254,7 +267,7 @@
 
             <div class="p-8">
                 <div x-show="checkoutState.step === 'review'" x-transition>
-                    <h3 class="text-lg font-bold text-white mb-6">Confirm Extraction</h3>
+                    <h3 class="text-lg font-bold text-white mb-6">Order Manifest</h3>
                     <div class="space-y-4 mb-6 max-h-[200px] overflow-y-auto custom-scrollbar pr-2">
                         <template x-for="item in cartItems">
                             <div class="flex justify-between items-start text-sm">
@@ -266,12 +279,12 @@
                             </div>
                         </template>
                     </div>
-                    <div class="border-t border-surface-800 pt-4 mb-6 flex justify-between items-center">
+                    <div class="border-t border-surface-700 pt-4 mb-6 flex justify-between items-center">
                         <span class="text-surface-400 font-bold text-sm">Total</span>
                         <span class="text-2xl font-bold text-white font-mono" x-text="formatPrice(cartTotal)"></span>
                     </div>
                     <button @click="processCheckout" class="btn-primary w-full py-3 flex justify-center items-center gap-2 shadow-lg">
-                        Complete Payment <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        Confirm Transaction <i data-lucide="credit-card" class="w-4 h-4"></i>
                     </button>
                 </div>
 
@@ -289,8 +302,8 @@
                         <i data-lucide="check" class="w-8 h-8 text-green-500"></i>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2">Payment Authorized</h3>
-                    <p class="text-sm text-surface-400 max-w-xs mx-auto mb-8">Your digital keys have been sent to your dashboard and email.</p>
-                    <button @click="ui.checkoutOpen = false; checkoutState.step = 'review'" class="btn-secondary w-full text-xs uppercase tracking-widest">Close</button>
+                    <p class="text-sm text-surface-400 max-w-xs mx-auto mb-8">Your digital keys have been sent to your dashboard.</p>
+                    <button @click="ui.checkoutOpen = false; checkoutState.step = 'review'; switchView('profile'); currentProfileTab = 'orders'" class="btn-secondary w-full text-xs uppercase tracking-widest">View Orders</button>
                 </div>
             </div>
         </div>
@@ -351,7 +364,7 @@
 
                 <div class="mt-8 pt-6 border-t border-surface-800 flex items-center justify-between gap-6">
                     <div>
-                        <p class="text-[10px] text-surface-500 uppercase font-bold">Total</p>
+                        <p class="text-[10px] text-surface-500 uppercase font-bold">Price</p>
                         <p class="text-2xl font-mono font-bold text-white tracking-tight" x-text="formatPrice(ui.activeProduct?.price)"></p>
                     </div>
                     <button @click="addToCart(ui.activeProduct); ui.activeProduct = null" class="btn-primary flex-1 flex justify-center items-center gap-2">
@@ -364,7 +377,6 @@
 
     <div x-show="ui.cartOpen" class="fixed inset-0 z-[300] overflow-hidden" x-cloak>
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" @click="ui.cartOpen = false" x-show="ui.cartOpen" x-transition.opacity></div>
-        
         <div class="fixed inset-y-0 right-0 max-w-full flex">
             <div x-show="ui.cartOpen" x-transition:enter="transform transition ease-in-out duration-300" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0" 
                  class="w-screen md:max-w-md bg-surface-950 border-l border-surface-800 flex flex-col shadow-2xl">
@@ -408,22 +420,22 @@
         </div>
     </div>
 
-    <nav :class="ui.scrolled ? 'nav-glass py-3' : 'bg-transparent py-4 md:py-6'" class="fixed top-0 w-full z-[100] transition-all duration-300 safe-top">
+    <nav :class="ui.scrolled ? 'nav-glass py-3' : 'bg-transparent py-4 md:py-6'" class="fixed top-0 w-full z-[100] transition-all duration-300 border-b border-transparent" :class="{'border-surface-800': ui.scrolled}">
         <div class="max-w-[1700px] mx-auto px-4 md:px-8 flex items-center justify-between">
-            <a href="#" class="flex items-center gap-3 group relative z-50">
+            <a href="#" class="flex items-center gap-3 group relative z-50" @click.prevent="switchView('store')">
                 <div class="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-brand-600 to-brand-800 flex items-center justify-center text-white shadow-lg shadow-brand-900/50 group-hover:scale-105 transition-transform duration-300">
                     <i data-lucide="gem" class="w-5 h-5 fill-current"></i>
                 </div>
                 <div>
                     <h1 class="font-display text-lg md:text-xl font-black tracking-tight text-white leading-none uppercase">PlayWith<span class="text-brand-500">Ease</span></h1>
-                    <p class="text-[9px] text-surface-400 font-mono tracking-[0.2em] uppercase mt-0.5 hidden sm:block">Diamond v11</p>
+                    <p class="text-[9px] text-surface-400 font-mono tracking-[0.2em] uppercase mt-0.5 hidden sm:block">Titanium v12</p>
                 </div>
             </a>
 
             <div class="flex items-center gap-3 md:gap-5 z-50">
                 <button @click="ui.openSearch()" class="w-9 h-9 md:w-10 md:h-10 rounded-full hover:bg-surface-800 flex items-center justify-center text-surface-400 hover:text-white transition"><i data-lucide="search" class="w-5 h-5"></i></button>
                 
-                <button class="relative w-10 h-10 rounded-full hover:bg-surface-800 flex items-center justify-center text-surface-400 hover:text-white transition group hidden md:flex">
+                <button @click="switchView('profile'); currentProfileTab = 'profile'" class="relative w-10 h-10 rounded-full hover:bg-surface-800 flex items-center justify-center text-surface-400 hover:text-white transition group hidden md:flex">
                     <i data-lucide="heart" class="w-5 h-5 group-hover:text-accent-rose transition"></i>
                     <span x-show="wishlist.length > 0" class="absolute top-2 right-2 w-2 h-2 bg-accent-rose rounded-full"></span>
                 </button>
@@ -451,8 +463,8 @@
                                 <p class="text-xs text-white font-bold" x-text="user.displayName || 'Agent'"></p>
                                 <p class="text-[10px] text-surface-500 truncate" x-text="user.email"></p>
                             </div>
-                            <button class="w-full text-left px-4 py-2 text-xs font-bold text-surface-400 hover:text-white hover:bg-surface-800 rounded-lg">Profile</button>
-                            <button class="w-full text-left px-4 py-2 text-xs font-bold text-surface-400 hover:text-white hover:bg-surface-800 rounded-lg">Orders</button>
+                            <button @click="switchView('profile'); currentProfileTab = 'profile'; open = false" class="w-full text-left px-4 py-2 text-xs font-bold text-surface-400 hover:text-white hover:bg-surface-800 rounded-lg">Profile</button>
+                            <button @click="switchView('profile'); currentProfileTab = 'orders'; open = false" class="w-full text-left px-4 py-2 text-xs font-bold text-surface-400 hover:text-white hover:bg-surface-800 rounded-lg">Orders</button>
                             <button @click="handleLogout" class="w-full text-left px-4 py-2 text-xs font-bold text-red-400 hover:bg-surface-800 rounded-lg mt-1">Log Out</button>
                         </div>
                     </div>
@@ -461,151 +473,225 @@
         </div>
     </nav>
 
-    <section class="relative h-[100dvh] w-full flex items-center justify-center bg-surface-950 overflow-hidden">
-        <div class="video-wrapper">
-            <template x-for="(slide, index) in heroSlides" :key="index">
-                <div x-show="activeSlide === index" x-transition.opacity.duration.1000ms class="absolute inset-0">
-                    <div x-show="trailerPlaying" class="absolute inset-0 bg-black z-0">
-                        <div :id="'hero-player-'+index" class="video-iframe"></div>
-                    </div>
-                    <img x-show="!trailerPlaying" :src="slide.image" class="w-full h-full object-cover scale-105 animate-pulse-slow opacity-60">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/20 to-transparent z-10"></div>
-                    <div class="absolute inset-0 bg-gradient-to-r from-[#020617]/80 via-transparent to-[#020617]/80 z-10"></div>
-                </div>
-            </template>
-        </div>
-
-        <div class="relative z-20 w-full max-w-[1700px] mx-auto px-6 h-full flex flex-col justify-center pt-32 pb-12 pointer-events-none">
-            <template x-for="(slide, index) in heroSlides">
-                <div x-show="activeSlide === index" class="max-w-4xl animate-fade-in-up pointer-events-auto flex flex-col items-start gap-6 md:gap-8">
-                    
-                    <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-[10px] md:text-xs font-bold text-white uppercase tracking-widest shadow-xl">
-                        <span class="relative flex h-2.5 w-2.5">
-                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
-                          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-500"></span>
-                        </span>
-                        <span>Global Premiere</span>
-                        <div class="w-px h-3 bg-white/20"></div>
-                        <span class="text-brand-400" x-text="slide.dateLabel"></span>
-                    </div>
-
-                    <img :src="slide.logo" class="h-20 md:h-48 lg:h-64 object-contain self-start drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)]" alt="Game Logo" loading="eager">
-
-                    <p class="text-sm md:text-xl text-surface-200 font-light leading-relaxed max-w-xl drop-shadow-md border-l-4 border-brand-500 pl-6 bg-gradient-to-r from-black/40 to-transparent pr-4 py-2 rounded-r-lg" x-text="slide.desc"></p>
-                    
-                    <div class="flex flex-wrap gap-4 mt-2">
-                        <button @click="quickSearch(slide.title)" class="btn-primary group text-sm md:text-base">
-                            <span class="relative z-10 flex items-center gap-2">Pre-Order Now <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
-                        </button>
-                        <button @click="playTrailer" class="btn-secondary group flex items-center gap-3 text-sm md:text-base">
-                            <div class="w-6 h-6 bg-white text-black rounded-full flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="play" class="w-3 h-3 fill-current ml-0.5"></i></div>
-                            <span>Watch Trailer</span>
-                        </button>
-                    </div>
-                </div>
-            </template>
-        </div>
-
-        <div x-show="trailerPlaying" x-transition.scale class="absolute bottom-10 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-4 p-2 pl-6 pr-2 rounded-full glass-panel border border-white/20 shadow-2xl safe-bottom">
-            <span class="text-xs font-bold text-white uppercase tracking-wider mr-2 hidden md:block">Cinema Mode</span>
-            <button @click="toggleMute" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i :data-lucide="isMuted ? 'volume-x' : 'volume-2'" class="w-5 h-5"></i></button>
-            <button @click="stopTrailer" class="px-5 py-2.5 rounded-full bg-red-600 hover:bg-red-500 text-white text-xs font-bold uppercase tracking-wider transition">Exit</button>
-        </div>
+    <div x-show="currentView === 'store'">
         
-        <div class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-20">
-            <template x-for="(s, i) in heroSlides">
-                <button @click="activeSlide = i; stopTrailer();" class="w-1.5 transition-all duration-500 rounded-full bg-white shadow-glow-brand" :class="activeSlide === i ? 'h-12 opacity-100 bg-brand-500' : 'h-3 opacity-30 hover:opacity-60 hover:h-5'"></button>
-            </template>
-        </div>
-    </section>
-
-    <main class="relative z-10 bg-surface-950">
-        <div class="border-y border-surface-800 bg-surface-900/30 backdrop-blur-sm">
-            <div class="max-w-[1700px] mx-auto px-6 py-10 md:py-12">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-12">
-                    <div class="flex items-start gap-4 group">
-                        <i data-lucide="shield-check" class="w-8 h-8 text-brand-500 mt-1"></i>
-                        <div><h4 class="font-bold text-white text-sm md:text-base">Official Reseller</h4><p class="text-xs md:text-sm text-surface-400 mt-1">Direct API integration.</p></div>
+        <section class="relative h-[100dvh] w-full flex items-center justify-center bg-surface-950 overflow-hidden">
+            <div class="video-wrapper">
+                <template x-for="(slide, index) in heroSlides" :key="index">
+                    <div x-show="activeSlide === index" x-transition.opacity.duration.1000ms class="absolute inset-0">
+                        <div x-show="trailerPlaying" class="absolute inset-0 bg-black z-0">
+                            <div :id="'hero-player-'+index" class="video-iframe"></div>
+                        </div>
+                        <img x-show="!trailerPlaying" :src="slide.image" class="w-full h-full object-cover scale-105 animate-pulse-slow opacity-60">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/20 to-transparent z-10"></div>
+                        <div class="absolute inset-0 bg-gradient-to-r from-[#020617]/80 via-transparent to-[#020617]/80 z-10"></div>
                     </div>
-                    <div class="flex items-start gap-4 group">
-                        <i data-lucide="zap" class="w-8 h-8 text-accent-teal mt-1"></i>
-                        <div><h4 class="font-bold text-white text-sm md:text-base">Instant Delivery</h4><p class="text-xs md:text-sm text-surface-400 mt-1">Keys in < 30s.</p></div>
-                    </div>
-                    <div class="flex items-start gap-4 group">
-                        <i data-lucide="lock" class="w-8 h-8 text-accent-violet mt-1"></i>
-                        <div><h4 class="font-bold text-white text-sm md:text-base">Secure Payment</h4><p class="text-xs md:text-sm text-surface-400 mt-1">256-bit SSL Encrypted.</p></div>
-                    </div>
-                    <div class="flex items-start gap-4 group">
-                        <i data-lucide="headphones" class="w-8 h-8 text-white mt-1"></i>
-                        <div><h4 class="font-bold text-white text-sm md:text-base">24/7 Apex Support</h4><p class="text-xs md:text-sm text-surface-400 mt-1">Live agents ready.</p></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="max-w-[1700px] mx-auto px-4 md:px-8 py-20">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 border-b border-surface-800 pb-8">
-                <div>
-                    <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-2">Digital <span class="text-brand-500">Vault</span></h2>
-                    <p class="text-surface-400 text-sm">Browse verified licenses. Real-time availability.</p>
-                </div>
-                <div class="flex p-1.5 bg-surface-900 rounded-xl border border-surface-800 w-full md:w-auto overflow-x-auto no-scrollbar">
-                    <template x-for="pillar in ['Games (PS5 Digital)', 'OTT', 'Subscriptions']">
-                        <button @click="switchPillar(pillar)" 
-                                :class="activePillar === pillar ? 'bg-surface-800 text-white shadow-lg' : 'text-surface-500 hover:text-white'"
-                                class="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap flex-1 md:flex-none">
-                            <span x-text="pillar === 'Games (PS5 Digital)' ? 'Games' : pillar"></span>
-                        </button>
-                    </template>
-                </div>
-            </div>
-
-            <div class="flex gap-3 overflow-x-auto pb-6 mb-8 no-scrollbar">
-                <template x-for="cat in subFilters">
-                    <button @click="activeCategory = cat" 
-                            :class="activeCategory === cat ? 'bg-brand-600 border-brand-500 text-white shadow-glow-brand' : 'bg-transparent border-surface-800 text-surface-400 hover:border-surface-600 hover:text-white'"
-                            class="px-5 py-2 rounded-full border text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all" x-text="cat"></button>
                 </template>
             </div>
 
-            <div class="min-h-[600px]">
-                <div x-show="loading" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-                    <template x-for="i in 10"><div class="aspect-[2/3] rounded-2xl skeleton"></div></template>
+            <div class="relative z-20 w-full max-w-[1700px] mx-auto px-6 h-full flex flex-col justify-center pt-32 pb-12 pointer-events-none transition-opacity duration-500" :class="{'opacity-0': trailerPlaying}">
+                <template x-for="(slide, index) in heroSlides">
+                    <div x-show="activeSlide === index" class="max-w-4xl animate-fade-in-up pointer-events-auto flex flex-col items-start gap-6 md:gap-8">
+                        
+                        <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-[10px] md:text-xs font-bold text-white uppercase tracking-widest shadow-xl">
+                            <span class="relative flex h-2.5 w-2.5">
+                              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-500"></span>
+                            </span>
+                            <span>Global Premiere</span>
+                            <div class="w-px h-3 bg-white/20"></div>
+                            <span class="text-brand-400" x-text="slide.dateLabel"></span>
+                        </div>
+
+                        <img :src="slide.logo" class="h-28 md:h-52 lg:h-64 object-contain self-start drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)]" alt="Game Title">
+
+                        <p class="text-sm md:text-xl text-surface-200 font-light leading-relaxed max-w-xl drop-shadow-md border-l-4 border-brand-500 pl-6 bg-gradient-to-r from-black/40 to-transparent pr-4 py-2 rounded-r-lg" x-text="slide.desc"></p>
+                        
+                        <div class="flex flex-wrap gap-4 mt-2">
+                            <button @click="quickSearch(slide.title)" class="btn-primary group text-sm md:text-base">
+                                <span class="relative z-10 flex items-center gap-2">Pre-Order Now <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+                            </button>
+                            <button @click="playTrailer" class="btn-secondary group flex items-center gap-3 text-sm md:text-base">
+                                <div class="w-6 h-6 bg-white text-black rounded-full flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="play" class="w-3 h-3 fill-current ml-0.5"></i></div>
+                                <span>Watch Trailer</span>
+                            </button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <div x-show="trailerPlaying" x-transition.scale class="absolute bottom-10 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-4 p-2 pl-6 pr-2 rounded-full glass-panel border border-white/20 shadow-2xl safe-bottom">
+                <span class="text-xs font-bold text-white uppercase tracking-wider mr-2 hidden md:block">Cinema Mode</span>
+                <button @click="toggleMute" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i :data-lucide="isMuted ? 'volume-x' : 'volume-2'" class="w-5 h-5"></i></button>
+                <button @click="stopTrailer" class="px-5 py-2.5 rounded-full bg-red-600 hover:bg-red-500 text-white text-xs font-bold uppercase tracking-wider transition">Exit</button>
+            </div>
+            
+            <div class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-20" :class="{'opacity-0 pointer-events-none': trailerPlaying}">
+                <template x-for="(s, i) in heroSlides">
+                    <button @click="activeSlide = i; stopTrailer();" class="w-1.5 transition-all duration-500 rounded-full bg-white shadow-glow-brand" :class="activeSlide === i ? 'h-12 opacity-100 bg-brand-500' : 'h-3 opacity-30 hover:opacity-60 hover:h-5'"></button>
+                </template>
+            </div>
+        </section>
+
+        <main class="relative z-10 bg-surface-950">
+            <div class="border-y border-surface-800 bg-surface-900/30 backdrop-blur-sm">
+                <div class="max-w-[1700px] mx-auto px-6 py-10 md:py-12">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-12">
+                        <div class="flex items-start gap-4 group">
+                            <i data-lucide="shield-check" class="w-8 h-8 text-brand-500 mt-1"></i>
+                            <div><h4 class="font-bold text-white text-sm md:text-base">Official Reseller</h4><p class="text-xs md:text-sm text-surface-400 mt-1">Direct API integration.</p></div>
+                        </div>
+                        <div class="flex items-start gap-4 group">
+                            <i data-lucide="zap" class="w-8 h-8 text-accent-teal mt-1"></i>
+                            <div><h4 class="font-bold text-white text-sm md:text-base">Instant Delivery</h4><p class="text-xs md:text-sm text-surface-400 mt-1">Keys in < 30s.</p></div>
+                        </div>
+                        <div class="flex items-start gap-4 group">
+                            <i data-lucide="lock" class="w-8 h-8 text-accent-violet mt-1"></i>
+                            <div><h4 class="font-bold text-white text-sm md:text-base">Secure Payment</h4><p class="text-xs md:text-sm text-surface-400 mt-1">256-bit SSL Encrypted.</p></div>
+                        </div>
+                        <div class="flex items-start gap-4 group">
+                            <i data-lucide="headphones" class="w-8 h-8 text-white mt-1"></i>
+                            <div><h4 class="font-bold text-white text-sm md:text-base">24/7 Apex Support</h4><p class="text-xs md:text-sm text-surface-400 mt-1">Live agents ready.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-[1700px] mx-auto px-4 md:px-8 py-20">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 border-b border-surface-800 pb-8">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-2">Digital <span class="text-brand-500">Vault</span></h2>
+                        <p class="text-surface-400 text-sm">Browse verified licenses. Real-time availability.</p>
+                    </div>
+                    <div class="flex p-1.5 bg-surface-900 rounded-xl border border-surface-800 w-full md:w-auto overflow-x-auto no-scrollbar">
+                        <template x-for="pillar in ['Games (PS5 Digital)', 'OTT', 'Subscriptions']">
+                            <button @click="switchPillar(pillar)" 
+                                    :class="activePillar === pillar ? 'bg-surface-800 text-white shadow-lg' : 'text-surface-500 hover:text-white'"
+                                    class="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap flex-1 md:flex-none">
+                                <span x-text="pillar === 'Games (PS5 Digital)' ? 'Games' : pillar"></span>
+                            </button>
+                        </template>
+                    </div>
                 </div>
 
-                <div x-show="!loading" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-8">
-                    <template x-for="item in filteredItems" :key="item.id">
-                        <div class="group relative flex flex-col h-full bg-surface-900 border border-surface-800 rounded-2xl overflow-hidden hover:border-brand-500/50 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer isolate" @click="ui.activeProduct = item">
-                            <div class="relative w-full aspect-[2/3] bg-surface-950 overflow-hidden">
-                                <img :src="item.image" loading="lazy" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition duration-700">
-                                <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20 hidden md:block">
-                                    <button @click.stop="addToCart(item)" class="btn-primary w-full text-xs py-3 flex items-center justify-center gap-2 shadow-xl">Add to Cart</button>
-                                </div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-surface-900 via-transparent to-transparent opacity-60 group-hover:opacity-90 transition"></div>
-                            </div>
-                            <button @click.stop="addToCart(item)" class="md:hidden absolute top-2 right-2 w-8 h-8 bg-brand-500 rounded-full flex items-center justify-center shadow-lg z-30 text-white"><i data-lucide="plus" class="w-4 h-4"></i></button>
-
-                            <div class="p-4 md:p-5 flex flex-col flex-1 border-t border-surface-800 bg-surface-900 relative z-20">
-                                <h3 class="text-xs md:text-sm font-bold text-white leading-tight mb-1 group-hover:text-brand-400 transition line-clamp-2" x-text="item.title"></h3>
-                                <p class="text-[10px] text-surface-500 font-mono uppercase tracking-wide" x-text="item.category"></p>
-                                <div class="mt-auto pt-4 flex items-end justify-between border-t border-surface-800/50 mt-4">
-                                    <p class="text-sm md:text-base font-bold text-white font-mono" x-text="formatPrice(item.price)"></p>
-                                    <i data-lucide="chevron-right" class="w-4 h-4 text-surface-500 group-hover:text-white transition"></i>
-                                </div>
-                            </div>
-                        </div>
+                <div class="flex gap-3 overflow-x-auto pb-6 mb-8 no-scrollbar">
+                    <template x-for="cat in subFilters">
+                        <button @click="activeCategory = cat" 
+                                :class="activeCategory === cat ? 'bg-brand-600 border-brand-500 text-white shadow-glow-brand' : 'bg-transparent border-surface-800 text-surface-400 hover:border-surface-600 hover:text-white'"
+                                class="px-5 py-2 rounded-full border text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all" x-text="cat"></button>
                     </template>
+                </div>
+
+                <div class="min-h-[600px]">
+                    <div x-show="loading" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+                        <template x-for="i in 10"><div class="aspect-[2/3] rounded-2xl skeleton"></div></template>
+                    </div>
+
+                    <div x-show="!loading" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-8">
+                        <template x-for="item in filteredItems" :key="item.id">
+                            <div class="group relative flex flex-col h-full bg-surface-900 border border-surface-800 rounded-2xl overflow-hidden hover:border-brand-500/50 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer isolate" @click="ui.activeProduct = item">
+                                <div class="relative w-full aspect-[2/3] bg-surface-950 overflow-hidden">
+                                    <img :src="item.image" loading="lazy" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition duration-700">
+                                    <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20 hidden md:block">
+                                        <button @click.stop="addToCart(item)" class="btn-primary w-full text-xs py-3 flex items-center justify-center gap-2 shadow-xl">Add to Cart</button>
+                                    </div>
+                                    <div class="absolute inset-0 bg-gradient-to-t from-surface-900 via-transparent to-transparent opacity-60 group-hover:opacity-90 transition"></div>
+                                </div>
+                                <button @click.stop="addToCart(item)" class="md:hidden absolute top-2 right-2 w-8 h-8 bg-brand-500 rounded-full flex items-center justify-center shadow-lg z-30 text-white"><i data-lucide="plus" class="w-4 h-4"></i></button>
+
+                                <div class="p-4 md:p-5 flex flex-col flex-1 border-t border-surface-800 bg-surface-900 relative z-20">
+                                    <h3 class="text-xs md:text-sm font-bold text-white leading-tight mb-1 group-hover:text-brand-400 transition line-clamp-2" x-text="item.title"></h3>
+                                    <p class="text-[10px] text-surface-500 font-mono uppercase tracking-wide" x-text="item.category"></p>
+                                    <div class="mt-auto pt-4 flex items-end justify-between border-t border-surface-800/50 mt-4">
+                                        <p class="text-sm md:text-base font-bold text-white font-mono" x-text="formatPrice(item.price)"></p>
+                                        <i data-lucide="chevron-right" class="w-4 h-4 text-surface-500 group-hover:text-white transition"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div x-show="currentView === 'profile'" class="min-h-screen pt-32 px-6 pb-20 max-w-7xl mx-auto" x-cloak>
+        <div class="flex flex-col md:flex-row gap-8">
+            <div class="w-full md:w-64 shrink-0 space-y-2">
+                <div class="p-6 rounded-2xl bg-surface-900 border border-surface-800 text-center mb-6">
+                    <div class="w-20 h-20 rounded-full bg-brand-900 mx-auto mb-4 flex items-center justify-center text-2xl font-bold text-white border-2 border-brand-500">
+                        <span x-text="user?.displayName ? user.displayName.charAt(0) : 'A'"></span>
+                    </div>
+                    <h3 class="font-bold text-white" x-text="user?.displayName || 'Agent'"></h3>
+                    <p class="text-xs text-surface-500 truncate" x-text="user?.email"></p>
+                </div>
+                <button @click="currentProfileTab = 'profile'" :class="currentProfileTab === 'profile' ? 'bg-brand-600 text-white' : 'bg-surface-900 text-surface-400 hover:text-white'" class="w-full text-left px-4 py-3 rounded-xl font-bold text-sm transition flex items-center gap-3"><i data-lucide="user" class="w-4 h-4"></i> My Profile</button>
+                <button @click="currentProfileTab = 'orders'" :class="currentProfileTab === 'orders' ? 'bg-brand-600 text-white' : 'bg-surface-900 text-surface-400 hover:text-white'" class="w-full text-left px-4 py-3 rounded-xl font-bold text-sm transition flex items-center gap-3"><i data-lucide="package" class="w-4 h-4"></i> Order History</button>
+                <button @click="switchView('store')" class="w-full text-left px-4 py-3 rounded-xl bg-surface-900 text-surface-400 hover:text-white font-bold text-sm transition flex items-center gap-3"><i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Store</button>
+            </div>
+
+            <div class="flex-1 bg-surface-900 border border-surface-800 rounded-3xl p-8 min-h-[500px]">
+                
+                <div x-show="currentProfileTab === 'profile'">
+                    <h2 class="text-2xl font-display font-bold text-white mb-6">Account Settings</h2>
+                    <div class="space-y-6 max-w-xl">
+                        <div>
+                            <label class="block text-xs font-bold text-surface-500 uppercase mb-2">Display Name</label>
+                            <input type="text" :value="user?.displayName" disabled class="w-full bg-surface-950 border border-surface-700 rounded-xl px-4 py-3 text-white opacity-50 cursor-not-allowed">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-surface-500 uppercase mb-2">Email Address</label>
+                            <input type="text" :value="user?.email" disabled class="w-full bg-surface-950 border border-surface-700 rounded-xl px-4 py-3 text-white opacity-50 cursor-not-allowed">
+                        </div>
+                        <div class="pt-4 border-t border-surface-800">
+                            <p class="text-xs text-surface-500 mb-4">Security Settings</p>
+                            <button class="px-6 py-2 rounded-lg border border-surface-700 text-sm font-bold text-surface-300 hover:text-white hover:bg-surface-800 transition">Change Password</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-show="currentProfileTab === 'orders'">
+                    <h2 class="text-2xl font-display font-bold text-white mb-6">Order History</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead>
+                                <tr class="text-surface-500 border-b border-surface-800">
+                                    <th class="pb-3 font-bold uppercase text-xs">Order ID</th>
+                                    <th class="pb-3 font-bold uppercase text-xs">Date</th>
+                                    <th class="pb-3 font-bold uppercase text-xs">Status</th>
+                                    <th class="pb-3 font-bold uppercase text-xs text-right">Total</th>
+                                    <th class="pb-3 font-bold uppercase text-xs text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-surface-800">
+                                <tr>
+                                    <td class="py-4 font-mono text-brand-400">#PWE-9921</td>
+                                    <td class="py-4 text-surface-300">Oct 24, 2025</td>
+                                    <td class="py-4"><span class="bg-green-500/10 text-green-500 px-2 py-1 rounded text-xs font-bold">Completed</span></td>
+                                    <td class="py-4 text-right text-white font-mono">$79.99</td>
+                                    <td class="py-4 text-right"><button class="text-xs font-bold text-surface-400 hover:text-white">View Key</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-4 font-mono text-brand-400">#PWE-8842</td>
+                                    <td class="py-4 text-surface-300">Sep 12, 2025</td>
+                                    <td class="py-4"><span class="bg-green-500/10 text-green-500 px-2 py-1 rounded text-xs font-bold">Completed</span></td>
+                                    <td class="py-4 text-right text-white font-mono">$14.99</td>
+                                    <td class="py-4 text-right"><button class="text-xs font-bold text-surface-400 hover:text-white">View Key</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
     <div x-data="aiBot()" class="fixed bottom-6 right-6 z-[250] flex flex-col items-end safe-bottom">
         <div x-show="open" x-transition class="mb-4 w-[320px] md:w-[350px] bg-surface-900 border border-surface-700 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[450px]">
             <div class="bg-surface-950 p-4 border-b border-surface-800 flex justify-between items-center">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-lg bg-brand-900/50 border border-brand-500/30 flex items-center justify-center text-brand-400"><i data-lucide="bot" class="w-4 h-4"></i></div>
-                    <div><h4 class="text-sm font-bold text-white">Omni Core</h4><p class="text-[10px] text-surface-400">Online • V2.4</p></div>
+                    <div><h4 class="text-sm font-bold text-white">Omni Assistant</h4><p class="text-[10px] text-surface-400">Online</p></div>
                 </div>
                 <button @click="open = false" class="text-surface-500 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
@@ -621,7 +707,7 @@
                 <div x-show="isTyping" class="text-xs text-surface-500 animate-pulse pl-2">Thinking...</div>
             </div>
             <div class="p-3 bg-surface-950 border-t border-surface-800 flex gap-2">
-                <input type="text" x-model="input" @keydown.enter="processMessage" placeholder="Ask about products..." class="flex-1 bg-surface-900 border border-surface-700 rounded-lg px-3 py-2 text-xs text-white focus:border-brand-500 outline-none">
+                <input type="text" x-model="input" @keydown.enter="processMessage" placeholder="Ask about stock..." class="flex-1 bg-surface-900 border border-surface-700 rounded-lg px-3 py-2 text-xs text-white focus:border-brand-500 outline-none">
                 <button @click="processMessage" class="p-2 bg-brand-600 rounded-lg text-white hover:bg-brand-700 transition"><i data-lucide="send" class="w-4 h-4"></i></button>
             </div>
         </div>
@@ -680,7 +766,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         
-        // --- YOUR CONFIG (Safe to expose client-side for Firebase) ---
+        // --- FIREBASE CONFIG (Safe Client-Side) ---
         const firebaseConfig = { apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs", authDomain: "playwithease.firebaseapp.com", projectId: "playwithease", storageBucket: "playwithease.firebasestorage.app", messagingSenderId: "189729941006", appId: "1:189729941006:web:362653774b92416c357e5f", measurementId: "G-1C3B31KQ7C" };
         const app = initializeApp(firebaseConfig); const auth = getAuth(app);
         
@@ -717,7 +803,7 @@
 
         document.addEventListener('alpine:init', () => {
             Alpine.data('aiBot', () => ({
-                open: false, input: '', isTyping: false, messages: [{ sender: 'bot', text: 'Omni Online. Tracking 50+ assets. How can I help?' }],
+                open: false, input: '', isTyping: false, messages: [{ sender: 'bot', text: 'Hello. I can check stock, prices, or order status.' }],
                 processMessage() {
                     if (!this.input.trim()) return;
                     const q = this.input.toLowerCase();
@@ -736,28 +822,29 @@
                 clearChat() { this.messages = []; }
             }));
 
-            Alpine.data('diamondSystem', () => ({
+            Alpine.data('titaniumStore', () => ({
                 ui: { scrolled: false, searchOpen: false, cartOpen: false, authOpen: false, activeProduct: null, checkoutOpen: false },
-                authTab: 'login', authForm: { email: '', password: '', name: '' }, authLoading: false, user: null,
+                authTab: 'login', authForm: { email: '', password: '', name: '' }, user: null,
                 activeSlide: 0, trailerPlaying: false, isMuted: false, searchQuery: '', activePillar: 'Games (PS5 Digital)', activeCategory: 'All', loading: false, currency: 'USD',
-                cartItems: Alpine.$persist([]).as('pwe_cart_v5'),
-                wishlist: Alpine.$persist([]).as('pwe_wish_v5'),
+                currentView: 'store', currentProfileTab: 'profile', // ROUTING STATE
+                cartItems: Alpine.$persist([]).as('pwe_cart_v12'),
+                wishlist: Alpine.$persist([]).as('pwe_wish_v12'),
                 checkoutState: { step: 'review', processing: false },
                 notifications: [],
                 games: VAULT_DATABASE,
                 heroSlides: [
-                    { image: 'https://media-rockstargames-com.akamaized.net/mfe6/prod/__common/img/71d4d17edcd49703a5ea446cc0e588e6.jpg', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg/512px-Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg.png', title: 'Grand Theft Auto VI', videoId: 'QdBZY2fkU-0', desc: 'Welcome to Leonida. The largest, most immersive evolution of the Grand Theft Auto series yet.', dateLabel: 'NOV 19' },
-                    { image: 'https://cdn.forza.net/strapi-uploads/assets/xlarge_hero_fh6_f55db4cd81_53e6ca38f4.webp', logo: 'https://cdn.forza.net/strapi-uploads/assets/logo_black_fh6_700993660b.svg', title: 'Forza Horizon 6', videoId: 'XzBUUZjYlE4', desc: 'Explore the Horizon festival in Japan with the most realistic physics engine ever built.', dateLabel: 'MAY 19' }
+                    { image: 'https://media-rockstargames-com.akamaized.net/mfe6/prod/__common/img/71d4d17edcd49703a5ea446cc0e588e6.jpg', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg/512px-Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg.png', title: 'Grand Theft Auto VI', videoId: 'QdBZY2fkU-0', desc: 'Welcome to Leonida.', dateLabel: 'NOV 19' },
+                    { image: 'https://cdn.forza.net/strapi-uploads/assets/xlarge_hero_fh6_f55db4cd81_53e6ca38f4.webp', logo: 'https://cdn.forza.net/strapi-uploads/assets/logo_black_fh6_700993660b.svg', title: 'Forza Horizon 6', videoId: 'XzBUUZjYlE4', desc: 'Explore the Horizon.', dateLabel: 'MAY 19' }
                 ],
                 
                 init() {
-                    window.addEventListener('auth-state-changed', (e) => { this.user = e.detail; if(this.user) this.notify('System', `Welcome back, ${this.user.displayName || 'Agent'}`, 'shield', 'success'); });
+                    window.addEventListener('auth-state-changed', (e) => { this.user = e.detail; if(this.user) this.notify('System', `Welcome back, ${this.user.displayName}`, 'shield', 'success'); });
                     this.startAutoPlay();
                     window.addEventListener('load', () => lucide.createIcons());
                 },
                 handleScroll() { this.ui.scrolled = window.pageYOffset > 50; },
                 openSearch() { this.ui.searchOpen = true; this.$nextTick(() => this.$refs.searchInput.focus()); },
-                quickSearch(t) { this.searchQuery = t; this.ui.searchOpen = false; window.scrollTo({ top: window.innerHeight, behavior: 'smooth' }); },
+                quickSearch(t) { this.searchQuery = t; this.ui.searchOpen = false; },
                 startAutoPlay() { setInterval(() => { if(!this.trailerPlaying) this.activeSlide = (this.activeSlide + 1) % this.heroSlides.length; }, 10000); },
                 switchPillar(p) { this.loading = true; this.activePillar = p; setTimeout(() => this.loading = false, 400); },
                 get filteredItems() { return this.games.filter(g => (g.pillar === this.activePillar) && (g.title.toLowerCase().includes(this.searchQuery.toLowerCase()))); },
@@ -767,22 +854,26 @@
                 addToCart(i) { this.cartItems.push(i); this.notify('Cart', `${i.title} added.`, 'shopping-bag', 'success'); },
                 removeFromCart(i) { this.cartItems.splice(i, 1); },
                 
+                // ROUTING
+                switchView(view) {
+                    this.currentView = view;
+                    window.scrollTo(0,0);
+                },
+
                 processCheckout() {
                     this.checkoutState.step = 'processing'; this.checkoutState.processing = true;
                     setTimeout(() => { this.checkoutState.step = 'success'; this.checkoutState.processing = false; this.cartItems = []; }, 3000);
                 },
                 
                 async handleAuth() {
-                    this.authLoading = true;
                     try {
                         const { auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } = window.PWE_AUTH;
                         if (this.authTab === 'login') await signInWithEmailAndPassword(auth, this.authForm.email, this.authForm.password);
                         else { const c = await createUserWithEmailAndPassword(auth, this.authForm.email, this.authForm.password); await updateProfile(c.user, { displayName: this.authForm.name }); }
                         this.ui.authOpen = false;
                     } catch (e) { this.notify('Auth Error', e.message, 'alert-triangle', 'error'); }
-                    finally { this.authLoading = false; }
                 },
-                async handleLogout() { await window.PWE_AUTH.signOut(window.PWE_AUTH.auth); },
+                async handleLogout() { await window.PWE_AUTH.signOut(window.PWE_AUTH.auth); this.switchView('store'); },
                 
                 notify(t, m, i, type) { const id = Date.now(); this.notifications.push({ id, title: t, message: m, icon: i, type, visible: true }); setTimeout(() => { const idx = this.notifications.findIndex(n => n.id === id); if(idx > -1) this.notifications[idx].visible = false; }, 3000); },
                 
