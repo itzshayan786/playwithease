@@ -34,16 +34,18 @@
         .nav-base { background: rgba(10, 10, 10, 0.92); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); height: 75px; }
         .nav-scrolled { background: rgba(8, 8, 8, 0.98); border-bottom: 1px solid rgba(255, 255, 255, 0.1); height: 65px; }
         @media (min-width: 768px) { .nav-base { height: 85px; } .nav-scrolled { height: 75px; } }
-        body { -webkit-tap-highlight-color: transparent; color: var(--text-main); background-color: var(--bg-main); }
+        
+        body { -webkit-tap-highlight-color: transparent; color: var(--text-main); background-color: var(--bg-main); overflow-x: hidden; }
         [x-cloak] { display: none !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        
         .video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 20; background: black; }
         .video-background { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%); pointer-events: none; object-fit: cover; }
         svg.lucide { display: inline-block !important; }
     </style>
 </head>
 
-<body class="antialiased overflow-x-hidden w-full selection:bg-brand-primary selection:text-white"
+<body class="antialiased w-full selection:bg-brand-primary selection:text-white"
       x-data="storeLogic()" :style="themeStyles" @keydown.left="prevSlide()" @keydown.right="nextSlide()" @scroll.window="scrolled = window.pageYOffset > 50">
 
     <div class="fixed bottom-24 right-6 z-[100] flex flex-col gap-2 pointer-events-none">
@@ -69,7 +71,7 @@
                 </a>
                 
                 <div class="relative" x-data="{ openMenu: false }" @click.outside="openMenu = false">
-                    <button @click="openMenu = !openMenu" class="flex items-center gap-2 p-1 rounded-2xl hover:bg-white/10 transition border border-transparent">
+                    <button @click="openMenu = !openMenu; $nextTick(() => lucide.createIcons())" class="flex items-center gap-2 p-1 rounded-2xl hover:bg-white/10 transition border border-transparent">
                         <div class="w-9 h-9 md:w-10 md:h-10 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center overflow-hidden">
                             <img id="userAvatarHeader" src="" class="w-full h-full object-cover hidden">
                             <i data-lucide="user" id="userPlaceholder" class="w-5 h-5 text-gray-400"></i>
@@ -88,14 +90,18 @@
                                 <button @click="setTheme('minimal')" class="w-8 h-8 rounded-lg bg-white border border-gray-300 hover:scale-110 transition"></button>
                             </div>
                         </div>
-                        <div id="loginSection" class="p-2 pt-4 border-t border-white/5 mt-2"><a href="login.html" class="flex justify-center w-full py-2.5 bg-white text-black font-black text-xs uppercase rounded-xl">Login</a></div>
+                        <div id="loginSection" class="p-2 pt-4 border-t border-white/5 mt-2"><a href="login.html" class="flex justify-center w-full py-2.5 bg-white text-black font-black text-xs uppercase rounded-xl hover:bg-brand-primary hover:text-white transition">Login</a></div>
                     </div>
                 </div>
             </div>
         </div>
     </nav>
 
-    <section class="relative min-h-[75vh] w-full overflow-hidden flex items-center justify-center text-white bg-black pt-[75px] md:pt-[85px]">
+    <section class="relative min-h-[75vh] w-full overflow-hidden flex items-center justify-center text-white bg-black pt-[75px] md:pt-[85px]"
+             x-data="{ touchStartX: 0, touchEndX: 0 }"
+             @touchstart="touchStartX = $event.changedTouches[0].screenX"
+             @touchend="touchEndX = $event.changedTouches[0].screenX; if (touchStartX - touchEndX > 50) nextSlide(); if (touchEndX - touchStartX > 50) prevSlide();">
+        
         <template x-for="(slide, index) in heroSlides" :key="index">
             <div x-show="activeSlide === index && !trailerPlaying" x-transition.duration.700ms class="absolute inset-0 z-10">
                 <div class="absolute inset-0 bg-gradient-to-t from-bg-main via-transparent to-transparent z-10"></div>
@@ -155,27 +161,40 @@
         </div>
     </main>
 
-    <footer class="bg-[#050505] border-t border-white/5 mt-20 pt-20 pb-12 text-center text-[9px] font-black opacity-20 uppercase tracking-[1em]">
-        &copy; 2026 PlayWithEase Digital
+    <footer class="bg-[#050505] border-t border-white/5 mt-20 pt-20 pb-12">
+        <div class="max-w-[1400px] mx-auto px-6 md:px-8 grid grid-cols-1 md:grid-cols-4 gap-12 text-gray-400">
+            <div class="space-y-6">
+                <h2 class="text-white font-display font-bold text-xl italic leading-none">PLAYWITH<span class="text-brand-primary">EASE</span></h2>
+                <p class="text-xs leading-relaxed font-medium">RESALE SINCE 2026. GLOBAL VERIFIED KEYS.</p>
+                <div class="flex gap-4"><i data-lucide="instagram"></i><i data-lucide="twitter"></i><i data-lucide="youtube"></i></div>
+            </div>
+            <div><h4 class="text-white text-xs font-black uppercase mb-8">Links</h4><ul class="space-y-4 text-xs font-bold"><li><a href="#">Privacy</a></li><li><a href="#">Refunds</a></li></ul></div>
+            <div><h4 class="text-white text-xs font-black uppercase mb-8">Newsletter</h4><div class="flex gap-2 bg-white/5 p-1 rounded-xl border border-white/5 focus-within:border-brand-primary transition"><input type="email" placeholder="Email" class="bg-transparent border-none outline-none text-xs flex-1 px-3 text-white"><button class="bg-brand-primary text-white px-4 py-2 rounded-lg text-[10px] font-black">JOIN</button></div></div>
+            <div><div class="bg-white/5 p-6 rounded-3xl border border-white/5 text-center"><div class="flex items-center gap-2 mb-4 justify-center"><span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span><span class="text-xs font-black text-white leading-none">SUPPORT LIVE</span></div><button class="w-full py-3 bg-brand-primary/10 text-brand-primary font-black text-[10px] uppercase rounded-xl">Get Help</button></div></div>
+        </div>
     </footer>
+
+    <div x-show="!cookiesAccepted" x-transition class="fixed bottom-6 right-6 left-6 md:left-auto md:w-[400px] z-[100]">
+        <div class="bg-white text-black p-4 md:p-6 rounded-3xl shadow-2xl flex items-center gap-4 border border-gray-100">
+            <i data-lucide="cookie" class="w-8 h-8 text-black"></i>
+            <p class="text-[10px] md:text-xs font-medium flex-1 text-black">We use cookies to secure your vault. <button @click="acceptCookies()" class="underline font-black">Accept All</button></p>
+        </div>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         const firebaseConfig = { apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs", authDomain: "playwithease.firebaseapp.com", projectId: "playwithease", storageBucket: "playwithease.firebasestorage.app", messagingSenderId: "189729941006", appId: "1:189729941006:web:362653774b92416c357e5f", measurementId: "G-1C3B31KQ7C" };
         const app = initializeApp(firebaseConfig); const auth = getAuth(app);
-        
         onAuthStateChanged(auth, (user) => {
-            const loginBtn = document.getElementById('loginBtn');
-            const profileBtn = document.getElementById('profileBtn');
-            const avatar = document.getElementById('userAvatarHeader');
             if (user) {
-                if(loginBtn) loginBtn.classList.add('hidden');
-                if(profileBtn) profileBtn.classList.remove('hidden');
-                if(user.photoURL && avatar) { avatar.src = user.photoURL; avatar.classList.remove('hidden'); document.getElementById('userPlaceholder')?.classList.add('hidden'); }
+                document.getElementById('loginBtn')?.classList.add('hidden');
                 document.getElementById('loginSection')?.classList.add('hidden');
                 document.getElementById('userPanelInfo')?.classList.remove('hidden');
+                if(user.photoURL) document.getElementById('userAvatarHeader').src = user.photoURL;
                 if(user.displayName) document.getElementById('userDisplayName').innerText = user.displayName;
+                document.getElementById('userAvatarHeader')?.classList.remove('hidden');
+                document.getElementById('userPlaceholder')?.classList.add('hidden');
             }
         });
     </script>
@@ -190,7 +209,6 @@
                 cookiesAccepted: localStorage.getItem('pwe_cookies') === 'true',
                 currentTheme: localStorage.getItem('pwe_theme') || 'cyber',
                 timer: { days: '00', hours: '00', minutes: '00', seconds: '00' },
-                
                 heroSlides: [
                     { image: 'https://media-rockstargames-com.akamaized.net/mfe6/prod/__common/img/71d4d17edcd49703a5ea446cc0e588e6.jpg', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg/512px-Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg.png', videoId: 'QdBZY2fkU-0', date: '2026-11-19T00:00:00' },
                     { image: 'https://cdn.forza.net/strapi-uploads/assets/xlarge_hero_fh6_f55db4cd81_53e6ca38f4.webp', logo: 'https://cdn.forza.net/strapi-uploads/assets/logo_black_fh6_700993660b.svg', videoId: 'XG1Ll2CVhug', date: '2027-05-15T00:00:00' }
@@ -207,29 +225,22 @@
                     { id: 2, title: 'RDR 2', category: 'Adventure', price: 19.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
                     { id: 3, title: 'Cyberpunk 2077', category: 'RPG', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg' },
                     { id: 4, title: 'Elden Ring', category: 'RPG', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg' },
-                    { id: 5, title: 'God of War', category: 'Action', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg' },
-                    { id: 6, title: 'MW3', category: 'Shooter', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2519060/library_600x900.jpg' },
                     { id: 11, title: 'Helldivers 2', category: 'Shooter', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/library_600x900.jpg' },
-                    { id: 12, title: 'Palworld', category: 'Adventure', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1623730/library_600x900.jpg' },
-                    { id: 13, title: 'Baldur Gate 3', category: 'RPG', price: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1086940/library_600x900.jpg' },
-                    { id: 14, title: 'Tekken 8', category: 'Action', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1778820/library_600x900.jpg' },
                     { id: 15, title: 'Forza 5', category: 'Sports', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551360/library_600x900.jpg' },
                     { id: 16, title: 'Hogwarts', category: 'RPG', price: 35.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/library_600x900.jpg' },
                     { id: 17, title: 'Starfield', category: 'RPG', price: 41.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1716740/library_600x900.jpg' },
-                    { id: 18, title: 'Armored Core', category: 'Action', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888160/library_600x900.jpg' },
                     { id: 19, title: 'Dragon Dogma 2', category: 'RPG', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2054970/library_600x900.jpg' },
                     { id: 20, title: 'AC Mirage', category: 'Action', price: 24.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2355430/library_600x900.jpg' },
                     { id: 7, title: 'FC 24', category: 'Sports', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
                     { id: 8, title: 'RE 4', category: 'Horror', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg' },
                     { id: 9, title: 'Spider-Man', category: 'Action', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg' },
-                    { id: 10, title: 'TLOU', category: 'Adventure', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900.jpg' }
+                    { id: 10, title: 'TLOU', category: 'Adventure', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900.jpg' },
+                    { id: 14, title: 'Tekken 8', category: 'Action', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1778820/library_600x900.jpg' }
                 ],
                 init() { 
-                    lucide.createIcons(); 
                     this.startTimer(); 
                     this.setTheme(this.currentTheme);
-                    const obs = new MutationObserver(() => lucide.createIcons());
-                    obs.observe(document.body, { childList: true, subtree: true });
+                    window.addEventListener('load', () => lucide.createIcons());
                 },
                 get themeStyles() { return Object.entries(this.themes[this.currentTheme] || {}).map(([k,v])=>`${k}:${v};`).join(''); },
                 setTheme(n) { this.currentTheme = n; localStorage.setItem('pwe_theme', n); },
@@ -242,7 +253,7 @@
                     let c = JSON.parse(localStorage.getItem('pwe_cart_items') || '[]');
                     c.push(g);
                     localStorage.setItem('pwe_cart_items', JSON.stringify(c));
-                    this.notify('Added to Cart', g.title + ' in vault.');
+                    this.notify('Success', g.title + ' added.');
                 },
                 buyNow(g) { this.addToCart(g); window.location.href = 'checkout.html'; },
                 nextSlide() { this.activeSlide = (this.activeSlide + 1) % this.heroSlides.length; this.stopTrailer(); this.startTimer(); },
@@ -258,6 +269,7 @@
                 },
                 playTrailer() {
                     this.trailerPlaying = true;
+                    this.$nextTick(() => lucide.createIcons());
                     if(window.ytPlayer && typeof window.ytPlayer.playVideo === 'function') { window.ytPlayer.loadVideoById(this.heroSlides[this.activeSlide].videoId); }
                     else {
                         window.ytPlayer = new YT.Player('hero-player', {
@@ -268,7 +280,7 @@
                     }
                 },
                 stopTrailer() { this.trailerPlaying = false; if(window.ytPlayer && typeof window.ytPlayer.stopVideo === 'function') window.ytPlayer.stopVideo(); },
-                toggleMute() { this.isMuted = !this.isMuted; if(window.ytPlayer) { this.isMuted ? window.ytPlayer.mute() : window.ytPlayer.unMute(); } },
+                toggleMute() { this.isMuted = !this.isMuted; if(window.ytPlayer) { this.isMuted ? window.ytPlayer.mute() : window.ytPlayer.unMute(); } this.$nextTick(() => lucide.createIcons()); },
                 notify(t, m) { const id = Date.now(); this.notifications.push({ id, title: t, message: m, visible: true }); setTimeout(() => { const idx = this.notifications.findIndex(n => n.id === id); if(idx > -1) this.notifications[idx].visible = false; }, 3000); }
             }))
         });
