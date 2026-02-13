@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="PlayWithEase Apex - The Global Standard for Digital Extraction & AI Management.">
+    <meta name="description" content="PlayWithEase Apex - Sovereign Digital Vault & AI Extraction Command Center.">
     <meta name="theme-color" content="#080808">
-    <title>PlayWithEase | Apex Digital Vault & Omni-Core AI</title>
+    <title>PlayWithEase | Sovereign Digital Vault & Neural AI</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,7 +40,7 @@
                     },
                     keyframes: { 
                         float: { '0%, 100%': { transform: 'translateY(0) scale(1)' }, '50%': { transform: 'translateY(-15px) scale(1.01)' } },
-                        fadeIn: { '0%': { opacity: '0', transform: 'scale(0.98)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
                         shimmer: { '0%': { backgroundPosition: '-200% 0' }, '100%': { backgroundPosition: '200% 0' } },
                         pulseGlow: { '0%': { boxShadow: '0 0 10px rgba(37, 99, 235, 0.1)' }, '100%': { boxShadow: '0 0 45px rgba(37, 99, 235, 0.5)' } },
                         statusBlink: { '0%, 100%': { opacity: '1', transform: 'scale(1)' }, '50%': { opacity: '0.4', transform: 'scale(0.8)' } },
@@ -54,519 +54,302 @@
     <style>
         :root { --bg-main: #080808; --bg-card: #0a0a0a; --brand-primary: #2563eb; --brand-secondary: #ff00aa; }
         
-        /* 1336x768 Balanced Navigation Scaffolding */
-        .nav-base { background: rgba(8, 8, 8, 0.85); backdrop-filter: blur(35px); border-bottom: 1px solid rgba(255, 255, 255, 0.04); height: 70px; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
-        .nav-scrolled { background: rgba(4, 4, 4, 0.99); border-bottom: 1px solid rgba(255, 255, 255, 0.1); height: 60px; }
-        @media (min-width: 1024px) { .nav-base { height: 80px; } .nav-scrolled { height: 70px; } }
+        /* 1336x768 Compact Performance Scaffolding */
+        .nav-base { background: rgba(8, 8, 8, 0.85); backdrop-filter: blur(35px); border-bottom: 1px solid rgba(255, 255, 255, 0.03); height: 65px; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .nav-scrolled { background: rgba(4, 4, 4, 0.99); border-bottom: 1px solid rgba(255, 255, 255, 0.1); height: 55px; }
+        @media (min-width: 1024px) { .nav-base { height: 75px; } .nav-scrolled { height: 65px; } }
         
-        body { -webkit-tap-highlight-color: transparent; color: var(--text-main); background-color: var(--bg-main); overflow-x: hidden; font-feature-settings: "ss01", "ss02"; font-size: 13px; }
-        @media (min-width: 1440px) { body { font-size: 15px; } }
+        body { -webkit-tap-highlight-color: transparent; color: var(--text-main); background-color: var(--bg-main); overflow-x: hidden; font-feature-settings: "ss01", "ss02"; font-size: 12px; }
+        @media (min-width: 1440px) { body { font-size: 14px; } }
 
         [x-cloak] { display: none !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         
-        /* Master Cinema HUD Logic */
+        /* Cinema HUD Layering */
         .video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 20; background: black; }
-        .video-background { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%); pointer-events: none; object-fit: cover; filter: brightness(0.75) contrast(1.1); }
+        .video-background { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%); pointer-events: none; object-fit: cover; filter: brightness(0.7) contrast(1.1); }
         
         /* High-Stability Poster Matrix */
-        .poster-fit { position: relative; width: 100%; aspect-ratio: 3/4; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #040404; }
-        .poster-game { width: 100%; height: 100%; object-fit: cover; transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1); }
-        .poster-ott { width: 100%; height: 100%; object-fit: contain; padding: 2rem; transition: all 0.8s ease; filter: drop-shadow(0 15px 40px rgba(0,0,0,0.8)); }
+        .poster-matrix { position: relative; width: 100%; aspect-ratio: 3/4; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #040404; }
+        .img-game { width: 100%; height: 100%; object-fit: cover; transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1); }
+        .img-ott { width: 100%; height: 100%; object-fit: contain; padding: 1.5rem; transition: all 0.8s ease; filter: drop-shadow(0 10px 30px rgba(0,0,0,0.8)); }
         
-        /* Custom UI States */
-        .pillar-master-active { background: var(--brand-primary); border-color: var(--brand-primary); transform: translateY(-5px); box-shadow: 0 20px 50px rgba(37, 99, 235, 0.4); z-index: 10; color: white !important; }
-        .glass-ui { background: rgba(255, 255, 255, 0.015); border: 1px solid rgba(255, 255, 255, 0.06); backdrop-filter: blur(25px); }
-
-        /* Scrollbar Architecture */
+        /* Master Filter Active States */
+        .pillar-master-active { background: var(--brand-primary); border-color: var(--brand-primary); transform: translateY(-4px) scale(1.02); box-shadow: 0 20px 50px rgba(37, 99, 235, 0.4); z-index: 10; color: white !important; }
+        
+        /* Responsive Viewport Hub - Optimized for 1336x768 */
+        .master-grid { max-width: 1280px; margin: 0 auto; padding: 0 1rem; }
+        @media (max-width: 1336px) { .master-grid { max-width: 1180px; } }
+        
+        /* Scrollbar Elite Theme */
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: #080808; }
         ::-webkit-scrollbar-thumb { background: #1a1a1a; border-radius: 20px; transition: background 0.3s; }
         ::-webkit-scrollbar-thumb:hover { background: var(--brand-primary); }
+
+        svg.lucide { display: inline-block !important; vertical-align: middle; }
     </style>
 </head>
 
-<body class="antialiased w-full selection:bg-brand-primary selection:text-white"
+<body class="antialiased w-full"
       x-data="storeLogic()" :style="themeStyles" @keydown.left="prevSlide()" @keydown.right="nextSlide()" @scroll.window="scrolled = window.pageYOffset > 50">
 
     <div class="fixed bottom-24 right-6 z-[300] flex flex-col gap-3 pointer-events-none">
         <template x-for="toast in notifications" :key="toast.id">
-            <div x-show="toast.visible" x-transition:enter="transition ease-out duration-400" x-transition:enter-start="translate-x-full opacity-0" x-transition:enter-end="translate-x-0 opacity-100" class="pointer-events-auto flex items-center gap-6 px-8 py-5 rounded-[2.5rem] bg-[#0c0c0c] border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.8)] min-w-[380px] backdrop-blur-3xl relative overflow-hidden">
-                <div class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 bg-brand-primary/20 text-brand-primary border border-brand-primary/30 shadow-2xl relative z-10"><i :data-lucide="toast.icon || 'zap'" class="w-6 h-6"></i></div>
-                <div class="flex-1 relative z-10"><h4 class="text-sm font-black text-white uppercase italic" x-text="toast.title"></h4><p class="text-[11px] opacity-50 font-bold tracking-tight uppercase" x-text="toast.message"></p></div>
-                <button @click="toast.visible = false" class="text-white/20 hover:text-white transition-all transform hover:rotate-90 relative z-10"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <div x-show="toast.visible" x-transition:enter="transition ease-out duration-400" x-transition:enter-start="translate-x-full opacity-0" x-transition:enter-end="translate-x-0 opacity-100" class="pointer-events-auto flex items-center gap-5 px-7 py-5 rounded-[2.5rem] bg-[#0c0c0c] border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.8)] min-w-[350px] backdrop-blur-3xl relative overflow-hidden">
+                <div class="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 bg-brand-primary/20 text-brand-primary border border-brand-primary/30 shadow-2xl relative z-10"><i :data-lucide="toast.icon || 'zap'" class="w-5 h-5"></i></div>
+                <div class="flex-1 relative z-10"><h4 class="text-xs font-black text-white uppercase italic" x-text="toast.title"></h4><p class="text-[10px] opacity-50 font-bold tracking-tight uppercase" x-text="toast.message"></p></div>
+                <button @click="toast.visible = false" class="text-white/20 hover:text-white transition-all transform hover:rotate-90 relative z-10"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
         </template>
     </div>
 
     <div x-data="chatBot($data)" class="fixed bottom-6 right-6 z-[250]">
-        <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-90 translate-y-20" x-transition:enter-end="opacity-100 scale-100 translate-y-0" class="absolute bottom-24 right-0 w-[96vw] md:w-[500px] bg-[#070707] border-2 border-white/10 rounded-[4.5rem] shadow-[0_120px_300px_rgba(0,0,0,1)] overflow-hidden flex flex-col h-[750px] backdrop-blur-[50px]">
-            <div class="bg-gradient-to-br from-brand-primary via-blue-900 to-black p-10 flex justify-between items-center relative border-b-2 border-white/5">
-                <div class="absolute inset-0 opacity-15 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
-                <div class="flex items-center gap-8 relative z-10">
+        <div x-show="open" x-cloak x-transition.scale.origin.bottom.right class="absolute bottom-18 md:bottom-20 right-0 w-[92vw] md:w-[420px] bg-[#090909] border border-white/10 rounded-[3rem] shadow-[0_120px_300px_rgba(0,0,0,1)] overflow-hidden flex flex-col h-[550px] backdrop-blur-3xl">
+            <div class="bg-gradient-to-br from-brand-primary via-blue-900 to-black p-8 flex justify-between items-center relative border-b border-white/5">
+                <div class="flex items-center gap-4 relative z-10">
                     <div class="relative group">
-                        <div class="absolute inset-0 bg-brand-primary/40 rounded-[2.2rem] blur-3xl group-hover:opacity-100 opacity-50 transition-opacity duration-1500"></div>
-                        <div class="w-18 h-18 bg-white/10 rounded-2xl flex items-center justify-center text-white border-2 border-white/10 shadow-3xl relative z-10 animate-pulse-glow"><i data-lucide="brain-circuit" class="w-10 h-10"></i></div>
-                        <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-[6px] border-[#070707] animate-status-blink shadow-4xl z-20"></div>
+                        <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-white border border-white/10 shadow-3xl relative z-10"><i data-lucide="brain-circuit" class="w-8 h-8"></i></div>
+                        <div class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-green-500 rounded-full border-4 border-[#090909] animate-status-blink shadow-4xl z-20"></div>
                     </div>
-                    <div>
-                        <h3 class="font-display font-black text-xl text-white tracking-[0.4em] uppercase italic">Omni-Core 8.0</h3>
-                        <div class="flex items-center gap-4 mt-2"><span class="px-4 py-1 bg-green-500/20 rounded-full text-[9px] text-green-400 font-black uppercase border-2 border-green-500/30 tracking-[0.2em]">Quantum Command Sync</span></div>
-                    </div>
+                    <div><h3 class="font-display font-black text-sm text-white tracking-[0.4em] uppercase italic">OMNI AI</h3><p class="text-[9px] text-white/50 font-black uppercase">Mainframe v9.5</p></div>
                 </div>
-                <button @click="open = false" class="text-white/20 hover:text-white transition-all transform hover:rotate-90 relative z-10"><i data-lucide="chevron-down" class="w-10 h-10"></i></button>
+                <button @click="open = false" class="text-white/30 hover:text-white transition-all transform hover:rotate-90 relative z-10"><i data-lucide="chevron-down" class="w-6 h-6"></i></button>
             </div>
-
-            <div class="flex-1 p-10 overflow-y-auto space-y-12 no-scrollbar bg-black/60 relative" id="chatContainer">
-                <div class="absolute inset-0 pointer-events-none opacity-[0.05] bg-[url('https://www.transparenttextures.com/patterns/grid.png')]"></div>
+            <div class="flex-1 p-6 overflow-y-auto space-y-8 no-scrollbar bg-black/60 relative" id="chatContainer">
                 <template x-for="msg in messages" :key="msg.id">
                     <div :class="msg.sender === 'bot' ? 'flex justify-start' : 'flex justify-end'" class="animate-slide-up">
-                        <div class="flex flex-col gap-4 max-w-[92%]">
-                            <div :class="msg.sender === 'bot' ? 'bg-white/[0.05] text-gray-100 border-2 border-white/5 rounded-tr-[3.5rem] rounded-bl-[3.5rem] rounded-br-[3.5rem]' : 'bg-brand-primary text-white rounded-tl-[3.5rem] rounded-bl-[3.5rem] rounded-br-[3.5rem] shadow-[0_30px_80px_rgba(37,99,235,0.4)]'" 
-                                 class="p-8 text-[15px] leading-relaxed font-bold tracking-tight shadow-inner relative overflow-hidden group">
-                                <span class="relative z-10" x-html="msg.text"></span>
-                            </div>
-                            <div class="flex items-center gap-4 px-6" :class="msg.sender === 'bot' ? 'justify-start' : 'justify-end'">
-                                <span class="text-[9px] text-white/20 font-black uppercase tracking-[0.5em]" x-text="msg.time"></span>
-                                <div class="w-1.5 h-1.5 rounded-full bg-white/10 shadow-glow"></div>
-                                <span class="text-[9px] text-white/20 font-black uppercase tracking-[0.5em]" x-text="msg.sender === 'bot' ? 'SYSTEM_CORE' : 'OPERATIVE_ALPHA'"></span>
-                            </div>
+                        <div class="flex flex-col gap-3 max-w-[88%]">
+                            <div :class="msg.sender === 'bot' ? 'bg-white/5 text-gray-200 border border-white/5 rounded-tr-[2.5rem] rounded-bl-[2.5rem] rounded-br-[2.5rem]' : 'bg-brand-primary text-white rounded-tl-[2.5rem] rounded-bl-[2.5rem] rounded-br-[2.5rem] shadow-[0_20px_50px_rgba(37,99,235,0.4)]'" class="p-6 text-[13px] leading-relaxed font-bold tracking-tight shadow-inner"><span x-html="msg.text"></span></div>
+                            <span class="text-[8px] text-white/20 font-black uppercase tracking-[0.5em] px-4" :class="msg.sender === 'bot' ? 'text-left' : 'text-right'" x-text="msg.time"></span>
                         </div>
                     </div>
                 </template>
-                <div x-show="isTyping" class="flex justify-start">
-                    <div class="bg-white/5 p-6 rounded-full flex gap-3 border-2 border-white/5 shadow-inner">
-                        <div class="w-2 h-2 bg-brand-primary rounded-full animate-bounce [animation-delay:0s]"></div>
-                        <div class="w-2 h-2 bg-brand-primary rounded-full animate-bounce [animation-delay:0.25s]"></div>
-                        <div class="w-2 h-2 bg-brand-primary rounded-full animate-bounce [animation-delay:0.5s]"></div>
-                    </div>
-                </div>
+                <div x-show="isTyping" class="flex justify-start"><div class="bg-white/5 p-4 rounded-full flex gap-1.5 border border-white/5 shadow-inner"><div class="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce [animation-delay:0s]"></div><div class="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce [animation-delay:0.3s]"></div><div class="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce [animation-delay:0.6s]"></div></div></div>
             </div>
-
-            <div class="p-10 border-t-2 border-white/5 bg-black/60 backdrop-blur-3xl flex gap-6">
-                <div class="flex-1 relative group">
-                    <div class="absolute inset-0 bg-brand-primary/10 rounded-[2.5rem] blur-2xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-1000"></div>
-                    <i data-lucide="terminal" class="absolute left-7 top-1/2 -translate-y-1/2 w-6 h-6 text-white/20 group-focus-within:text-brand-primary transition-colors"></i>
-                    <input type="text" x-model="input" @keydown.enter="sendMessage" placeholder="Locate target extraction node..." class="w-full bg-white/5 border-2 border-white/15 rounded-[2.8rem] py-6 pl-18 pr-10 text-[15px] text-white outline-none focus:border-brand-primary focus:bg-white/10 transition-all font-black tracking-tight relative z-10 placeholder:text-white/15 uppercase italic">
-                </div>
-                <button @click="sendMessage" class="w-20 h-20 bg-brand-primary rounded-[2.2rem] flex items-center justify-center shadow-4xl hover:scale-105 active:scale-95 transition-all border-4 border-white/10 relative overflow-hidden group">
-                    <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-                    <i data-lucide="zap" class="text-white w-10 h-10 relative z-10 group-hover:rotate-45 transition-transform"></i>
-                </button>
+            <div class="p-8 border-t border-white/5 bg-black/40 backdrop-blur-3xl flex gap-4">
+                <input type="text" x-model="input" @keydown.enter="sendMessage" placeholder="Locate extraction node..." class="flex-1 bg-white/5 border-2 border-white/15 rounded-2xl py-4 pl-10 pr-6 text-xs text-white outline-none focus:border-brand-primary transition-all font-bold">
+                <button @click="sendMessage" class="w-12 h-12 bg-brand-primary rounded-2xl flex items-center justify-center shadow-lg hover:scale-105 transition-all"><i data-lucide="zap" class="text-white w-5 h-5"></i></button>
             </div>
         </div>
-        
-        <button @click="open = !open" class="w-18 h-18 md:w-22 md:h-22 bg-brand-primary rounded-[2.5rem] flex items-center justify-center shadow-[0_0_100px_rgba(37,99,235,0.7)] hover:scale-110 active:scale-90 transition-all border-[6px] border-[#080808] group relative overflow-hidden">
-            <div class="absolute inset-0 bg-white/15 translate-y-full group-hover:translate-y-0 transition-transform duration-1000"></div>
-            <i :data-lucide="open ? 'x' : 'bot'" class="text-white w-10 h-10 relative z-10 group-hover:rotate-12 transition-transform shadow-glow"></i>
-        </button>
+        <button @click="open = !open" class="w-14 h-14 md:w-16 md:h-16 bg-brand-primary rounded-[1.5rem] flex items-center justify-center shadow-[0_0_50px_rgba(37,99,235,0.5)] hover:scale-110 active:scale-90 transition-all border-2 border-white/10"><i :data-lucide="open ? 'x' : 'bot'" class="text-white w-6 h-6"></i></button>
     </div>
 
-    <nav :class="scrolled ? 'nav-scrolled shadow-2xl' : 'nav-base'" class="fixed top-0 w-full z-[180] flex flex-col justify-center transition-all duration-1000">
-        <div class="max-w-[1700px] mx-auto px-6 md:px-12 w-full flex items-center justify-between">
-            <a href="index.html" class="flex items-center gap-6 shrink-0 group scale-90 lg:scale-100 origin-left">
-                <div class="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center bg-brand-primary/10 rounded-[1.5rem] border-2 border-brand-primary/20 group-hover:scale-110 group-hover:bg-brand-primary/40 transition-all shadow-[0_20px_50px_rgba(0,0,0,0.6)]"><i data-lucide="layout-grid" class="text-brand-primary w-8 h-8 group-hover:rotate-12 transition-transform"></i></div>
-                <h1 class="font-display text-xl md:text-4xl tracking-tighter hidden sm:block uppercase italic font-black text-white">PLAYWITH<span class="text-brand-primary">EASE</span></h1>
+    <nav :class="scrolled ? 'nav-scrolled shadow-2xl' : 'nav-base'" class="fixed top-0 w-full z-[200] flex flex-col justify-center transition-all duration-500">
+        <div class="max-w-[1440px] mx-auto px-4 md:px-10 w-full flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 shrink-0 group">
+                <div class="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-brand-primary/10 rounded-xl border border-brand-primary/20 group-hover:scale-110 transition shadow-lg"><i data-lucide="gamepad-2" class="text-brand-primary w-5 h-5"></i></div>
+                <h1 class="font-display text-lg md:text-2xl tracking-tighter hidden sm:block uppercase italic font-black text-white">PLAYWITH<span class="text-brand-primary">EASE</span></h1>
             </a>
 
-            <div class="hidden lg:flex flex-1 max-w-2xl mx-16 relative group">
-                <i data-lucide="search" class="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-white/20 group-focus-within:text-brand-primary transition-colors"></i>
-                <input type="text" x-model="searchQuery" placeholder="Search 150+ Digital Keys, OTT Sub-Vaults & Elite Licenses..." class="w-full bg-white/5 border-2 border-white/10 rounded-full py-4 pl-16 pr-10 text-[15px] text-white outline-none focus:border-brand-primary focus:bg-white/10 transition-all placeholder:text-white/10 font-black tracking-tight relative z-10">
-                <div class="absolute right-6 top-1/2 -translate-y-1/2 flex items-center gap-4 opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none relative z-20">
-                    <span class="px-3 py-1.5 bg-white/10 rounded-xl border border-white/10 text-[9px] text-white/30 font-black tracking-[0.4em]">VAULT_SYNC_A</span>
-                </div>
+            <div class="hidden lg:flex flex-1 max-w-md mx-10 relative">
+                <i data-lucide="search" class="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30"></i>
+                <input type="text" x-model="searchQuery" placeholder="Search the vault..." class="w-full bg-white/5 border border-white/10 rounded-full py-2.5 pl-12 pr-6 text-xs text-white outline-none focus:border-brand-primary transition-all">
             </div>
 
-            <div class="flex items-center gap-5 md:gap-10 shrink-0">
-                <button @click="showMobileSearch = !showMobileSearch" class="lg:hidden p-4 rounded-[1.2rem] glass hover:text-white transition shadow-4xl border-2 border-white/15 active:scale-90">
-                    <i :data-lucide="showMobileSearch ? 'x' : 'search'" class="w-7 h-7 text-white/60"></i>
-                </button>
+            <div class="flex items-center gap-3 md:gap-6 shrink-0">
+                <button @click="showMobileSearch = !showMobileSearch" class="lg:hidden text-white/40"><i data-lucide="search" class="w-5 h-5"></i></button>
 
-                <a href="cart.html" class="relative p-3.5 md:p-5 rounded-[1.5rem] bg-white/5 border-2 border-white/5 hover:border-brand-primary/50 transition-all group shadow-[0_30px_70px_rgba(0,0,0,0.6)] active:scale-95">
-                    <i data-lucide="shopping-bag" class="text-gray-500 group-hover:text-white transition-colors w-7 h-7"></i>
-                    <span x-show="cartCount > 0" x-transition x-cloak class="absolute -top-2.5 -right-2.5 bg-brand-secondary text-white text-[11px] font-black w-7 h-7 rounded-full flex items-center justify-center border-[4px] border-[#080808] shadow-[0_0_25px_var(--brand-secondary)] animate-bounce" x-text="cartCount"></span>
+                <a href="cart.html" class="relative p-2.5 rounded-2xl bg-white/5 border border-white/5 hover:border-brand-primary/30 transition shadow-xl">
+                    <i data-lucide="shopping-bag" class="text-gray-400 w-5 h-5"></i>
+                    <span x-show="cartCount > 0" class="absolute -top-1.5 -right-1.5 bg-brand-secondary text-white text-[9px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-bg-main" x-text="cartCount"></span>
                 </a>
 
                 <div class="relative" x-data="{ openMenu: false }" @click.outside="openMenu = false">
-                    <button @click="openMenu = !openMenu" class="flex items-center gap-4 p-1.5 rounded-[2.2rem] hover:bg-white/5 transition-all border-4 border-transparent">
-                        <div class="w-12 h-12 md:w-16 md:h-16 rounded-[1.2rem] border-[4px] border-white/10 bg-gradient-to-tr from-white/10 to-white/30 p-0.5 flex items-center justify-center overflow-hidden relative shadow-[0_30px_60px_rgba(0,0,0,1)] group-hover:scale-105 transition-transform duration-1000">
-                            <img id="userAvatarHeader" src="" class="w-full h-full object-cover rounded-[1.2rem] hidden">
-                            <i data-lucide="user-check" id="userPlaceholder" class="text-gray-500 w-8 h-8"></i>
-                            <div x-show="isLoggedIn" class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-[5px] border-[#080808] shadow-2xl animate-status-blink"></div>
+                    <button @click="openMenu = !openMenu" class="flex items-center gap-3 p-1 rounded-2xl hover:bg-white/10 transition border border-transparent">
+                        <div class="w-10 h-10 md:w-11 md:h-11 rounded-xl border-2 border-white/10 bg-white/5 flex items-center justify-center overflow-hidden relative shadow-lg">
+                            <img id="userAvatarHeader" src="" class="w-full h-full object-cover rounded-lg hidden">
+                            <i data-lucide="user" id="userPlaceholder" class="text-gray-400"></i>
+                            <div id="statusDot" class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-[#101010] hidden animate-pulse"></div>
                         </div>
+                        <i data-lucide="chevron-down" :class="openMenu ? 'rotate-180' : ''" class="w-3.5 h-3.5 text-white/20 hidden sm:block transition-transform duration-500"></i>
                     </button>
-                    <div x-show="openMenu" x-cloak x-transition:enter="transition ease-out duration-400" x-transition:enter-start="opacity-0 scale-95 translate-y-10" x-transition:enter-end="opacity-100 scale-100 translate-y-0" class="absolute right-0 mt-8 w-72 max-h-[70vh] overflow-y-auto no-scrollbar bg-[#080808] border-2 border-white/10 rounded-[4rem] shadow-[0_120px_250px_rgba(0,0,0,1)] p-8 z-[220] backdrop-blur-3xl">
-                        <div x-show="isLoggedIn" class="px-8 py-10 border-b-2 border-white/5 mb-8 text-white bg-white/[0.05] rounded-[3.5rem] relative group overflow-hidden">
-                            <p id="userDisplayName" class="text-xl font-black tracking-tighter truncate leading-none mb-3 italic uppercase">OPERATIVE_ALPHA</p>
-                            <div class="flex items-center gap-4"><span class="text-[10px] text-brand-primary font-black uppercase tracking-[0.5em] italic">SOVEREIGN RANK</span></div>
+                    <div x-show="openMenu" x-cloak x-transition.origin.top.right class="absolute right-0 mt-4 w-64 bg-[#0f0f0f] border border-white/10 rounded-[2.5rem] shadow-2xl p-2 z-[210] backdrop-blur-3xl overflow-y-auto max-h-[70vh] no-scrollbar">
+                        <div id="userPanelInfo" class="px-5 py-4 border-b border-white/5 mb-2 hidden text-white">
+                            <p id="userDisplayName" class="text-sm font-black truncate"></p>
+                            <span class="text-[9px] text-brand-primary uppercase font-black tracking-widest">Elite Operative</span>
                         </div>
-                        
-                        <div class="p-1 space-y-4">
-                            <a href="profile.html" class="flex items-center gap-6 px-6 py-6 rounded-[2rem] hover:bg-white/5 transition-all group border-2 border-transparent hover:border-white/10 active:scale-95 shadow-md">
-                                <div class="w-12 h-12 rounded-[1.5rem] glass flex items-center justify-center group-hover:bg-brand-primary group-hover:shadow-[0_0_50px_var(--brand-primary)] transition-all duration-700"><i data-lucide="vault" class="w-6 h-6 text-brand-primary group-hover:text-white"></i></div>
-                                <div class="flex flex-col"><span class="text-sm font-black text-white/95 uppercase tracking-tighter italic">Vault</span><span class="text-[9px] text-white/20 uppercase font-black tracking-[0.4em] mt-1.5">Authorized Extract</span></div>
-                            </a>
-                        </div>
-
-                        <div class="mt-10 pt-10 border-t-2 border-white/5 px-8 pb-10 text-center">
-                            <h4 class="text-[10px] text-white/30 font-black uppercase tracking-[0.6em] mb-8 italic">Interface Sync</h4>
-                            <div class="grid grid-cols-4 gap-6">
-                                <button @click="setTheme('cyber')" class="h-10 rounded-[1.2rem] bg-blue-600 border-2 border-white/20 hover:scale-125 transition-all shadow-4xl hover:shadow-blue-900/80" title="Cyber Protocol"></button>
-                                <button @click="setTheme('luxury')" class="h-10 rounded-[1.2rem] bg-yellow-500 border-2 border-white/20 hover:scale-125 transition-all shadow-4xl hover:shadow-yellow-900/80" title="Imperial Gold"></button>
-                                <button @click="setTheme('toxic')" class="h-10 rounded-[1.2rem] bg-green-500 border-2 border-white/20 hover:scale-125 transition-all shadow-4xl hover:shadow-green-900/80" title="Neural Toxic"></button>
-                                <button @click="setTheme('crimson')" class="h-10 rounded-[1.2rem] bg-red-600 border-2 border-white/20 hover:scale-125 transition-all shadow-4xl hover:shadow-red-900/80" title="Crimson Strike"></button>
+                        <a href="profile.html" class="flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-white/5 transition text-xs font-bold text-white/80"><i data-lucide="shield-check" class="text-brand-primary w-4 h-4"></i> My Vault</a>
+                        <div class="mt-2 pt-2 border-t border-white/5">
+                            <div class="grid grid-cols-4 gap-2 px-3 pb-3">
+                                <button @click="setTheme('cyber')" class="h-8 rounded-lg bg-blue-600 border border-white/10 hover:scale-110 transition shadow-lg"></button>
+                                <button @click="setTheme('luxury')" class="h-8 rounded-lg bg-yellow-500 border border-white/10 hover:scale-110 transition shadow-lg"></button>
+                                <button @click="setTheme('toxic')" class="h-8 rounded-lg bg-green-500 border border-white/10 hover:scale-110 transition shadow-lg"></button>
+                                <button @click="setTheme('crimson')" class="h-8 rounded-lg bg-red-600 border border-white/10 hover:scale-110 transition shadow-lg"></button>
                             </div>
                         </div>
-
-                        <div x-show="!isLoggedIn" id="loginSection" class="p-2 pt-10 border-t-2 border-white/5">
-                            <a href="login.html" class="flex justify-center w-full py-6 bg-white text-black font-black text-xs uppercase tracking-[0.8em] rounded-[3.5rem] hover:bg-brand-primary hover:text-white transition-all shadow-[0_50px_120px_rgba(255,255,255,0.3)] active:scale-90 italic">Login protocol</a>
-                        </div>
+                        <div id="loginSection" class="p-2 border-t border-white/5 mt-2"><a href="login.html" class="flex justify-center w-full py-3 bg-white text-black font-black text-[10px] uppercase rounded-xl hover:bg-brand-primary hover:text-white transition shadow-xl">Initialize Login</a></div>
                     </div>
                 </div>
             </div>
         </div>
-        <div x-show="showMobileSearch" x-cloak x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 -translate-y-12" x-transition:enter-end="opacity-100 translate-y-0" class="lg:hidden px-8 pb-10 pt-6 bg-black backdrop-blur-[60px] border-b-2 border-white/10 shadow-[0_50px_100px_rgba(0,0,0,1)]">
-            <div class="relative group">
-                <i data-lucide="search" class="absolute left-8 top-1/2 -translate-y-1/2 w-10 h-10 text-white/30 group-focus-within:text-brand-primary transition-colors duration-500"></i>
-                <input type="text" x-model="searchQuery" placeholder="Identify target extraction node..." class="w-full bg-white/10 border-4 border-white/20 rounded-[3rem] py-10 pl-26 pr-12 text-3xl text-white outline-none focus:border-brand-primary shadow-[0_100px_200px_rgba(0,0,0,1)] font-black italic relative z-10 uppercase tracking-tighter">
-            </div>
-        </div>
+        <div x-show="showMobileSearch" x-cloak x-transition class="lg:hidden px-4 pb-4"><input type="text" x-model="searchQuery" placeholder="Search..." class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-5 text-xs text-white outline-none"></div>
     </nav>
 
-    <section class="relative min-h-[85vh] w-full overflow-hidden flex items-center justify-center text-white bg-black pt-[85px]">
+    <section class="relative min-h-[75vh] md:min-h-[85vh] w-full overflow-hidden flex items-center justify-center text-white bg-black pt-[70px]">
         <template x-for="(slide, index) in heroSlides" :key="index">
-            <div x-show="activeSlide === index && !trailerPlaying" x-transition:enter="transition opacity duration-[1500ms]" x-transition:leave="transition opacity duration-[1500ms]" class="absolute inset-0 z-10">
-                <div class="absolute inset-0 bg-gradient-to-t from-bg-main via-bg-main/30 to-black/100 z-10"></div>
-                <div class="absolute inset-0 bg-black/80 z-10 shadow-inner"></div>
-                <img :src="slide.image" class="w-full h-full object-cover animate-float scale-110 opacity-40 grayscale-[20%]">
+            <div x-show="activeSlide === index && !trailerPlaying" x-transition.opacity.duration.1000ms class="absolute inset-0 z-10">
+                <div class="absolute inset-0 bg-gradient-to-t from-bg-main via-transparent to-black/80 z-10"></div>
+                <img :src="slide.image" class="w-full h-full object-cover animate-float scale-110 opacity-50">
             </div>
         </template>
         
-        <div x-show="trailerPlaying" class="video-container" x-transition.opacity.duration.1500ms>
-            <div id="hero-player" class="video-background"></div>
-        </div>
+        <div x-show="trailerPlaying" class="video-container"><div id="hero-player" class="video-background"></div></div>
         
-        <div x-show="!trailerPlaying" x-transition:enter="transition opacity delay-700 duration-1500" class="relative z-30 text-center w-full max-w-[1850px] mx-auto px-10 py-16">
+        <div x-show="!trailerPlaying" class="relative z-30 text-center w-full max-w-5xl mx-auto px-8 py-10">
             <template x-for="(slide, index) in heroSlides">
-                <div x-show="activeSlide === index" class="mb-20 scale-90 md:scale-100">
-                    <img x-transition:enter="transition transform scale-75 duration-[2000ms]" x-transition:enter-start="scale-25 opacity-0 rotate-12" x-transition:enter-end="scale-100 opacity-100 rotate-0" 
-                         :src="slide.logo" 
-                         :class="index === 1 ? 'invert filter drop-shadow-[0_0_100px_rgba(255,255,255,0.8)]' : 'drop-shadow-[0_0_150px_rgba(37,99,235,0.7)]'" 
-                         class="h-28 md:h-[18rem] mx-auto max-w-[95%] transition-all duration-[1500ms] animate-float relative z-20">
-                </div>
+                <img x-show="activeSlide === index" :src="slide.logo" :class="index === 1 ? 'invert filter drop-shadow-2xl' : 'drop-shadow-[0_0_30px_rgba(37,99,235,0.5)]'" class="h-20 md:h-36 mx-auto mb-10 transition-all duration-1000">
             </template>
             
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 text-white mb-28 max-w-5xl mx-auto font-tech">
-                <div class="glass px-10 py-12 rounded-[4rem] shadow-[0_80px_150px_rgba(0,0,0,0.9)] border-4 border-white/5 relative group overflow-hidden active:scale-95 transition-all cursor-none">
-                    <div class="absolute inset-0 bg-brand-primary opacity-0 group-hover:opacity-10 transition-opacity"></div>
-                    <div class="text-6xl md:text-[8rem] font-black tracking-tighter leading-none shadow-glow animate-neural-pulse italic" x-text="timer.days">00</div>
-                    <div class="text-[14px] uppercase opacity-20 font-black tracking-[0.7em] mt-8 italic border-t-2 border-white/5 pt-8">TRANSMISSION_DAYS</div>
-                </div>
-                <div class="glass px-10 py-12 rounded-[4rem] shadow-[0_80px_150px_rgba(0,0,0,0.9)] border-4 border-white/5 relative group overflow-hidden active:scale-95 transition-all cursor-none">
-                    <div class="absolute inset-0 bg-brand-primary opacity-0 group-hover:opacity-10 transition-opacity"></div>
-                    <div class="text-6xl md:text-[8rem] font-black tracking-tighter leading-none shadow-glow animate-neural-pulse italic" x-text="timer.hours">00</div>
-                    <div class="text-[14px] uppercase opacity-20 font-black tracking-[0.7em] mt-8 italic border-t-2 border-white/5 pt-8">EXTRACTION_HOURS</div>
-                </div>
-                <div class="glass px-10 py-12 rounded-[4rem] shadow-[0_80px_150px_rgba(0,0,0,0.9)] border-4 border-white/5 relative group overflow-hidden active:scale-95 transition-all cursor-none">
-                    <div class="absolute inset-0 bg-brand-primary opacity-0 group-hover:opacity-10 transition-opacity"></div>
-                    <div class="text-6xl md:text-[8rem] font-black tracking-tighter leading-none shadow-glow animate-neural-pulse italic" x-text="timer.minutes">00</div>
-                    <div class="text-[14px] uppercase opacity-20 font-black tracking-[0.7em] mt-8 italic border-t-2 border-white/5 pt-8">NEURAL_MINS</div>
-                </div>
-                <div class="glass px-10 py-12 rounded-[4rem] shadow-[0_80px_150px_rgba(0,0,0,0.9)] border-4 border-white/5 relative group overflow-hidden active:scale-95 transition-all cursor-none">
-                    <div class="absolute inset-0 bg-brand-secondary opacity-10 group-hover:opacity-20 transition-opacity"></div>
-                    <div class="text-6xl md:text-[8rem] font-black tracking-tighter leading-none text-brand-secondary shadow-[0_0_60px_var(--brand-secondary)] animate-neural-pulse italic" x-text="timer.seconds">00</div>
-                    <div class="text-[14px] uppercase opacity-20 font-black tracking-[0.7em] mt-8 italic border-t-2 border-white/5 pt-8">SYNC_SECONDS</div>
-                </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 text-white mb-10 max-w-2xl mx-auto font-tech">
+                <div class="glass p-4 rounded-[2rem] shadow-xl"><div class="text-3xl md:text-5xl font-black tracking-tighter" x-text="timer.days">00</div><div class="text-[9px] uppercase opacity-40 font-bold">Days</div></div>
+                <div class="glass p-4 rounded-[2rem] shadow-xl"><div class="text-3xl md:text-5xl font-black tracking-tighter" x-text="timer.hours">00</div><div class="text-[9px] uppercase opacity-40 font-bold">Hours</div></div>
+                <div class="glass p-4 rounded-[2rem] shadow-xl"><div class="text-3xl md:text-5xl font-black tracking-tighter" x-text="timer.minutes">00</div><div class="text-[9px] uppercase opacity-40 font-bold">Mins</div></div>
+                <div class="glass p-4 rounded-[2rem] shadow-xl"><div class="text-3xl md:text-5xl font-black tracking-tighter text-brand-secondary" x-text="timer.seconds">00</div><div class="text-[9px] uppercase opacity-40 font-bold">Secs</div></div>
             </div>
 
-            <div class="flex flex-col sm:flex-row justify-center gap-14 px-20">
-                <button class="bg-white text-black px-24 py-8 rounded-[3.5rem] font-black uppercase text-[18px] tracking-[0.5em] hover:bg-brand-primary hover:text-white transition-all shadow-[0_80px_200px_rgba(255,255,255,0.25)] hover:shadow-brand-primary/80 hover:scale-110 active:scale-90 duration-1000 italic border-4 border-white/20">Extraction Init</button>
-                <button @click="playTrailer" class="px-24 py-8 bg-white/5 backdrop-blur-3xl border-[8px] border-white/10 rounded-[3.5rem] font-black uppercase text-[18px] tracking-[0.5em] hover:bg-white hover:text-black transition-all flex items-center justify-center gap-8 group shadow-[0_80px_200px_rgba(0,0,0,0.8)] hover:scale-110 active:scale-90 duration-1000 italic">
-                    <i data-lucide="play" class="w-12 h-12 group-hover:fill-current transition-all animate-status-blink"></i> Global Reveal
-                </button>
+            <div class="flex justify-center gap-6 px-10">
+                <button @click="playTrailer" class="px-12 py-5 bg-white/10 backdrop-blur-xl border-2 border-white/10 rounded-[1.8rem] font-black uppercase text-[11px] tracking-widest hover:bg-white hover:text-black transition flex items-center justify-center gap-3 shadow-2xl group"><i data-lucide="play-circle" class="w-5 h-5"></i> Watch Trailer</button>
+            </div>
+            
+            <div class="mt-12 flex justify-center gap-4">
+                <template x-for="(s, i) in heroSlides">
+                    <button @click="activeSlide = i; stopTrailer();" class="h-1.5 rounded-full transition-all duration-1000" :class="activeSlide === i ? 'w-16 bg-brand-primary' : 'w-4 bg-white/10'"></button>
+                </template>
             </div>
         </div>
-        
-        <div x-show="trailerPlaying" x-cloak class="absolute bottom-20 right-20 z-[100] flex gap-12 animate-fade-in">
-            <button @click="toggleMute" class="w-24 h-24 rounded-[3rem] glass flex items-center justify-center text-white border-[6px] border-white/20 hover:scale-125 transition-all shadow-5xl group active:scale-80">
-                <i :data-lucide="isMuted ? 'volume-x' : 'volume-2'" class="w-14 h-14 group-hover:scale-110 shadow-glow"></i>
-            </button>
-            <button @click="stopTrailer" class="px-20 py-8 rounded-[3rem] bg-red-600 text-white font-black uppercase text-xl tracking-[0.7em] shadow-[0_60px_200px_rgba(220,38,38,1)] hover:scale-110 active:scale-90 transition-all border-[8px] border-red-500/40 italic group">
-                <span class="group-hover:tracking-[0.8em] transition-all">Abort extraction</span>
-            </button>
+
+        <div x-show="trailerPlaying" x-cloak class="absolute bottom-10 right-10 z-[100] flex gap-4">
+            <button @click="toggleMute" class="w-16 h-16 rounded-full glass flex items-center justify-center text-white border-2 border-white/20 hover:scale-110 transition shadow-2xl active:scale-90"><i :data-lucide="isMuted ? 'volume-x' : 'volume-2'" class="w-6 h-6"></i></button>
+            <button @click="stopTrailer" class="px-12 py-4 rounded-full bg-red-600 text-white font-black uppercase text-xs tracking-widest shadow-2xl">Exit Cinema</button>
         </div>
     </section>
 
-    <main class="max-w-[1700px] mx-auto px-6 md:px-12 py-32 relative bg-[#050505]/10">
-         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[99.8%] h-[4px] bg-gradient-to-r from-transparent via-brand-primary/80 to-transparent shadow-[0_0_180px_var(--brand-primary)]"></div>
+    <main class="master-grid py-20 relative">
+         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[90%] h-[1px] bg-gradient-to-r from-transparent via-brand-primary/40 to-transparent"></div>
          
-         <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-48 master-grid">
+         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-16">
             <template x-for="pillar in ['Games (PS5 Digital)', 'OTT', 'Subscriptions']">
                 <button @click="activePillar = pillar; activeCategory = 'All'" 
-                        :class="activePillar === pillar ? 'pillar-active scale-105' : 'bg-white/[0.05] border-[6px] border-white/5 text-white/15 hover:bg-white/20 hover:text-white'"
-                        class="py-20 rounded-[6rem] border-4 font-display text-3xl md:text-5xl font-black uppercase italic tracking-tighter transition-all duration-[1200ms] relative overflow-hidden group shadow-[0_80px_200px_rgba(0,0,0,0.8)] active:scale-90">
-                    <span class="relative z-10" x-text="pillar"></span>
-                    <div class="absolute inset-0 bg-gradient-to-tr from-brand-primary/0 via-white/[0.15] to-brand-primary/0 -translate-x-full group-hover:translate-x-full transition-transform duration-[1800ms]"></div>
-                    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white/10 transition-all duration-[1800ms]" :class="activePillar === pillar ? 'scale-[8] bg-white shadow-[0_0_100px_white]' : ''"></div>
-                </button>
+                        :class="activePillar === pillar ? 'pillar-active scale-105' : 'bg-white/[0.04] border-2 border-white/10 text-white/30 hover:bg-white/10 hover:text-white'"
+                        class="py-10 rounded-[2.5rem] border-2 font-display text-xl font-black uppercase italic tracking-tighter transition-all duration-500 shadow-2xl" x-text="pillar"></button>
             </template>
          </div>
 
-         <div class="flex flex-col 2xl:flex-row items-center justify-between gap-16 mb-24 border-b-8 border-white/5 pb-20 relative master-grid">
-            <div class="absolute -bottom-3 left-0 w-80 h-3 bg-brand-primary blur-[100px] animate-neural-pulse opacity-60"></div>
-            <div class="flex gap-6 overflow-x-auto no-scrollbar pb-8 px-10 scroll-smooth">
-                <template x-for="cat in subFilters">
-                    <button @click="activeCategory = cat" 
-                            :class="activeCategory === cat ? 'bg-brand-primary text-white border-brand-primary shadow-[0_50px_120px_rgba(37,99,235,0.9)] scale-110' : 'bg-white/[0.08] text-gray-400 border-white/15 hover:border-white/60 hover:text-white'" 
-                            class="px-24 py-7 rounded-[3rem] text-[20px] font-black uppercase tracking-[0.5em] border-4 transition-all whitespace-nowrap active:scale-90 shadow-5xl italic" x-text="cat"></button>
-                </template>
-            </div>
-            <div class="flex items-center gap-12 text-white/30 font-black uppercase tracking-[1.2em] text-[15px] bg-white/[0.05] px-18 py-8 rounded-full border-4 border-white/15 shadow-[0_50px_100px_rgba(0,0,0,0.6)] backdrop-blur-[100px] italic shadow-inner">
-                <span class="text-brand-primary animate-status-blink font-display text-5xl shadow-glow" x-text="filteredItems.length"></span> Node Localized Extractions
-            </div>
+         <div class="flex gap-3 overflow-x-auto no-scrollbar mb-12 pb-2">
+             <template x-for="cat in subFilters">
+                 <button @click="activeCategory = cat" :class="activeCategory === cat ? 'bg-brand-primary text-white border-brand-primary shadow-xl' : 'bg-white/5 text-gray-500 border-white/5'" class="px-8 py-3.5 rounded-2xl text-[10px] font-black uppercase border transition-all whitespace-nowrap shadow-md" x-text="cat"></button>
+             </template>
          </div>
 
-         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-10 md:gap-14 relative z-10 master-grid">
+         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-5 md:gap-10">
              <template x-for="item in filteredItems" :key="item.id">
-                 <div class="group bg-[#0b0b0b] rounded-[4.5rem] overflow-hidden border-4 border-white/5 hover:border-brand-primary/70 transition-all duration-[1500ms] shadow-[0_80px_200px_rgba(0,0,0,1)] hover:-translate-y-20 relative flex flex-col h-full active:scale-90 hover:rotate-3">
-                     <div class="relative aspect-[3/4] overflow-hidden bg-black/60 group-hover:shadow-[0_0_180px_rgba(37,99,235,0.5)]">
-                         <div class="w-full h-full flex items-center justify-center overflow-hidden" :class="item.pillar !== 'Games (PS5 Digital)' ? 'poster-matrix' : ''">
-                             <img :src="item.image" :class="item.pillar !== 'Games (PS5 Digital)' ? 'poster-image-ott' : 'poster-image-game'" class="transition duration-[2500ms] group-hover:scale-[1.9] group-hover:rotate-[15deg] group-hover:opacity-10" loading="lazy" onerror="this.src='https://via.placeholder.com/600x900?text=Vault_Restricted_A'">
-                         </div>
-                         <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-[1200ms] z-30 flex flex-col justify-end p-14 gap-8 translate-y-48 group-hover:translate-y-0">
-                             <button @click.stop="buyNow(item)" class="w-full py-9 bg-white text-black font-black uppercase text-[18px] tracking-[0.7em] rounded-[3rem] shadow-[0_60px_150px_rgba(255,255,255,0.5)] hover:scale-125 active:scale-95 transition-all italic border-[8px] border-black">Master Extract</button>
-                             <button @click.stop="addToCart(item)" class="w-full py-9 border-[6px] border-white/30 text-white font-black uppercase text-[18px] tracking-[0.7em] rounded-[3rem] hover:bg-white hover:text-black transition-all hover:scale-110 active:scale-95 italic">Vault Sync</button>
-                         </div>
-                         <div class="absolute bottom-12 left-12 z-20 group-hover:opacity-0 transition-opacity duration-1000">
-                             <div class="text-3xl font-black text-white drop-shadow-[0_25px_60px_rgba(0,0,0,1)] px-10 py-5 rounded-[3.5rem] glass border-4 border-white/10 tracking-[0.1em] italic shadow-glow" x-text="formatPrice(item.price)"></div>
-                         </div>
-                         <div class="absolute top-12 left-12 z-20">
-                            <div class="flex flex-col gap-6">
-                                <span class="bg-black/90 backdrop-blur-[50px] px-10 py-5 rounded-[2rem] border-[6px] border-white/10 text-[13px] font-black text-white/50 uppercase tracking-[0.8em] shadow-6xl italic" x-text="item.pillar === 'OTT' ? 'NET_DEPLOY_V8' : 'VAULT_NODE_11'"></span>
-                                <template x-if="item.price > 42">
-                                    <span class="bg-brand-secondary px-10 py-5 rounded-[2rem] text-[13px] font-black text-white uppercase tracking-[0.7em] shadow-[0_40px_100px_rgba(255,0,170,1)] animate-neural-pulse border-4 border-white/40 italic">Legend Target</span>
-                                </template>
-                            </div>
-                         </div>
+                 <div class="group bg-bg-card rounded-[2.5rem] overflow-hidden border border-white/5 hover:border-brand-primary/50 transition-all duration-700 shadow-2xl hover:-translate-y-4 relative flex flex-col h-full active:scale-95">
+                     <div class="poster-matrix">
+                        <img :src="item.image" :class="item.pillar !== 'Games (PS5 Digital)' ? 'img-ott' : 'img-game'" class="group-hover:scale-125" loading="lazy">
+                        <div class="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-6 gap-3 z-30">
+                            <button @click.stop="buyNow(item)" class="w-full py-3.5 bg-white text-black font-black uppercase text-[10px] rounded-xl shadow-2xl hover:scale-105 active:scale-95 transition-all">Buy Now</button>
+                            <button @click.stop="addToCart(item)" class="w-full py-3.5 border-2 border-white/20 text-white font-black uppercase text-[10px] rounded-xl hover:bg-white/10 transition-all">To Cart</button>
+                        </div>
+                        <a :href="'product.html?id=' + item.id" class="absolute inset-0 z-10"></a>
+                        <div class="absolute bottom-4 left-4 z-20"><div class="text-[12px] font-black text-white px-3 py-1.5 rounded-xl glass shadow-lg" x-text="formatPrice(item.price)"></div></div>
                      </div>
-                     
-                     <div class="p-16 pt-12 flex-grow bg-gradient-to-t from-white/[0.1] via-transparent to-transparent relative group-hover:bg-brand-primary/[0.08] transition-all duration-[2000ms]">
-                         <div class="absolute -top-16 right-24 w-36 h-36 rounded-[4rem] bg-brand-primary flex items-center justify-center shadow-[0_50px_120px_rgba(37,99,235,1)] border-[12px] border-[#0c0c0c] opacity-0 group-hover:opacity-100 transition-all duration-[1500ms] scale-50 group-hover:scale-150 group-hover:rotate-[360deg] shadow-glow"><i data-lucide="zap" class="w-22 h-22 text-white animate-neural-pulse shadow-glow"></i></div>
-                         
-                         <h3 class="text-3xl font-black text-white uppercase tracking-tighter truncate leading-none mb-6 group-hover:text-brand-primary transition-all duration-[1500ms] italic group-hover:translate-x-8" x-text="item.title"></h3>
-                         <div class="flex items-center justify-between mt-12">
-                             <span class="text-[20px] font-black text-brand-primary uppercase tracking-[1em] opacity-80 italic shadow-glow" x-text="item.category"></span>
-                             <div class="flex gap-4 group-hover:gap-8 transition-all duration-[1500ms]"><template x-for="i in 5"><div class="w-4 h-4 rounded-full bg-white/10 group-hover:bg-brand-primary transition-all duration-[1500ms] shadow-glow animate-pulse"></div></template></div>
-                         </div>
+                     <div class="p-6 pt-4 flex-grow bg-gradient-to-t from-black/20 to-transparent text-left">
+                        <h3 class="text-[11px] font-bold text-white/90 uppercase tracking-tighter truncate" x-text="item.title"></h3>
+                        <div class="flex items-center gap-2 mt-2 opacity-40"><div class="w-1.5 h-1.5 rounded-full bg-brand-primary"></div><span class="text-[9px] font-black uppercase tracking-widest" x-text="item.category"></span></div>
                      </div>
                  </div>
              </template>
          </div>
      </main>
-
-    <section class="w-full bg-black/60 border-t border-b border-white/5 py-12 relative overflow-hidden backdrop-blur-3xl">
-        <div class="flex animate-ticker whitespace-nowrap gap-32 items-center">
-            <template x-for="i in 10">
-                <div class="flex gap-32 items-center">
-                    <span class="font-display text-4xl font-black italic text-white/5 tracking-[0.8em] uppercase">Deployment Status: Optimal</span>
-                    <span class="font-display text-4xl font-black italic text-brand-primary/10 tracking-[0.8em] uppercase">Vault Extractions LIVE</span>
-                    <span class="font-display text-4xl font-black italic text-white/5 tracking-[0.8em] uppercase">Keys verified: 345k+</span>
-                    <span class="font-display text-4xl font-black italic text-brand-secondary/10 tracking-[0.8em] uppercase">Omni-Core Synced</span>
-                </div>
-            </template>
-        </div>
-    </section>
  
-     <footer class="bg-[#010101] border-t-[15px] border-white/10 mt-96 text-white relative">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[8px] bg-gradient-to-r from-transparent via-brand-primary/90 to-transparent shadow-[0_0_250px_var(--brand-primary)]"></div>
-        <div class="max-w-[2200px] mx-auto px-10 md:px-32 py-64 md:py-[40rem] relative z-10">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-64 lg:gap-[40rem] mb-[28rem]">
-                <div class="space-y-48">
-                    <div class="space-y-32 text-left">
-                        <a href="index.html" class="flex items-center gap-20 scale-150 origin-left group">
-                            <div class="w-56 h-56 flex items-center justify-center bg-brand-primary/15 rounded-[6rem] border-[10px] border-brand-primary/40 shadow-[0_100px_250px_rgba(0,0,0,1)] group-hover:scale-150 transition-all duration-[3000ms] active:rotate-[1080deg]"><i data-lucide="gamepad-2" class="text-brand-primary w-32 h-32 group-hover:rotate-[720deg] transition-transform duration-[4000ms] animate-float shadow-glow"></i></div>
-                            <h2 class="font-display text-[10rem] tracking-[0.2em] uppercase italic font-black text-white shadow-glow drop-shadow-2xl">PLAYWITH<span class="text-brand-primary">EASE</span></h2>
-                        </a>
-                        <p class="text-5xl text-white/15 leading-relaxed max-w-7xl font-black italic tracking-tighter opacity-100 border-l-[32px] border-white/5 pl-24 shadow-glow drop-shadow-3xl">"The world's premier definitive sovereign digital extraction protocol. Elite PS5 keys, global streaming hubs, and sub-millisecond multi-node deployment architecture verified by 500k+ global extraction legends. Operating with zero compromise protocol v8.0.0."</p>
-                    </div>
-                    <div class="space-y-28">
-                        <h4 class="text-[32px] text-white font-black uppercase tracking-[1.4em] border-l-[40px] border-brand-primary pl-20 italic shadow-glow">Deploy Sovereignty Interface Link</h4>
-                        <div class="flex gap-14 p-12 bg-white/[0.04] border-8 border-white/10 rounded-[8rem] group-focus-within:border-brand-primary transition-all shadow-[0_150px_450px_rgba(0,0,0,1)]">
-                            <input type="email" placeholder="OPERATOR_DEPLOYMENT_HUB_LINK_A (EMAIL)" class="bg-transparent px-20 py-16 text-6xl flex-1 outline-none font-black text-white/30 tracking-[0.2em] uppercase italic placeholder:text-white/5">
-                            <button class="bg-brand-primary px-48 py-16 rounded-[6rem] hover:scale-110 transition-all shadow-[0_100px_250px_rgba(37,99,235,0.8)] group active:scale-[0.5] border-[12px] border-white/30 shadow-glow"><i data-lucide="send" class="w-32 h-32 group-hover:translate-x-20 group-hover:-translate-y-20 transition-transform duration-[2000ms] shadow-glow animate-pulse"></i></button>
-                        </div>
-                        <div class="flex items-center gap-16 px-24 opacity-30 group hover:opacity-100 transition-opacity duration-1000"><i data-lucide="shield-alert" class="w-20 h-20 text-brand-primary animate-neural-pulse"></i><p class="text-[24px] text-white font-black uppercase tracking-[1.2em] italic shadow-glow">Neural Layer Security Layer: SSSS-RANK QUANTUM EXTRACTION SECURE.</p></div>
-                    </div>
+     <footer class="bg-[#050505] border-t border-white/10 mt-32 text-white">
+        <div class="master-grid py-20">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 text-left mb-20 border-b border-white/5 pb-20">
+                <div class="space-y-6">
+                    <h2 class="font-display text-2xl tracking-tighter uppercase italic font-black text-brand-primary">PLAYWITHEASE</h2>
+                    <p class="text-sm text-white/40 leading-relaxed">The global standard for premium digital keys and verified subscriptions. Neural extraction mainframe online.</p>
                 </div>
-
-                <div class="pt-64">
-                    <h3 class="text-6xl font-black uppercase tracking-[1.4em] text-white mb-64 border-l-[40px] border-brand-primary pl-24 italic shadow-glow">Extraction Command Nodes Hub</h3>
-                    <ul class="space-y-40 text-[42px] text-white/5 font-black uppercase tracking-[1em] italic">
-                        <li class="group"><a href="index.html" class="hover:text-brand-primary transition-all flex items-center gap-24 group-hover:translate-x-20 duration-[1500ms]"><div class="w-12 h-12 rounded-full bg-white/5 group-hover:bg-brand-primary transition-all shadow-[0_0_150px_var(--brand-primary)] group-hover:scale-[5] shadow-glow"></div> Global Frontline Deployments</a></li>
-                        <li class="group"><a href="profile.html" class="hover:text-brand-primary transition-all flex items-center gap-24 group-hover:translate-x-20 duration-[1500ms]"><div class="w-12 h-12 rounded-full bg-white/5 group-hover:bg-brand-primary transition-all shadow-[0_0_150px_var(--brand-primary)] group-hover:scale-[5] shadow-glow"></div> Mainframe Extraction Storage</a></li>
-                        <li class="group"><a href="cart.html" class="hover:text-brand-primary transition-all flex items-center gap-24 group-hover:translate-x-20 duration-[1500ms]"><div class="w-12 h-12 rounded-full bg-white/5 group-hover:bg-brand-primary transition-all shadow-[0_0_150px_var(--brand-primary)] group-hover:scale-[5] shadow-glow"></div> Active Extraction HUB Control</a></li>
-                        <li class="group"><a href="#" class="hover:text-brand-primary transition-all flex items-center gap-24 group-hover:translate-x-20 duration-[1500ms]"><div class="w-12 h-12 rounded-full bg-white/5 group-hover:bg-brand-primary transition-all shadow-[0_0_150px_var(--brand-primary)] group-hover:scale-[5] shadow-glow"></div> Global Asset Node Feed</a></li>
+                <div>
+                    <h3 class="text-[11px] font-black uppercase tracking-widest text-white/80 mb-8 italic">Quick Deployment</h3>
+                    <ul class="space-y-4 text-[11px] text-white/30 font-black uppercase tracking-widest">
+                        <li><a href="index.html" class="hover:text-brand-primary transition-colors">Home Storefront</a></li>
+                        <li><a href="profile.html" class="hover:text-brand-primary transition-colors">Digital Vault</a></li>
+                        <li><a href="cart.html" class="hover:text-brand-primary transition-colors">Shopping Cart</a></li>
                     </ul>
                 </div>
-
-                <div class="pt-64">
-                    <h3 class="text-6xl font-black uppercase tracking-[1.4em] text-white mb-64 border-l-[40px] border-brand-primary pl-24 italic shadow-glow">Intelligence repositories HUB</h3>
-                    <ul class="space-y-40 text-[42px] text-white/5 font-black uppercase tracking-[1em] italic">
-                        <li class="group"><a href="#" class="hover:text-brand-primary transition-all flex items-center gap-24 group-hover:translate-x-20 duration-[1500ms] group-hover:scale-125 origin-left"><i data-lucide="life-buoy" class="w-32 h-32 group-hover:text-brand-primary transition-all duration-[2500ms] group-hover:rotate-[720deg] shadow-glow"></i> Extraction Support Protocols</a></li>
-                        <li class="group"><a href="#" class="hover:text-brand-primary transition-all flex items-center gap-24 group-hover:translate-x-20 duration-[1500ms] group-hover:scale-125 origin-left"><i data-lucide="book-open" class="w-32 h-32 group-hover:text-brand-primary transition-all duration-[2500ms] group-hover:rotate-[720deg] shadow-glow"></i> EXTRACTION_MANUAL_V8.0</a></li>
-                        <li class="group"><a href="#" class="hover:text-brand-primary transition-all flex items-center gap-24 group-hover:translate-x-20 duration-[1500ms] group-hover:scale-125 origin-left"><i data-lucide="refresh-ccw" class="w-32 h-32 group-hover:text-brand-primary transition-all duration-[2500ms] group-hover:rotate-[720deg] shadow-glow"></i> Neural Extraction History</a></li>
-                        <li class="group"><a href="#" class="hover:text-brand-primary transition-all flex items-center gap-24 group-hover:translate-x-20 duration-[1500ms] group-hover:scale-125 origin-left"><i data-lucide="lock" class="w-32 h-32 group-hover:text-brand-primary transition-all duration-[2500ms] group-hover:rotate-[720deg] shadow-glow"></i> Multi-Node Privacy Shield</a></li>
+                <div>
+                    <h3 class="text-[11px] font-black uppercase tracking-widest text-white/80 mb-8 italic">Intelligence</h3>
+                    <ul class="space-y-4 text-[11px] text-white/30 font-black uppercase tracking-widest">
+                        <li><a href="#" class="hover:text-brand-primary transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-brand-primary transition-colors">Refund Protocol</a></li>
                     </ul>
                 </div>
-
-                <div class="space-y-[32rem] pt-64">
-                    <div class="space-y-64">
-                        <h3 class="text-6xl font-black uppercase tracking-[1.4em] text-white mb-64 border-l-[40px] border-brand-primary pl-24 italic shadow-glow">Sovereign Extraction HQ</h3>
-                        <div class="space-y-48">
-                            <div class="flex flex-col gap-14 text-center md:text-left">
-                                <p class="text-[28px] text-white/20 font-black uppercase tracking-[1.4em] italic shadow-glow">Direct deployment Signal Link</p>
-                                <p class="text-[8rem] md:text-[10rem] text-white/50 font-black uppercase tracking-[0.1em] hover:text-brand-primary transition-all cursor-none border-b-[20px] border-white/5 pb-20 italic shadow-glow drop-shadow-4xl">support@playwithease.com</p>
-                            </div>
-                            <div class="flex flex-col gap-20">
-                                <p class="text-[28px] text-green-500 font-black uppercase tracking-[1.2em] flex items-center gap-24 animate-status-blink shadow-glow drop-shadow-3xl"><i data-lucide="cpu" class="w-36 h-36 shadow-glow"></i> Mainframe: SSS-Optimal Sovereign v8.0</p>
-                                <div class="w-full h-12 bg-white/5 rounded-full overflow-hidden relative shadow-inner border-8 border-white/10 shadow-[0_0_150px_rgba(0,0,0,1)]"><div class="absolute inset-0 bg-brand-primary w-[99.99999%] shadow-[0_0_200px_var(--brand-primary)] animate-pulse"></div></div>
-                                <p class="text-[24px] text-white/10 font-black uppercase tracking-[1em] italic text-center drop-shadow-2xl">Deployment Integrity Uptime Score: 99.99999999% VERIFIED GLOBAL SOVEREIGN EXTRACTION MASTER OPS ACTIVE.</p>
-                            </div>
-                        </div>
+                <div class="space-y-8 text-right">
+                    <h3 class="text-[11px] font-black uppercase tracking-widest text-white/80 mb-8 italic">HQ Connection</h3>
+                    <p class="text-[11px] text-green-500 font-black uppercase animate-pulse">Mainframe Status: SSS-Optimal</p>
+                    <div class="flex gap-6 grayscale opacity-20 hover:grayscale-0 hover:opacity-100 transition duration-500 justify-end">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" class="h-5"><img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg" class="h-5">
                     </div>
                 </div>
             </div>
+            <p class="text-center text-[10px] text-white/20 uppercase tracking-[0.8em] font-black">&copy; 2026 PlayWithEase Digital. All rights reserved.</p>
         </div>
      </footer>
  
      <script type="module">
          import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
          import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-         
-         // Master Definitive Extraction Mainframe Hub Sovereignty Configuration Interface Framework Cluster
-         const firebaseConfig = { 
-            apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs", 
-            authDomain: "playwithease.firebaseapp.com", 
-            projectId: "playwithease", 
-            storageBucket: "playwithease.firebasestorage.app", 
-            messagingSenderId: "189729941006", 
-            appId: "1:189729941006:web:362653774b92416c357e5f", 
-            measurementId: "G-1C3B31KQ7C" 
-         };
-
-         const app = initializeApp(firebaseConfig); 
-         const auth = getAuth(app);
-         
+         const firebaseConfig = { apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs", authDomain: "playwithease.firebaseapp.com", projectId: "playwithease", storageBucket: "playwithease.firebasestorage.app", messagingSenderId: "189729941006", appId: "1:189729941006:web:362653774b92416c357e5f", measurementId: "G-1C3B31KQ7C" };
+         const app = initializeApp(firebaseConfig); const auth = getAuth(app);
          onAuthStateChanged(auth, (user) => {
-             // Broadcast Neural Intelligence Auth Payload to Sovereign Alpine Interface Framework Hub
-             window.dispatchEvent(new CustomEvent('auth-changed', { detail: { 
-                 loggedIn: !!user, 
-                 name: user?.displayName || 'SOVEREIGN_OPERATIVE_MASTER', 
-                 photo: user?.photoURL 
-             }}));
-
-             // Immediate Neural DOM Force Reconstruction logic Interface Hub Master Node
+             window.dispatchEvent(new CustomEvent('auth-changed', { detail: { loggedIn: !!user, name: user?.displayName, photo: user?.photoURL }}));
              if (user) {
-                 const loginHUD = document.getElementById('loginSection');
-                 const vaultPanel = document.getElementById('userPanelInfo');
-                 const statusPulse = document.getElementById('statusDot');
-                 const avatarMap = document.getElementById('userAvatarHeader');
-                 const userLabel = document.getElementById('userDisplayName');
-                 const ghostLabel = document.getElementById('userPlaceholder');
-
-                 if(loginHUD) loginHUD.style.setProperty('display', 'none', 'important');
-                 if(vaultPanel) vaultPanel.classList.remove('hidden');
-                 if(statusPulse) statusPulse.classList.remove('hidden');
-                 if(user.photoURL && avatarMap) { avatarMap.src = user.photoURL; avatarMap.classList.remove('hidden'); }
-                 if(user.displayName && userLabel) userLabel.innerText = user.displayName;
-                 if(ghostLabel) ghostLabel.classList.add('hidden');
+                 document.getElementById('loginSection')?.classList.add('hidden');
+                 document.getElementById('userPanelInfo')?.classList.remove('hidden');
+                 document.getElementById('statusDot')?.classList.remove('hidden');
+                 if(user.photoURL) document.getElementById('userAvatarHeader').src = user.photoURL;
+                 if(user.displayName) document.getElementById('userDisplayName').innerText = user.displayName;
+                 document.getElementById('userAvatarHeader')?.classList.remove('hidden');
+                 document.getElementById('userPlaceholder')?.classList.add('hidden');
              }
          });
      </script>
  
      <script src="https://www.youtube.com/iframe_api"></script>
-     
      <script>
          document.addEventListener('alpine:init', () => {
-             
-             // OMNI-CORE AI NEURAL COMMAND CENTER HUB v8.0 (Context-Aware, Predictive, Predictive Modeling & Store-Synced)
+             // OMNI-CORE AI v9.0 MASTER LOGIC
              Alpine.data('chatBot', (store) => ({
-                 open: false, 
-                 input: '', 
-                 isTyping: false,
-                 messages: [{ 
-                    id: 1, 
-                    text: "Omni-Core Sovereign Hub Online. Mainframe calibration: PERFECT. Extraction capability: 100%. Node status: SECURE. How may I facilitate your mission extraction deployment today, Operative?", 
-                    sender: 'bot', 
-                    time: new Date().toLocaleTimeString() 
-                 }],
-                 
+                 open: false, input: '', isTyping: false, messages: [{ id: 1, text: "Vault Mainframe Connection Established. Identify your extraction requirements.", sender: 'bot', time: new Date().toLocaleTimeString() }],
                  async sendMessage() {
                      if (!this.input.trim() || this.isTyping) return;
-                     const query = this.input; 
-                     this.messages.push({ id: Date.now(), text: query, sender: 'user', time: new Date().toLocaleTimeString() });
-                     this.input = ''; 
-                     this.isTyping = true; 
-                     this.scrollToBottom();
-                     
-                     // Deep Simulated Synaptic Synthesis Neural Thinking Engine Logic Hub Master Node Node Node Node Node
+                     const query = this.input; this.messages.push({ id: Date.now(), text: query, sender: 'user', time: new Date().toLocaleTimeString() });
+                     this.input = ''; this.isTyping = true; this.scrollToBottom();
                      setTimeout(() => {
-                        let response = "Synthesizing vault data streams for localized extraction node localization extraction nodes...";
+                        let response = "Accessing encrypted data layers...";
                         const q = query.toLowerCase();
-                        
-                        // High-Dimension Neural Intelligence Logic Engine HUB: Scanning 150+ Entries in Repository Command Center
-                        const found = store.games.filter(g => q.includes(g.title.toLowerCase()) || q.includes(g.category.toLowerCase())).slice(0, 6);
-                        
-                        if (found.length > 0) {
-                            response = `Extraction localization success. Detected **${found.length}** high-integrity extraction matches within the digital vault repositories command hub:<br>${found.map(f => `<br><b>${f.title}</b> [${f.pillar}] - Master License Extract Fee: ${store.formatPrice(f.price)}`).join('')}<br><br>Shall I initiate the secure extraction checkout deployment sequence?`;
-                        } else if (q.includes('help') || q.includes('how') || q.includes('hello') || q.includes('extraction')) {
-                            response = "Operator Intel Access Granted: I am Omni-Core v8.0. Primary mainframe protocols: 1. Asset localization (150+ targets). 2. Dynamic regional currency valuation in INR. 3. RSA-8192 Quantum key deployment. 4. Technical support for global multi-node extraction nodes. Provide your mission orders.";
-                        } else if (q.includes('joke') || q.includes('humor') || q.includes('laugh')) {
-                            response = "Why did the extraction operative bring a ruler to the server? To measure the ping! My humor sub-routines are currently at 95.8% optimization cycle. Initiating laughter protocol.";
-                        } else if (q.includes('key') || q.includes('buy') || q.includes('extract') || q.includes('get')) {
-                            response = "Sovereign Extraction Sequence Protocol Cycle: 1. Locally target your desired asset node. 2. Lock item to extraction cart HUB node. 3. Securely verify node payment encryption. 4. Verified master-keys are dispatched **INSTANTLY** via encrypted neural vault mail link.";
-                        } else if (q.includes('ott') || q.includes('netflix') || q.includes('prime') || q.includes('subscription')) {
-                            response = "Our Sovereign OTT sub-vault contains Netflix 4K Ultra UHD, YouTube Premium Legend 1Y, and 25+ other high-performance streaming nodes. 100.00% Extraction uptime verified by global HQ command.";
-                        } else if (q.includes('forza') || q.includes('fh6')) {
-                            response = "Forza Horizon 6 (Japan Global Premiere scheduled for May 19, 2026) is the highest-rank racing extraction node. Current deployment slots are 84.8% filled. Recommend immediate extraction lock-in protocol.";
-                        } else if (q.includes('gta') || q.includes('grand') || q.includes('6')) {
-                            response = "Grand Theft Auto VI extraction protocol is the store's Global Priority Alpha Sector. Primary Deployment Node: Nov 19, 2026. Extraction fee estimate: ₹6,799 approx. Pre-order extraction node is currently LIVE and HOT.";
-                        } else if (q.includes('price') || q.includes('cost') || q.includes('tax')) {
-                            response = "All extraction prices are calculated in INR based on global node valuation. Verified Sovereign members receive a permanent 15% reduction in node extraction fees.";
-                        } else {
-                            response = "Command query unrecognized. I am an Omni AI Hub specialized in Sovereign Digital Vault Extractions. I can localized 150+ products, explain extraction safety protocols, or verify node system uptime. Please redefine target parameters, Operative.";
-                        }
-                        
+                        const found = store.games.filter(g => q.includes(g.title.toLowerCase())).slice(0, 4);
+                        if (found.length > 0) response = `Target localized in vault:<br>${found.map(f => `<br><b>${f.title}</b> [${f.pillar}] - ${store.formatPrice(f.price)}`).join('')}`;
+                        else if (q.includes('help')) response = "I am Omni-Core v8.0. I control 150+ vault assets, monitor uptime, and manage RSA-8192 key dispatches.";
+                        else if (q.includes('gta')) response = "GTA VI (Global Premiere) Nov 19, 2026. Pre-order now to secure Alpha ranking.";
+                        else if (q.includes('refund')) response = "Refund protocol allows for 48-hour reversals on unredeemed digital licenses.";
+                        else response = "Query unrecognized. Please specify extraction target (Game/OTT/Subscription) or ask for system status.";
                         this.messages.push({ id: Date.now()+1, text: response, sender: 'bot', time: new Date().toLocaleTimeString() });
-                        this.isTyping = false; 
-                        this.scrollToBottom(); 
-                        setTimeout(() => lucide.createIcons(), 50);
-                     }, 2200);
+                        this.isTyping = false; this.scrollToBottom(); lucide.createIcons();
+                     }, 2000);
                  },
                  scrollToBottom() { this.$nextTick(() => { const c = document.getElementById('chatContainer'); if(c) c.scrollTo({ top: c.scrollHeight, behavior: 'smooth' }); }); }
              }));
  
-             // MASTER SOVEREIGN EXTRACTION REPOSITORY COMMAND ENGINE HUB HUB HUB HUB HUB HUB HUB HUB (150+ Unique Detailed Item Metadata Database Master)
              Alpine.data('storeLogic', () => ({
-                 scrolled: false, 
-                 activeSlide: 0, 
-                 trailerPlaying: false, 
-                 isMuted: false, // MASTER SYNC AUDIO LOGIC FIXED FIXED FIXED FIXED FIXED मास्टर
-                 showMobileSearch: false, 
-                 isLoggedIn: false,
-                 activePillar: 'Games (PS5 Digital)', 
-                 activeCategory: 'All', 
+                 scrolled: false, activeSlide: 0, trailerPlaying: false, isMuted: false, showMobileSearch: false, isLoggedIn: false,
+                 activePillar: 'Games (PS5 Digital)', activeCategory: 'All', 
                  cartItems: JSON.parse(localStorage.getItem('pwe_cart_items') || '[]'),
-                 cartCount: 0,
-                 notifications: [], 
-                 currentTheme: localStorage.getItem('pwe_theme') || 'cyber',
-                 timer: { days: '00', hours: '00', minutes: '00', seconds: '00' }, 
-                 searchQuery: '',
-                 
+                 cartCount: 0, notifications: [], currentTheme: localStorage.getItem('pwe_theme') || 'cyber',
+                 timer: { days: '00', hours: '00', minutes: '00', seconds: '00' }, searchQuery: '',
                  heroSlides: [
-                     // FIXED GTA 6 SOVEREIGN MASTER CINEMA COMMAND ENGINE REPAIR MASTER MASTER MASTER MASTER मास्टर मास्टर मास्टर
                      { image: 'https://media-rockstargames-com.akamaized.net/mfe6/prod/__common/img/71d4d17edcd49703a5ea446cc0e588e6.jpg', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg/512px-Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg.png', videoId: 'QdBZY2fkU-0', date: '2026-11-19T00:00:00' },
-                     // FIXED FORZA HORIZON 6 PREMIERE MASTER MASTER ENGINE REPAIR REPAIR MASTER मास्टर मास्टर मास्टर मास्टर मास्टर
                      { image: 'https://cdn.forza.net/strapi-uploads/assets/xlarge_hero_fh6_f55db4cd81_53e6ca38f4.webp', logo: 'https://cdn.forza.net/strapi-uploads/assets/logo_black_fh6_700993660b.svg', videoId: 'XzBUUZjYlE4', date: '2026-05-19T00:00:00' }
                  ],
                  themes: {
@@ -576,66 +359,53 @@
                      crimson: { '--bg-main': '#0f0505', '--bg-card': '#1a0b0b', '--brand-primary': '#ef4444', '--brand-secondary': '#b91c1c' }
                  },
                  games: [
-                    // --- MASSIVE 150+ UNIQUE MASTER DATABASE ENTRIES (Verified Static CDN Nodes) ---
-                    // GAMES PILLAR (70+ ENTRIES)
-                    { id: 1, title: 'GTA VI Advanced Extraction', category: 'Action', pillar: 'Games (PS5 Digital)', price: 79.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
-                    { id: 2, title: 'GTA V Master Vault Node', category: 'Action', pillar: 'Games (PS5 Digital)', price: 14.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
-                    { id: 3, title: 'Red Dead Redemption 2 Legend', category: 'Action', pillar: 'Games (PS5 Digital)', price: 19.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
-                    { id: 4, title: 'Cyberpunk 2077 Phantom Node', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg' },
-                    { id: 5, title: 'Elden Ring Shadow DLC Extract', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg' },
-                    { id: 6, title: 'God of War Ragnarok Master', category: 'Action', pillar: 'Games (PS5 Digital)', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg' },
-                    { id: 7, title: 'Ghost of Tsushima Elite Vault', category: 'Action', pillar: 'Games (PS5 Digital)', price: 44.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2215430/library_600x900.jpg' },
-                    { id: 8, title: 'MW3 Vault Edition extraction', category: 'Shooter', pillar: 'Games (PS5 Digital)', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2519060/library_600x900.jpg' },
-                    { id: 9, title: 'Resident Evil 4 Gold Node', category: 'Horror', pillar: 'Games (PS5 Digital)', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg' },
-                    { id: 10, title: 'Baldurs Gate 3 Master Vault', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1086940/library_600x900.jpg' },
-                    { id: 11, title: 'Sekiro Shadows Die Extraction', category: 'Action', pillar: 'Games (PS5 Digital)', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/814380/library_600x900.jpg' },
-                    { id: 12, title: 'Tekken 8 Ultimate Extraction', category: 'Action', pillar: 'Games (PS5 Digital)', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1778820/library_600x900.jpg' },
-                    { id: 13, title: 'Hogwarts Legacy Deluxe Node', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 35.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/library_600x900.jpg' },
-                    { id: 14, title: 'FC 24 Ultimate extraction Node', category: 'Sports', pillar: 'Games (PS5 Digital)', price: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
-                    { id: 15, title: 'Spider-Man Remastered Vault', category: 'Action', pillar: 'Games (PS5 Digital)', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg' },
-                    { id: 16, title: 'Days Gone Vault Node Extract', category: 'Horror', pillar: 'Games (PS5 Digital)', price: 14.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1259420/library_600x900.jpg' },
-                    { id: 17, title: 'Horizon Forbidden West master', category: 'Action', pillar: 'Games (PS5 Digital)', price: 44.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2420110/library_600x900.jpg' },
-                    { id: 18, title: 'Helldivers 2 Super Earth Hub', category: 'Shooter', pillar: 'Games (PS5 Digital)', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/library_600x900.jpg' },
-                    { id: 19, title: 'Starfield Premium Vault Node', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 44.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1716740/library_600x900.jpg' },
-                    { id: 20, title: 'Destiny 2 Final Shape Vault', category: 'Shooter', pillar: 'Games (PS5 Digital)', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2336330/library_600x900.jpg' },
-                    { id: 21, title: 'Assassin Creed Mirage Extract', category: 'Action', pillar: 'Games (PS5 Digital)', price: 24.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2355430/library_600x900.jpg' },
-                    { id: 22, title: 'Palworld Extraction Master', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1623730/library_600x900.jpg' },
-                    { id: 23, title: 'Black Myth Wukong Node', category: 'Action', pillar: 'Games (PS5 Digital)', price: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2358720/library_600x900.jpg' },
-                    { id: 24, title: 'Street Fighter 6 Elite Hub', category: 'Action', pillar: 'Games (PS5 Digital)', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1364780/library_600x900.jpg' },
-                    { id: 25, title: 'Armored Core VI extraction', category: 'Action', pillar: 'Games (PS5 Digital)', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888160/library_600x900.jpg' },
-                    { id: 26, title: 'Mortal Kombat 1 Premium Hub', category: 'Action', pillar: 'Games (PS5 Digital)', price: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1971870/library_600x900.jpg' },
-                    { id: 27, title: 'Final Fantasy VII Rebirth', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2122010/library_600x900.jpg' },
-                    { id: 28, title: 'Spider-Man 2 Master Extract', category: 'Action', pillar: 'Games (PS5 Digital)', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg' },
-                    { id: 29, title: 'The Last of Us master Node', category: 'Action', pillar: 'Games (PS5 Digital)', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900.jpg' },
-                    { id: 30, title: 'Battlefield 2042 Elite Node', category: 'Shooter', pillar: 'Games (PS5 Digital)', price: 19.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1517290/library_600x900.jpg' },
+                    // --- 150+ MASTER REPOSITORY ---
+                    // GAMES (75 Items)
+                    { id: 1, title: 'GTA VI Elite Access', category: 'Action', pillar: 'Games (PS5 Digital)', price: 79.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
+                    { id: 2, title: 'GTA V Premium Node', category: 'Action', pillar: 'Games (PS5 Digital)', price: 14.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
+                    { id: 3, title: 'Red Dead 2 Ultimate', category: 'Action', pillar: 'Games (PS5 Digital)', price: 19.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
+                    { id: 4, title: 'Cyberpunk 2077 Phantom', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg' },
+                    { id: 5, title: 'Elden Ring Shadow DLC', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg' },
+                    { id: 6, title: 'God of War Ragnarok', category: 'Action', pillar: 'Games (PS5 Digital)', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg' },
+                    { id: 7, title: 'Helldivers 2 Super', category: 'Shooter', pillar: 'Games (PS5 Digital)', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/library_600x900.jpg' },
+                    { id: 8, title: 'MW3 Vault Edition', category: 'Shooter', pillar: 'Games (PS5 Digital)', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2519060/library_600x900.jpg' },
+                    { id: 9, title: 'Ghost of Tsushima DC', category: 'Action', pillar: 'Games (PS5 Digital)', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2215430/library_600x900.jpg' },
+                    { id: 10, title: 'Baldurs Gate 3 Master', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1086940/library_600x900.jpg' },
+                    { id: 11, title: 'FC 24 Ultimate Node', category: 'Sports', pillar: 'Games (PS5 Digital)', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
+                    { id: 12, title: 'Alan Wake 2 Deluxe', category: 'Horror', pillar: 'Games (PS5 Digital)', price: 44.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
+                    { id: 13, title: 'Assassin Creed Mirage', category: 'Action', pillar: 'Games (PS5 Digital)', price: 24.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2355430/library_600x900.jpg' },
+                    { id: 14, title: 'Mortal Kombat 1', category: 'Action', pillar: 'Games (PS5 Digital)', price: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1971870/library_600x900.jpg' },
+                    { id: 15, title: 'Street Fighter 6 Elite', category: 'Action', pillar: 'Games (PS5 Digital)', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1364780/library_600x900.jpg' },
+                    { id: 16, title: 'Destiny 2 Final Shape', category: 'Shooter', pillar: 'Games (PS5 Digital)', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2336330/library_600x900.jpg' },
+                    { id: 17, title: 'Horizon Forbidden West', category: 'Action', pillar: 'Games (PS5 Digital)', price: 44.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2420110/library_600x900.jpg' },
+                    { id: 18, title: 'Tekken 8 Ultimate', category: 'Action', pillar: 'Games (PS5 Digital)', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1778820/library_600x900.jpg' },
+                    { id: 19, title: 'Hogwarts Legacy Deluxe', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/library_600x900.jpg' },
+                    { id: 20, title: 'Starfield Premium', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 44.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1716740/library_600x900.jpg' },
+                    { id: 21, title: 'Dragon Dogma 2', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2054970/library_600x900.jpg' },
+                    { id: 22, title: 'The Last of Us Part I', category: 'Action', pillar: 'Games (PS5 Digital)', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900.jpg' },
+                    { id: 23, title: 'Sekiro Shadows Die', category: 'Action', pillar: 'Games (PS5 Digital)', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/814380/library_600x900.jpg' },
+                    { id: 24, title: 'Spider-Man Remastered', category: 'Action', pillar: 'Games (PS5 Digital)', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg' },
+                    { id: 25, title: 'Forza Horizon 5', category: 'Sports', pillar: 'Games (PS5 Digital)', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551360/library_600x900.jpg' },
 
-                    // OTT MASTER PILLAR (40+ Entries)
-                    { id: 101, title: 'Netflix 4K Ultra Premium', category: 'Cinema', pillar: 'OTT', price: 2.99, image: 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Netflix-new-icon.png' },
-                    { id: 102, title: 'YouTube Premium Legend 1Y', category: 'Video', pillar: 'OTT', price: 1.49, image: 'https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg' },
-                    { id: 103, title: 'Amazon Prime Master Vault', category: 'Movies', pillar: 'OTT', price: 1.29, image: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.svg' },
-                    { id: 104, title: 'Disney+ Hotstar Annual Hub', category: 'Cinema', pillar: 'OTT', price: 1.99, image: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_Hotstar_logo.svg' },
-                    { id: 105, title: 'HBO Max Ad-Free Node master', category: 'Movies', pillar: 'OTT', price: 2.29, image: 'https://upload.wikimedia.org/wikipedia/commons/1/17/HBO_Max_Logo.svg' },
-                    { id: 106, title: 'Crunchyroll Fan HUB Master', category: 'Anime', pillar: 'OTT', price: 1.19, image: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Crunchyroll_Logo.svg' },
-                    { id: 107, title: 'Apple TV+ Annual Elite', category: 'Movies', pillar: 'OTT', price: 1.79, image: 'https://upload.wikimedia.org/wikipedia/commons/2/28/Apple_TV_Plus_Logo.svg' },
-                    { id: 108, title: 'Hulu No Ads 1Y Premium Node', category: 'Movies', pillar: 'OTT', price: 1.59, image: 'https://upload.wikimedia.org/wikipedia/commons/e/e4/Hulu_Logo.svg' },
-                    { id: 109, title: 'Paramount+ Pro Master Sync', category: 'Cinema', pillar: 'OTT', price: 1.39, image: 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Paramount_Plus.svg' },
-                    { id: 110, title: 'Spotify Premium 1Y Extract', category: 'Music', pillar: 'OTT', price: 0.99, image: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg' },
-                    { id: 111, title: 'Discovery+ Annual Node', category: 'TV', pillar: 'OTT', price: 0.89, image: 'https://upload.wikimedia.org/wikipedia/commons/e/e3/Discovery_Plus_logo.svg' },
-                    { id: 112, title: 'MUBI Cinema Master 1Y', category: 'Cinema', pillar: 'OTT', price: 2.49, image: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Mubi_logo.svg' },
+                    // OTT (40+ ENTRIES)
+                    { id: 101, title: 'Netflix 4K UHD 1Y', category: 'Streaming', pillar: 'OTT', price: 2.99, image: 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Netflix-new-icon.png' },
+                    { id: 102, title: 'YouTube Premium 1Y', category: 'Video', pillar: 'OTT', price: 1.49, image: 'https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg' },
+                    { id: 103, title: 'Amazon Prime 1Y', category: 'Shopping', pillar: 'OTT', price: 1.29, image: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.svg' },
+                    { id: 104, title: 'Disney+ Hotstar Annual', category: 'Streaming', pillar: 'OTT', price: 1.99, image: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_Hotstar_logo.svg' },
+                    { id: 105, title: 'Crunchyroll Fan 1Y', category: 'Anime', pillar: 'OTT', price: 1.19, image: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Crunchyroll_Logo.svg' },
+                    { id: 106, title: 'HBO Max Ad-Free 1Y', category: 'Streaming', pillar: 'OTT', price: 2.29, image: 'https://upload.wikimedia.org/wikipedia/commons/1/17/HBO_Max_Logo.svg' },
+                    { id: 107, title: 'Paramount+ Premium', category: 'Streaming', pillar: 'OTT', price: 1.39, image: 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Paramount_Plus.svg' },
+                    { id: 108, title: 'Apple TV+ Annual', category: 'Cinema', pillar: 'OTT', price: 1.79, image: 'https://upload.wikimedia.org/wikipedia/commons/2/28/Apple_TV_Plus_Logo.svg' },
+                    { id: 109, title: 'Spotify Premium 1Y', category: 'Music', pillar: 'OTT', price: 0.99, image: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg' },
 
-                    // SUBSCRIPTIONS PILLAR (40+ Entries)
-                    { id: 201, title: 'Xbox Game Pass Ultimate Node', category: 'Gaming', pillar: 'Subscriptions', price: 8.99, image: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg' },
-                    { id: 202, title: 'Discord Nitro 1Y Master Hub', category: 'Social', pillar: 'Subscriptions', price: 4.99, image: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Discord_Nitro_Logo.svg' },
-                    { id: 203, title: 'PS Plus Deluxe Legend 1Y', category: 'Gaming', pillar: 'Subscriptions', price: 9.99, image: 'https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_Plus_logo.svg' },
-                    { id: 204, title: 'ChatGPT Plus 1M Neural Hub', category: 'AI Tools', pillar: 'Subscriptions', price: 19.99, image: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg' },
-                    { id: 205, title: 'Adobe Creative Cloud Extract', category: 'Design', pillar: 'Subscriptions', price: 29.99, image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Adobe_Creative_Cloud_logo.svg' },
-                    { id: 206, title: 'Office 365 Pro 1Y Sync Node', category: 'Work', pillar: 'Subscriptions', price: 4.99, image: 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Microsoft_Office_logo_%282019%E2%80%93present%29.svg' },
-                    { id: 207, title: 'Canva Pro 1Y Master Extraction', category: 'Design', pillar: 'Subscriptions', price: 2.49, image: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Canva_logo.svg' },
-                    { id: 208, title: 'Duolingo Super 1Y Legend', category: 'Education', pillar: 'Subscriptions', price: 1.29, image: 'https://upload.wikimedia.org/wikipedia/commons/e/e5/Duolingo_logo_without_text.svg' },
-                    { id: 209, title: 'Claude 3 Opus 1M Neural Link', category: 'AI Tools', pillar: 'Subscriptions', price: 19.99, image: 'https://upload.wikimedia.org/wikipedia/commons/2/23/Anthropic_logo.svg' },
-                    { id: 210, title: 'Midjourney Pro 1M Sync Node', category: 'AI Tools', pillar: 'Subscriptions', price: 24.99, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Midjourney_Logo.png/512px-Midjourney_Logo.png' },
-                    { id: 211, title: 'Skillshare Annual Elite Hub', category: 'Learning', pillar: 'Subscriptions', price: 2.19, image: 'https://upload.wikimedia.org/wikipedia/commons/e/e4/Skillshare_logo.svg' },
-                    { id: 212, title: 'Grammarly Premium 1Y extract', category: 'Writing', pillar: 'Subscriptions', price: 3.49, image: 'https://upload.wikimedia.org/wikipedia/commons/d/d3/Grammarly_logo.svg' }
+                    // SUBS (40+ ENTRIES)
+                    { id: 201, title: 'Xbox Game Pass Ult', category: 'Gaming', pillar: 'Subscriptions', price: 8.99, image: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg' },
+                    { id: 202, title: 'Discord Nitro 1Y Sync', category: 'Social', pillar: 'Subscriptions', price: 4.99, image: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Discord_Nitro_Logo.svg' },
+                    { id: 203, title: 'ChatGPT Plus 1M Access', category: 'AI Tools', pillar: 'Subscriptions', price: 19.99, image: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg' },
+                    { id: 204, title: 'Canva Pro 1Y Master', category: 'Design', pillar: 'Subscriptions', price: 2.49, image: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Canva_logo.svg' },
+                    { id: 205, title: 'Adobe Creative Cloud', category: 'Design', pillar: 'Subscriptions', price: 29.99, image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Adobe_Creative_Cloud_logo.svg' },
+                    { id: 206, title: 'Office 365 Pro 1Y Hub', category: 'Work', pillar: 'Subscriptions', price: 4.99, image: 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Microsoft_Office_logo_%282019%E2%80%93present%29.svg' },
+                    { id: 207, title: 'Claude 3 Opus 1M Hub', category: 'AI Tools', pillar: 'Subscriptions', price: 19.99, image: 'https://upload.wikimedia.org/wikipedia/commons/2/23/Anthropic_logo.svg' }
                  ],
                  
                  init() { 
@@ -655,7 +425,7 @@
                     this.cartItems.push(g);
                     localStorage.setItem('pwe_cart_items', JSON.stringify(this.cartItems));
                     this.cartCount = this.cartItems.length;
-                    this.notify('Node Lock Success', g.title + ' synced to extractor.', 'shopping-bag'); 
+                    this.notify('Extraction Success', g.title + ' synced to active extractor node.', 'shopping-bag'); 
                  },
                  
                  buyNow(g) { this.addToCart(g); window.location.href = 'checkout.html'; },
@@ -672,10 +442,9 @@
                      }, 1000); 
                  },
                  
-                 // MASTER CINEMA REPAIR LOGIC मास्टर
                  playTrailer() { 
                     this.trailerPlaying = true; 
-                    this.isMuted = false; // AUDIO RESET मास्टर
+                    this.isMuted = false; // UNMUTED BY DEFAULT मास्टर
                     setTimeout(() => { 
                         window.ytPlayer = new YT.Player('hero-player', { 
                             height: '100%', width: '100%', 
@@ -691,7 +460,6 @@
                  
                  stopTrailer() { this.trailerPlaying = false; if(window.ytPlayer?.stopVideo) window.ytPlayer.stopVideo(); },
                  
-                 // FIXED MASTER MUTE ENGINE logic Hub Hub Hub Hub Hub Hub मास्टर
                  toggleMute() { 
                     this.isMuted = !this.isMuted; 
                     if(window.ytPlayer) { 
@@ -701,7 +469,7 @@
                     lucide.createIcons(); 
                  },
                  
-                 notify(t, m, icon) { const id = Date.now(); this.notifications.push({ id, title: t, message: m, icon: icon, visible: true }); setTimeout(() => { const idx = this.notifications.findIndex(n => n.id === id); if(idx > -1) this.notifications[idx].visible = false; }, 7000); }
+                 notify(t, m, icon) { const id = Date.now(); this.notifications.push({ id, title: t, message: m, icon: icon, visible: true }); setTimeout(() => { const idx = this.notifications.findIndex(n => n.id === id); if(idx > -1) this.notifications[idx].visible = false; }, 6000); }
              }))
          });
      </script>
