@@ -34,9 +34,11 @@
         .nav-base { background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); height: 75px; }
         .nav-scrolled { background: rgba(8, 8, 8, 0.98); border-bottom: 1px solid rgba(255, 255, 255, 0.1); height: 65px; }
         @media (min-width: 768px) { .nav-base { height: 85px; } .nav-scrolled { height: 75px; } }
+        
         body { -webkit-tap-highlight-color: transparent; color: var(--text-main); background-color: var(--bg-main); overflow-x: hidden; }
         [x-cloak] { display: none !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        
         .video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 20; background: black; }
         .video-background { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%); pointer-events: none; object-fit: cover; }
         svg.lucide { display: inline-block !important; vertical-align: middle; }
@@ -141,7 +143,7 @@
          </div>
          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
              <template x-for="game in filteredGames" :key="game.id">
-                 <div class="group bg-bg-card rounded-3xl overflow-hidden border border-white/5 hover:border-brand-primary/50 transition-all shadow-lg hover:-translate-y-2 relative">
+                 <div class="group bg-bg-card rounded-3xl overflow-hidden border border-white/5 hover:border-brand-primary/50 transition-all shadow-lg hover:-translate-y-2 relative flex flex-col">
                      <div class="relative aspect-[3/4] overflow-hidden">
                          <img :src="game.image" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" loading="lazy">
                          <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4 gap-2 z-30">
@@ -161,8 +163,50 @@
      </main>
  
      <footer class="bg-[#050505] border-t border-white/10 mt-20 text-white">
-        <div class="max-w-[1600px] mx-auto px-4 md:px-6 py-14 md:py-16 text-center">
-            <p class="text-xs text-white/40">&copy; 2026 PlayWithEase Digital. All rights reserved.</p>
+        <div class="max-w-[1600px] mx-auto px-4 md:px-6 py-14 md:py-16">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 text-left">
+                <div class="space-y-4">
+                    <a href="index.html" class="flex items-center gap-2 w-fit">
+                        <div class="w-9 h-9 flex items-center justify-center bg-brand-primary/10 rounded-xl border border-brand-primary/20"><i data-lucide="gamepad-2" class="text-brand-primary"></i></div>
+                        <h2 class="font-display text-lg tracking-tight uppercase italic font-black">PLAYWITH<span class="text-brand-primary">EASE</span></h2>
+                    </a>
+                    <p class="text-sm text-white/60 leading-relaxed">Premium digital game marketplace delivering instant keys, verified sellers, and player-first support for every order.</p>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80 mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-sm text-white/60">
+                        <li><a href="index.html" class="hover:text-white transition">Store Home</a></li>
+                        <li><a href="profile.html" class="hover:text-white transition">My Vault</a></li>
+                        <li><a href="cart.html" class="hover:text-white transition">Cart</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80 mb-4">Customer Care</h3>
+                    <ul class="space-y-2 text-sm text-white/60">
+                        <li><a href="#" class="hover:text-white transition">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white transition">Refund Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80">Contact</h3>
+                    <div class="space-y-3 text-sm text-white/60">
+                        <p class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4 text-brand-primary"></i> support@playwithease.com</p>
+                        <p class="flex items-center gap-2"><i data-lucide="clock-3" class="w-4 h-4 text-brand-primary"></i> 24/7 Live Assistance</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-white/40">
+                <p>&copy; 2026 PlayWithEase Digital. All rights reserved.</p>
+                <div class="flex items-center gap-5 uppercase tracking-[0.2em]">
+                    <span class="flex items-center gap-1"><i data-lucide="badge-check" class="w-3.5 h-3.5"></i> Trusted Keys</span>
+                    <span class="flex items-center gap-1"><i data-lucide="zap" class="w-3.5 h-3.5"></i> Instant Access</span>
+                </div>
+            </div>
         </div>
      </footer>
  
@@ -212,7 +256,7 @@
                      minimal: { '--bg-main': '#ffffff', '--bg-card': '#f3f4f6', '--brand-primary': '#000000', '--brand-secondary': '#374151' }
                  },
                  games: [
-                    // --- GAMES (Steam CDN Fix) ---
+                    // --- GAMES (Steam CDN) ---
                     { id: 1, title: 'GTA V', category: 'Action', price: 14.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
                     { id: 2, title: 'RDR 2', category: 'Action', price: 19.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
                     { id: 3, title: 'Cyberpunk 2077', category: 'RPG', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg' },
