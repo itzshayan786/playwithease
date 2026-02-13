@@ -98,7 +98,10 @@
                         <div id="userPanelInfo" class="px-4 py-3 border-b border-white/5 mb-2 hidden text-white"><p id="userDisplayName" class="text-sm font-bold truncate"></p></div>
                         <a href="profile.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition group text-sm font-medium text-white"><i data-lucide="key" class="text-brand-primary"></i> My Vault</a>
                         <div class="mt-2 pt-2 border-t border-white/5"><div class="flex justify-between px-2 pb-2"><button @click="setTheme('cyber')" class="w-8 h-8 rounded-lg bg-blue-600 border border-white/10"></button><button @click="setTheme('luxury')" class="w-8 h-8 rounded-lg bg-yellow-500 border border-white/10"></button><button @click="setTheme('toxic')" class="w-8 h-8 rounded-lg bg-green-500 border border-white/10"></button><button @click="setTheme('crimson')" class="w-8 h-8 rounded-lg bg-red-600 border border-white/10"></button><button @click="setTheme('minimal')" class="w-8 h-8 rounded-lg bg-white border border-gray-300"></button></div></div>
-                        <div id="loginSection" class="p-2 pt-4 border-t border-white/5 mt-2"><a href="login.html" class="flex justify-center w-full py-2.5 bg-white text-black font-black text-xs uppercase rounded-xl">Login</a></div>
+                        
+                        <div id="loginSection" class="p-2 pt-4 border-t border-white/5 mt-2">
+                            <a href="login.html" class="flex justify-center w-full py-2.5 bg-white text-black font-black text-xs uppercase rounded-xl">Login</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -170,42 +173,30 @@
                         <div class="w-9 h-9 flex items-center justify-center bg-brand-primary/10 rounded-xl border border-brand-primary/20"><i data-lucide="gamepad-2" class="text-brand-primary"></i></div>
                         <h2 class="font-display text-lg tracking-tight uppercase italic font-black">PLAYWITH<span class="text-brand-primary">EASE</span></h2>
                     </a>
-                    <p class="text-sm text-white/60 leading-relaxed">Premium digital game marketplace delivering instant keys, verified sellers, and player-first support for every order.</p>
+                    <p class="text-sm text-white/60 leading-relaxed">Premium digital game marketplace delivering instant keys and verified access.</p>
                 </div>
-
                 <div>
                     <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80 mb-4">Quick Links</h3>
                     <ul class="space-y-2 text-sm text-white/60">
-                        <li><a href="index.html" class="hover:text-white transition">Store Home</a></li>
-                        <li><a href="profile.html" class="hover:text-white transition">My Vault</a></li>
-                        <li><a href="cart.html" class="hover:text-white transition">Cart</a></li>
+                        <li><a href="index.html">Store Home</a></li>
+                        <li><a href="profile.html">My Vault</a></li>
+                        <li><a href="cart.html">Cart</a></li>
                     </ul>
                 </div>
-
                 <div>
-                    <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80 mb-4">Customer Care</h3>
+                    <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80 mb-4">Care</h3>
                     <ul class="space-y-2 text-sm text-white/60">
-                        <li><a href="#" class="hover:text-white transition">Help Center</a></li>
-                        <li><a href="#" class="hover:text-white transition">Refund Policy</a></li>
-                        <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Refund Policy</a></li>
                     </ul>
                 </div>
-
                 <div class="space-y-4">
                     <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80">Contact</h3>
-                    <div class="space-y-3 text-sm text-white/60">
-                        <p class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4 text-brand-primary"></i> support@playwithease.com</p>
-                        <p class="flex items-center gap-2"><i data-lucide="clock-3" class="w-4 h-4 text-brand-primary"></i> 24/7 Live Assistance</p>
-                    </div>
+                    <p class="text-sm text-white/60">support@playwithease.com</p>
                 </div>
             </div>
-
-            <div class="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-white/40">
+            <div class="mt-10 pt-6 border-t border-white/10 text-center text-xs text-white/40">
                 <p>&copy; 2026 PlayWithEase Digital. All rights reserved.</p>
-                <div class="flex items-center gap-5 uppercase tracking-[0.2em]">
-                    <span class="flex items-center gap-1"><i data-lucide="badge-check" class="w-3.5 h-3.5"></i> Trusted Keys</span>
-                    <span class="flex items-center gap-1"><i data-lucide="zap" class="w-3.5 h-3.5"></i> Instant Access</span>
-                </div>
             </div>
         </div>
      </footer>
@@ -217,11 +208,17 @@
          const app = initializeApp(firebaseConfig); const auth = getAuth(app);
          onAuthStateChanged(auth, (user) => {
              if (user) {
+                 // Hide login button and show vault info
+                 document.getElementById('loginSection')?.classList.add('hidden');
                  document.getElementById('userPanelInfo')?.classList.remove('hidden');
                  if(user.photoURL) document.getElementById('userAvatarHeader').src = user.photoURL;
                  if(user.displayName) document.getElementById('userDisplayName').innerText = user.displayName;
                  document.getElementById('userAvatarHeader')?.classList.remove('hidden');
                  document.getElementById('userPlaceholder')?.classList.add('hidden');
+             } else {
+                 // Ensure login is visible if logged out
+                 document.getElementById('loginSection')?.classList.remove('hidden');
+                 document.getElementById('userPanelInfo')?.classList.add('hidden');
              }
          });
      </script>
@@ -256,7 +253,6 @@
                      minimal: { '--bg-main': '#ffffff', '--bg-card': '#f3f4f6', '--brand-primary': '#000000', '--brand-secondary': '#374151' }
                  },
                  games: [
-                    // --- GAMES (Steam CDN) ---
                     { id: 1, title: 'GTA V', category: 'Action', price: 14.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
                     { id: 2, title: 'RDR 2', category: 'Action', price: 19.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
                     { id: 3, title: 'Cyberpunk 2077', category: 'RPG', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg' },
@@ -288,11 +284,11 @@
                     { id: 29, title: 'Battlefield 2042', category: 'Shooter', price: 19.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1517290/library_600x900.jpg' },
                     { id: 30, title: 'Halo Infinite', category: 'Shooter', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1240440/library_600x900.jpg' },
                     
-                    // --- OTT & SUBS ---
-                    { id: 101, title: 'Netflix Premium', category: 'OTT', price: 2.99, image: 'https://www.edigitalagency.com.au/wp-content/uploads/Netflix-logo-red-black-png.png' },
-                    { id: 102, title: 'YouTube Premium', category: 'OTT', price: 1.49, image: 'https://upload.wikimedia.org/wikipedia/commons/e/e1/Logo_of_YouTube_Premium.svg' },
-                    { id: 103, title: 'Amazon Prime', category: 'OTT', price: 1.29, image: 'https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png' },
-                    { id: 104, title: 'Disney+ Hotstar', category: 'OTT', price: 1.99, image: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_Hotstar_logo.svg' },
+                    // OTT Fixed Posters
+                    { id: 101, title: 'Netflix Premium', category: 'OTT', price: 2.99, image: 'https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg' },
+                    { id: 102, title: 'YouTube Premium', category: 'OTT', price: 1.49, image: 'https://upload.wikimedia.org/wikipedia/commons/4/4c/YouTube_Icon.svg' },
+                    { id: 103, title: 'Amazon Prime', category: 'OTT', price: 1.29, image: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.svg' },
+                    { id: 104, title: 'Disney+ Hotstar', category: 'OTT', price: 1.99, image: 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Disney%2B_Hotstar_logo.svg' },
                     { id: 201, title: 'Xbox Game Pass', category: 'Subscriptions', price: 8.99, image: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg' },
                     { id: 202, title: 'Discord Nitro', category: 'Subscriptions', price: 4.99, image: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Discord_Nitro_Logo.svg' }
                  ],
