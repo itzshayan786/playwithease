@@ -134,6 +134,7 @@
             <button @click="stopTrailer" class="px-8 py-3 rounded-full bg-red-600 text-white font-black uppercase text-xs">Close</button>
         </div>
     </section>
+
     <main class="max-w-[1600px] mx-auto px-4 md:px-6 py-16">
          <div class="flex gap-2 overflow-x-auto no-scrollbar mb-10 pb-2">
              <template x-for="cat in ['All', 'Action', 'RPG', 'Shooter', 'Sports', 'Horror']">
@@ -158,61 +159,59 @@
          </div>
      </main>
  
--    <footer class="bg-[#050505] border-t border-white/5 mt-20 pt-20 pb-12 text-center text-white/20 uppercase tracking-[1em] text-[10px]">
--        &copy; 2026 PlayWithEase Digital
-+    <footer class="bg-[#050505] border-t border-white/10 mt-20 text-white">
-+        <div class="max-w-[1600px] mx-auto px-4 md:px-6 py-14 md:py-16">
-+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-+                <div class="space-y-4">
-+                    <a href="index.html" class="flex items-center gap-2 w-fit">
-+                        <div class="w-9 h-9 flex items-center justify-center bg-brand-primary/10 rounded-xl border border-brand-primary/20"><i data-lucide="gamepad-2" class="text-brand-primary"></i></div>
-+                        <h2 class="font-display text-lg tracking-tight uppercase italic font-black">PLAYWITH<span class="text-brand-primary">EASE</span></h2>
-+                    </a>
-+                    <p class="text-sm text-white/60 leading-relaxed">Premium digital game marketplace delivering instant keys, verified sellers, and player-first support for every order.</p>
-+                    <div class="flex items-center gap-2 text-xs text-white/50 uppercase tracking-[0.2em]">
-+                        <i data-lucide="shield-check" class="w-4 h-4 text-brand-primary"></i>
-+                        Secure Checkout Enabled
-+                    </div>
-+                </div>
-+
-+                <div>
-+                    <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80 mb-4">Quick Links</h3>
-+                    <ul class="space-y-2 text-sm text-white/60">
-+                        <li><a href="index.html" class="hover:text-white transition">Store Home</a></li>
-+                        <li><a href="profile.html" class="hover:text-white transition">My Vault</a></li>
-+                        <li><a href="cart.html" class="hover:text-white transition">Cart</a></li>
-+                        <li><a href="checkout.html" class="hover:text-white transition">Checkout</a></li>
-+                    </ul>
-+                </div>
-+
-+                <div>
-+                    <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80 mb-4">Customer Care</h3>
-+                    <ul class="space-y-2 text-sm text-white/60">
-+                        <li><a href="#" class="hover:text-white transition">Help Center</a></li>
-+                        <li><a href="#" class="hover:text-white transition">Refund Policy</a></li>
-+                        <li><a href="#" class="hover:text-white transition">Terms of Service</a></li>
-+                        <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
-+                    </ul>
-+                </div>
-+
-+                <div class="space-y-4">
-+                    <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80">Contact</h3>
-+                    <div class="space-y-3 text-sm text-white/60">
-+                        <p class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4 text-brand-primary"></i> support@playwithease.com</p>
-+                        <p class="flex items-center gap-2"><i data-lucide="clock-3" class="w-4 h-4 text-brand-primary"></i> 24/7 Live Assistance</p>
-+                        <p class="flex items-center gap-2"><i data-lucide="globe" class="w-4 h-4 text-brand-primary"></i> Global Instant Delivery</p>
-+                    </div>
-+                </div>
-+            </div>
-+
-+            <div class="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-white/40">
-+                <p>&copy; 2026 PlayWithEase Digital. All rights reserved.</p>
-+                <div class="flex items-center gap-5 uppercase tracking-[0.2em]">
-+                    <span class="flex items-center gap-1"><i data-lucide="badge-check" class="w-3.5 h-3.5"></i> Trusted Keys</span>
-+                    <span class="flex items-center gap-1"><i data-lucide="zap" class="w-3.5 h-3.5"></i> Instant Access</span>
-+                </div>
-+            </div>
-+        </div>
+     <footer class="bg-[#050505] border-t border-white/10 mt-20 text-white">
+        <div class="max-w-[1600px] mx-auto px-4 md:px-6 py-14 md:py-16">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+                <div class="space-y-4">
+                    <a href="index.html" class="flex items-center gap-2 w-fit">
+                        <div class="w-9 h-9 flex items-center justify-center bg-brand-primary/10 rounded-xl border border-brand-primary/20"><i data-lucide="gamepad-2" class="text-brand-primary"></i></div>
+                        <h2 class="font-display text-lg tracking-tight uppercase italic font-black">PLAYWITH<span class="text-brand-primary">EASE</span></h2>
+                    </a>
+                    <p class="text-sm text-white/60 leading-relaxed">Premium digital game marketplace delivering instant keys, verified sellers, and player-first support for every order.</p>
+                    <div class="flex items-center gap-2 text-xs text-white/50 uppercase tracking-[0.2em]">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-brand-primary"></i>
+                        Secure Checkout Enabled
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80 mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-sm text-white/60">
+                        <li><a href="index.html" class="hover:text-white transition">Store Home</a></li>
+                        <li><a href="profile.html" class="hover:text-white transition">My Vault</a></li>
+                        <li><a href="cart.html" class="hover:text-white transition">Cart</a></li>
+                        <li><a href="checkout.html" class="hover:text-white transition">Checkout</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80 mb-4">Customer Care</h3>
+                    <ul class="space-y-2 text-sm text-white/60">
+                        <li><a href="#" class="hover:text-white transition">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white transition">Refund Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80">Contact</h3>
+                    <div class="space-y-3 text-sm text-white/60">
+                        <p class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4 text-brand-primary"></i> support@playwithease.com</p>
+                        <p class="flex items-center gap-2"><i data-lucide="clock-3" class="w-4 h-4 text-brand-primary"></i> 24/7 Live Assistance</p>
+                        <p class="flex items-center gap-2"><i data-lucide="globe" class="w-4 h-4 text-brand-primary"></i> Global Instant Delivery</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-white/40">
+                <p>&copy; 2026 PlayWithEase Digital. All rights reserved.</p>
+                <div class="flex items-center gap-5 uppercase tracking-[0.2em]">
+                    <span class="flex items-center gap-1"><i data-lucide="badge-check" class="w-3.5 h-3.5"></i> Trusted Keys</span>
+                    <span class="flex items-center gap-1"><i data-lucide="zap" class="w-3.5 h-3.5"></i> Instant Access</span>
+                </div>
+            </div>
+        </div>
      </footer>
  
      <div x-show="!cookiesAccepted" class="fixed bottom-6 right-6 left-6 md:left-auto md:w-[400px] z-[100]">
@@ -260,14 +259,12 @@
                          lucide.createIcons();
                      }, 1000);
                  },
--                scrollToBottom() { this.$nextTick(() => { const c = document.getElementById('chatContainer'); c.scrollTo({ top: c.scrollHeight, behavior: 'smooth' }); }); }
-+                scrollToBottom() { this.$nextTick(() => { const c = document.getElementById('chatContainer'); if (c) c.scrollTo({ top: c.scrollHeight, behavior: 'smooth' }); }); }
+                scrollToBottom() { this.$nextTick(() => { const c = document.getElementById('chatContainer'); if (c) c.scrollTo({ top: c.scrollHeight, behavior: 'smooth' }); }); }
              }));
  
              Alpine.data('storeLogic', () => ({
                  scrolled: false, activeSlide: 0, trailerPlaying: false, isMuted: false,
--                cartCount: parseInt(localStorage.getItem('pwe_cart_count')) || 0,
-+                cartCount: parseInt(localStorage.getItem('pwe_cart_count'), 10) || 0,
+                cartCount: parseInt(localStorage.getItem('pwe_cart_count'), 10) || 0,
                  searchQuery: '', activeCategory: 'All', notifications: [],
                  cookiesAccepted: localStorage.getItem('pwe_cookies') === 'true',
                  currentTheme: localStorage.getItem('pwe_theme') || 'cyber',
@@ -308,13 +305,11 @@
                  init() { 
                      this.startTimer(); 
                      this.setTheme(this.currentTheme);
--                    window.onload = () => lucide.createIcons();
-+                    window.addEventListener('load', () => lucide.createIcons());
+                    window.addEventListener('load', () => lucide.createIcons());
                  },
                  get themeStyles() { return Object.entries(this.themes[this.currentTheme] || {}).map(([k,v])=>`${k}:${v};`).join(''); },
                  setTheme(n) { this.currentTheme = n; localStorage.setItem('pwe_theme', n); },
--                formatPrice(p) { return '₹'+Math.round(p*85); },
-+                formatPrice(p) { return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(p * 85); },
+                formatPrice(p) { return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(p * 85); },
                  acceptCookies() { this.cookiesAccepted = true; localStorage.setItem('pwe_cookies', 'true'); },
                  get filteredGames() { let r = this.games; if(this.activeCategory !== 'All') r = r.filter(g => g.category === this.activeCategory); if(this.searchQuery !== '') r = r.filter(g => g.title.toLowerCase().includes(this.searchQuery.toLowerCase())); return r; },
                  addToCart(g) { 
@@ -331,25 +326,22 @@
                      const target = new Date(this.heroSlides[this.activeSlide].date).getTime(); 
                      clearInterval(this.timerInterval);
                      this.timerInterval = setInterval(() => { 
--                        const now = new Date().getTime(), d = target - now; 
--                        this.timer.days = Math.floor(d/(1000*60*60*24)); this.timer.hours = Math.floor((d%(1000*60*60*24))/(1000*60*60)); 
--                        this.timer.minutes = Math.floor((d%(1000*60*60))/(1000*60)); this.timer.seconds = Math.floor((d%(1000*60))/1000); 
-+                        const now = new Date().getTime();
-+                        const diff = Math.max(0, target - now);
-+                        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-+                        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-+                        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-+                        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-+                        this.timer.days = String(days).padStart(2, '0');
-+                        this.timer.hours = String(hours).padStart(2, '0');
-+                        this.timer.minutes = String(minutes).padStart(2, '0');
-+                        this.timer.seconds = String(seconds).padStart(2, '0');
+                        const now = new Date().getTime();
+                        const diff = Math.max(0, target - now);
+                        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                        this.timer.days = String(days).padStart(2, '0');
+                        this.timer.hours = String(hours).padStart(2, '0');
+                        this.timer.minutes = String(minutes).padStart(2, '0');
+                        this.timer.seconds = String(seconds).padStart(2, '0');
                      }, 1000); 
                  },
                  playTrailer() {
                      this.trailerPlaying = true;
                      setTimeout(() => lucide.createIcons(), 100);
-                     if(window.ytPlayer && typeof window.ytPlayer.playVideo === 'function') { window.ytPlayer.loadVideoById(this.heroSlides[this.activeSlide].videoId); }
+                     if(window.ytPlayer && typeof window.ytPlayer.loadVideoById === 'function') { window.ytPlayer.loadVideoById(this.heroSlides[this.activeSlide].videoId); }
                      else {
                          window.ytPlayer = new YT.Player('hero-player', {
                              height: '100%', width: '100%', videoId: this.heroSlides[this.activeSlide].videoId,
@@ -366,4 +358,3 @@
      </script>
  </body>
  </html>
-
