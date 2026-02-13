@@ -134,13 +134,7 @@
             <button @click="stopTrailer" class="px-8 py-3 rounded-full bg-red-600 text-white font-black uppercase text-xs">Close</button>
         </div>
     </section>
-diff --git a/index.html b/index.html
-index 53dad4bf7edf45423125ba58dd4f86171208adbf..3355dda4a7140b094a418880b4c2e060411fee99 100644
---- a/index.html
-+++ b/index.html
-@@ -137,166 +137,224 @@
- 
-     <main class="max-w-[1600px] mx-auto px-4 md:px-6 py-16">
+    <main class="max-w-[1600px] mx-auto px-4 md:px-6 py-16">
          <div class="flex gap-2 overflow-x-auto no-scrollbar mb-10 pb-2">
              <template x-for="cat in ['All', 'Action', 'RPG', 'Shooter', 'Sports', 'Horror']">
                  <button @click="activeCategory = cat" :class="activeCategory === cat ? 'bg-brand-primary text-white' : 'bg-white/5 text-gray-500'" class="px-6 py-2 rounded-xl text-[10px] font-black uppercase transition whitespace-nowrap" x-text="cat"></button>
