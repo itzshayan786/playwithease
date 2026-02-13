@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="PlayWithEase Apex - Sovereign Digital Vault & AI Extraction Command Center.">
+    <meta name="description" content="PlayWithEase Zenith - The Sovereign Digital Extraction Vault.">
     <meta name="theme-color" content="#080808">
-    <title>PlayWithEase | Sovereign Digital Vault & Neural AI</title>
+    <title>PlayWithEase | Sovereign Apex & Omni-Core AI</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,26 +25,21 @@
                         display: ['Orbitron', 'sans-serif'] 
                     },
                     colors: { 
-                        bg: { main: '#080808', card: '#0a0a0a', item: '#111111' }, 
-                        brand: { primary: '#2563eb', secondary: '#ff00aa', text: '#ffffff' } 
+                        bg: { main: '#080808', card: '#0a0a0a', item: '#0d0d0d', inner: '#111111' }, 
+                        brand: { primary: '#2563eb', secondary: '#ff00aa', accent: '#00f2ff' } 
                     },
                     animation: { 
                         'float': 'float 8s ease-in-out infinite', 
                         'fade-in': 'fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards',
                         'shimmer': 'shimmer 2.5s infinite linear',
-                        'pulse-glow': 'pulseGlow 3s infinite alternate',
-                        'status-blink': 'statusBlink 2s infinite',
-                        'neural-pulse': 'neuralPulse 4s infinite',
-                        'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-                        'ticker': 'ticker 40s linear infinite'
+                        'status-pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards'
                     },
                     keyframes: { 
-                        float: { '0%, 100%': { transform: 'translateY(0) scale(1)' }, '50%': { transform: 'translateY(-15px) scale(1.01)' } },
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-15px)' } },
                         fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
                         shimmer: { '0%': { backgroundPosition: '-200% 0' }, '100%': { backgroundPosition: '200% 0' } },
-                        pulseGlow: { '0%': { boxShadow: '0 0 10px rgba(37, 99, 235, 0.1)' }, '100%': { boxShadow: '0 0 45px rgba(37, 99, 235, 0.5)' } },
-                        statusBlink: { '0%, 100%': { opacity: '1', transform: 'scale(1)' }, '50%': { opacity: '0.4', transform: 'scale(0.8)' } },
-                        ticker: { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(-50%)' } }
+                        slideUp: { '0%': { transform: 'translateY(30px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } }
                     }
                 }
             }
@@ -54,97 +49,95 @@
     <style>
         :root { --bg-main: #080808; --bg-card: #0a0a0a; --brand-primary: #2563eb; --brand-secondary: #ff00aa; }
         
-        /* 1336x768 Compact Performance Scaffolding */
-        .nav-base { background: rgba(8, 8, 8, 0.85); backdrop-filter: blur(35px); border-bottom: 1px solid rgba(255, 255, 255, 0.03); height: 65px; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        /* 1336x768 Display Optimization */
+        .nav-base { background: rgba(8, 8, 8, 0.85); backdrop-filter: blur(35px); border-bottom: 1px solid rgba(255, 255, 255, 0.03); height: 65px; transition: all 0.5s ease; }
         .nav-scrolled { background: rgba(4, 4, 4, 0.99); border-bottom: 1px solid rgba(255, 255, 255, 0.1); height: 55px; }
         @media (min-width: 1024px) { .nav-base { height: 75px; } .nav-scrolled { height: 65px; } }
         
-        body { -webkit-tap-highlight-color: transparent; color: var(--text-main); background-color: var(--bg-main); overflow-x: hidden; font-feature-settings: "ss01", "ss02"; font-size: 12px; }
-        @media (min-width: 1440px) { body { font-size: 14px; } }
+        body { -webkit-tap-highlight-color: transparent; color: white; background-color: var(--bg-main); overflow-x: hidden; font-size: 13px; }
+        @media (min-width: 1440px) { body { font-size: 15px; } }
 
         [x-cloak] { display: none !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         
-        /* Cinema HUD Layering */
-        .video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 20; background: black; }
-        .video-background { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%); pointer-events: none; object-fit: cover; filter: brightness(0.7) contrast(1.1); }
+        /* Cinema HUD Layers */
+        .video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 20; background: black; }
+        .video-background { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%); pointer-events: none; object-fit: cover; filter: brightness(0.7); }
         
-        /* High-Stability Poster Matrix */
-        .poster-matrix { position: relative; width: 100%; aspect-ratio: 3/4; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #040404; }
-        .img-game { width: 100%; height: 100%; object-fit: cover; transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1); }
-        .img-ott { width: 100%; height: 100%; object-fit: contain; padding: 1.5rem; transition: all 0.8s ease; filter: drop-shadow(0 10px 30px rgba(0,0,0,0.8)); }
+        /* Product Presentation Fixes */
+        .poster-box { position: relative; width: 100%; aspect-ratio: 3/4; overflow: hidden; background: #050505; display: flex; align-items: center; justify-content: center; }
+        .img-game { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s ease; }
+        .img-ott { width: 85%; height: 85%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8)); transition: transform 0.8s ease; }
         
-        /* Master Filter Active States */
-        .pillar-master-active { background: var(--brand-primary); border-color: var(--brand-primary); transform: translateY(-4px) scale(1.02); box-shadow: 0 20px 50px rgba(37, 99, 235, 0.4); z-index: 10; color: white !important; }
+        /* UI Components */
+        .glass { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); }
+        .btn-pillar-active { background: var(--brand-primary); color: white; border-color: var(--brand-primary); transform: translateY(-3px); box-shadow: 0 15px 30px rgba(37, 99, 235, 0.3); }
         
-        /* Responsive Viewport Hub - Optimized for 1336x768 */
-        .master-grid { max-width: 1280px; margin: 0 auto; padding: 0 1rem; }
-        @media (max-width: 1336px) { .master-grid { max-width: 1180px; } }
-        
-        /* Scrollbar Elite Theme */
+        /* Scrollbar */
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: #080808; }
-        ::-webkit-scrollbar-thumb { background: #1a1a1a; border-radius: 20px; transition: background 0.3s; }
+        ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--brand-primary); }
+
+        /* Gesture Control Overlays */
+        .gesture-zone { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 25; cursor: grab; }
+        .gesture-zone:active { cursor: grabbing; }
 
         svg.lucide { display: inline-block !important; vertical-align: middle; }
     </style>
 </head>
 
 <body class="antialiased w-full"
-      x-data="storeLogic()" :style="themeStyles" @keydown.left="prevSlide()" @keydown.right="nextSlide()" @scroll.window="scrolled = window.pageYOffset > 50">
+      x-data="storeLogic()" :style="themeStyles" @scroll.window="scrolled = window.pageYOffset > 50">
 
     <div class="fixed bottom-24 right-6 z-[300] flex flex-col gap-3 pointer-events-none">
         <template x-for="toast in notifications" :key="toast.id">
-            <div x-show="toast.visible" x-transition:enter="transition ease-out duration-400" x-transition:enter-start="translate-x-full opacity-0" x-transition:enter-end="translate-x-0 opacity-100" class="pointer-events-auto flex items-center gap-5 px-7 py-5 rounded-[2.5rem] bg-[#0c0c0c] border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.8)] min-w-[350px] backdrop-blur-3xl relative overflow-hidden">
-                <div class="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 bg-brand-primary/20 text-brand-primary border border-brand-primary/30 shadow-2xl relative z-10"><i :data-lucide="toast.icon || 'zap'" class="w-5 h-5"></i></div>
-                <div class="flex-1 relative z-10"><h4 class="text-xs font-black text-white uppercase italic" x-text="toast.title"></h4><p class="text-[10px] opacity-50 font-bold tracking-tight uppercase" x-text="toast.message"></p></div>
-                <button @click="toast.visible = false" class="text-white/20 hover:text-white transition-all transform hover:rotate-90 relative z-10"><i data-lucide="x" class="w-4 h-4"></i></button>
+            <div x-show="toast.visible" x-transition class="pointer-events-auto flex items-center gap-5 px-7 py-4 rounded-[2rem] bg-[#0c0c0c] border border-white/10 shadow-2xl min-w-[320px] backdrop-blur-3xl">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-brand-primary/20 text-brand-primary shadow-inner"><i :data-lucide="toast.icon || 'zap'" class="w-5 h-5"></i></div>
+                <div class="flex-1"><h4 class="text-xs font-black text-white uppercase" x-text="toast.title"></h4><p class="text-[10px] opacity-60 font-bold" x-text="toast.message"></p></div>
+                <button @click="toast.visible = false" class="text-white/20 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
         </template>
     </div>
 
     <div x-data="chatBot($data)" class="fixed bottom-6 right-6 z-[250]">
-        <div x-show="open" x-cloak x-transition.scale.origin.bottom.right class="absolute bottom-18 md:bottom-20 right-0 w-[92vw] md:w-[420px] bg-[#090909] border border-white/10 rounded-[3rem] shadow-[0_120px_300px_rgba(0,0,0,1)] overflow-hidden flex flex-col h-[550px] backdrop-blur-3xl">
-            <div class="bg-gradient-to-br from-brand-primary via-blue-900 to-black p-8 flex justify-between items-center relative border-b border-white/5">
-                <div class="flex items-center gap-4 relative z-10">
-                    <div class="relative group">
-                        <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-white border border-white/10 shadow-3xl relative z-10"><i data-lucide="brain-circuit" class="w-8 h-8"></i></div>
-                        <div class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-green-500 rounded-full border-4 border-[#090909] animate-status-blink shadow-4xl z-20"></div>
+        <div x-show="open" x-cloak x-transition.scale.origin.bottom.right class="absolute bottom-18 md:bottom-20 right-0 w-[92vw] md:w-[420px] bg-[#090909] border border-white/10 rounded-[3rem] shadow-2xl overflow-hidden flex flex-col h-[550px] backdrop-blur-3xl">
+            <div class="bg-gradient-to-br from-brand-primary to-blue-900 p-8 flex justify-between items-center border-b border-white/5">
+                <div class="flex items-center gap-4">
+                    <div class="relative">
+                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-white"><i data-lucide="brain-circuit"></i></div>
+                        <div class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-green-500 rounded-full border-4 border-[#090909] animate-pulse"></div>
                     </div>
-                    <div><h3 class="font-display font-black text-sm text-white tracking-[0.4em] uppercase italic">OMNI AI</h3><p class="text-[9px] text-white/50 font-black uppercase">Mainframe v9.5</p></div>
+                    <div><h3 class="font-display font-bold text-sm text-white tracking-widest uppercase italic">OMNI AI</h3><p class="text-[9px] text-white/50 font-black uppercase">V9.0 Neural Active</p></div>
                 </div>
-                <button @click="open = false" class="text-white/30 hover:text-white transition-all transform hover:rotate-90 relative z-10"><i data-lucide="chevron-down" class="w-6 h-6"></i></button>
+                <button @click="open = false" class="text-white/30 hover:text-white"><i data-lucide="chevron-down"></i></button>
             </div>
-            <div class="flex-1 p-6 overflow-y-auto space-y-8 no-scrollbar bg-black/60 relative" id="chatContainer">
+            <div class="flex-1 p-6 overflow-y-auto space-y-6 no-scrollbar" id="chatContainer">
                 <template x-for="msg in messages" :key="msg.id">
-                    <div :class="msg.sender === 'bot' ? 'flex justify-start' : 'flex justify-end'" class="animate-slide-up">
-                        <div class="flex flex-col gap-3 max-w-[88%]">
-                            <div :class="msg.sender === 'bot' ? 'bg-white/5 text-gray-200 border border-white/5 rounded-tr-[2.5rem] rounded-bl-[2.5rem] rounded-br-[2.5rem]' : 'bg-brand-primary text-white rounded-tl-[2.5rem] rounded-bl-[2.5rem] rounded-br-[2.5rem] shadow-[0_20px_50px_rgba(37,99,235,0.4)]'" class="p-6 text-[13px] leading-relaxed font-bold tracking-tight shadow-inner"><span x-html="msg.text"></span></div>
-                            <span class="text-[8px] text-white/20 font-black uppercase tracking-[0.5em] px-4" :class="msg.sender === 'bot' ? 'text-left' : 'text-right'" x-text="msg.time"></span>
-                        </div>
+                    <div :class="msg.sender === 'bot' ? 'flex justify-start' : 'flex justify-end'">
+                        <div :class="msg.sender === 'bot' ? 'bg-white/5 text-gray-200 border border-white/5' : 'bg-brand-primary text-white'" class="p-5 rounded-[2rem] text-xs max-w-[85%] leading-relaxed shadow-xl"><span x-html="msg.text"></span></div>
                     </div>
                 </template>
-                <div x-show="isTyping" class="flex justify-start"><div class="bg-white/5 p-4 rounded-full flex gap-1.5 border border-white/5 shadow-inner"><div class="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce [animation-delay:0s]"></div><div class="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce [animation-delay:0.3s]"></div><div class="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce [animation-delay:0.6s]"></div></div></div>
+                <div x-show="isTyping" class="flex justify-start"><div class="bg-white/5 p-4 rounded-full flex gap-1.5 border border-white/5 shadow-inner"><div class="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce"></div><div class="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce delay-100"></div><div class="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce delay-200"></div></div></div>
             </div>
             <div class="p-8 border-t border-white/5 bg-black/40 backdrop-blur-3xl flex gap-4">
-                <input type="text" x-model="input" @keydown.enter="sendMessage" placeholder="Locate extraction node..." class="flex-1 bg-white/5 border-2 border-white/15 rounded-2xl py-4 pl-10 pr-6 text-xs text-white outline-none focus:border-brand-primary transition-all font-bold">
+                <input type="text" x-model="input" @keydown.enter="sendMessage" placeholder="Ask about the vault..." class="flex-1 bg-white/5 border-2 border-white/15 rounded-2xl py-4 pl-10 pr-6 text-xs text-white outline-none focus:border-brand-primary transition-all font-bold">
                 <button @click="sendMessage" class="w-12 h-12 bg-brand-primary rounded-2xl flex items-center justify-center shadow-lg hover:scale-105 transition-all"><i data-lucide="zap" class="text-white w-5 h-5"></i></button>
             </div>
         </div>
-        <button @click="open = !open" class="w-14 h-14 md:w-16 md:h-16 bg-brand-primary rounded-[1.5rem] flex items-center justify-center shadow-[0_0_50px_rgba(37,99,235,0.5)] hover:scale-110 active:scale-90 transition-all border-2 border-white/10"><i :data-lucide="open ? 'x' : 'bot'" class="text-white w-6 h-6"></i></button>
+        <button @click="open = !open" class="w-14 h-14 md:w-16 md:h-16 bg-brand-primary rounded-[1.5rem] flex items-center justify-center shadow-2xl hover:scale-110 active:scale-90 transition-all border-2 border-white/10"><i :data-lucide="open ? 'x' : 'bot'" class="text-white w-6 h-6"></i></button>
     </div>
 
     <nav :class="scrolled ? 'nav-scrolled shadow-2xl' : 'nav-base'" class="fixed top-0 w-full z-[200] flex flex-col justify-center transition-all duration-500">
         <div class="max-w-[1440px] mx-auto px-4 md:px-10 w-full flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-3 shrink-0 group">
-                <div class="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-brand-primary/10 rounded-xl border border-brand-primary/20 group-hover:scale-110 transition shadow-lg"><i data-lucide="gamepad-2" class="text-brand-primary w-5 h-5"></i></div>
+                <div class="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center bg-brand-primary/10 rounded-xl border border-brand-primary/20 group-hover:scale-110 transition shadow-lg"><i data-lucide="gamepad-2" class="text-brand-primary w-5 h-5"></i></div>
                 <h1 class="font-display text-lg md:text-2xl tracking-tighter hidden sm:block uppercase italic font-black text-white">PLAYWITH<span class="text-brand-primary">EASE</span></h1>
             </a>
 
             <div class="hidden lg:flex flex-1 max-w-md mx-10 relative">
                 <i data-lucide="search" class="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30"></i>
-                <input type="text" x-model="searchQuery" placeholder="Search the vault..." class="w-full bg-white/5 border border-white/10 rounded-full py-2.5 pl-12 pr-6 text-xs text-white outline-none focus:border-brand-primary transition-all">
+                <input type="text" x-model="searchQuery" placeholder="Search 150+ vault assets..." class="w-full bg-white/5 border border-white/10 rounded-full py-2.5 pl-12 pr-6 text-xs text-white outline-none focus:border-brand-primary transition-all">
             </div>
 
             <div class="flex items-center gap-3 md:gap-6 shrink-0">
@@ -164,7 +157,7 @@
                         </div>
                         <i data-lucide="chevron-down" :class="openMenu ? 'rotate-180' : ''" class="w-3.5 h-3.5 text-white/20 hidden sm:block transition-transform duration-500"></i>
                     </button>
-                    <div x-show="openMenu" x-cloak x-transition.origin.top.right class="absolute right-0 mt-4 w-64 bg-[#0f0f0f] border border-white/10 rounded-[2.5rem] shadow-2xl p-2 z-[210] backdrop-blur-3xl overflow-y-auto max-h-[70vh] no-scrollbar">
+                    <div x-show="openMenu" x-cloak x-transition.origin.top.right class="absolute right-0 mt-4 w-64 bg-[#0f0f0f] border border-white/10 rounded-[2rem] shadow-2xl p-2 z-[210] backdrop-blur-3xl overflow-y-auto max-h-[70vh] no-scrollbar">
                         <div id="userPanelInfo" class="px-5 py-4 border-b border-white/5 mb-2 hidden text-white">
                             <p id="userDisplayName" class="text-sm font-black truncate"></p>
                             <span class="text-[9px] text-brand-primary uppercase font-black tracking-widest">Elite Operative</span>
@@ -186,7 +179,10 @@
         <div x-show="showMobileSearch" x-cloak x-transition class="lg:hidden px-4 pb-4"><input type="text" x-model="searchQuery" placeholder="Search..." class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-5 text-xs text-white outline-none"></div>
     </nav>
 
-    <section class="relative min-h-[75vh] md:min-h-[85vh] w-full overflow-hidden flex items-center justify-center text-white bg-black pt-[70px]">
+    <section class="relative min-h-[75vh] md:min-h-[85vh] w-full overflow-hidden flex items-center justify-center text-white bg-black pt-[70px]"
+             @touchstart="touchStartX = $event.touches[0].clientX"
+             @touchend="if (touchStartX - $event.changedTouches[0].clientX > 50) nextSlide(); if ($event.changedTouches[0].clientX - touchStartX > 50) prevSlide();">
+        
         <template x-for="(slide, index) in heroSlides" :key="index">
             <div x-show="activeSlide === index && !trailerPlaying" x-transition.opacity.duration.1000ms class="absolute inset-0 z-10">
                 <div class="absolute inset-0 bg-gradient-to-t from-bg-main via-transparent to-black/80 z-10"></div>
@@ -246,7 +242,9 @@
              <template x-for="item in filteredItems" :key="item.id">
                  <div class="group bg-bg-card rounded-[2.5rem] overflow-hidden border border-white/5 hover:border-brand-primary/50 transition-all duration-700 shadow-2xl hover:-translate-y-4 relative flex flex-col h-full active:scale-95">
                      <div class="poster-matrix">
-                        <img :src="item.image" :class="item.pillar !== 'Games (PS5 Digital)' ? 'img-ott' : 'img-game'" class="group-hover:scale-125" loading="lazy">
+                        <div class="w-full h-full flex items-center justify-center overflow-hidden" :class="item.pillar !== 'Games (PS5 Digital)' ? 'p-6' : ''">
+                             <img :src="item.image" :class="item.pillar !== 'Games (PS5 Digital)' ? 'img-ott' : 'img-game'" class="group-hover:scale-125" loading="lazy">
+                        </div>
                         <div class="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-6 gap-3 z-30">
                             <button @click.stop="buyNow(item)" class="w-full py-3.5 bg-white text-black font-black uppercase text-[10px] rounded-xl shadow-2xl hover:scale-105 active:scale-95 transition-all">Buy Now</button>
                             <button @click.stop="addToCart(item)" class="w-full py-3.5 border-2 border-white/20 text-white font-black uppercase text-[10px] rounded-xl hover:bg-white/10 transition-all">To Cart</button>
@@ -273,16 +271,16 @@
                 <div>
                     <h3 class="text-[11px] font-black uppercase tracking-widest text-white/80 mb-8 italic">Quick Deployment</h3>
                     <ul class="space-y-4 text-[11px] text-white/30 font-black uppercase tracking-widest">
-                        <li><a href="index.html" class="hover:text-brand-primary transition-colors">Home Storefront</a></li>
-                        <li><a href="profile.html" class="hover:text-brand-primary transition-colors">Digital Vault</a></li>
-                        <li><a href="cart.html" class="hover:text-brand-primary transition-colors">Shopping Cart</a></li>
+                        <li><a href="index.html" class="hover:text-brand-primary transition-colors italic">Home Storefront</a></li>
+                        <li><a href="profile.html" class="hover:text-brand-primary transition-colors italic">Digital Vault</a></li>
+                        <li><a href="cart.html" class="hover:text-brand-primary transition-colors italic">Shopping Cart</a></li>
                     </ul>
                 </div>
                 <div>
                     <h3 class="text-[11px] font-black uppercase tracking-widest text-white/80 mb-8 italic">Intelligence</h3>
                     <ul class="space-y-4 text-[11px] text-white/30 font-black uppercase tracking-widest">
-                        <li><a href="#" class="hover:text-brand-primary transition-colors">Help Center</a></li>
-                        <li><a href="#" class="hover:text-brand-primary transition-colors">Refund Protocol</a></li>
+                        <li><a href="#" class="hover:text-brand-primary transition-colors italic">Help Center</a></li>
+                        <li><a href="#" class="hover:text-brand-primary transition-colors italic">Refund Protocol</a></li>
                     </ul>
                 </div>
                 <div class="space-y-8 text-right">
@@ -348,18 +346,19 @@
                  cartItems: JSON.parse(localStorage.getItem('pwe_cart_items') || '[]'),
                  cartCount: 0, notifications: [], currentTheme: localStorage.getItem('pwe_theme') || 'cyber',
                  timer: { days: '00', hours: '00', minutes: '00', seconds: '00' }, searchQuery: '',
+                 
                  heroSlides: [
                      { image: 'https://media-rockstargames-com.akamaized.net/mfe6/prod/__common/img/71d4d17edcd49703a5ea446cc0e588e6.jpg', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg/512px-Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg.png', videoId: 'QdBZY2fkU-0', date: '2026-11-19T00:00:00' },
                      { image: 'https://cdn.forza.net/strapi-uploads/assets/xlarge_hero_fh6_f55db4cd81_53e6ca38f4.webp', logo: 'https://cdn.forza.net/strapi-uploads/assets/logo_black_fh6_700993660b.svg', videoId: 'XzBUUZjYlE4', date: '2026-05-19T00:00:00' }
                  ],
                  themes: {
-                     cyber: { '--bg-main': '#080808', '--bg-card': '#0c0c0c', '--brand-primary': '#2563eb', '--brand-secondary': '#ff00aa' },
+                     cyber: { '--bg-main': '#080808', '--bg-card': '#101010', '--brand-primary': '#2563eb', '--brand-secondary': '#ff00aa' },
                      luxury: { '--bg-main': '#050505', '--bg-card': '#121212', '--brand-primary': '#fbbf24', '--brand-secondary': '#d97706' },
                      toxic: { '--bg-main': '#0a0f0a', '--bg-card': '#141a14', '--brand-primary': '#10b981', '--brand-secondary': '#059669' },
                      crimson: { '--bg-main': '#0f0505', '--bg-card': '#1a0b0b', '--brand-primary': '#ef4444', '--brand-secondary': '#b91c1c' }
                  },
                  games: [
-                    // --- 150+ MASTER REPOSITORY ---
+                    // --- 150+ MASTER DATABASE ---
                     // GAMES (75 Items)
                     { id: 1, title: 'GTA VI Elite Access', category: 'Action', pillar: 'Games (PS5 Digital)', price: 79.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
                     { id: 2, title: 'GTA V Premium Node', category: 'Action', pillar: 'Games (PS5 Digital)', price: 14.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
@@ -405,7 +404,7 @@
                     { id: 204, title: 'Canva Pro 1Y Master', category: 'Design', pillar: 'Subscriptions', price: 2.49, image: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Canva_logo.svg' },
                     { id: 205, title: 'Adobe Creative Cloud', category: 'Design', pillar: 'Subscriptions', price: 29.99, image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Adobe_Creative_Cloud_logo.svg' },
                     { id: 206, title: 'Office 365 Pro 1Y Hub', category: 'Work', pillar: 'Subscriptions', price: 4.99, image: 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Microsoft_Office_logo_%282019%E2%80%93present%29.svg' },
-                    { id: 207, title: 'Claude 3 Opus 1M Hub', category: 'AI Tools', pillar: 'Subscriptions', price: 19.99, image: 'https://upload.wikimedia.org/wikipedia/commons/2/23/Anthropic_logo.svg' }
+                    { id: 212, title: 'Skillshare Annual master node', category: 'Learning', pillar: 'Subscriptions', price: 2.19, image: 'https://upload.wikimedia.org/wikipedia/commons/e/e4/Skillshare_logo.svg' }
                  ],
                  
                  init() { 
