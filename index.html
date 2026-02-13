@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="PlayWithEase Apex - The Global Standard for Digital Extraction & AI Management.">
+    <meta name="description" content="PlayWithEase - The Global Standard for Digital Asset Extraction.">
     <meta name="theme-color" content="#020617">
-    <title>PlayWithEase | Apex Digital Vault & Omni-Core AI</title>
+    <title>PlayWithEase | Titanium Digital Vault</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -26,42 +26,46 @@
                     fontFamily: { 
                         sans: ['Inter', 'sans-serif'], 
                         display: ['Outfit', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace']
+                        mono: ['Space Grotesk', 'monospace']
                     },
                     colors: { 
-                        // Brand Identity: "Midnight Cobalt"
-                        primary: { 50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd', 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a', 950: '#172554' },
-                        surface: { 50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a', 950: '#020617' },
-                        accent: { purple: '#8b5cf6', teal: '#14b8a6', rose: '#f43f5e', cyber: '#00f0ff' },
-                        status: { success: '#10b981', warning: '#f59e0b', error: '#ef4444', info: '#3b82f6' }
+                        // Brand: PlayStation-inspired Deep Blue & Electric White
+                        brand: { 
+                            50: '#f0f9ff', 100: '#e0f2fe', 200: '#bae6fd', 300: '#7dd3fc', 
+                            400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1', 
+                            800: '#075985', 900: '#0c4a6e', 950: '#082f49' 
+                        },
+                        // Surface: Deep OLED Blacks and Greys
+                        surface: { 
+                            50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1', 
+                            400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 
+                            800: '#1e293b', 900: '#0f172a', 950: '#020617' 
+                        },
+                        // Accents
+                        accent: { 
+                            cyber: '#00f0ff', 
+                            rose: '#f43f5e', 
+                            violet: '#8b5cf6',
+                            gold: '#fbbf24'
+                        }
                     },
                     animation: { 
-                        'fade-in-up': 'fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-                        'slide-in-right': 'slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-                        'scale-in': 'scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'scale-in': 'scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'shimmer': 'shimmer 2s infinite linear',
-                        'glitch': 'glitch 2s infinite',
-                        'spin-slow': 'spin 3s linear infinite'
+                        'shimmer': 'shimmer 2.5s infinite linear',
+                        'float': 'float 6s ease-in-out infinite'
                     },
                     keyframes: { 
                         fadeInUp: { '0%': { opacity: 0, transform: 'translateY(20px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } },
-                        slideInRight: { '0%': { transform: 'translateX(100%)' }, '100%': { transform: 'translateX(0)' } },
                         scaleIn: { '0%': { opacity: 0, transform: 'scale(0.95)' }, '100%': { opacity: 1, transform: 'scale(1)' } },
                         shimmer: { '0%': { backgroundPosition: '200% 0' }, '100%': { backgroundPosition: '-200% 0' } },
-                        glitch: {
-                            '0%': { transform: 'translate(0)' },
-                            '20%': { transform: 'translate(-2px, 2px)' },
-                            '40%': { transform: 'translate(-2px, -2px)' },
-                            '60%': { transform: 'translate(2px, 2px)' },
-                            '80%': { transform: 'translate(2px, -2px)' },
-                            '100%': { transform: 'translate(0)' }
-                        }
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } }
                     },
                     boxShadow: {
-                        'glow-primary': '0 0 50px -10px rgba(37, 99, 235, 0.5)',
-                        'glow-accent': '0 0 40px -10px rgba(0, 240, 255, 0.4)',
-                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.3)',
+                        'glow-brand': '0 0 40px -10px rgba(14, 165, 233, 0.3)',
+                        'glass-lg': '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+                        'glass-sm': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
                     }
                 }
             }
@@ -69,135 +73,157 @@
     </script>
 
     <style>
-        /* === SYSTEM RESET & BASE STYLES === */
+        /* === SYSTEM ARCHITECTURE === */
         html { 
             scroll-behavior: smooth; 
-            width: 100%;
-            overflow-x: hidden;
+            width: 100%; 
+            height: 100%;
         }
         body { 
             background-color: #020617; 
             color: #f1f5f9; 
-            overflow-x: hidden; 
+            overflow-x: hidden; /* Crucial for Mobile */
             width: 100%;
             max-width: 100vw;
             position: relative;
+            -webkit-font-smoothing: antialiased;
         }
-        [x-cloak] { display: none !important; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
         
-        /* === GLASS ENGINE V4 === */
+        [x-cloak] { display: none !important; }
+        
+        /* === GLASSMORPHISM ENGINE v5 === */
         .glass-panel { 
             background: rgba(15, 23, 42, 0.85); 
             backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); 
             border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
         
         .nav-glass {
-            background: rgba(2, 6, 23, 0.95);
+            background: rgba(2, 6, 23, 0.9);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* === CINEMATIC VIDEO (SCALED & CENTERED) === */
+        /* === CINEMA ENGINE (ASPECT RATIO LOCK) === */
+        /* This ensures video covers screen without black bars on any device */
         .video-wrapper { 
             position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; 
         }
         .video-iframe { 
             position: absolute; top: 50%; left: 50%; 
-            width: 100vw; height: 56.25vw; /* 16:9 AR based on width */
-            min-height: 100vh; min-width: 177.77vh; /* 16:9 AR based on height */
-            transform: translate(-50%, -50%) scale(1.2); /* Overscan to prevent black bars */
+            width: 100vw; height: 56.25vw; /* 16:9 based on width */
+            min-height: 100vh; min-width: 177.77vh; /* 16:9 based on height */
+            transform: translate(-50%, -50%) scale(1.3); /* Overscan safety margin */
             pointer-events: none;
         }
 
-        /* === UI COMPONENTS === */
+        /* === UI COMPONENT LIBRARY === */
         .btn-primary {
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
             color: white; font-weight: 700; letter-spacing: 0.025em;
             padding: 0.875rem 2rem; border-radius: 0.75rem;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 15px -3px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 4px 20px -5px rgba(14, 165, 233, 0.4);
             position: relative; overflow: hidden; isolate: isolate;
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px -3px rgba(37, 99, 235, 0.6); filter: brightness(1.1); }
-        
-        .btn-ghost {
-            background: rgba(255, 255, 255, 0.03); 
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px -5px rgba(14, 165, 233, 0.6); filter: brightness(1.1); }
+        .btn-primary::before {
+            content: ''; position: absolute; inset: 0; z-index: -1;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%); transition: transform 0.6s ease;
+        }
+        .btn-primary:hover::before { transform: translateX(100%); }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05); 
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: white; font-weight: 600; padding: 0.875rem 2rem; border-radius: 0.75rem;
             backdrop-filter: blur(8px); transition: all 0.2s;
         }
-        .btn-ghost:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.2); }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.25); transform: translateY(-1px); }
 
-        /* Skeleton Loading Animation */
+        /* === SCROLLBARS === */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #0f172a; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* === SKELETON LOADER === */
         .skeleton { 
             background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); 
             background-size: 200% 100%; 
             animation: shimmer 1.5s infinite linear; 
         }
 
-        /* === CARD HOVER FX === */
-        .card-hologram {
-            position: absolute; inset: 0; pointer-events: none; z-index: 10; opacity: 0; transition: opacity 0.5s;
-            background: linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.05) 25%, transparent 30%);
-        }
-        .group:hover .card-hologram { opacity: 1; }
-
-        /* === SCROLLBAR STYLING === */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
-
+        /* === ICONS FIX === */
         svg.lucide { display: inline-block; vertical-align: text-bottom; }
     </style>
 </head>
 
-<body x-data="apexSystem()" @scroll.window="handleScroll" class="selection:bg-primary-500 selection:text-white">
+<body x-data="titaniumStore()" @scroll.window="handleScroll" class="selection:bg-brand-500 selection:text-white">
 
-    <div class="fixed bottom-6 left-6 z-[300] flex flex-col gap-3 pointer-events-none">
+    <div class="fixed top-24 right-6 z-[300] flex flex-col gap-3 pointer-events-none">
         <template x-for="toast in notifications" :key="toast.id">
-            <div x-show="toast.visible" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 scale-95" x-transition:enter-end="opacity-100 translate-y-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0 translate-x-4" 
-                 class="pointer-events-auto flex items-center gap-4 px-5 py-4 rounded-xl bg-surface-900/95 backdrop-blur-md border border-surface-800 shadow-2xl min-w-[340px] relative overflow-hidden group">
-                <div class="absolute left-0 top-0 bottom-0 w-1" :class="{ 'bg-status-success': toast.type === 'success', 'bg-status-error': toast.type === 'error', 'bg-status-info': toast.type === 'info' }"></div>
-                <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0" :class="{ 'bg-status-success/10 text-status-success': toast.type === 'success', 'bg-status-error/10 text-status-error': toast.type === 'error', 'bg-status-info/10 text-status-info': toast.type === 'info' }">
+            <div x-show="toast.visible" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0 translate-x-4" 
+                 class="pointer-events-auto flex items-center gap-4 px-5 py-4 rounded-xl bg-surface-900/95 backdrop-blur-md border border-surface-800 shadow-2xl min-w-[320px] max-w-sm relative overflow-hidden group">
+                <div class="absolute left-0 top-0 bottom-0 w-1" :class="{
+                    'bg-green-500': toast.type === 'success',
+                    'bg-red-500': toast.type === 'error',
+                    'bg-brand-500': toast.type === 'info'
+                }"></div>
+                <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0" :class="{
+                    'bg-green-500/10 text-green-500': toast.type === 'success',
+                    'bg-red-500/10 text-red-500': toast.type === 'error',
+                    'bg-brand-500/10 text-brand-500': toast.type === 'info'
+                }">
                     <i :data-lucide="toast.icon" class="w-5 h-5"></i>
                 </div>
                 <div class="flex-1 min-w-0">
                     <h4 class="text-sm font-bold text-white truncate" x-text="toast.title"></h4>
                     <p class="text-xs text-surface-400 mt-0.5 truncate font-mono" x-text="toast.message"></p>
                 </div>
+                <button @click="toast.visible = false" class="text-surface-500 hover:text-white transition"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
         </template>
     </div>
 
-    <div x-show="ui.searchOpen" x-transition.opacity class="fixed inset-0 z-[200] bg-surface-950/98 backdrop-blur-3xl flex flex-col pt-32 items-center px-6" x-cloak>
+    <div x-show="ui.searchOpen" x-transition.opacity class="fixed inset-0 z-[250] bg-surface-950/98 backdrop-blur-3xl flex flex-col pt-32 items-center px-6" x-cloak>
         <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
         <div class="w-full max-w-5xl relative z-10 animate-fade-in-up">
             <div class="relative group">
-                <i data-lucide="search" class="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 text-surface-500 group-focus-within:text-primary-500 transition-colors"></i>
-                <input x-ref="searchInput" type="text" x-model="searchQuery" @keydown.enter="performSearch" placeholder="Type to search vault..." 
-                       class="w-full bg-transparent border-b-2 border-surface-800 text-3xl md:text-5xl font-display font-bold text-white py-6 pl-14 outline-none focus:border-primary-600 placeholder-surface-800 transition-colors">
+                <i data-lucide="search" class="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 text-surface-500 group-focus-within:text-brand-500 transition-colors"></i>
+                <input x-ref="searchInput" type="text" x-model="searchQuery" @keydown.enter="performSearch" placeholder="Search Vault (e.g. 'GTA', 'Netflix')..." 
+                       class="w-full bg-transparent border-b-2 border-surface-800 text-3xl md:text-6xl font-display font-bold text-white py-6 pl-14 outline-none focus:border-brand-500 placeholder-surface-800 transition-colors">
             </div>
             <button @click="ui.searchOpen = false" class="absolute -right-4 -top-20 p-4 text-surface-400 hover:text-white transition"><i data-lucide="x" class="w-10 h-10"></i></button>
+        </div>
+        <div class="w-full max-w-5xl mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10 animate-fade-in-up" style="animation-delay: 0.1s">
+            <div>
+                <h4 class="text-xs font-bold text-brand-500 uppercase tracking-widest mb-4">Trending Assets</h4>
+                <div class="flex flex-wrap gap-3">
+                    <button @click="quickSearch('GTA VI')" class="px-4 py-2 rounded-lg bg-surface-900 border border-surface-800 hover:border-brand-500 text-sm font-medium transition text-surface-300 hover:text-white">GTA VI</button>
+                    <button @click="quickSearch('Netflix')" class="px-4 py-2 rounded-lg bg-surface-900 border border-surface-800 hover:border-brand-500 text-sm font-medium transition text-surface-300 hover:text-white">Netflix 4K</button>
+                    <button @click="quickSearch('Adobe')" class="px-4 py-2 rounded-lg bg-surface-900 border border-surface-800 hover:border-brand-500 text-sm font-medium transition text-surface-300 hover:text-white">Creative Cloud</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <div x-show="ui.authOpen" class="fixed inset-0 z-[250] flex items-center justify-center px-4" x-cloak>
         <div class="absolute inset-0 bg-black/90 backdrop-blur-md" @click="ui.authOpen = false" x-transition.opacity></div>
-        <div x-show="ui.authOpen" x-transition:enter="transition ease-out duration-400" x-transition:enter-start="opacity-0 scale-90 translate-y-8" x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+        <div x-show="ui.authOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95 translate-y-4" x-transition:enter-end="opacity-100 scale-100 translate-y-0"
              class="relative w-full max-w-md bg-surface-950 border border-surface-700 rounded-3xl shadow-2xl p-8 overflow-hidden group">
+            
+            <div class="absolute -top-20 -right-20 w-64 h-64 bg-brand-500/20 blur-[80px] rounded-full group-hover:bg-brand-500/30 transition duration-1000"></div>
             
             <button @click="ui.authOpen = false" class="absolute top-4 right-4 text-surface-500 hover:text-white transition z-20"><i data-lucide="x" class="w-5 h-5"></i></button>
 
             <div class="text-center mb-8 relative z-10">
                 <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-surface-900 border border-surface-700 mb-5 shadow-xl">
-                    <i data-lucide="fingerprint" class="w-7 h-7 text-primary-500"></i>
+                    <i data-lucide="fingerprint" class="w-7 h-7 text-brand-500"></i>
                 </div>
                 <h2 class="text-3xl font-display font-bold text-white mb-2">Identity Verification</h2>
-                <p class="text-sm text-surface-400">Secure access to the Apex Vault.</p>
+                <p class="text-sm text-surface-400">Secure access to the Titanium Vault.</p>
             </div>
 
             <div class="flex p-1.5 bg-surface-900 rounded-xl mb-8 relative z-10 border border-surface-800">
@@ -207,24 +233,24 @@
 
             <form @submit.prevent="handleAuth" class="space-y-5 relative z-10">
                 <div x-show="authTab === 'register'" x-transition>
-                    <label class="block text-xs font-bold text-primary-400 uppercase tracking-widest mb-2 ml-1">Codename</label>
+                    <label class="block text-xs font-bold text-brand-400 uppercase tracking-widest mb-2 ml-1">Codename</label>
                     <div class="relative">
                         <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-500"></i>
-                        <input type="text" x-model="authForm.name" class="w-full bg-surface-900/50 border border-surface-700 rounded-xl px-4 py-3.5 pl-11 text-white focus:border-primary-500 focus:bg-surface-900 outline-none transition text-sm font-medium placeholder-surface-600" placeholder="e.g. Ghost_One">
+                        <input type="text" x-model="authForm.name" class="w-full bg-surface-900/50 border border-surface-700 rounded-xl px-4 py-3.5 pl-11 text-white focus:border-brand-500 focus:bg-surface-900 outline-none transition text-sm font-medium placeholder-surface-600" placeholder="e.g. Ghost_One">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-primary-400 uppercase tracking-widest mb-2 ml-1">Email Protocol</label>
+                    <label class="block text-xs font-bold text-brand-400 uppercase tracking-widest mb-2 ml-1">Email Protocol</label>
                     <div class="relative">
                         <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-500"></i>
-                        <input type="email" x-model="authForm.email" required class="w-full bg-surface-900/50 border border-surface-700 rounded-xl px-4 py-3.5 pl-11 text-white focus:border-primary-500 focus:bg-surface-900 outline-none transition text-sm font-medium placeholder-surface-600" placeholder="agent@playwithease.com">
+                        <input type="email" x-model="authForm.email" required class="w-full bg-surface-900/50 border border-surface-700 rounded-xl px-4 py-3.5 pl-11 text-white focus:border-brand-500 focus:bg-surface-900 outline-none transition text-sm font-medium placeholder-surface-600" placeholder="agent@playwithease.com">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-primary-400 uppercase tracking-widest mb-2 ml-1">Security Key</label>
+                    <label class="block text-xs font-bold text-brand-400 uppercase tracking-widest mb-2 ml-1">Security Key</label>
                     <div class="relative">
                         <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-500"></i>
-                        <input type="password" x-model="authForm.password" required class="w-full bg-surface-900/50 border border-surface-700 rounded-xl px-4 py-3.5 pl-11 text-white focus:border-primary-500 focus:bg-surface-900 outline-none transition text-sm font-medium placeholder-surface-600" placeholder="••••••••••••">
+                        <input type="password" x-model="authForm.password" required class="w-full bg-surface-900/50 border border-surface-700 rounded-xl px-4 py-3.5 pl-11 text-white focus:border-brand-500 focus:bg-surface-900 outline-none transition text-sm font-medium placeholder-surface-600" placeholder="••••••••••••">
                     </div>
                 </div>
                 
@@ -253,8 +279,8 @@
 
             <div class="p-8">
                 <div x-show="checkoutState.step === 'review'" x-transition>
-                    <h3 class="text-xl font-bold text-white mb-6">Order Summary</h3>
-                    <div class="space-y-4 mb-6 max-h-[200px] overflow-y-auto no-scrollbar pr-2">
+                    <h3 class="text-xl font-bold text-white mb-6">Order Manifest</h3>
+                    <div class="space-y-4 mb-6 max-h-[200px] overflow-y-auto custom-scrollbar pr-2">
                         <template x-for="item in cartItems">
                             <div class="flex justify-between items-center text-sm">
                                 <span class="text-surface-300 truncate w-3/4" x-text="item.title"></span>
@@ -263,24 +289,26 @@
                         </template>
                     </div>
                     <div class="border-t border-surface-700 pt-4 mb-8 flex justify-between items-center">
-                        <span class="text-surface-400 font-bold">Total</span>
+                        <span class="text-surface-400 font-bold">Total (USD)</span>
                         <span class="text-2xl font-bold text-white font-mono" x-text="formatPrice(cartTotal)"></span>
                     </div>
                     <div class="space-y-3">
                         <button @click="processCheckout" class="btn-primary w-full py-3 flex justify-center items-center gap-2">
-                            Confirm Payment <i data-lucide="credit-card" class="w-4 h-4"></i>
+                            Confirm Transaction <i data-lucide="credit-card" class="w-4 h-4"></i>
                         </button>
-                        <p class="text-center text-[10px] text-surface-500 uppercase">256-Bit SSL Encrypted Connection</p>
+                        <p class="text-center text-[10px] text-surface-500 uppercase flex items-center justify-center gap-1">
+                            <i data-lucide="shield-check" class="w-3 h-3"></i> 256-Bit SSL Encrypted
+                        </p>
                     </div>
                 </div>
 
                 <div x-show="checkoutState.step === 'processing'" class="flex flex-col items-center justify-center py-10" x-transition>
                     <div class="relative w-20 h-20 mb-6">
                         <div class="absolute inset-0 rounded-full border-4 border-surface-800"></div>
-                        <div class="absolute inset-0 rounded-full border-4 border-primary-500 border-t-transparent animate-spin"></div>
+                        <div class="absolute inset-0 rounded-full border-4 border-brand-500 border-t-transparent animate-spin"></div>
                     </div>
-                    <h3 class="text-lg font-bold text-white mb-2">Processing Payment...</h3>
-                    <p class="text-sm text-surface-400 font-mono">Verifying license keys...</p>
+                    <h3 class="text-lg font-bold text-white mb-2">Decrypting Keys...</h3>
+                    <p class="text-sm text-surface-400 font-mono">Do not close this window.</p>
                 </div>
 
                 <div x-show="checkoutState.step === 'success'" class="flex flex-col items-center justify-center py-6 text-center" x-transition>
@@ -288,8 +316,8 @@
                         <i data-lucide="check" class="w-8 h-8 text-green-500"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-white mb-2">Extraction Complete</h3>
-                    <p class="text-sm text-surface-400 max-w-xs mx-auto mb-8">Your digital keys have been sent to your registered email.</p>
-                    <button @click="ui.checkoutOpen = false; checkoutState.step = 'review'" class="btn-ghost w-full">Close Window</button>
+                    <p class="text-sm text-surface-400 max-w-xs mx-auto mb-8">Access keys have been dispatched to your secure email protocol.</p>
+                    <button @click="ui.checkoutOpen = false; checkoutState.step = 'review'" class="btn-secondary w-full">Close Terminal</button>
                 </div>
             </div>
         </div>
@@ -301,52 +329,55 @@
             <button @click="ui.activeProduct = null" class="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-white/10 flex items-center justify-center text-white transition"><i data-lucide="x" class="w-5 h-5"></i></button>
 
             <div class="w-full md:w-5/12 bg-surface-950 relative flex items-center justify-center p-8 group">
+                <div class="absolute inset-0 bg-brand-900/20 blur-3xl opacity-0 group-hover:opacity-100 transition duration-700"></div>
                 <img :src="ui.activeProduct?.image" class="max-h-[400px] object-contain drop-shadow-2xl shadow-black relative z-10 transition duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-surface-900 via-transparent to-transparent"></div>
             </div>
 
             <div class="w-full md:w-7/12 p-8 md:p-10 flex flex-col overflow-y-auto bg-surface-900 custom-scrollbar" x-data="{ tab: 'desc' }">
                 <div class="mb-6">
-                    <span class="px-3 py-1 rounded bg-primary-900/30 text-primary-400 text-xs font-bold border border-primary-500/20 uppercase tracking-widest" x-text="ui.activeProduct?.pillar"></span>
+                    <span class="px-3 py-1 rounded bg-brand-900/30 text-brand-400 text-xs font-bold border border-brand-500/20 uppercase tracking-widest" x-text="ui.activeProduct?.pillar"></span>
                     <h2 class="text-3xl md:text-4xl font-display font-black text-white mt-4 mb-2 leading-tight" x-text="ui.activeProduct?.title"></h2>
+                    <div class="flex items-center gap-2 text-yellow-500 text-xs font-bold">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i> 4.9/5 (Verified)
+                    </div>
                 </div>
 
                 <div class="flex border-b border-surface-700 mb-6">
-                    <button @click="tab = 'desc'" :class="tab === 'desc' ? 'border-primary-500 text-white' : 'border-transparent text-surface-500 hover:text-surface-300'" class="pb-3 px-4 text-sm font-bold border-b-2 transition">Overview</button>
-                    <button @click="tab = 'specs'" :class="tab === 'specs' ? 'border-primary-500 text-white' : 'border-transparent text-surface-500 hover:text-surface-300'" class="pb-3 px-4 text-sm font-bold border-b-2 transition">System Specs</button>
+                    <button @click="tab = 'desc'" :class="tab === 'desc' ? 'border-brand-500 text-white' : 'border-transparent text-surface-500 hover:text-surface-300'" class="pb-3 px-4 text-sm font-bold border-b-2 transition">Overview</button>
+                    <button @click="tab = 'specs'" :class="tab === 'specs' ? 'border-brand-500 text-white' : 'border-transparent text-surface-500 hover:text-surface-300'" class="pb-3 px-4 text-sm font-bold border-b-2 transition">System Specs</button>
                 </div>
 
-                <div class="flex-1">
+                <div class="flex-1 min-h-[150px]">
                     <div x-show="tab === 'desc'" class="space-y-4 animate-fade-in-up">
                         <p class="text-surface-300 text-sm leading-relaxed" x-text="ui.activeProduct?.description"></p>
-                        
                         <div class="grid grid-cols-2 gap-4 mt-6">
                             <div class="p-4 rounded-xl bg-surface-800 border border-surface-700">
                                 <div class="text-xs text-surface-500 uppercase font-bold mb-1">Developer</div>
                                 <div class="text-sm font-bold text-white">Official Studio</div>
                             </div>
                             <div class="p-4 rounded-xl bg-surface-800 border border-surface-700">
-                                <div class="text-xs text-surface-500 uppercase font-bold mb-1">Platform</div>
+                                <div class="text-xs text-surface-500 uppercase font-bold mb-1">Region</div>
                                 <div class="text-sm font-bold text-white">Global Key</div>
                             </div>
                         </div>
                     </div>
 
-                    <div x-show="tab === 'specs'" class="space-y-6 animate-fade-in-up">
+                    <div x-show="tab === 'specs'" class="space-y-4 animate-fade-in-up">
                         <div class="p-4 rounded-xl bg-surface-800/50 border border-surface-700">
-                            <h4 class="text-xs font-bold text-primary-400 uppercase mb-2">Minimum Requirements</h4>
-                            <p class="text-sm text-surface-300 font-mono" x-text="ui.activeProduct?.specs?.min || 'Standard configuration required.'"></p>
+                            <h4 class="text-xs font-bold text-brand-400 uppercase mb-2">Minimum Requirements</h4>
+                            <p class="text-sm text-surface-300 font-mono" x-text="ui.activeProduct?.specs?.min || 'Standard configuration.'"></p>
                         </div>
                         <div class="p-4 rounded-xl bg-surface-800/50 border border-surface-700">
                             <h4 class="text-xs font-bold text-accent-teal uppercase mb-2">Recommended</h4>
-                            <p class="text-sm text-surface-300 font-mono" x-text="ui.activeProduct?.specs?.rec || 'High-performance configuration recommended.'"></p>
+                            <p class="text-sm text-surface-300 font-mono" x-text="ui.activeProduct?.specs?.rec || 'High-performance configuration.'"></p>
                         </div>
                     </div>
                 </div>
 
                 <div class="mt-8 pt-6 border-t border-surface-800 flex items-center justify-between gap-6">
                     <div>
-                        <p class="text-[10px] text-surface-500 uppercase font-bold">Total Price</p>
+                        <p class="text-[10px] text-surface-500 uppercase font-bold">Price</p>
                         <p class="text-3xl font-mono font-bold text-white tracking-tight" x-text="formatPrice(ui.activeProduct?.price)"></p>
                     </div>
                     <button @click="addToCart(ui.activeProduct); ui.activeProduct = null" class="btn-primary flex-1 flex justify-center items-center gap-2">
@@ -360,37 +391,43 @@
     <nav :class="ui.scrolled ? 'nav-glass py-3' : 'bg-transparent py-6'" class="fixed top-0 w-full z-[150] transition-all duration-300 border-b border-transparent" :class="{'border-surface-800': ui.scrolled}">
         <div class="max-w-[1700px] mx-auto px-6 flex items-center justify-between">
             <a href="#" class="flex items-center gap-3 group relative z-50">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center text-white shadow-lg shadow-primary-900/50 group-hover:scale-105 transition-transform duration-300">
-                    <i data-lucide="triangle" class="w-5 h-5 rotate-180 fill-current"></i>
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-600 to-brand-800 flex items-center justify-center text-white shadow-lg shadow-brand-900/50 group-hover:scale-105 transition-transform duration-300">
+                    <i data-lucide="gamepad-2" class="w-5 h-5 fill-current"></i>
                 </div>
                 <div>
-                    <h1 class="font-display text-xl font-black tracking-tight text-white leading-none">PLAYWITH<span class="text-primary-500">EASE</span></h1>
-                    <p class="text-[9px] text-surface-400 font-mono tracking-[0.2em] uppercase mt-0.5">Enterprise</p>
+                    <h1 class="font-display text-xl font-black tracking-tight text-white leading-none uppercase">PlayWith<span class="text-brand-500">Ease</span></h1>
+                    <p class="text-[9px] text-surface-400 font-mono tracking-[0.2em] uppercase mt-0.5">Titanium v10</p>
                 </div>
             </a>
 
-            <div class="flex items-center gap-4 z-50">
+            <div class="flex items-center gap-3 md:gap-5 z-50">
                 <button @click="ui.openSearch()" class="w-10 h-10 rounded-full hover:bg-surface-800 flex items-center justify-center text-surface-400 hover:text-white transition"><i data-lucide="search" class="w-5 h-5"></i></button>
                 
+                <button class="relative w-10 h-10 rounded-full hover:bg-surface-800 flex items-center justify-center text-surface-400 hover:text-white transition group">
+                    <i data-lucide="heart" class="w-5 h-5 group-hover:text-accent-rose transition"></i>
+                    <span x-show="wishlist.length > 0" class="absolute top-2 right-2 w-2 h-2 bg-accent-rose rounded-full"></span>
+                </button>
+
                 <button @click="ui.cartOpen = true" class="relative group flex items-center gap-2 bg-surface-900/80 hover:bg-surface-800 pl-3 pr-4 py-2 rounded-full border border-surface-700 transition">
                     <div class="relative">
                         <i data-lucide="shopping-bag" class="w-5 h-5 text-surface-300 group-hover:text-white transition"></i>
-                        <span x-show="cartCount > 0" x-transition.scale class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-primary-500 rounded-full text-[9px] font-bold text-white flex items-center justify-center border border-surface-950" x-text="cartCount"></span>
+                        <span x-show="cartCount > 0" x-transition.scale class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-brand-500 rounded-full text-[9px] font-bold text-white flex items-center justify-center border border-surface-950" x-text="cartCount"></span>
                     </div>
                     <span class="text-xs font-bold text-white font-mono" x-text="formatPrice(cartTotal)"></span>
                 </button>
                 
                 <template x-if="!user">
-                    <button @click="ui.authOpen = true" class="hidden sm:block text-xs font-bold text-white bg-primary-600 hover:bg-primary-700 px-5 py-2.5 rounded-lg transition shadow-lg">Sign In</button>
+                    <button @click="ui.authOpen = true" class="hidden sm:block text-xs font-bold text-white bg-brand-600 hover:bg-brand-700 px-5 py-2.5 rounded-lg transition shadow-lg">Sign In</button>
                 </template>
                 <template x-if="user">
                     <div class="relative" x-data="{ open: false }" @click.outside="open = false">
                         <button @click="open = !open" class="flex items-center gap-3 hover:opacity-80 transition">
-                            <div class="w-9 h-9 rounded-full bg-primary-900 border border-primary-700 flex items-center justify-center text-white text-xs font-bold">
+                            <div class="w-9 h-9 rounded-full bg-brand-900 border border-brand-700 flex items-center justify-center text-white text-xs font-bold">
                                 <span x-text="user.displayName ? user.displayName.charAt(0) : 'U'"></span>
                             </div>
                         </button>
                         <div x-show="open" class="absolute right-0 mt-2 w-48 bg-surface-900 border border-surface-700 rounded-xl shadow-xl p-2">
+                            <div class="px-4 py-2 text-xs text-surface-400 border-b border-surface-800 mb-1" x-text="user.email"></div>
                             <button @click="handleLogout" class="w-full text-left px-4 py-2 text-xs font-bold text-red-400 hover:bg-surface-800 rounded-lg">Log Out</button>
                         </div>
                     </div>
@@ -419,23 +456,23 @@
                     
                     <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-[10px] md:text-xs font-bold text-white uppercase tracking-widest shadow-xl">
                         <span class="relative flex h-2.5 w-2.5">
-                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
-                          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary-500"></span>
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-500"></span>
                         </span>
                         <span>Global Premiere</span>
                         <div class="w-px h-3 bg-white/20"></div>
-                        <span class="text-primary-400" x-text="slide.dateLabel"></span>
+                        <span class="text-brand-400" x-text="slide.dateLabel"></span>
                     </div>
 
                     <img :src="slide.logo" class="h-28 md:h-52 lg:h-64 object-contain self-start drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)]" alt="Game Title">
 
-                    <p class="text-base md:text-xl text-surface-200 font-light leading-relaxed max-w-2xl drop-shadow-md border-l-4 border-primary-500 pl-6 bg-gradient-to-r from-black/40 to-transparent pr-4 py-2 rounded-r-lg" x-text="slide.desc"></p>
+                    <p class="text-base md:text-xl text-surface-200 font-light leading-relaxed max-w-2xl drop-shadow-md border-l-4 border-brand-500 pl-6 bg-gradient-to-r from-black/40 to-transparent pr-4 py-2 rounded-r-lg" x-text="slide.desc"></p>
                     
                     <div class="flex flex-wrap gap-4 mt-4">
                         <button @click="quickSearch(slide.title)" class="btn-primary group">
                             <span class="relative z-10 flex items-center gap-2">Pre-Order Now <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
                         </button>
-                        <button @click="playTrailer" class="btn-ghost group flex items-center gap-3">
+                        <button @click="playTrailer" class="btn-secondary group flex items-center gap-3">
                             <div class="w-6 h-6 bg-white text-black rounded-full flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="play" class="w-3 h-3 fill-current ml-0.5"></i></div>
                             <span>Watch Trailer</span>
                         </button>
@@ -449,14 +486,43 @@
             <button @click="toggleMute" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i :data-lucide="isMuted ? 'volume-x' : 'volume-2'" class="w-5 h-5"></i></button>
             <button @click="stopTrailer" class="px-5 py-2.5 rounded-full bg-red-600 hover:bg-red-500 text-white text-xs font-bold uppercase tracking-wider transition">Exit</button>
         </div>
+        
+        <div class="absolute right-8 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-20">
+            <template x-for="(s, i) in heroSlides">
+                <button @click="activeSlide = i; stopTrailer();" class="w-1.5 transition-all duration-500 rounded-full bg-white shadow-glow-brand" :class="activeSlide === i ? 'h-12 opacity-100 bg-brand-500' : 'h-3 opacity-30 hover:opacity-60 hover:h-5'"></button>
+            </template>
+        </div>
     </section>
 
     <main class="relative z-10 bg-surface-950">
-        <div class="max-w-[1700px] mx-auto px-6 py-24">
+        <div class="border-y border-surface-800 bg-surface-900/30 backdrop-blur-sm">
+            <div class="max-w-[1600px] mx-auto px-6 py-12">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+                    <div class="flex items-start gap-4 group">
+                        <i data-lucide="shield-check" class="w-8 h-8 text-brand-500 mt-1"></i>
+                        <div><h4 class="font-bold text-white group-hover:text-brand-400 transition">Official Reseller</h4><p class="text-sm text-surface-400 mt-1">Direct API integration.</p></div>
+                    </div>
+                    <div class="flex items-start gap-4 group">
+                        <i data-lucide="zap" class="w-8 h-8 text-accent-teal mt-1"></i>
+                        <div><h4 class="font-bold text-white group-hover:text-accent-teal transition">Instant Delivery</h4><p class="text-sm text-surface-400 mt-1">Key dispatch in < 30s.</p></div>
+                    </div>
+                    <div class="flex items-start gap-4 group">
+                        <i data-lucide="lock" class="w-8 h-8 text-accent-violet mt-1"></i>
+                        <div><h4 class="font-bold text-white group-hover:text-accent-violet transition">Secure Payment</h4><p class="text-sm text-surface-400 mt-1">256-bit SSL Encrypted.</p></div>
+                    </div>
+                    <div class="flex items-start gap-4 group">
+                        <i data-lucide="headphones" class="w-8 h-8 text-white mt-1"></i>
+                        <div><h4 class="font-bold text-white">24/7 Apex Support</h4><p class="text-sm text-surface-400 mt-1">Live agents ready.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-[1700px] mx-auto px-6 md:px-12 py-24">
             
             <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 border-b border-surface-800 pb-8">
                 <div>
-                    <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-2">Digital <span class="text-primary-500">Vault</span></h2>
+                    <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-2">Digital <span class="text-brand-500">Vault</span></h2>
                     <p class="text-surface-400 text-sm">Browse verified licenses. Real-time availability.</p>
                 </div>
                 <div class="bg-surface-900 p-1.5 rounded-xl border border-surface-800">
@@ -473,7 +539,7 @@
             <div class="flex gap-3 overflow-x-auto pb-6 mb-8 no-scrollbar mask-linear">
                 <template x-for="cat in subFilters">
                     <button @click="activeCategory = cat" 
-                            :class="activeCategory === cat ? 'bg-primary-600 border-primary-500 text-white shadow-glow-primary' : 'bg-transparent border-surface-800 text-surface-400 hover:border-surface-600 hover:text-white'"
+                            :class="activeCategory === cat ? 'bg-brand-600 border-brand-500 text-white shadow-glow-brand' : 'bg-transparent border-surface-800 text-surface-400 hover:border-surface-600 hover:text-white'"
                             class="px-6 py-2.5 rounded-full border text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all" x-text="cat"></button>
                 </template>
             </div>
@@ -485,16 +551,17 @@
 
                 <div x-show="!loading" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 md:gap-8">
                     <template x-for="item in filteredItems" :key="item.id">
-                        <div class="group relative flex flex-col h-full bg-surface-900 border border-surface-800 rounded-2xl overflow-hidden hover:border-primary-500/50 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer isolate" @click="ui.activeProduct = item">
+                        <div class="group relative flex flex-col h-full bg-surface-900 border border-surface-800 rounded-2xl overflow-hidden hover:border-brand-500/50 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer isolate" @click="ui.activeProduct = item">
                             <div class="relative w-full aspect-[2/3] bg-surface-950 overflow-hidden">
                                 <img :src="item.image" loading="lazy" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition duration-700">
+                                <div class="card-hologram"></div>
                                 <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20">
                                     <button @click.stop="addToCart(item)" class="btn-primary w-full text-xs py-3 flex items-center justify-center gap-2 shadow-xl">Add to Cart</button>
                                 </div>
                                 <div class="absolute inset-0 bg-gradient-to-t from-surface-900 via-transparent to-transparent opacity-60 group-hover:opacity-90 transition"></div>
                             </div>
                             <div class="p-5 flex flex-col flex-1 border-t border-surface-800 bg-surface-900 relative z-20">
-                                <h3 class="text-sm font-bold text-white leading-tight mb-1 group-hover:text-primary-400 transition line-clamp-2" x-text="item.title"></h3>
+                                <h3 class="text-sm font-bold text-white leading-tight mb-1 group-hover:text-brand-400 transition line-clamp-2" x-text="item.title"></h3>
                                 <p class="text-[10px] text-surface-500 font-mono uppercase tracking-wide" x-text="item.category"></p>
                                 <div class="mt-auto pt-4 flex items-end justify-between border-t border-surface-800/50 mt-4">
                                     <p class="text-base font-bold text-white font-mono" x-text="formatPrice(item.price)"></p>
@@ -513,7 +580,7 @@
              class="mb-4 w-[350px] bg-surface-900 border border-surface-700 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[450px]">
             <div class="bg-surface-950 p-4 border-b border-surface-800 flex justify-between items-center">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-primary-900/50 border border-primary-500/30 flex items-center justify-center text-primary-400"><i data-lucide="bot" class="w-4 h-4"></i></div>
+                    <div class="w-8 h-8 rounded-lg bg-brand-900/50 border border-brand-500/30 flex items-center justify-center text-brand-400"><i data-lucide="bot" class="w-4 h-4"></i></div>
                     <div><h4 class="text-sm font-bold text-white">Omni Assistant</h4><p class="text-[10px] text-surface-400">Online</p></div>
                 </div>
                 <button @click="open = false" class="text-surface-500 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
@@ -522,7 +589,7 @@
                 <template x-for="msg in messages">
                     <div :class="msg.sender === 'bot' ? 'self-start' : 'self-end text-right'">
                         <div class="inline-block p-3 rounded-xl text-xs font-medium max-w-[85%]" 
-                             :class="msg.sender === 'bot' ? 'bg-surface-800 text-surface-200 rounded-tl-none' : 'bg-primary-600 text-white rounded-tr-none'">
+                             :class="msg.sender === 'bot' ? 'bg-surface-800 text-surface-200 rounded-tl-none' : 'bg-brand-600 text-white rounded-tr-none'">
                             <span x-html="msg.text"></span>
                         </div>
                     </div>
@@ -531,14 +598,14 @@
             </div>
             <div class="p-3 bg-surface-950 border-t border-surface-800">
                 <div class="flex gap-2">
-                    <input type="text" x-model="input" @keydown.enter="processMessage" placeholder="Ask about stock..." class="flex-1 bg-surface-900 border border-surface-700 rounded-lg px-3 py-2 text-xs text-white focus:border-primary-500 outline-none">
-                    <button @click="processMessage" class="p-2 bg-primary-600 rounded-lg text-white hover:bg-primary-700 transition"><i data-lucide="send" class="w-4 h-4"></i></button>
+                    <input type="text" x-model="input" @keydown.enter="processMessage" placeholder="Ask about stock..." class="flex-1 bg-surface-900 border border-surface-700 rounded-lg px-3 py-2 text-xs text-white focus:border-brand-500 outline-none">
+                    <button @click="processMessage" class="p-2 bg-brand-600 rounded-lg text-white hover:bg-brand-700 transition"><i data-lucide="send" class="w-4 h-4"></i></button>
                 </div>
             </div>
         </div>
         <button @click="open = !open" class="group flex items-center gap-2 bg-surface-900 hover:bg-surface-800 border border-surface-700 pl-4 pr-2 py-2 rounded-full shadow-xl transition-all">
             <span class="text-xs font-bold text-white">Support AI</span>
-            <div class="w-8 h-8 rounded-full bg-primary-600 flex items-center justify-center text-white group-hover:scale-110 transition"><i data-lucide="message-square" class="w-4 h-4"></i></div>
+            <div class="w-8 h-8 rounded-full bg-brand-600 flex items-center justify-center text-white group-hover:scale-110 transition"><i data-lucide="message-square" class="w-4 h-4"></i></div>
         </button>
     </div>
 
@@ -559,7 +626,7 @@
                                 <h4 class="text-sm font-bold text-white line-clamp-1" x-text="item.title"></h4>
                                 <p class="text-xs text-surface-400 mt-1" x-text="item.category"></p>
                                 <div class="flex justify-between items-center mt-2">
-                                    <span class="text-sm font-mono font-bold text-primary-400" x-text="formatPrice(item.price)"></span>
+                                    <span class="text-sm font-mono font-bold text-brand-400" x-text="formatPrice(item.price)"></span>
                                     <button @click="removeFromCart(index)" class="text-red-500 hover:text-red-400 text-xs">Remove</button>
                                 </div>
                             </div>
@@ -573,6 +640,64 @@
             </div>
         </div>
     </div>
+
+    <footer class="bg-surface-950 border-t border-surface-800 pt-20 pb-10 text-sm">
+        <div class="max-w-[1700px] mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-20">
+                <div class="lg:col-span-2 space-y-6 pr-12">
+                    <a href="#" class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded bg-brand-600 flex items-center justify-center text-white"><i data-lucide="triangle" class="w-4 h-4 rotate-180 fill-current"></i></div>
+                        <span class="font-display text-xl font-bold text-white">PLAYWITH<span class="text-brand-500">EASE</span></span>
+                    </a>
+                    <p class="text-surface-400 leading-relaxed font-light">The enterprise standard for digital asset distribution. Verified keys, instant API delivery, and 24/7 localized support for global gamers and professionals.</p>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-white mb-6 uppercase text-xs tracking-widest">Marketplace</h4>
+                    <ul class="space-y-4 text-surface-400">
+                        <li><a href="#" class="hover:text-brand-400 transition">Trending Games</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition">Software Hub</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition">Subscriptions</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-white mb-6 uppercase text-xs tracking-widest">Support</h4>
+                    <ul class="space-y-4 text-surface-400">
+                        <li><a href="#" class="hover:text-brand-400 transition">Track Order</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition">Refund Policy</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition">Live Chat</a></li>
+                    </ul>
+                </div>
+                
+                <div class="lg:col-span-1">
+                     <h4 class="font-bold text-white mb-6 uppercase text-xs tracking-widest">System Status</h4>
+                     <div class="p-4 rounded-xl bg-surface-900 border border-surface-800">
+                         <div class="flex items-center justify-between mb-2">
+                             <span class="text-xs text-surface-400 font-mono">API GATEWAY</span>
+                             <span class="text-[10px] font-bold text-green-500">ONLINE</span>
+                         </div>
+                         <div class="w-full bg-surface-800 h-1 rounded-full mb-4 overflow-hidden">
+                             <div class="bg-green-500 h-full w-[98%] shadow-[0_0_10px_#22c55e]"></div>
+                         </div>
+                         <div class="flex items-center justify-between">
+                             <span class="text-xs text-surface-400 font-mono">AUTH SERVER</span>
+                             <span class="text-[10px] font-bold text-green-500">STABLE</span>
+                         </div>
+                     </div>
+                </div>
+            </div>
+
+            <div class="border-t border-surface-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-surface-500 font-mono uppercase">
+                <p>&copy; 2026 PlayWithEase Digital Inc. All rights reserved.</p>
+                <div class="flex gap-4">
+                    <span>Privacy Protocol</span>
+                    <span>•</span>
+                    <span>Terms of Service</span>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -628,11 +753,12 @@
                 clearChat() { this.messages = []; }
             }));
 
-            Alpine.data('apexSystem', () => ({
+            Alpine.data('titaniumStore', () => ({
                 ui: { scrolled: false, searchOpen: false, cartOpen: false, authOpen: false, activeProduct: null, checkoutOpen: false },
                 authTab: 'login', authForm: { email: '', password: '', name: '' }, user: null,
                 activeSlide: 0, trailerPlaying: false, isMuted: false, searchQuery: '', activePillar: 'Games (PS5 Digital)', activeCategory: 'All', loading: false, currency: 'USD',
-                cartItems: Alpine.$persist([]).as('pwe_cart_v3'),
+                cartItems: Alpine.$persist([]).as('pwe_cart_v4'),
+                wishlist: Alpine.$persist([]).as('pwe_wish_v4'),
                 checkoutState: { step: 'review', processing: false },
                 notifications: [],
                 games: VAULT_DATABASE,
