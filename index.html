@@ -137,7 +137,7 @@
 
     <main class="max-w-[1600px] mx-auto px-4 md:px-6 py-16">
          <div class="flex gap-2 overflow-x-auto no-scrollbar mb-10 pb-2">
-             <template x-for="cat in ['All', 'Action', 'RPG', 'Shooter', 'Sports', 'Horror']">
+             <template x-for="cat in ['All', 'Action', 'RPG', 'Shooter', 'Adventure', 'Sports', 'Horror', 'OTT']">
                  <button @click="activeCategory = cat" :class="activeCategory === cat ? 'bg-brand-primary text-white' : 'bg-white/5 text-gray-500'" class="px-6 py-2 rounded-xl text-[10px] font-black uppercase transition whitespace-nowrap" x-text="cat"></button>
              </template>
          </div>
@@ -167,59 +167,35 @@
                         <div class="w-9 h-9 flex items-center justify-center bg-brand-primary/10 rounded-xl border border-brand-primary/20"><i data-lucide="gamepad-2" class="text-brand-primary"></i></div>
                         <h2 class="font-display text-lg tracking-tight uppercase italic font-black">PLAYWITH<span class="text-brand-primary">EASE</span></h2>
                     </a>
-                    <p class="text-sm text-white/60 leading-relaxed">Premium digital game marketplace delivering instant keys, verified sellers, and player-first support for every order.</p>
-                    <div class="flex items-center gap-2 text-xs text-white/50 uppercase tracking-[0.2em]">
-                        <i data-lucide="shield-check" class="w-4 h-4 text-brand-primary"></i>
-                        Secure Checkout Enabled
-                    </div>
+                    <p class="text-sm text-white/60 leading-relaxed">Premium digital game marketplace delivering instant keys, verified sellers, and player-first support.</p>
                 </div>
-
                 <div>
                     <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80 mb-4">Quick Links</h3>
                     <ul class="space-y-2 text-sm text-white/60">
-                        <li><a href="index.html" class="hover:text-white transition">Store Home</a></li>
-                        <li><a href="profile.html" class="hover:text-white transition">My Vault</a></li>
-                        <li><a href="cart.html" class="hover:text-white transition">Cart</a></li>
-                        <li><a href="checkout.html" class="hover:text-white transition">Checkout</a></li>
+                        <li><a href="index.html">Store Home</a></li>
+                        <li><a href="profile.html">My Vault</a></li>
+                        <li><a href="cart.html">Cart</a></li>
                     </ul>
                 </div>
-
                 <div>
                     <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80 mb-4">Customer Care</h3>
                     <ul class="space-y-2 text-sm text-white/60">
-                        <li><a href="#" class="hover:text-white transition">Help Center</a></li>
-                        <li><a href="#" class="hover:text-white transition">Refund Policy</a></li>
-                        <li><a href="#" class="hover:text-white transition">Terms of Service</a></li>
-                        <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Terms of Service</a></li>
                     </ul>
                 </div>
-
                 <div class="space-y-4">
                     <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80">Contact</h3>
                     <div class="space-y-3 text-sm text-white/60">
                         <p class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4 text-brand-primary"></i> support@playwithease.com</p>
-                        <p class="flex items-center gap-2"><i data-lucide="clock-3" class="w-4 h-4 text-brand-primary"></i> 24/7 Live Assistance</p>
-                        <p class="flex items-center gap-2"><i data-lucide="globe" class="w-4 h-4 text-brand-primary"></i> Global Instant Delivery</p>
                     </div>
                 </div>
             </div>
-
-            <div class="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-white/40">
+            <div class="mt-10 pt-6 border-t border-white/10 text-center text-xs text-white/40">
                 <p>&copy; 2026 PlayWithEase Digital. All rights reserved.</p>
-                <div class="flex items-center gap-5 uppercase tracking-[0.2em]">
-                    <span class="flex items-center gap-1"><i data-lucide="badge-check" class="w-3.5 h-3.5"></i> Trusted Keys</span>
-                    <span class="flex items-center gap-1"><i data-lucide="zap" class="w-3.5 h-3.5"></i> Instant Access</span>
-                </div>
             </div>
         </div>
      </footer>
- 
-     <div x-show="!cookiesAccepted" class="fixed bottom-6 right-6 left-6 md:left-auto md:w-[400px] z-[100]">
-         <div class="bg-white text-black p-4 md:p-6 rounded-3xl shadow-2xl flex items-center gap-4 border border-gray-100">
-             <i data-lucide="cookie" class="w-8 h-8 text-black"></i>
-             <p class="text-[10px] md:text-xs font-medium flex-1 text-black font-bold">Secure vault & experience cookies. <button @click="acceptCookies()" class="underline font-black">Accept All</button></p>
-         </div>
-     </div>
  
      <script type="module">
          import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -228,7 +204,6 @@
          const app = initializeApp(firebaseConfig); const auth = getAuth(app);
          onAuthStateChanged(auth, (user) => {
              if (user) {
-                 document.getElementById('loginBtn')?.classList.add('hidden');
                  document.getElementById('loginSection')?.classList.add('hidden');
                  document.getElementById('userPanelInfo')?.classList.remove('hidden');
                  if(user.photoURL) document.getElementById('userAvatarHeader').src = user.photoURL;
@@ -242,31 +217,25 @@
      <script src="https://www.youtube.com/iframe_api"></script>
      <script>
          document.addEventListener('alpine:init', () => {
-             
              Alpine.data('chatBot', () => ({
                  open: false, input: '', isTyping: false,
-                 messages: [{ id: 1, text: "Hello! How can I help you with your digital vault?", sender: 'bot' }],
+                 messages: [{ id: 1, text: "Hello! How can I help you?", sender: 'bot' }],
                  sendMessage() {
-                     if (!this.input.trim() || this.isTyping) return;
-                     const u = this.input; this.messages.push({ id: Date.now(), text: u, sender: 'user' });
-                     this.input = ''; this.isTyping = true; this.scrollToBottom();
+                     if (!this.input.trim()) return;
+                     this.messages.push({ id: Date.now(), text: this.input, sender: 'user' });
+                     this.input = ''; this.scrollToBottom();
                      setTimeout(() => {
-                         let r = "I can help with keys and refunds.";
-                         if(u.toLowerCase().includes('key')) r = "Keys are delivered <b>instantly</b> to your vault.";
-                         if(u.toLowerCase().includes('refund')) r = "We have a 14-day refund policy for unused keys.";
-                         this.messages.push({ id: Date.now()+1, text: r, sender: 'bot' });
-                         this.isTyping = false; this.scrollToBottom();
-                         lucide.createIcons();
+                         this.messages.push({ id: Date.now()+1, text: "Support is active. Check your vault for keys.", sender: 'bot' });
+                         this.scrollToBottom(); lucide.createIcons();
                      }, 1000);
                  },
-                scrollToBottom() { this.$nextTick(() => { const c = document.getElementById('chatContainer'); if (c) c.scrollTo({ top: c.scrollHeight, behavior: 'smooth' }); }); }
+                 scrollToBottom() { this.$nextTick(() => { const c = document.getElementById('chatContainer'); if (c) c.scrollTo({ top: c.scrollHeight, behavior: 'smooth' }); }); }
              }));
  
              Alpine.data('storeLogic', () => ({
                  scrolled: false, activeSlide: 0, trailerPlaying: false, isMuted: false,
-                cartCount: parseInt(localStorage.getItem('pwe_cart_count'), 10) || 0,
-                 searchQuery: '', activeCategory: 'All', notifications: [],
-                 cookiesAccepted: localStorage.getItem('pwe_cookies') === 'true',
+                 cartCount: parseInt(localStorage.getItem('pwe_cart_count'), 10) || 0,
+                 activeCategory: 'All', notifications: [], searchQuery: '',
                  currentTheme: localStorage.getItem('pwe_theme') || 'cyber',
                  timer: { days: '00', hours: '00', minutes: '00', seconds: '00' },
                  heroSlides: [
@@ -281,42 +250,65 @@
                      minimal: { '--bg-main': '#ffffff', '--bg-card': '#f3f4f6', '--brand-primary': '#000000', '--brand-secondary': '#374151' }
                  },
                  games: [
-                     { id: 1, title: 'GTA V', category: 'Action', price: 14.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
-                     { id: 2, title: 'RDR 2', category: 'Adventure', price: 19.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
-                     { id: 3, title: 'Cyberpunk 2077', category: 'RPG', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg' },
-                     { id: 4, title: 'Elden Ring', category: 'RPG', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg' },
-                     { id: 11, title: 'Helldivers 2', category: 'Shooter', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/library_600x900.jpg' },
-                     { id: 15, title: 'Forza 5', category: 'Sports', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551360/library_600x900.jpg' },
-                     { id: 16, title: 'Hogwarts Legacy', category: 'RPG', price: 35.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/library_600x900.jpg' },
-                     { id: 17, title: 'Starfield', category: 'RPG', price: 41.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1716740/library_600x900.jpg' },
-                     { id: 19, title: 'Dragon Dogma 2', category: 'RPG', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2054970/library_600x900.jpg' },
-                     { id: 20, title: 'AC Mirage', category: 'Action', price: 24.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2355430/library_600x900.jpg' },
-                     { id: 7, title: 'FC 24', category: 'Sports', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
-                     { id: 8, title: 'RE 4', category: 'Horror', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg' },
-                     { id: 9, title: 'Spider-Man', category: 'Action', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg' },
-                     { id: 10, title: 'TLOU', category: 'Adventure', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900.jpg' },
-                     { id: 14, title: 'Tekken 8', category: 'Action', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1778820/library_600x900.jpg' },
-                     { id: 5, title: 'God of War', category: 'Action', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg' },
-                     { id: 6, title: 'MW3', category: 'Shooter', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2519060/library_600x900.jpg' },
-                     { id: 13, title: 'Baldur Gate 3', category: 'RPG', price: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1086940/library_600x900.jpg' },
-                     { id: 18, title: 'Armored Core', category: 'Action', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888160/library_600x900.jpg' },
-                     { id: 12, title: 'Palworld', category: 'Adventure', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1623730/library_600x900.jpg' }
+                    // --- GAMES (30+) ---
+                    { id: 1, title: 'GTA V', category: 'Action', price: 14.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
+                    { id: 2, title: 'RDR 2', category: 'Adventure', price: 19.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
+                    { id: 3, title: 'Cyberpunk 2077', category: 'RPG', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg' },
+                    { id: 4, title: 'Elden Ring', category: 'RPG', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg' },
+                    { id: 5, title: 'God of War', category: 'Action', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg' },
+                    { id: 6, title: 'MW3', category: 'Shooter', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2519060/library_600x900.jpg' },
+                    { id: 7, title: 'FC 24', category: 'Sports', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
+                    { id: 8, title: 'RE 4', category: 'Horror', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg' },
+                    { id: 9, title: 'Spider-Man', category: 'Action', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg' },
+                    { id: 10, title: 'TLOU', category: 'Adventure', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900.jpg' },
+                    { id: 11, title: 'Helldivers 2', category: 'Shooter', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/library_600x900.jpg' },
+                    { id: 12, title: 'Palworld', category: 'Adventure', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1623730/library_600x900.jpg' },
+                    { id: 13, title: 'Baldur Gate 3', category: 'RPG', price: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1086940/library_600x900.jpg' },
+                    { id: 14, title: 'Tekken 8', category: 'Action', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1778820/library_600x900.jpg' },
+                    { id: 15, title: 'Forza 5', category: 'Sports', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551360/library_600x900.jpg' },
+                    { id: 16, title: 'Hogwarts Legacy', category: 'RPG', price: 35.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/library_600x900.jpg' },
+                    { id: 17, title: 'Starfield', category: 'RPG', price: 41.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1716740/library_600x900.jpg' },
+                    { id: 18, title: 'Armored Core', category: 'Action', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888160/library_600x900.jpg' },
+                    { id: 19, title: 'Dragon Dogma 2', category: 'RPG', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2054970/library_600x900.jpg' },
+                    { id: 20, title: 'AC Mirage', category: 'Action', price: 24.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2355430/library_600x900.jpg' },
+                    { id: 21, title: 'Sekiro', category: 'Action', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/814380/library_600x900.jpg' },
+                    { id: 22, title: 'Horizon', category: 'Adventure', price: 44.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2420110/library_600x900.jpg' },
+                    { id: 23, title: 'Uncharted', category: 'Adventure', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1659420/library_600x900.jpg' },
+                    { id: 24, title: 'Days Gone', category: 'Horror', price: 14.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1259420/library_600x900.jpg' },
+                    { id: 25, title: 'Alan Wake 2', category: 'Horror', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
+                    { id: 26, title: 'Dead Space', category: 'Horror', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1693980/library_600x900.jpg' },
+                    { id: 27, title: 'Destiny 2', category: 'Shooter', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/library_600x900.jpg' },
+                    { id: 28, title: 'Street Fighter 6', category: 'Action', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1364780/library_600x900.jpg' },
+                    { id: 29, title: 'Battlefield 2042', category: 'Shooter', price: 19.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1517290/library_600x900.jpg' },
+                    { id: 30, title: 'Halo Infinite', category: 'Shooter', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1240440/library_600x900.jpg' },
+                    
+                    // --- OTT (10+) ---
+                    { id: 101, title: 'Netflix 4K', category: 'OTT', price: 2.99, image: 'https://images.ctfassets.net/4cd45et68cgf/4nBn7ncuG0gQUuEguKWg8w/8394ad21cd033a35d03a3f0f37c35a27/Netflix-Logo.jpg' },
+                    { id: 102, title: 'YT Premium', category: 'OTT', price: 1.49, image: 'https://upload.wikimedia.org/wikipedia/commons/e/e1/Logo_of_YouTube_Premium.svg' },
+                    { id: 103, title: 'Disney+', category: 'OTT', price: 1.99, image: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_Hotstar_logo.svg' },
+                    { id: 104, title: 'Prime Video', category: 'OTT', price: 1.29, image: 'https://upload.wikimedia.org/wikipedia/commons/1/11/Amazon_Prime_Video_logo.svg' },
+                    { id: 105, title: 'Spotify Premium', category: 'OTT', price: 0.99, image: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg' },
+                    { id: 106, title: 'HBO Max', category: 'OTT', price: 2.29, image: 'https://upload.wikimedia.org/wikipedia/commons/d/de/HBO_Max_Logo.svg' },
+                    { id: 107, title: 'Crunchyroll', category: 'OTT', price: 1.19, image: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Crunchyroll_Logo.svg' },
+                    { id: 108, title: 'Hulu', category: 'OTT', price: 1.59, image: 'https://upload.wikimedia.org/wikipedia/commons/e/e4/Hulu_Logo.svg' },
+                    { id: 109, title: 'Paramount+', category: 'OTT', price: 1.39, image: 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Paramount_Plus.svg' },
+                    { id: 110, title: 'Apple TV+', category: 'OTT', price: 1.79, image: 'https://upload.wikimedia.org/wikipedia/commons/2/28/Apple_TV_Plus_Logo.svg' }
                  ],
                  init() { 
-                     this.startTimer(); 
-                     this.setTheme(this.currentTheme);
-                    window.addEventListener('load', () => lucide.createIcons());
+                     this.startTimer(); this.setTheme(this.currentTheme);
+                     window.addEventListener('load', () => lucide.createIcons());
                  },
                  get themeStyles() { return Object.entries(this.themes[this.currentTheme] || {}).map(([k,v])=>`${k}:${v};`).join(''); },
                  setTheme(n) { this.currentTheme = n; localStorage.setItem('pwe_theme', n); },
-                formatPrice(p) { return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(p * 85); },
-                 acceptCookies() { this.cookiesAccepted = true; localStorage.setItem('pwe_cookies', 'true'); },
-                 get filteredGames() { let r = this.games; if(this.activeCategory !== 'All') r = r.filter(g => g.category === this.activeCategory); if(this.searchQuery !== '') r = r.filter(g => g.title.toLowerCase().includes(this.searchQuery.toLowerCase())); return r; },
+                 formatPrice(p) { return '₹'+Math.round(p*85); },
+                 get filteredGames() { 
+                     let r = this.games; 
+                     if(this.activeCategory !== 'All') r = r.filter(g => g.category === this.activeCategory); 
+                     return r; 
+                 },
                  addToCart(g) { 
                      this.cartCount++; 
-                     localStorage.setItem('pwe_cart_count', this.cartCount); 
-                     let c = JSON.parse(localStorage.getItem('pwe_cart_items') || '[]');
-                     c.push(g); localStorage.setItem('pwe_cart_items', JSON.stringify(c));
+                     localStorage.setItem('pwe_cart_count', this.cartCount);
                      this.notify('Success', g.title + ' added.');
                  },
                  buyNow(g) { this.addToCart(g); window.location.href = 'checkout.html'; },
@@ -326,35 +318,28 @@
                      const target = new Date(this.heroSlides[this.activeSlide].date).getTime(); 
                      clearInterval(this.timerInterval);
                      this.timerInterval = setInterval(() => { 
-                        const now = new Date().getTime();
-                        const diff = Math.max(0, target - now);
-                        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-                        this.timer.days = String(days).padStart(2, '0');
-                        this.timer.hours = String(hours).padStart(2, '0');
-                        this.timer.minutes = String(minutes).padStart(2, '0');
-                        this.timer.seconds = String(seconds).padStart(2, '0');
+                        const now = new Date().getTime(), d = Math.max(0, target - now);
+                        this.timer.days = String(Math.floor(d/(1000*60*60*24))).padStart(2, '0');
+                        this.timer.hours = String(Math.floor((d%(1000*60*60*24))/(1000*60*60))).padStart(2, '0');
+                        this.timer.minutes = String(Math.floor((d%(1000*60*60))/(1000*60))).padStart(2, '0');
+                        this.timer.seconds = String(Math.floor((d%(1000*60))/1000)).padStart(2, '0');
                      }, 1000); 
                  },
                  playTrailer() {
                      this.trailerPlaying = true;
-                     setTimeout(() => lucide.createIcons(), 100);
-                     if(window.ytPlayer && typeof window.ytPlayer.loadVideoById === 'function') { window.ytPlayer.loadVideoById(this.heroSlides[this.activeSlide].videoId); }
-                     else {
-                         window.ytPlayer = new YT.Player('hero-player', {
-                             height: '100%', width: '100%', videoId: this.heroSlides[this.activeSlide].videoId,
-                             playerVars: { 'autoplay': 1, 'controls': 0, 'rel': 0, 'showinfo': 0, 'modestbranding': 1 },
-                             events: { 'onReady': (e) => { e.target.mute(); e.target.playVideo(); setTimeout(() => e.target.unMute(), 500); }, 'onStateChange': (e) => { if(e.data === YT.PlayerState.ENDED) this.stopTrailer(); } }
-                         });
-                     }
+                     setTimeout(() => {
+                        window.ytPlayer = new YT.Player('hero-player', {
+                            height: '100%', width: '100%', videoId: this.heroSlides[this.activeSlide].videoId,
+                            playerVars: { 'autoplay': 1, 'controls': 0, 'rel': 0, 'modestbranding': 1 },
+                            events: { 'onReady': (e) => e.target.playVideo(), 'onStateChange': (e) => { if(e.data === YT.PlayerState.ENDED) this.stopTrailer(); } }
+                        });
+                     }, 100);
                  },
-                 stopTrailer() { this.trailerPlaying = false; if(window.ytPlayer && typeof window.ytPlayer.stopVideo === 'function') window.ytPlayer.stopVideo(); },
+                 stopTrailer() { this.trailerPlaying = false; if(window.ytPlayer?.stopVideo) window.ytPlayer.stopVideo(); },
                  toggleMute() { this.isMuted = !this.isMuted; if(window.ytPlayer) { this.isMuted ? window.ytPlayer.mute() : window.ytPlayer.unMute(); } lucide.createIcons(); },
                  notify(t, m) { const id = Date.now(); this.notifications.push({ id, title: t, message: m, visible: true }); setTimeout(() => { const idx = this.notifications.findIndex(n => n.id === id); if(idx > -1) this.notifications[idx].visible = false; }, 3000); }
              }))
          });
      </script>
- </body>
- </html>
+</body>
+</html>
