@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PlayWithEase | Ultimate Digital Vault & AI Store</title>
+    <title>PlayWithEase | Ultimate Game Store & AI Vault</title>
     
+    <meta name="description" content="Ultimate destination for PS5 Digital Keys, OTT, and Subscriptions.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;600;800&family=Orbitron:wght@900&display=swap" rel="stylesheet">
@@ -17,7 +18,11 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'], tech: ['Rajdhani', 'sans-serif'], display: ['Orbitron', 'sans-serif'] },
+                    fontFamily: { 
+                        sans: ['Inter', 'sans-serif'], 
+                        tech: ['Rajdhani', 'sans-serif'], 
+                        display: ['Orbitron', 'sans-serif'] 
+                    },
                     colors: { 
                         bg: { main: '#080808', card: '#101010' }, 
                         brand: { primary: '#2563eb', secondary: '#ff00aa', text: '#ffffff' } 
@@ -25,11 +30,13 @@
                     animation: { 
                         'float': 'float 6s ease-in-out infinite', 
                         'fade-in': 'fadeIn 0.5s ease-out',
-                        'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                        'shimmer': 'shimmer 2s infinite linear',
+                        'status-pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
                     },
                     keyframes: { 
                         float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
-                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } }
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+                        shimmer: { '0%': { backgroundPosition: '-200% 0' }, '100%': { backgroundPosition: '200% 0' } }
                     }
                 }
             }
@@ -39,22 +46,25 @@
     <style>
         :root { --bg-main: #080808; --bg-card: #101010; --text-main: #ffffff; --brand-primary: #2563eb; --brand-secondary: #ff00aa; }
         
-        /* Custom UI Classes - Preserving Originality */
-        .nav-base { background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); height: 80px; }
+        /* Master Layout Scaffolding */
+        .nav-base { background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(25px); border-bottom: 1px solid rgba(255, 255, 255, 0.03); height: 80px; }
         .nav-scrolled { background: rgba(8, 8, 8, 0.98); border-bottom: 1px solid rgba(255, 255, 255, 0.1); height: 70px; }
-        @media (min-width: 768px) { .nav-base { height: 90px; } .nav-scrolled { height: 80px; } }
+        @media (min-width: 768px) { .nav-base { height: 95px; } .nav-scrolled { height: 80px; } }
         
         body { -webkit-tap-highlight-color: transparent; color: var(--text-main); background-color: var(--bg-main); overflow-x: hidden; }
         [x-cloak] { display: none !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         
-        /* Fixed Video Layers */
+        /* Video Cinema Logic */
         .video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 20; background: black; }
         .video-background { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%); pointer-events: none; object-fit: cover; }
         
-        /* Glassmorphism Components */
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .ott-fit { object-fit: contain; padding: 1.5rem; background: rgba(255,255,255,0.02); }
+        /* Glass Components */
+        .glass-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); }
+        .skeleton { background: linear-gradient(90deg, #151515 25%, #1a1a1a 50%, #151515 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+        
+        /* Category Button States */
+        .pillar-btn-active { background: var(--brand-primary); color: white; border-color: var(--brand-primary); transform: scale(1.05); box-shadow: 0 0 40px rgba(37, 99, 235, 0.3); }
         
         svg.lucide { display: inline-block !important; vertical-align: middle; }
     </style>
@@ -63,209 +73,234 @@
 <body class="antialiased w-full selection:bg-brand-primary selection:text-white"
       x-data="storeLogic()" :style="themeStyles" @keydown.left="prevSlide()" @keydown.right="nextSlide()" @scroll.window="scrolled = window.pageYOffset > 50">
 
-    <div class="fixed bottom-24 right-6 z-[100] flex flex-col gap-2 pointer-events-none">
+    <div class="fixed bottom-24 right-6 z-[100] flex flex-col gap-3 pointer-events-none">
         <template x-for="toast in notifications" :key="toast.id">
-            <div x-show="toast.visible" x-transition class="pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-2xl bg-bg-card border border-white/10 shadow-2xl shadow-black/50 min-w-[300px]">
-                <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-brand-primary/20 text-brand-primary">
-                    <i :data-lucide="toast.icon || 'info'" class="w-5 h-5"></i>
+            <div x-show="toast.visible" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="translate-x-full opacity-0" x-transition:enter-end="translate-x-0 opacity-100" class="pointer-events-auto flex items-center gap-4 px-5 py-4 rounded-3xl bg-bg-card border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] min-w-[320px] backdrop-blur-xl">
+                <div class="w-11 h-11 rounded-full flex items-center justify-center shrink-0 bg-brand-primary/20 text-brand-primary border border-brand-primary/30"><i data-lucide="bell-ring" class="w-5 h-5"></i></div>
+                <div class="flex-1">
+                    <h4 class="text-sm font-bold text-white tracking-tight" x-text="toast.title"></h4>
+                    <p class="text-[11px] opacity-60 font-medium" x-text="toast.message"></p>
                 </div>
-                <div>
-                    <h4 class="text-sm font-bold text-white" x-text="toast.title"></h4>
-                    <p class="text-[11px] opacity-70" x-text="toast.message"></p>
-                </div>
+                <button @click="toast.visible = false" class="text-white/20 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
         </template>
     </div>
 
     <div x-data="chatBot($data)" class="fixed bottom-6 right-6 z-[95]">
-        <div x-show="open" x-cloak x-transition.scale.origin.bottom.right class="absolute bottom-20 right-0 w-[92vw] md:w-[400px] bg-[#0f0f0f] border border-white/10 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col h-[600px] backdrop-blur-3xl">
-            <div class="bg-gradient-to-br from-brand-primary to-blue-900 p-6 flex justify-between items-center border-b border-white/5">
-                <div class="flex items-center gap-4">
+        <div x-show="open" x-cloak x-transition.scale.origin.bottom.right class="absolute bottom-20 right-0 w-[94vw] md:w-[420px] bg-[#0c0c0c] border border-white/10 rounded-[2.8rem] shadow-[0_40px_100px_rgba(0,0,0,0.9)] overflow-hidden flex flex-col h-[650px] backdrop-blur-3xl">
+            <div class="bg-gradient-to-br from-brand-primary to-blue-900 p-7 flex justify-between items-center relative overflow-hidden">
+                <div class="absolute inset-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+                <div class="flex items-center gap-4 relative z-10">
                     <div class="relative">
-                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-white shadow-inner"><i data-lucide="brain-circuit"></i></div>
-                        <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-4 border-[#0f0f0f] animate-pulse"></div>
+                        <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-white border border-white/10"><i data-lucide="bot" class="w-7 h-7"></i></div>
+                        <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-4 border-[#0c0c0c] animate-status-pulse"></div>
                     </div>
                     <div>
-                        <h3 class="font-display font-bold text-sm text-white tracking-widest uppercase">PWE Omni-Core</h3>
-                        <p class="text-[9px] text-white/50 font-black uppercase">Awareness: 100% | Database: Live</p>
+                        <h3 class="font-display font-black text-sm text-white tracking-[0.2em] uppercase">Omni Core AI</h3>
+                        <div class="flex items-center gap-2 mt-0.5">
+                            <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                            <p class="text-[9px] text-white/50 font-black uppercase">Mainframe Linked</p>
+                        </div>
                     </div>
                 </div>
-                <button @click="open = false" class="text-white/30 hover:text-white transition"><i data-lucide="chevron-down"></i></button>
+                <button @click="open = false" class="text-white/30 hover:text-white transition relative z-10"><i data-lucide="chevron-down" class="w-6 h-6"></i></button>
             </div>
-            
-            <div class="flex-1 p-6 overflow-y-auto space-y-5 no-scrollbar" id="chatContainer">
+
+            <div class="flex-1 p-6 overflow-y-auto space-y-6 no-scrollbar bg-black/40" id="chatContainer">
                 <template x-for="msg in messages" :key="msg.id">
-                    <div :class="msg.sender === 'bot' ? 'flex justify-start' : 'flex justify-end'">
-                        <div :class="msg.sender === 'bot' ? 'bg-white/5 text-gray-200 border border-white/5' : 'bg-brand-primary text-white shadow-xl shadow-brand-primary/30'" 
-                             class="p-4 rounded-[1.8rem] text-xs max-w-[85%] leading-relaxed">
+                    <div :class="msg.sender === 'bot' ? 'flex justify-start' : 'flex justify-end'" class="animate-fade-in">
+                        <div :class="msg.sender === 'bot' ? 'bg-white/5 text-gray-200 border border-white/5' : 'bg-brand-primary text-white shadow-2xl shadow-brand-primary/20'" class="p-5 rounded-[2rem] text-xs max-w-[85%] leading-relaxed">
                             <span x-html="msg.text"></span>
                         </div>
                     </div>
                 </template>
                 <div x-show="isTyping" class="flex justify-start">
-                    <div class="bg-white/5 p-4 rounded-full flex gap-1.5">
-                        <div class="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce"></div>
+                    <div class="bg-white/5 p-4 rounded-full flex gap-1.5 border border-white/5">
+                        <div class="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce [animation-delay:0s]"></div>
                         <div class="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce [animation-delay:0.2s]"></div>
                         <div class="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce [animation-delay:0.4s]"></div>
                     </div>
                 </div>
             </div>
 
-            <div class="p-5 border-t border-white/5 bg-black/20 flex gap-3">
-                <input type="text" x-model="input" @keydown.enter="sendMessage" placeholder="Check pricing, keys, or just chat..." class="flex-1 bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs text-white outline-none focus:border-brand-primary transition-all">
-                <button @click="sendMessage" class="w-14 h-14 bg-brand-primary rounded-2xl flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all"><i data-lucide="send" class="text-white"></i></button>
+            <div class="p-6 border-t border-white/5 bg-black/40 backdrop-blur-md flex gap-3">
+                <input type="text" x-model="input" @keydown.enter="sendMessage" placeholder="Ask anything about our 60+ products..." class="flex-1 bg-white/5 border border-white/10 rounded-2xl px-6 py-4.5 text-xs text-white outline-none focus:border-brand-primary transition-all placeholder:text-white/20">
+                <button @click="sendMessage" class="w-14 h-14 bg-brand-primary rounded-2xl flex items-center justify-center shadow-xl hover:scale-110 active:scale-90 transition-all border border-white/10"><i data-lucide="sparkles" class="text-white w-6 h-6"></i></button>
             </div>
         </div>
-        
-        <button @click="open = !open" class="w-14 h-14 md:w-16 md:h-16 bg-brand-primary rounded-[1.5rem] flex items-center justify-center shadow-[0_0_40px_rgba(37,99,235,0.4)] hover:scale-110 active:scale-90 transition-all border-2 border-white/10">
-            <i :data-lucide="open ? 'x' : 'message-square'" class="text-white w-7 h-7"></i>
+        <button @click="open = !open" class="w-14 h-14 md:w-18 md:h-18 bg-brand-primary rounded-[1.8rem] flex items-center justify-center shadow-[0_0_50px_rgba(37,99,235,0.5)] hover:scale-110 active:scale-90 transition-all border-2 border-white/10 group">
+            <i :data-lucide="open ? 'x' : 'message-circle'" class="text-white w-7 h-7 group-hover:rotate-12 transition-transform"></i>
         </button>
     </div>
 
-    <nav :class="scrolled ? 'nav-scrolled' : 'nav-base'" class="fixed top-0 w-full z-[60] flex flex-col justify-center transition-all duration-300">
-        <div class="max-w-[1600px] mx-auto px-4 md:px-8 w-full flex items-center justify-between">
+    <nav :class="scrolled ? 'nav-scrolled' : 'nav-base'" class="fixed top-0 w-full z-[80] flex flex-col justify-center transition-all duration-500">
+        <div class="max-w-[1600px] mx-auto px-4 md:px-10 w-full flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-3 shrink-0 group">
-                <div class="w-11 h-11 flex items-center justify-center bg-brand-primary/10 rounded-2xl border border-brand-primary/20 group-hover:scale-110 group-hover:bg-brand-primary/20 transition-all shadow-lg"><i data-lucide="layout-grid" class="text-brand-primary"></i></div>
-                <h1 class="font-display text-xl tracking-tighter hidden sm:block uppercase italic font-black text-white">PLAYWITH<span class="text-brand-primary">EASE</span></h1>
+                <div class="w-11 h-11 md:w-13 md:h-13 flex items-center justify-center bg-brand-primary/10 rounded-2xl border border-brand-primary/20 group-hover:scale-110 group-hover:bg-brand-primary/20 transition-all shadow-2xl"><i data-lucide="gamepad-2" class="text-brand-primary w-6 h-6"></i></div>
+                <h1 class="font-display text-xl md:text-2xl tracking-tighter hidden sm:block uppercase italic font-black text-white">PLAYWITH<span class="text-brand-primary">EASE</span></h1>
             </a>
 
-            <div class="hidden lg:flex flex-1 max-w-lg mx-12 relative group">
-                <i data-lucide="search" class="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-brand-primary transition-colors"></i>
-                <input type="text" x-model="searchQuery" placeholder="Search 50+ Games, OTT & Digital Keys..." class="w-full bg-white/5 border border-white/10 rounded-full py-3 pl-14 pr-6 text-xs text-white outline-none focus:border-brand-primary focus:bg-white/10 transition-all placeholder:text-white/20">
+            <div class="hidden lg:flex flex-1 max-w-xl mx-16 relative group">
+                <i data-lucide="search" class="absolute left-6 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-white/20 group-focus-within:text-brand-primary transition-colors"></i>
+                <input type="text" x-model="searchQuery" placeholder="Search across 60+ products in the database..." class="w-full bg-white/5 border border-white/10 rounded-full py-3.5 pl-14 pr-8 text-xs text-white outline-none focus:border-brand-primary focus:bg-white/10 transition-all placeholder:text-white/20 font-medium">
+                <div class="absolute right-4 top-1/2 -translate-y-1/2 px-2 py-1 bg-white/5 rounded-md text-[9px] text-white/20 font-black tracking-widest border border-white/5">CTRL + K</div>
             </div>
 
-            <div class="flex items-center gap-2 md:gap-5 shrink-0">
-                <button @click="showMobileSearch = !showMobileSearch" class="lg:hidden p-2.5 text-white/40 hover:text-white transition"><i :data-lucide="showMobileSearch ? 'x' : 'search'" class="w-5 h-5"></i></button>
-                <button class="text-white/40 hover:text-white transition hidden md:block"><i data-lucide="bell" class="w-5 h-5"></i></button>
+            <div class="flex items-center gap-3 md:gap-7 shrink-0">
+                <button @click="showMobileSearch = !showMobileSearch" class="lg:hidden p-3 rounded-2xl glass hover:text-white transition">
+                    <i :data-lucide="showMobileSearch ? 'x' : 'search'" class="w-5 h-5 text-white/50"></i>
+                </button>
 
-                <a href="cart.html" class="relative p-2.5 rounded-2xl bg-white/5 border border-white/5 hover:border-brand-primary/40 transition-all group">
+                <button class="text-white/30 hover:text-white transition-all hover:scale-110 hidden md:block"><i data-lucide="bell" class="w-6 h-6"></i></button>
+
+                <a href="cart.html" class="relative p-3 rounded-2xl bg-white/5 border border-white/5 hover:border-brand-primary/40 transition-all group shadow-xl">
                     <i data-lucide="shopping-bag" class="text-gray-400 group-hover:text-white transition-colors"></i>
-                    <span x-show="cartCount > 0" class="absolute -top-1 -right-1 bg-brand-secondary text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-bg-main shadow-lg" x-text="cartCount"></span>
+                    <span x-show="cartCount > 0" x-transition class="absolute -top-1.5 -right-1.5 bg-brand-secondary text-white text-[10px] font-black w-5.5 h-5.5 rounded-full flex items-center justify-center border-2 border-bg-main shadow-2xl animate-bounce" x-text="cartCount"></span>
                 </a>
 
                 <div class="relative" x-data="{ openMenu: false }" @click.outside="openMenu = false">
-                    <button @click="openMenu = !openMenu" class="flex items-center gap-2 p-1 rounded-2xl hover:bg-white/10 transition border border-transparent">
-                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl border-2 border-white/10 bg-gradient-to-br from-white/5 to-white/10 p-0.5 flex items-center justify-center overflow-hidden relative shadow-2xl">
+                    <button @click="openMenu = !openMenu" class="flex items-center gap-3 p-1 rounded-2xl hover:bg-white/5 transition border border-transparent">
+                        <div class="w-10 h-10 md:w-13 md:h-13 rounded-2xl border-2 border-white/10 bg-gradient-to-br from-white/5 to-white/10 p-0.5 flex items-center justify-center overflow-hidden relative shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
                             <img id="userAvatarHeader" src="" class="w-full h-full object-cover rounded-xl hidden">
                             <i data-lucide="user" id="userPlaceholder" class="text-gray-400 w-6 h-6"></i>
-                            <div x-show="isLoggedIn" class="absolute bottom-1 right-1 w-3 h-3 bg-green-500 rounded-full border-[3px] border-[#101010] shadow-sm animate-pulse"></div>
+                            <div x-show="isLoggedIn" class="absolute bottom-1 right-1 w-3.5 h-3.5 bg-green-500 rounded-full border-[3px] border-[#080808] shadow-sm animate-pulse"></div>
                         </div>
-                        <i data-lucide="chevron-down" :class="openMenu ? 'rotate-180' : ''" class="w-4 h-4 text-white/20 hidden sm:block transition-transform"></i>
+                        <i data-lucide="chevron-down" :class="openMenu ? 'rotate-180' : ''" class="w-4 h-4 text-white/20 hidden sm:block transition-transform duration-300"></i>
                     </button>
-                    <div x-show="openMenu" x-cloak x-transition.origin.top.right class="absolute right-0 mt-4 w-72 bg-[#0f0f0f] border border-white/10 rounded-3xl shadow-[0_30px_60px_rgba(0,0,0,0.8)] p-2 z-[70] backdrop-blur-2xl">
-                        <div x-show="isLoggedIn" class="px-5 py-5 border-b border-white/5 mb-3 text-white">
-                            <p id="userDisplayName" class="text-base font-black truncate tracking-tight">Active Operator</p>
-                            <span class="text-[10px] text-brand-primary uppercase font-black tracking-widest mt-1 inline-block">Pro-Level Access</span>
-                        </div>
-                        <div class="p-1 space-y-1">
-                            <a href="profile.html" class="flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-white/5 transition group text-sm font-bold text-white/80"><i data-lucide="key" class="text-brand-primary"></i> Digital Vault</a>
-                            <a href="#" class="flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-white/5 transition group text-sm font-bold text-white/80"><i data-lucide="history" class="text-brand-primary"></i> Order Logs</a>
-                        </div>
-                        <div class="mt-3 pt-3 border-t border-white/5">
-                            <p class="text-[9px] text-white/20 uppercase font-black px-5 mb-3 tracking-[0.2em]">Appearance Sync</p>
-                            <div class="flex justify-between px-4 pb-4">
-                                <button @click="setTheme('cyber')" class="w-10 h-10 rounded-xl bg-blue-600 border border-white/10 hover:scale-110 transition"></button>
-                                <button @click="setTheme('luxury')" class="w-10 h-10 rounded-xl bg-yellow-500 border border-white/10 hover:scale-110 transition"></button>
-                                <button @click="setTheme('toxic')" class="w-10 h-10 rounded-xl bg-green-500 border border-white/10 hover:scale-110 transition"></button>
-                                <button @click="setTheme('crimson')" class="w-10 h-10 rounded-xl bg-red-600 border border-white/10 hover:scale-110 transition"></button>
+                    <div x-show="openMenu" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95 translate-y-2" class="absolute right-0 mt-5 w-80 bg-[#0f0f0f] border border-white/10 rounded-[2.5rem] shadow-[0_50px_100px_rgba(0,0,0,0.9)] p-3 z-[100] backdrop-blur-3xl">
+                        <div x-show="isLoggedIn" class="px-6 py-6 border-b border-white/5 mb-4 text-white">
+                            <p id="userDisplayName" class="text-lg font-black tracking-tighter truncate">Operator Alpha</p>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-[10px] text-brand-primary font-black uppercase tracking-[0.2em]">Verified Rank: Legend</span>
                             </div>
                         </div>
+                        
+                        <div class="p-1 space-y-1">
+                            <a href="profile.html" class="flex items-center gap-4 px-6 py-4.5 rounded-2xl hover:bg-white/5 transition-all group">
+                                <div class="w-10 h-10 rounded-xl glass flex items-center justify-center group-hover:bg-brand-primary transition-colors"><i data-lucide="shield-check" class="w-5 h-5 text-brand-primary group-hover:text-white"></i></div>
+                                <span class="text-sm font-bold text-white/80">Digital Vault</span>
+                            </a>
+                            <a href="#" class="flex items-center gap-4 px-6 py-4.5 rounded-2xl hover:bg-white/5 transition-all group">
+                                <div class="w-10 h-10 rounded-xl glass flex items-center justify-center group-hover:bg-brand-primary transition-colors"><i data-lucide="history" class="w-5 h-5 text-brand-primary group-hover:text-white"></i></div>
+                                <span class="text-sm font-bold text-white/80">Deployment Logs</span>
+                            </a>
+                        </div>
+
+                        <div class="mt-4 pt-4 border-t border-white/5 px-4 pb-4">
+                            <p class="text-[9px] text-white/20 uppercase font-black tracking-[0.3em] mb-4">Neural Interface Theme</p>
+                            <div class="grid grid-cols-4 gap-3">
+                                <button @click="setTheme('cyber')" class="h-10 rounded-xl bg-blue-600 border-2 border-white/10 hover:scale-110 transition shadow-lg shadow-blue-900/40"></button>
+                                <button @click="setTheme('luxury')" class="h-10 rounded-xl bg-yellow-500 border-2 border-white/10 hover:scale-110 transition shadow-lg shadow-yellow-900/40"></button>
+                                <button @click="setTheme('toxic')" class="h-10 rounded-xl bg-green-500 border-2 border-white/10 hover:scale-110 transition shadow-lg shadow-green-900/40"></button>
+                                <button @click="setTheme('crimson')" class="h-10 rounded-xl bg-red-600 border-2 border-white/10 hover:scale-110 transition shadow-lg shadow-red-900/40"></button>
+                            </div>
+                        </div>
+
                         <div x-show="!isLoggedIn" id="loginSection" class="p-2 pt-4 border-t border-white/5">
-                            <a href="login.html" class="flex justify-center w-full py-4 bg-white text-black font-black text-xs uppercase rounded-2xl hover:bg-brand-primary hover:text-white transition shadow-xl">Deploy login</a>
+                            <a href="login.html" class="flex justify-center w-full py-4.5 bg-white text-black font-black text-xs uppercase rounded-2xl hover:bg-brand-primary hover:text-white transition shadow-2xl">Initialize Login</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div x-show="showMobileSearch" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-4" class="lg:hidden px-4 pb-5 pt-2">
+        <div x-show="showMobileSearch" x-cloak x-transition.origin.top class="lg:hidden px-5 pb-5 pt-2">
             <div class="relative">
-                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30"></i>
-                <input type="text" x-model="searchQuery" placeholder="Search keys & subs..." class="w-full bg-white/5 border border-white/10 rounded-2xl py-3.5 pl-12 pr-4 text-xs text-white outline-none focus:border-brand-primary">
+                <i data-lucide="search" class="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20"></i>
+                <input type="text" x-model="searchQuery" placeholder="Search 60+ items..." class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-14 pr-6 text-xs text-white outline-none focus:border-brand-primary shadow-2xl">
             </div>
         </div>
     </nav>
 
-    <section class="relative min-h-[80vh] w-full overflow-hidden flex items-center justify-center text-white bg-black pt-[85px]">
+    <section class="relative min-h-[85vh] w-full overflow-hidden flex items-center justify-center text-white bg-black pt-[85px]">
         <template x-for="(slide, index) in heroSlides" :key="index">
-            <div x-show="activeSlide === index && !trailerPlaying" x-transition.opacity.duration.800ms class="absolute inset-0 z-10">
-                <div class="absolute inset-0 bg-gradient-to-t from-bg-main via-bg-main/40 to-transparent z-10"></div>
-                <div class="absolute inset-0 bg-black/40 z-10"></div>
+            <div x-show="activeSlide === index && !trailerPlaying" x-transition.opacity.duration.1000ms class="absolute inset-0 z-10">
+                <div class="absolute inset-0 bg-gradient-to-t from-bg-main via-bg-main/20 to-black/80 z-10"></div>
                 <img :src="slide.image" class="w-full h-full object-cover animate-float scale-110 opacity-70">
             </div>
         </template>
+        
         <div x-show="trailerPlaying" class="video-container"><div id="hero-player" class="video-background"></div></div>
         
-        <div x-show="!trailerPlaying" class="relative z-30 text-center w-full max-w-5xl mx-auto px-6 py-12">
-            <img :src="heroSlides[activeSlide].logo" :class="activeSlide === 1 ? 'invert filter drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]' : 'drop-shadow-[0_0_30px_rgba(37,99,235,0.3)]'" class="h-16 md:h-36 mx-auto mb-10 max-w-[85%] transition-all">
+        <div x-show="!trailerPlaying" class="relative z-30 text-center w-full max-w-6xl mx-auto px-6 py-12">
+            <template x-for="(slide, index) in heroSlides">
+                <img x-show="activeSlide === index" x-transition:enter.delay.300ms :src="slide.logo" :class="activeSlide === 1 ? 'invert filter drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]' : 'drop-shadow-[0_0_50px_rgba(37,99,235,0.4)]'" class="h-20 md:h-48 mx-auto mb-12 max-w-[85%] transition-all">
+            </template>
             
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-8 text-white mb-12 max-w-2xl mx-auto">
-                <div class="glass p-5 rounded-[2rem] font-display"><div class="text-3xl md:text-5xl font-black tracking-tighter" x-text="timer.days">00</div><div class="text-[10px] uppercase opacity-40 font-black mt-1">Days</div></div>
-                <div class="glass p-5 rounded-[2rem] font-display"><div class="text-3xl md:text-5xl font-black tracking-tighter" x-text="timer.hours">00</div><div class="text-[10px] uppercase opacity-40 font-black mt-1">Hours</div></div>
-                <div class="glass p-5 rounded-[2rem] font-display"><div class="text-3xl md:text-5xl font-black tracking-tighter" x-text="timer.minutes">00</div><div class="text-[10px] uppercase opacity-40 font-black mt-1">Mins</div></div>
-                <div class="glass p-5 rounded-[2rem] font-display"><div class="text-3xl md:text-5xl font-black tracking-tighter text-brand-secondary" x-text="timer.seconds">00</div><div class="text-[10px] uppercase opacity-40 font-black mt-1">Secs</div></div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-white mb-16 max-w-3xl mx-auto">
+                <div class="glass px-6 py-6 rounded-[2.5rem] shadow-2xl border border-white/5"><div class="text-4xl md:text-6xl font-black font-display tracking-tighter" x-text="timer.days">00</div><div class="text-[10px] uppercase opacity-30 font-black tracking-[0.3em] mt-2">Days</div></div>
+                <div class="glass px-6 py-6 rounded-[2.5rem] shadow-2xl border border-white/5"><div class="text-4xl md:text-6xl font-black font-display tracking-tighter" x-text="timer.hours">00</div><div class="text-[10px] uppercase opacity-30 font-black tracking-[0.3em] mt-2">Hours</div></div>
+                <div class="glass px-6 py-6 rounded-[2.5rem] shadow-2xl border border-white/5"><div class="text-4xl md:text-6xl font-black font-display tracking-tighter" x-text="timer.minutes">00</div><div class="text-[10px] uppercase opacity-30 font-black tracking-[0.3em] mt-2">Mins</div></div>
+                <div class="glass px-6 py-6 rounded-[2.5rem] shadow-2xl border border-white/5"><div class="text-4xl md:text-6xl font-black font-display tracking-tighter text-brand-secondary" x-text="timer.seconds">00</div><div class="text-[10px] uppercase opacity-30 font-black tracking-[0.3em] mt-2">Secs</div></div>
             </div>
 
-            <div class="flex flex-col sm:flex-row justify-center gap-5 px-8">
-                <button class="bg-white text-black px-12 py-5 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-brand-primary hover:text-white transition shadow-2xl hover:scale-105 active:scale-95">Pre-Order Now</button>
-                <button @click="playTrailer" class="px-12 py-5 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-white hover:text-black transition flex items-center justify-center gap-3"><i data-lucide="play-circle"></i> Reveal Trailer</button>
+            <div class="flex flex-col sm:flex-row justify-center gap-6 px-8">
+                <button class="bg-white text-black px-14 py-5 rounded-[1.5rem] font-black uppercase text-[11px] tracking-widest hover:bg-brand-primary hover:text-white transition shadow-[0_20px_50px_rgba(255,255,255,0.1)] hover:scale-105 active:scale-95">Initialize Pre-Order</button>
+                <button @click="playTrailer" class="px-14 py-5 bg-white/5 backdrop-blur-2xl border-2 border-white/10 rounded-[1.5rem] font-black uppercase text-[11px] tracking-widest hover:bg-white hover:text-black transition flex items-center justify-center gap-3 group shadow-2xl"><i data-lucide="play" class="w-5 h-5 group-hover:fill-current"></i> Global Premiere</button>
             </div>
             
-            <div class="mt-12 flex justify-center gap-3">
+            <div class="mt-16 flex justify-center gap-4">
                 <template x-for="(s, i) in heroSlides">
-                    <button @click="activeSlide = i" class="h-1.5 rounded-full transition-all duration-500" :class="activeSlide === i ? 'w-10 bg-brand-primary' : 'w-3 bg-white/20'"></button>
+                    <button @click="activeSlide = i; stopTrailer();" class="h-1.5 rounded-full transition-all duration-700" :class="activeSlide === i ? 'w-16 bg-brand-primary' : 'w-4 bg-white/10 hover:bg-white/30'"></button>
                 </template>
             </div>
         </div>
         
-        <div x-show="trailerPlaying" x-cloak class="absolute bottom-10 right-10 z-[100] flex gap-4 animate-fade-in">
-            <button @click="toggleMute" class="w-14 h-14 rounded-full glass flex items-center justify-center text-white"><i :data-lucide="isMuted ? 'volume-x' : 'volume-2'"></i></button>
-            <button @click="stopTrailer" class="px-10 py-4 rounded-full bg-red-600 text-white font-black uppercase text-xs tracking-widest shadow-2xl">Exit Cinema</button>
+        <div x-show="trailerPlaying" x-cloak class="absolute bottom-12 right-12 z-[100] flex gap-5 animate-fade-in">
+            <button @click="toggleMute" class="w-16 h-16 rounded-full glass flex items-center justify-center text-white border-2 border-white/10 hover:scale-110 transition shadow-2xl"><i :data-lucide="isMuted ? 'volume-x' : 'volume-2'" class="w-6 h-6"></i></button>
+            <button @click="stopTrailer" class="px-12 py-5 rounded-full bg-red-600 text-white font-black uppercase text-xs tracking-[0.2em] shadow-[0_10px_40px_rgba(220,38,38,0.5)] hover:scale-105 transition-all">Abort Cinema</button>
         </div>
     </section>
 
-    <main class="max-w-[1600px] mx-auto px-4 md:px-8 py-20">
-         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+    <main class="max-w-[1600px] mx-auto px-4 md:px-10 py-24">
+         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
             <template x-for="pillar in ['Games (PS5 Digital)', 'OTT', 'Subscriptions']">
                 <button @click="activePillar = pillar; activeCategory = 'All'" 
-                        :class="activePillar === pillar ? 'bg-brand-primary border-brand-primary scale-105 shadow-[0_0_60px_rgba(37,99,235,0.4)]' : 'bg-white/5 border-white/10 text-white/40 hover:bg-white/10 hover:text-white'"
-                        class="py-12 rounded-[3rem] border-2 font-display text-2xl font-black uppercase italic tracking-tighter transition-all duration-500 relative overflow-hidden group">
+                        :class="activePillar === pillar ? 'bg-brand-primary border-brand-primary scale-105 shadow-[0_0_80px_rgba(37,99,235,0.4)]' : 'bg-white/5 border-white/10 text-white/30 hover:bg-white/10 hover:text-white'"
+                        class="py-14 rounded-[3.5rem] border-2 font-display text-3xl font-black uppercase italic tracking-tighter transition-all duration-500 relative overflow-hidden group">
                     <span class="relative z-10" x-text="pillar"></span>
                     <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                 </button>
             </template>
          </div>
 
-         <div class="flex items-center justify-between gap-6 mb-12">
-            <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+         <div class="flex items-center justify-between mb-12 gap-8 border-b border-white/5 pb-8">
+            <div class="flex gap-3 overflow-x-auto no-scrollbar">
                 <template x-for="cat in subFilters">
                     <button @click="activeCategory = cat" 
-                            :class="activeCategory === cat ? 'bg-brand-primary text-white border-brand-primary shadow-xl shadow-brand-primary/20' : 'bg-white/5 text-gray-500 border-white/5 hover:border-white/20'" 
-                            class="px-8 py-3.5 rounded-2xl text-[10px] font-black uppercase border transition-all whitespace-nowrap" x-text="cat"></button>
+                            :class="activeCategory === cat ? 'bg-brand-primary text-white border-brand-primary shadow-2xl shadow-brand-primary/40 scale-105' : 'bg-white/5 text-gray-500 border-white/5 hover:border-white/20'" 
+                            class="px-10 py-4 rounded-2xl text-[11px] font-black uppercase tracking-[0.1em] border transition-all whitespace-nowrap" x-text="cat"></button>
                 </template>
+            </div>
+            <div class="hidden md:flex items-center gap-3 text-[10px] text-white/20 font-black uppercase tracking-widest whitespace-nowrap">
+                <span x-text="filteredItems.length"></span> Drops Found
             </div>
          </div>
 
-         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-5 md:gap-10">
+         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 md:gap-10">
              <template x-for="item in filteredItems" :key="item.id">
-                 <div class="group bg-bg-card rounded-[2.5rem] overflow-hidden border border-white/5 hover:border-brand-primary/50 transition-all duration-500 shadow-2xl hover:-translate-y-3 relative flex flex-col h-full">
-                     <div class="relative aspect-[3/4] overflow-hidden bg-black/40">
-                         <div class="w-full h-full flex items-center justify-center overflow-hidden" :class="item.pillar === 'OTT' ? 'ott-fit' : ''">
-                             <img :src="item.image" :class="item.pillar === 'OTT' ? 'h-full w-full object-contain' : 'w-full h-full object-cover'" class="transition duration-1000 group-hover:scale-110" loading="lazy" onerror="this.src='https://via.placeholder.com/600x900?text=Premium+Item'">
+                 <div class="group bg-bg-card rounded-[2.8rem] overflow-hidden border border-white/5 hover:border-brand-primary/50 transition-all duration-700 shadow-[0_30px_60px_rgba(0,0,0,0.4)] hover:-translate-y-4 relative flex flex-col h-full">
+                     <div class="relative aspect-[3/4] overflow-hidden bg-black/60">
+                         <div class="w-full h-full flex items-center justify-center overflow-hidden" :class="item.pillar === 'OTT' || item.pillar === 'Subscriptions' ? 'ott-fit' : ''">
+                             <img :src="item.image" :class="item.pillar === 'OTT' || item.pillar === 'Subscriptions' ? 'h-full w-full object-contain' : 'w-full h-full object-cover'" class="transition duration-1000 group-hover:scale-110 group-hover:opacity-60" loading="lazy" onerror="this.src='https://via.placeholder.com/600x900?text=Target+Protected'">
                          </div>
-                         <div class="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-6 gap-3 z-30">
-                             <button @click.stop="buyNow(item)" class="w-full py-3 bg-white text-black font-black uppercase text-[10px] tracking-widest rounded-xl shadow-2xl hover:scale-105 active:scale-95 transition-all">Buy Now</button>
-                             <button @click.stop="addToCart(item)" class="w-full py-3 border border-white/20 text-white font-black uppercase text-[10px] tracking-widest rounded-xl hover:bg-white/10 transition-all">Add to Cart</button>
+                         <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 z-30 flex flex-col justify-end p-6 gap-3 translate-y-4 group-hover:translate-y-0">
+                             <button @click.stop="buyNow(item)" class="w-full py-3.5 bg-white text-black font-black uppercase text-[10px] tracking-widest rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition-all">Buy Now</button>
+                             <button @click.stop="addToCart(item)" class="w-full py-3.5 border-2 border-white/20 text-white font-black uppercase text-[10px] tracking-widest rounded-2xl hover:bg-white hover:text-black transition-all">Add to Cart</button>
                          </div>
-                         <div class="absolute bottom-4 left-4 z-20"><div class="text-sm font-black text-white px-3 py-1.5 rounded-xl glass shadow-lg" x-text="formatPrice(item.price)"></div></div>
-                         <div class="absolute top-4 right-4 z-20 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity"><template x-for="i in 5"><div class="w-1 h-1 rounded-full bg-brand-primary"></div></template></div>
+                         <div class="absolute bottom-5 left-5 z-20 group-hover:opacity-0 transition-opacity duration-300">
+                             <div class="text-base font-black text-white drop-shadow-[0_4px_10px_rgba(0,0,0,0.9)] px-4 py-2 rounded-2xl glass border border-white/10" x-text="formatPrice(item.price)"></div>
+                         </div>
+                         <div class="absolute top-5 left-5 z-20">
+                            <span class="bg-black/60 backdrop-blur-xl px-4 py-2 rounded-full border border-white/10 text-[9px] font-black text-white/60 uppercase tracking-widest" x-text="item.pillar === 'OTT' ? 'Stream' : 'Digital'"></span>
+                         </div>
                      </div>
                      
-                     <div class="p-6 pt-4 flex-grow bg-gradient-to-t from-white/[0.02] to-transparent">
-                         <p class="text-[8px] text-brand-primary font-black uppercase tracking-[0.2em] mb-2" x-text="item.category"></p>
-                         <h3 class="text-[11px] font-bold text-white uppercase tracking-tight truncate leading-tight" x-text="item.title"></h3>
-                         <div class="mt-4 flex items-center gap-2 opacity-20 group-hover:opacity-100 transition-opacity">
-                             <div class="h-[1px] flex-1 bg-white/10"></div>
-                             <i data-lucide="zap" class="w-3 h-3 text-brand-primary"></i>
+                     <div class="p-7 pt-4 flex-grow bg-gradient-to-t from-white/[0.03] to-transparent relative">
+                         <div class="absolute -top-4 right-6 w-8 h-8 rounded-full bg-brand-primary flex items-center justify-center shadow-2xl border-2 border-bg-card opacity-0 group-hover:opacity-100 transition-opacity duration-500"><i data-lucide="zap" class="w-3.5 h-3.5 text-white"></i></div>
+                         <h3 class="text-xs font-black text-white/90 uppercase tracking-tighter truncate leading-tight mb-1" x-text="item.title"></h3>
+                         <div class="flex items-center justify-between mt-2">
+                             <span class="text-[9px] font-black text-brand-primary uppercase tracking-[0.2em]" x-text="item.category"></span>
+                             <div class="flex gap-0.5"><template x-for="i in 5"><div class="w-1 h-1 rounded-full bg-white/10"></div></template></div>
                          </div>
                      </div>
                  </div>
@@ -273,62 +308,69 @@
          </div>
      </main>
  
-     <footer class="bg-[#050505] border-t border-white/10 mt-24 text-white">
-        <div class="max-w-[1600px] mx-auto px-4 md:px-8 py-16 md:py-28">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-24 mb-24">
-                <div class="space-y-8">
-                    <a href="index.html" class="flex items-center gap-4">
-                        <div class="w-14 h-14 flex items-center justify-center bg-brand-primary/10 rounded-2xl border border-brand-primary/20 shadow-2xl"><i data-lucide="gamepad-2" class="text-brand-primary w-7 h-7"></i></div>
-                        <h2 class="font-display text-2xl tracking-tighter uppercase italic font-black">PLAYWITH<span class="text-brand-primary">EASE</span></h2>
-                    </a>
-                    <p class="text-sm text-white/40 leading-relaxed max-w-xs font-medium">The premier digital gateway for instant PS5 keys, verified OTT services, and premium global subscriptions. Operating securely since 2021.</p>
-                    <div class="flex gap-2">
-                        <input type="email" placeholder="Frontline Comms (Email)" class="bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-xs flex-1 outline-none focus:border-brand-primary focus:bg-white/10 transition-all">
-                        <button class="bg-brand-primary px-7 py-4 rounded-2xl hover:scale-105 transition shadow-lg shadow-brand-primary/30"><i data-lucide="send" class="w-5 h-5"></i></button>
+     <footer class="bg-[#050505] border-t border-white/10 mt-32 text-white relative overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-brand-primary/50 to-transparent"></div>
+        <div class="max-w-[1600px] mx-auto px-4 md:px-12 py-20 md:py-32 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20 lg:gap-24 mb-24">
+                <div class="space-y-10">
+                    <div class="space-y-6">
+                        <a href="index.html" class="flex items-center gap-5">
+                            <div class="w-16 h-16 flex items-center justify-center bg-brand-primary/10 rounded-2xl border-2 border-brand-primary/20 shadow-2xl"><i data-lucide="gamepad-2" class="text-brand-primary w-8 h-8"></i></div>
+                            <h2 class="font-display text-3xl tracking-tighter uppercase italic font-black">PLAYWITH<span class="text-brand-primary">EASE</span></h2>
+                        </a>
+                        <p class="text-sm text-white/40 leading-relaxed max-w-sm font-medium">The world's premier digital vault for verified PS5 game keys, high-performance OTT accounts, and premium platform subscriptions. Operational since 2021.</p>
+                    </div>
+                    <div class="space-y-4">
+                        <h4 class="text-[10px] text-white/80 font-black uppercase tracking-[0.3em]">Join the Frontline</h4>
+                        <div class="flex gap-2 p-1.5 bg-white/5 border border-white/10 rounded-3xl group-focus-within:border-brand-primary transition-all">
+                            <input type="email" placeholder="Operator Email" class="bg-transparent px-5 py-4 text-xs flex-1 outline-none font-bold">
+                            <button class="bg-brand-primary px-8 py-4 rounded-2.5xl hover:scale-105 transition-all shadow-xl shadow-brand-primary/30"><i data-lucide="send" class="w-5 h-5"></i></button>
+                        </div>
                     </div>
                 </div>
 
                 <div>
-                    <h3 class="text-xs font-black uppercase tracking-[0.3em] text-white/80 mb-10">Deployment</h3>
-                    <ul class="space-y-5 text-[11px] text-white/30 font-black uppercase tracking-widest">
-                        <li><a href="index.html" class="hover:text-brand-primary transition-colors flex items-center gap-3"><div class="w-1 h-1 rounded-full bg-brand-primary"></div> Marketplace Home</a></li>
-                        <li><a href="profile.html" class="hover:text-brand-primary transition-colors flex items-center gap-3"><div class="w-1 h-1 rounded-full bg-brand-primary"></div> Digital Vault</a></li>
-                        <li><a href="cart.html" class="hover:text-brand-primary transition-colors flex items-center gap-3"><div class="w-1 h-1 rounded-full bg-brand-primary"></div> Shopping Cart</a></li>
-                        <li><a href="#" class="hover:text-brand-primary transition-colors flex items-center gap-3"><div class="w-1 h-1 rounded-full bg-brand-primary"></div> Verified Sellers</a></li>
+                    <h3 class="text-xs font-black uppercase tracking-[0.35em] text-white mb-12 border-l-4 border-brand-primary pl-4">Extraction</h3>
+                    <ul class="space-y-6 text-[11px] text-white/30 font-black uppercase tracking-widest">
+                        <li><a href="index.html" class="hover:text-brand-primary transition-colors flex items-center gap-3 group"><div class="w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-brand-primary transition-colors"></div> Store Frontline</a></li>
+                        <li><a href="profile.html" class="hover:text-brand-primary transition-colors flex items-center gap-3 group"><div class="w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-brand-primary transition-colors"></div> Extraction Vault</a></li>
+                        <li><a href="cart.html" class="hover:text-brand-primary transition-colors flex items-center gap-3 group"><div class="w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-brand-primary transition-colors"></div> Active Cart</a></li>
+                        <li><a href="#" class="hover:text-brand-primary transition-colors flex items-center gap-3 group"><div class="w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-brand-primary transition-colors"></div> Gift Protocols</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h3 class="text-xs font-black uppercase tracking-[0.3em] text-white/80 mb-10">Intelligence</h3>
-                    <ul class="space-y-5 text-[11px] text-white/30 font-black uppercase tracking-widest">
-                        <li><a href="#" class="hover:text-brand-primary transition-colors flex items-center gap-3"><i data-lucide="help-circle" class="w-3 h-3"></i> Help Center</a></li>
-                        <li><a href="#" class="hover:text-brand-primary transition-colors flex items-center gap-3"><i data-lucide="book-open" class="w-3 h-3"></i> Redemption Guide</a></li>
-                        <li><a href="#" class="hover:text-brand-primary transition-colors flex items-center gap-3"><i data-lucide="shield-check" class="w-3 h-3"></i> Refund Policy</a></li>
-                        <li><a href="#" class="hover:text-brand-primary transition-colors flex items-center gap-3"><i data-lucide="lock" class="w-3 h-3"></i> Privacy Protocol</a></li>
+                    <h3 class="text-xs font-black uppercase tracking-[0.35em] text-white mb-12 border-l-4 border-brand-primary pl-4">Intel Hub</h3>
+                    <ul class="space-y-6 text-[11px] text-white/30 font-black uppercase tracking-widest">
+                        <li><a href="#" class="hover:text-brand-primary transition-colors flex items-center gap-3 group"><i data-lucide="life-buoy" class="w-3.5 h-3.5"></i> Operator Support</a></li>
+                        <li><a href="#" class="hover:text-brand-primary transition-colors flex items-center gap-3 group"><i data-lucide="book-open" class="w-3.5 h-3.5"></i> Guide to Keys</a></li>
+                        <li><a href="#" class="hover:text-brand-primary transition-colors flex items-center gap-3 group"><i data-lucide="refresh-ccw" class="w-3.5 h-3.5"></i> Refund Protocol</a></li>
+                        <li><a href="#" class="hover:text-brand-primary transition-colors flex items-center gap-3 group"><i data-lucide="lock" class="w-3.5 h-3.5"></i> Privacy Shields</a></li>
                     </ul>
                 </div>
 
-                <div class="space-y-12">
+                <div class="space-y-16">
                     <div>
-                        <h3 class="text-xs font-black uppercase tracking-[0.3em] text-white/80 mb-6">HQ Connectivity</h3>
+                        <h3 class="text-xs font-black uppercase tracking-[0.35em] text-white mb-8 border-l-4 border-brand-primary pl-4">HQ Connectivity</h3>
                         <p class="text-xs text-white/40 font-black uppercase mb-4 tracking-tighter">support@playwithease.com</p>
-                        <p class="text-[10px] text-green-500 font-black uppercase flex items-center gap-3 animate-pulse"><i data-lucide="check-circle" class="w-3 h-3"></i> Mainframe Optimal: V2.8.5</p>
+                        <p class="text-[10px] text-green-500 font-black uppercase flex items-center gap-3 animate-pulse"><i data-lucide="cpu" class="w-4 h-4"></i> System Mainframe: Optimal (V3.2)</p>
                     </div>
-                    <div class="flex gap-5">
-                        <a href="#" class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-brand-primary transition text-white/30 hover:text-white shadow-xl"><i data-lucide="twitter" class="w-5 h-5"></i></a>
-                        <a href="#" class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-brand-primary transition text-white/30 hover:text-white shadow-xl"><i data-lucide="twitch" class="w-5 h-5"></i></a>
-                        <a href="#" class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-brand-primary transition text-white/30 hover:text-white shadow-xl"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                    <div class="flex gap-6">
+                        <a href="#" class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-brand-primary transition text-white/30 hover:text-white shadow-2xl hover:-translate-y-2"><i data-lucide="twitter" class="w-6 h-6"></i></a>
+                        <a href="#" class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-brand-primary transition text-white/30 hover:text-white shadow-2xl hover:-translate-y-2"><i data-lucide="twitch" class="w-6 h-6"></i></a>
+                        <a href="#" class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-brand-primary transition text-white/30 hover:text-white shadow-2xl hover:-translate-y-2"><i data-lucide="instagram" class="w-6 h-6"></i></a>
                     </div>
                 </div>
             </div>
 
-            <div class="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-10">
-                <p class="text-[10px] text-white/20 uppercase tracking-[0.6em] font-black">&copy; 2026 PlayWithEase Digital. Secure Connection Verified.</p>
-                <div class="flex items-center gap-12 opacity-20 grayscale hover:grayscale-0 transition duration-1000">
+            <div class="pt-16 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-12">
+                <p class="text-[10px] text-white/20 uppercase tracking-[0.6em] font-black">&copy; 2026 PlayWithEase Digital Intelligence. Full Extraction Secured.</p>
+                <div class="flex items-center gap-16 opacity-15 grayscale hover:grayscale-0 transition duration-1000">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" class="h-4">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" class="h-8">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" class="h-6">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg" class="h-6">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" class="h-7">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg" class="h-7">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/ad/Stripe_logo%2C_revised_2016.svg" class="h-6">
                 </div>
             </div>
         </div>
@@ -341,7 +383,7 @@
          const app = initializeApp(firebaseConfig); const auth = getAuth(app);
          
          onAuthStateChanged(auth, (user) => {
-             window.dispatchEvent(new CustomEvent('auth-changed', { detail: { loggedIn: !!user, name: user?.displayName, photo: user?.photoURL } }));
+             window.dispatchEvent(new CustomEvent('auth-changed', { detail: { loggedIn: !!user, name: user?.displayName || 'Elite Soldier', photo: user?.photoURL } }));
              if (user) {
                  document.getElementById('loginSection')?.style.setProperty('display', 'none', 'important');
                  document.getElementById('userPanelInfo')?.classList.remove('hidden');
@@ -357,29 +399,31 @@
      <script src="https://www.youtube.com/iframe_api"></script>
      <script>
          document.addEventListener('alpine:init', () => {
-             // POWERHOUSE AI ARCHITECTURE
+             // POWERHOUSE AI ARCHITECTURE (aware & Intelligent)
              Alpine.data('chatBot', (store) => ({
                  open: false, input: '', isTyping: false,
-                 messages: [{ id: 1, text: "Mainframe Link Established. How can I assist your deployment today?", sender: 'bot' }],
+                 messages: [{ id: 1, text: "Mainframe Connection Estabilished. How can I assist your extraction today?", sender: 'bot' }],
                  sendMessage() {
                      if (!this.input.trim() || this.isTyping) return;
                      const query = this.input; this.messages.push({ id: Date.now(), text: query, sender: 'user' });
                      this.input = ''; this.isTyping = true; this.scrollToBottom();
                      setTimeout(() => {
-                        let response = "Analyzing vault datasets...";
+                        let response = "Accessing vault datasets...";
                         const q = query.toLowerCase();
                         const found = store.games.filter(g => q.includes(g.title.toLowerCase())).slice(0, 3);
                         
                         if (found.length > 0) {
-                            response = `Target items localized in vault:<br>${found.map(f => `<br><b>${f.title}</b> [${f.category}] - ${store.formatPrice(f.price)}`).join('')}<br><br>Ready for extraction?`;
+                            response = `Localized matching assets in vault:<br>${found.map(f => `<br><b>${f.title}</b> (${f.pillar}) - ${store.formatPrice(f.price)}`).join('')}<br><br>Ready to deploy?`;
                         } else if (q.includes('help') || q.includes('hello')) {
-                            response = "I am Omni-Core. I manage the inventory, assist with regional pricing (INR), and monitor digital key deployment. Access granted.";
+                            response = "Greetings, Soldier. I am Omni-Core. I monitor the 60+ items in our vault, calculate regional pricing (INR), and dispatch keys instantly.";
                         } else if (q.includes('joke')) {
-                            response = "Why don't PS5 players ever go outside? Because the graphics are better in here. Just a digital humer cycle.";
+                            response = "Why did the gamer bring a ladder to the console launch? He wanted to reach the next level of high performance. Neural humor cycle complete.";
                         } else if (q.includes('key') || q.includes('buy')) {
-                            response = "Keys are strictly verified and dispatched <b>instantly</b> to your vault upon transaction success.";
+                            response = "Extraction protocol: Keys are strictly verified and dispatched <b>instantly</b> to your vault email upon transaction success.";
                         } else if (q.includes('ott')) {
-                            response = "Our OTT services cover Netflix, Prime, and more with 100% uptime guaranteed.";
+                            response = "Our OTT services include Netflix 4K, YouTube Premium, and more with 100% uptime guaranteed.";
+                        } else if (q.includes('forza')) {
+                            response = "Forza Horizon 6 is our most anticipated release. Global Premiere is May 19, 2026. Pre-order now for Advanced Access.";
                         }
                         
                         this.messages.push({ id: Date.now()+1, text: response, sender: 'bot' });
@@ -399,7 +443,8 @@
                  
                  heroSlides: [
                      { image: 'https://media-rockstargames-com.akamaized.net/mfe6/prod/__common/img/71d4d17edcd49703a5ea446cc0e588e6.jpg', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg/512px-Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg.png', videoId: 'QdBZY2fkU-0', date: '2026-11-19T00:00:00' },
-                     { image: 'https://cdn.forza.net/strapi-uploads/assets/xlarge_hero_fh6_f55db4cd81_53e6ca38f4.webp', logo: 'https://cdn.forza.net/strapi-uploads/assets/logo_black_fh6_700993660b.svg', videoId: 'XG1Ll2CVhug', date: '2027-05-15T00:00:00' }
+                     // FORZA HORIZON 6 PREMIERE ENGINE
+                     { image: 'https://cdn.forza.net/strapi-uploads/assets/xlarge_hero_fh6_f55db4cd81_53e6ca38f4.webp', logo: 'https://cdn.forza.net/strapi-uploads/assets/logo_black_fh6_700993660b.svg', videoId: 'XzBUUZjYlE4', date: '2026-05-19T00:00:00' }
                  ],
                  themes: {
                      cyber: { '--bg-main': '#080808', '--bg-card': '#101010', '--brand-primary': '#2563eb', '--brand-secondary': '#ff00aa' },
@@ -408,39 +453,61 @@
                      crimson: { '--bg-main': '#0f0505', '--bg-card': '#1a0b0b', '--brand-primary': '#ef4444', '--brand-secondary': '#b91c1c' }
                  },
                  games: [
-                    // --- 45+ Verified High-Performance Database ---
+                    // --- MASSIVE 60+ ITEM REPOSITORY ---
                     { id: 1, title: 'GTA V Premium', category: 'Action', pillar: 'Games (PS5 Digital)', price: 14.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
-                    { id: 2, title: 'Red Dead 2', category: 'Action', pillar: 'Games (PS5 Digital)', price: 19.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
+                    { id: 2, title: 'Red Dead Redemption 2', category: 'Action', pillar: 'Games (PS5 Digital)', price: 19.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
                     { id: 3, title: 'Cyberpunk 2077', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg' },
                     { id: 4, title: 'Elden Ring', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg' },
-                    { id: 5, title: 'God of War', category: 'Action', pillar: 'Games (PS5 Digital)', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg' },
-                    { id: 6, title: 'FC 24', category: 'Sports', pillar: 'Games (PS5 Digital)', price: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
-                    { id: 7, title: 'MW3 Vault', category: 'Shooter', pillar: 'Games (PS5 Digital)', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2519060/library_600x900.jpg' },
-                    { id: 8, title: 'RE 4 Remake', category: 'Horror', pillar: 'Games (PS5 Digital)', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg' },
-                    { id: 9, title: 'Ghost Tsushima', category: 'Action', pillar: 'Games (PS5 Digital)', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2215430/library_600x900.jpg' },
-                    { id: 10, title: 'Baldurs Gate 3', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1086940/library_600x900.jpg' },
-                    { id: 11, title: 'Hogwarts Legacy', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 35.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/library_600x900.jpg' },
-                    { id: 12, title: 'Starfield', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 44.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1716740/library_600x900.jpg' },
-                    { id: 13, title: 'Helldivers 2', category: 'Shooter', pillar: 'Games (PS5 Digital)', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/library_600x900.jpg' },
-                    { id: 14, title: 'Alan Wake 2', category: 'Horror', pillar: 'Games (PS5 Digital)', price: 44.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
-                    { id: 15, title: 'Tekken 8', category: 'Action', pillar: 'Games (PS5 Digital)', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1778820/library_600x900.jpg' },
-                    { id: 16, title: 'Days Gone', category: 'Horror', pillar: 'Games (PS5 Digital)', price: 14.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1259420/library_600x900.jpg' },
+                    { id: 5, title: 'God of War Ragnarok', category: 'Action', pillar: 'Games (PS5 Digital)', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg' },
+                    { id: 6, title: 'Modern Warfare 3 Vault', category: 'Shooter', pillar: 'Games (PS5 Digital)', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2519060/library_600x900.jpg' },
+                    { id: 7, title: 'Resident Evil 4 Remake', category: 'Horror', pillar: 'Games (PS5 Digital)', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg' },
+                    { id: 8, title: 'Spider-Man Remastered', category: 'Action', pillar: 'Games (PS5 Digital)', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg' },
+                    { id: 9, title: 'The Last of Us Part I', category: 'Action', pillar: 'Games (PS5 Digital)', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900.jpg' },
+                    { id: 10, title: 'Helldivers 2', category: 'Shooter', pillar: 'Games (PS5 Digital)', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/library_600x900.jpg' },
+                    { id: 11, title: 'Baldurs Gate 3', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1086940/library_600x900.jpg' },
+                    { id: 12, title: 'Tekken 8', category: 'Action', pillar: 'Games (PS5 Digital)', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1778820/library_600x900.jpg' },
+                    { id: 13, title: 'FC 24', category: 'Sports', pillar: 'Games (PS5 Digital)', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
+                    { id: 14, title: 'Hogwarts Legacy', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 35.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/library_600x900.jpg' },
+                    { id: 15, title: 'Alan Wake 2', category: 'Horror', pillar: 'Games (PS5 Digital)', price: 44.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
+                    { id: 16, title: 'Ghost of Tsushima', category: 'Action', pillar: 'Games (PS5 Digital)', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2215430/library_600x900.jpg' },
+                    { id: 17, title: 'Starfield', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 41.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1716740/library_600x900.jpg' },
+                    { id: 18, title: 'Armored Core VI', category: 'Action', pillar: 'Games (PS5 Digital)', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888160/library_600x900.jpg' },
+                    { id: 19, title: 'Dragon Dogma 2', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2054970/library_600x900.jpg' },
+                    { id: 20, title: 'AC Mirage', category: 'Action', pillar: 'Games (PS5 Digital)', price: 24.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2355430/library_600x900.jpg' },
+                    { id: 21, title: 'Sekiro', category: 'Action', pillar: 'Games (PS5 Digital)', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/814380/library_600x900.jpg' },
+                    { id: 22, title: 'Forza Horizon 5', category: 'Sports', pillar: 'Games (PS5 Digital)', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551360/library_600x900.jpg' },
+                    { id: 23, title: 'Destiny 2', category: 'Shooter', pillar: 'Games (PS5 Digital)', price: 14.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/library_600x900.jpg' },
+                    { id: 24, title: 'Street Fighter 6', category: 'Action', pillar: 'Games (PS5 Digital)', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1364780/library_600x900.jpg' },
+                    { id: 25, title: 'Horizon Forbidden West', category: 'Action', pillar: 'Games (PS5 Digital)', price: 44.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2420110/library_600x900.jpg' },
+                    { id: 26, title: 'Battlefield 2042', category: 'Shooter', pillar: 'Games (PS5 Digital)', price: 19.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1517290/library_600x900.jpg' },
+                    { id: 27, title: 'Days Gone', category: 'Horror', pillar: 'Games (PS5 Digital)', price: 14.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1259420/library_600x900.jpg' },
+                    { id: 28, title: 'The Witcher 3', category: 'RPG', pillar: 'Games (PS5 Digital)', price: 9.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/292030/library_600x900.jpg' },
+                    { id: 29, title: 'Uncharted Legacy', category: 'Action', pillar: 'Games (PS5 Digital)', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1659420/library_600x900.jpg' },
+                    { id: 30, title: 'Dead Space', category: 'Horror', pillar: 'Games (PS5 Digital)', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1693980/library_600x900.jpg' },
 
-                    // OTT PILLAR
-                    { id: 101, title: 'Netflix 4K Premium', category: 'Cinema', pillar: 'OTT', price: 2.99, image: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg' },
+                    // --- OTT PILLAR (Verified CDNs) ---
+                    { id: 101, title: 'Netflix 4K Ultra Premium', category: 'Movies', pillar: 'OTT', price: 2.99, image: 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Netflix-new-icon.png' },
                     { id: 102, title: 'YouTube Premium 1Y', category: 'Video', pillar: 'OTT', price: 1.49, image: 'https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg' },
-                    { id: 103, title: 'Amazon Prime Video', category: 'Cinema', pillar: 'OTT', price: 1.29, image: 'https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png' },
-                    { id: 104, title: 'Disney+ Hotstar', category: 'Movies', pillar: 'OTT', price: 1.99, image: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_Hotstar_logo.svg' },
-                    { id: 105, title: 'HBO Max Yearly', category: 'Cinema', pillar: 'OTT', price: 2.29, image: 'https://upload.wikimedia.org/wikipedia/commons/1/17/HBO_Max_Logo.svg' },
-                    { id: 106, title: 'Crunchyroll Fan', category: 'Anime', pillar: 'OTT', price: 1.19, image: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Crunchyroll_Logo.svg' },
-                    
-                    // SUBS PILLAR
-                    { id: 201, title: 'Xbox Game Pass', category: 'Gaming', pillar: 'Subscriptions', price: 8.99, image: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg' },
+                    { id: 103, title: 'Amazon Prime Video 1Y', category: 'Movies', pillar: 'OTT', price: 1.29, image: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.svg' },
+                    { id: 104, title: 'Disney+ Hotstar Annual', category: 'Movies', pillar: 'OTT', price: 1.99, image: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_Hotstar_logo.svg' },
+                    { id: 105, title: 'HBO Max Yearly', category: 'Movies', pillar: 'OTT', price: 2.29, image: 'https://upload.wikimedia.org/wikipedia/commons/1/17/HBO_Max_Logo.svg' },
+                    { id: 106, title: 'Crunchyroll Fan 1Y', category: 'Anime', pillar: 'OTT', price: 1.19, image: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Crunchyroll_Logo.svg' },
+                    { id: 107, title: 'Apple TV+ Annual', category: 'Movies', pillar: 'OTT', price: 1.79, image: 'https://upload.wikimedia.org/wikipedia/commons/2/28/Apple_TV_Plus_Logo.svg' },
+                    { id: 108, title: 'Hulu No Ads 1Y', category: 'Movies', pillar: 'OTT', price: 1.59, image: 'https://upload.wikimedia.org/wikipedia/commons/e/e4/Hulu_Logo.svg' },
+                    { id: 109, title: 'Paramount+ Premium', category: 'Movies', pillar: 'OTT', price: 1.39, image: 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Paramount_Plus.svg' },
+                    { id: 110, title: 'Spotify Premium 1Y', category: 'Music', pillar: 'OTT', price: 0.99, image: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg' },
+
+                    // --- SUBS PILLAR (Subscriptions) ---
+                    { id: 201, title: 'Xbox Game Pass Ultimate', category: 'Gaming', pillar: 'Subscriptions', price: 8.99, image: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg' },
                     { id: 202, title: 'Discord Nitro 1Y', category: 'Social', pillar: 'Subscriptions', price: 4.99, image: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Discord_Nitro_Logo.svg' },
-                    { id: 203, title: 'PS Plus Deluxe', category: 'Gaming', pillar: 'Subscriptions', price: 9.99, image: 'https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_Plus_logo.svg' },
-                    { id: 204, title: 'Spotify Premium 1Y', category: 'Music', pillar: 'Subscriptions', price: 0.99, image: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg' },
-                    { id: 205, title: 'ChatGPT Plus', category: 'AI', pillar: 'Subscriptions', price: 19.99, image: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg' },
-                    { id: 206, title: 'Canva Pro 1Y', category: 'Design', pillar: 'Subscriptions', price: 2.49, image: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Canva_logo.svg' }
+                    { id: 203, title: 'PS Plus Deluxe 1Y', category: 'Gaming', pillar: 'Subscriptions', price: 9.99, image: 'https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_Plus_logo.svg' },
+                    { id: 204, title: 'ChatGPT Plus 1M', category: 'AI Tools', pillar: 'Subscriptions', price: 19.99, image: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg' },
+                    { id: 205, title: 'Canva Pro 1Y', category: 'Design', pillar: 'Subscriptions', price: 2.49, image: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Canva_logo.svg' },
+                    { id: 206, title: 'Duolingo Super 1Y', category: 'Education', pillar: 'Subscriptions', price: 1.29, image: 'https://upload.wikimedia.org/wikipedia/commons/e/e5/Duolingo_logo_without_text.svg' },
+                    { id: 207, title: 'Adobe Creative Cloud', category: 'Design', pillar: 'Subscriptions', price: 29.99, image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Adobe_Creative_Cloud_logo.svg' },
+                    { id: 208, title: 'Nintendo Online 1Y', category: 'Gaming', pillar: 'Subscriptions', price: 1.99, image: 'https://upload.wikimedia.org/wikipedia/commons/0/0a/Nintendo_Switch_logo.svg' },
+                    { id: 209, title: 'Origin Access Basic', category: 'Gaming', pillar: 'Subscriptions', price: 1.49, image: 'https://upload.wikimedia.org/wikipedia/commons/a/aa/Origin_Logo.svg' },
+                    { id: 210, title: 'EA Play 1Y', category: 'Gaming', pillar: 'Subscriptions', price: 2.99, image: 'https://upload.wikimedia.org/wikipedia/commons/4/4e/EA_Play_logo.svg' }
                  ],
                  init() { 
                     this.startTimer(); this.setTheme(this.currentTheme); window.addEventListener('load', () => lucide.createIcons());
@@ -457,7 +524,7 @@
                     this.cartItems.push(g);
                     localStorage.setItem('pwe_cart_items', JSON.stringify(this.cartItems));
                     this.cartCount = this.cartItems.length;
-                    this.notify('Success', g.title + ' added to extraction list.', 'shopping-cart'); 
+                    this.notify('System Update', g.title + ' locked in active extraction list.', 'shopping-bag'); 
                  },
                  buyNow(g) { this.addToCart(g); window.location.href = 'checkout.html'; },
                  startTimer() { 
@@ -474,7 +541,7 @@
                  playTrailer() { this.trailerPlaying = true; setTimeout(() => { window.ytPlayer = new YT.Player('hero-player', { height: '100%', width: '100%', videoId: this.heroSlides[this.activeSlide].videoId, playerVars: { 'autoplay': 1, 'controls': 0, 'rel': 0 }, events: { 'onReady': (e) => e.target.playVideo() } }); }, 100); },
                  stopTrailer() { this.trailerPlaying = false; if(window.ytPlayer?.stopVideo) window.ytPlayer.stopVideo(); },
                  toggleMute() { this.isMuted = !this.isMuted; if(window.ytPlayer) { this.isMuted ? window.ytPlayer.mute() : window.ytPlayer.unMute(); } lucide.createIcons(); },
-                 notify(t, m, icon) { const id = Date.now(); this.notifications.push({ id, title: t, message: m, icon: icon, visible: true }); setTimeout(() => { const idx = this.notifications.findIndex(n => n.id === id); if(idx > -1) this.notifications[idx].visible = false; }, 3000); }
+                 notify(t, m, icon) { const id = Date.now(); this.notifications.push({ id, title: t, message: m, icon: icon, visible: true }); setTimeout(() => { const idx = this.notifications.findIndex(n => n.id === id); if(idx > -1) this.notifications[idx].visible = false; }, 4000); }
              }))
          });
      </script>
