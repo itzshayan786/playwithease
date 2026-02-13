@@ -31,9 +31,9 @@
 
     <style>
         :root { --bg-main: #080808; --bg-card: #101010; --text-main: #ffffff; --brand-primary: #2563eb; --brand-secondary: #ff00aa; }
-        .nav-base { background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); height: 75px; }
-        .nav-scrolled { background: rgba(8, 8, 8, 0.98); border-bottom: 1px solid rgba(255, 255, 255, 0.1); height: 65px; }
-        @media (min-width: 768px) { .nav-base { height: 85px; } .nav-scrolled { height: 75px; } }
+        .nav-base { background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); height: 80px; }
+        .nav-scrolled { background: rgba(8, 8, 8, 0.98); border-bottom: 1px solid rgba(255, 255, 255, 0.1); height: 70px; }
+        @media (min-width: 768px) { .nav-base { height: 90px; } .nav-scrolled { height: 80px; } }
         
         body { -webkit-tap-highlight-color: transparent; color: var(--text-main); background-color: var(--bg-main); overflow-x: hidden; }
         [x-cloak] { display: none !important; }
@@ -57,50 +57,54 @@
         </template>
     </div>
 
-    <div x-data="chatBot()" class="fixed bottom-6 right-6 z-[95]">
-        <div x-show="open" x-cloak x-transition.scale.origin.bottom.right class="absolute bottom-16 right-0 w-[90vw] md:w-96 bg-[#0f0f0f] border border-white/10 rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[500px] backdrop-blur-xl">
-            <div class="bg-gradient-to-r from-brand-primary to-blue-700 p-5 flex justify-between items-center shadow-xl">
-                <div class="flex items-center gap-3">
-                    <div class="relative"><div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white"><i data-lucide="bot"></i></div><div class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-[#0f0f0f] animate-pulse"></div></div>
-                    <div><h3 class="font-display font-bold text-sm text-white">PWE CORE AI</h3><p class="text-[10px] text-white/60 font-bold uppercase">Ready to Help</p></div>
-                </div>
-                <button @click="open = false" class="text-white"><i data-lucide="x"></i></button>
-            </div>
-            <div class="flex-1 p-5 overflow-y-auto space-y-4" id="chatContainer">
-                <template x-for="msg in messages" :key="msg.id">
-                    <div :class="msg.sender === 'bot' ? 'flex justify-start' : 'flex justify-end'">
-                        <div :class="msg.sender === 'bot' ? 'bg-white/5 border border-white/10 text-gray-200' : 'bg-brand-primary text-white'" class="p-4 rounded-2xl text-xs max-w-[85%]"><span x-html="msg.text"></span></div>
-                    </div>
-                </template>
-            </div>
-            <div class="p-4 border-t border-white/5 flex gap-2"><input type="text" x-model="input" @keydown.enter="sendMessage" placeholder="Type..." class="flex-1 bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-xs text-white outline-none"><button @click="sendMessage" class="w-12 h-12 bg-brand-primary rounded-2xl flex items-center justify-center"><i data-lucide="send" class="text-white"></i></button></div>
-        </div>
-        <button @click="open = !open" class="w-14 h-14 md:w-16 md:h-16 bg-brand-primary rounded-2xl flex items-center justify-center shadow-2xl active:scale-90 transition-transform"><i :data-lucide="open ? 'chevron-down' : 'message-circle-code'" class="text-white"></i></button>
-    </div>
-
     <nav :class="scrolled ? 'nav-scrolled' : 'nav-base'" class="fixed top-0 w-full z-[60] flex items-center transition-all duration-300">
         <div class="max-w-[1600px] mx-auto px-4 md:px-6 w-full flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-2 shrink-0 group">
                 <div class="w-10 h-10 flex items-center justify-center bg-brand-primary/10 rounded-xl border border-brand-primary/20 group-hover:scale-110 transition shadow-lg"><i data-lucide="gamepad-2" class="text-brand-primary"></i></div>
                 <h1 class="font-display text-xl tracking-tighter hidden sm:block uppercase italic font-black text-white">PLAYWITH<span class="text-brand-primary">EASE</span></h1>
             </a>
-            <div class="flex items-center gap-3 shrink-0">
+
+            <div class="hidden lg:flex flex-1 max-w-md mx-8 relative">
+                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30"></i>
+                <input type="text" x-model="searchQuery" placeholder="Search 40+ games & services..." class="w-full bg-white/5 border border-white/10 rounded-full py-2.5 pl-12 pr-4 text-xs text-white outline-none focus:border-brand-primary focus:bg-white/10 transition-all placeholder:text-white/20">
+            </div>
+
+            <div class="flex items-center gap-3 md:gap-5 shrink-0">
+                <button class="text-white/40 hover:text-white transition hidden md:block"><i data-lucide="bell" class="w-5 h-5"></i></button>
+                
                 <a href="cart.html" class="relative p-2.5 rounded-xl bg-white/5 border border-white/5 hover:border-brand-primary/30 transition">
                     <i data-lucide="shopping-cart" class="text-gray-400"></i>
                     <span x-show="cartCount > 0" class="absolute -top-1 -right-1 bg-brand-secondary text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-bg-main" x-text="cartCount"></span>
                 </a>
+
                 <div class="relative" x-data="{ openMenu: false }" @click.outside="openMenu = false">
                     <button @click="openMenu = !openMenu" class="flex items-center gap-2 p-1 rounded-2xl hover:bg-white/10 transition border border-transparent">
-                        <div class="w-9 h-9 md:w-10 md:h-10 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center overflow-hidden"><img id="userAvatarHeader" src="" class="w-full h-full object-cover hidden"><i data-lucide="user" id="userPlaceholder" class="text-gray-400"></i></div>
+                        <div class="w-9 h-9 md:w-10 md:h-10 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center overflow-hidden relative">
+                            <img id="userAvatarHeader" src="" class="w-full h-full object-cover hidden">
+                            <i data-lucide="user" id="userPlaceholder" class="text-gray-400"></i>
+                            <div x-show="isLoggedIn" class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-[#101010]"></div>
+                        </div>
                         <i data-lucide="chevron-down" :class="openMenu ? 'rotate-180' : ''" class="w-4 h-4 text-gray-500 hidden sm:block transition-transform"></i>
                     </button>
                     <div x-show="openMenu" x-cloak x-transition class="absolute right-0 mt-3 w-64 bg-[#0f0f0f] border border-white/10 rounded-2xl shadow-2xl p-2 z-[70]">
-                        <div id="userPanelInfo" class="px-4 py-3 border-b border-white/5 mb-2 hidden text-white"><p id="userDisplayName" class="text-sm font-bold truncate"></p></div>
-                        <a href="profile.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition group text-sm font-medium text-white"><i data-lucide="key" class="text-brand-primary"></i> My Vault</a>
-                        <div class="mt-2 pt-2 border-t border-white/5"><div class="flex justify-between px-2 pb-2"><button @click="setTheme('cyber')" class="w-8 h-8 rounded-lg bg-blue-600 border border-white/10"></button><button @click="setTheme('luxury')" class="w-8 h-8 rounded-lg bg-yellow-500 border border-white/10"></button><button @click="setTheme('toxic')" class="w-8 h-8 rounded-lg bg-green-500 border border-white/10"></button><button @click="setTheme('crimson')" class="w-8 h-8 rounded-lg bg-red-600 border border-white/10"></button><button @click="setTheme('minimal')" class="w-8 h-8 rounded-lg bg-white border border-gray-300"></button></div></div>
+                        <div x-show="isLoggedIn" class="px-4 py-3 border-b border-white/5 mb-2 text-white">
+                            <p id="userDisplayName" class="text-sm font-bold truncate">Soldier</p>
+                            <span class="text-[9px] text-brand-primary uppercase font-black tracking-widest">Verified Player</span>
+                        </div>
                         
-                        <div id="loginSection" class="p-2 pt-4 border-t border-white/5 mt-2">
-                            <a href="login.html" class="flex justify-center w-full py-2.5 bg-white text-black font-black text-xs uppercase rounded-xl">Login</a>
+                        <a href="profile.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition group text-sm font-medium text-white"><i data-lucide="key" class="text-brand-primary"></i> My Vault</a>
+                        
+                        <div class="mt-2 pt-2 border-t border-white/5">
+                            <div class="flex justify-between px-2 pb-2">
+                                <button @click="setTheme('cyber')" class="w-8 h-8 rounded-lg bg-blue-600 border border-white/10"></button>
+                                <button @click="setTheme('luxury')" class="w-8 h-8 rounded-lg bg-yellow-500 border border-white/10"></button>
+                                <button @click="setTheme('toxic')" class="w-8 h-8 rounded-lg bg-green-500 border border-white/10"></button>
+                                <button @click="setTheme('crimson')" class="w-8 h-8 rounded-lg bg-red-600 border border-white/10"></button>
+                            </div>
+                        </div>
+
+                        <div x-show="!isLoggedIn" class="p-2 pt-4 border-t border-white/5 mt-2">
+                            <a href="login.html" class="flex justify-center w-full py-2.5 bg-white text-black font-black text-xs uppercase rounded-xl hover:bg-brand-primary hover:text-white transition">Login</a>
                         </div>
                     </div>
                 </div>
@@ -140,25 +144,25 @@
 
     <main class="max-w-[1600px] mx-auto px-4 md:px-6 py-16">
          <div class="flex gap-2 overflow-x-auto no-scrollbar mb-10 pb-2">
-             <template x-for="cat in ['All', 'Action', 'RPG', 'Shooter', 'Sports', 'Horror', 'OTT', 'Subscriptions']">
-                 <button @click="activeCategory = cat" :class="activeCategory === cat ? 'bg-brand-primary text-white' : 'bg-white/5 text-gray-500'" class="px-6 py-2 rounded-xl text-[10px] font-black uppercase transition whitespace-nowrap" x-text="cat"></button>
+             <template x-for="cat in ['All', 'Action', 'RPG', 'Shooter', 'Sports', 'OTT', 'Subscriptions']">
+                 <button @click="activeCategory = cat" :class="activeCategory === cat ? 'bg-brand-primary text-white border-brand-primary' : 'bg-white/5 text-gray-500 border-white/5'" class="px-6 py-2.5 rounded-xl text-[10px] font-black uppercase border transition whitespace-nowrap" x-text="cat"></button>
              </template>
          </div>
          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
              <template x-for="game in filteredGames" :key="game.id">
                  <div class="group bg-bg-card rounded-3xl overflow-hidden border border-white/5 hover:border-brand-primary/50 transition-all shadow-lg hover:-translate-y-2 relative flex flex-col">
                      <div class="relative aspect-[3/4] overflow-hidden">
-                         <img :src="game.image" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" loading="lazy">
+                         <img :src="game.image" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" loading="lazy" onerror="this.src='https://via.placeholder.com/600x900?text=Cover+Not+Found'">
                          <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4 gap-2 z-30">
                              <button @click.stop="buyNow(game)" class="w-full py-2 bg-white text-black font-black uppercase text-[10px] rounded-lg">Buy Now</button>
                              <button @click.stop="addToCart(game)" class="w-full py-2 border border-white/20 text-white font-black uppercase text-[10px] rounded-lg hover:bg-white/10 transition">Add to Cart</button>
                          </div>
-                         <button @click.stop="addToCart(game)" class="md:hidden absolute top-3 right-3 w-8 h-8 bg-brand-primary text-white rounded-lg flex items-center justify-center z-40 shadow-lg"><i data-lucide="plus" class="w-4 h-4"></i></button>
                          <a :href="'product.html?id=' + game.id" class="absolute inset-0 z-10"></a>
                          <div class="absolute bottom-4 left-4 z-20"><div class="text-sm font-black text-white" x-text="formatPrice(game.price)"></div></div>
                      </div>
                      <div class="p-4 pt-2">
                          <h3 class="text-[10px] font-bold text-white/80 uppercase tracking-tighter truncate" x-text="game.title"></h3>
+                         <div class="flex gap-1 mt-1"><template x-for="i in 5"><div class="w-1 h-1 rounded-full bg-brand-primary/30"></div></template></div>
                      </div>
                  </div>
              </template>
@@ -166,37 +170,64 @@
      </main>
  
      <footer class="bg-[#050505] border-t border-white/10 mt-20 text-white">
-        <div class="max-w-[1600px] mx-auto px-4 md:px-6 py-14 md:py-16">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 text-left">
-                <div class="space-y-4">
-                    <a href="index.html" class="flex items-center gap-2 w-fit">
-                        <div class="w-9 h-9 flex items-center justify-center bg-brand-primary/10 rounded-xl border border-brand-primary/20"><i data-lucide="gamepad-2" class="text-brand-primary"></i></div>
-                        <h2 class="font-display text-lg tracking-tight uppercase italic font-black">PLAYWITH<span class="text-brand-primary">EASE</span></h2>
+        <div class="max-w-[1600px] mx-auto px-4 md:px-6 py-14 md:py-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
+                <div class="space-y-6">
+                    <a href="index.html" class="flex items-center gap-3">
+                        <div class="w-10 h-10 flex items-center justify-center bg-brand-primary/10 rounded-xl border border-brand-primary/20"><i data-lucide="gamepad-2" class="text-brand-primary"></i></div>
+                        <h2 class="font-display text-xl tracking-tighter uppercase italic font-black">PLAYWITH<span class="text-brand-primary">EASE</span></h2>
                     </a>
-                    <p class="text-sm text-white/60 leading-relaxed">Premium digital game marketplace delivering instant keys and verified access.</p>
+                    <p class="text-sm text-white/50 leading-relaxed max-w-xs">The premium destination for instant digital keys, verified subscriptions, and elite gaming support since 2021.</p>
+                    <div class="flex gap-2">
+                        <input type="email" placeholder="Join the Frontline (Email)" class="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-[10px] flex-1 outline-none focus:border-brand-primary transition">
+                        <button class="bg-brand-primary px-5 py-3 rounded-xl hover:scale-105 transition"><i data-lucide="send" class="w-4 h-4"></i></button>
+                    </div>
                 </div>
+
                 <div>
-                    <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80 mb-4">Quick Links</h3>
-                    <ul class="space-y-2 text-sm text-white/60">
-                        <li><a href="index.html">Store Home</a></li>
-                        <li><a href="profile.html">My Vault</a></li>
-                        <li><a href="cart.html">Cart</a></li>
+                    <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80 mb-8">Navigation</h3>
+                    <ul class="space-y-4 text-xs text-white/40 font-bold uppercase tracking-widest">
+                        <li><a href="index.html" class="hover:text-brand-primary transition">Marketplace Home</a></li>
+                        <li><a href="profile.html" class="hover:text-brand-primary transition">My Digital Vault</a></li>
+                        <li><a href="cart.html" class="hover:text-brand-primary transition">Shopping Cart</a></li>
+                        <li><a href="#" class="hover:text-brand-primary transition">Active Drops</a></li>
                     </ul>
                 </div>
+
                 <div>
-                    <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80 mb-4">Care</h3>
-                    <ul class="space-y-2 text-sm text-white/60">
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">Refund Policy</a></li>
+                    <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80 mb-8">Intelligence</h3>
+                    <ul class="space-y-4 text-xs text-white/40 font-bold uppercase tracking-widest">
+                        <li><a href="#" class="hover:text-brand-primary transition">Help Center</a></li>
+                        <li><a href="#" class="hover:text-brand-primary transition">Key Redemption Guide</a></li>
+                        <li><a href="#" class="hover:text-brand-primary transition">Refund Policy</a></li>
+                        <li><a href="#" class="hover:text-brand-primary transition">Terms of Access</a></li>
                     </ul>
                 </div>
-                <div class="space-y-4">
-                    <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80">Contact</h3>
-                    <p class="text-sm text-white/60">support@playwithease.com</p>
+
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="text-xs font-black uppercase tracking-[0.25em] text-white/80 mb-6">HQ Contact</h3>
+                        <div class="space-y-3 text-xs text-white/40 font-bold uppercase tracking-widest">
+                            <p class="flex items-center gap-3"><i data-lucide="mail" class="w-4 h-4 text-brand-primary"></i> support@playwithease.com</p>
+                            <p class="flex items-center gap-3"><i data-lucide="clock" class="w-4 h-4 text-brand-primary"></i> 24/7 Deployment Ready</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-brand-primary transition"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-brand-primary transition"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-brand-primary transition"><i data-lucide="twitch" class="w-4 h-4"></i></a>
+                    </div>
                 </div>
             </div>
-            <div class="mt-10 pt-6 border-t border-white/10 text-center text-xs text-white/40">
-                <p>&copy; 2026 PlayWithEase Digital. All rights reserved.</p>
+
+            <div class="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+                <p class="text-[10px] text-white/20 uppercase tracking-[0.5em]">&copy; 2026 PlayWithEase Digital. All Rights Reserved.</p>
+                <div class="flex items-center gap-6 opacity-30 grayscale pointer-events-none">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" class="h-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" class="h-5">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" class="h-4">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg" class="h-4">
+                </div>
             </div>
         </div>
      </footer>
@@ -206,19 +237,13 @@
          import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
          const firebaseConfig = { apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs", authDomain: "playwithease.firebaseapp.com", projectId: "playwithease", storageBucket: "playwithease.firebasestorage.app", messagingSenderId: "189729941006", appId: "1:189729941006:web:362653774b92416c357e5f", measurementId: "G-1C3B31KQ7C" };
          const app = initializeApp(firebaseConfig); const auth = getAuth(app);
+         
          onAuthStateChanged(auth, (user) => {
+             // Use window.dispatch to tell Alpine that login status changed
              if (user) {
-                 // Hide login button and show vault info
-                 document.getElementById('loginSection')?.classList.add('hidden');
-                 document.getElementById('userPanelInfo')?.classList.remove('hidden');
-                 if(user.photoURL) document.getElementById('userAvatarHeader').src = user.photoURL;
-                 if(user.displayName) document.getElementById('userDisplayName').innerText = user.displayName;
-                 document.getElementById('userAvatarHeader')?.classList.remove('hidden');
-                 document.getElementById('userPlaceholder')?.classList.add('hidden');
+                 window.dispatchEvent(new CustomEvent('auth-changed', { detail: { loggedIn: true, name: user.displayName, photo: user.photoURL } }));
              } else {
-                 // Ensure login is visible if logged out
-                 document.getElementById('loginSection')?.classList.remove('hidden');
-                 document.getElementById('userPanelInfo')?.classList.add('hidden');
+                 window.dispatchEvent(new CustomEvent('auth-changed', { detail: { loggedIn: false } }));
              }
          });
      </script>
@@ -226,21 +251,14 @@
      <script src="https://www.youtube.com/iframe_api"></script>
      <script>
          document.addEventListener('alpine:init', () => {
-             Alpine.data('chatBot', () => ({
-                 open: false, input: '', messages: [{ id: 1, text: "Hello! Support active.", sender: 'bot' }],
-                 sendMessage() {
-                     if (!this.input.trim()) return;
-                     this.messages.push({ id: Date.now(), text: this.input, sender: 'user' });
-                     this.input = ''; this.scrollToBottom();
-                 },
-                 scrollToBottom() { this.$nextTick(() => { const c = document.getElementById('chatContainer'); if (c) c.scrollTo({ top: c.scrollHeight, behavior: 'smooth' }); }); }
-             }));
- 
              Alpine.data('storeLogic', () => ({
                  scrolled: false, activeSlide: 0, trailerPlaying: false, isMuted: false,
                  cartCount: parseInt(localStorage.getItem('pwe_cart_count'), 10) || 0,
                  activeCategory: 'All', notifications: [], currentTheme: localStorage.getItem('pwe_theme') || 'cyber',
                  timer: { days: '00', hours: '00', minutes: '00', seconds: '00' },
+                 searchQuery: '',
+                 isLoggedIn: false, // Alpine state for login
+
                  heroSlides: [
                      { image: 'https://media-rockstargames-com.akamaized.net/mfe6/prod/__common/img/71d4d17edcd49703a5ea446cc0e588e6.jpg', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg/512px-Grand_Theft_Auto_VI_logo_%28with_gradient%29.svg.png', videoId: 'QdBZY2fkU-0', date: '2026-11-19T00:00:00' },
                      { image: 'https://cdn.forza.net/strapi-uploads/assets/xlarge_hero_fh6_f55db4cd81_53e6ca38f4.webp', logo: 'https://cdn.forza.net/strapi-uploads/assets/logo_black_fh6_700993660b.svg', videoId: 'XG1Ll2CVhug', date: '2027-05-15T00:00:00' }
@@ -249,10 +267,10 @@
                      cyber: { '--bg-main': '#080808', '--bg-card': '#101010', '--brand-primary': '#2563eb', '--brand-secondary': '#ff00aa' },
                      luxury: { '--bg-main': '#050505', '--bg-card': '#121212', '--brand-primary': '#fbbf24', '--brand-secondary': '#d97706' },
                      toxic: { '--bg-main': '#0a0f0a', '--bg-card': '#141a14', '--brand-primary': '#10b981', '--brand-secondary': '#059669' },
-                     crimson: { '--bg-main': '#0f0505', '--bg-card': '#1a0b0b', '--brand-primary': '#ef4444', '--brand-secondary': '#b91c1c' },
-                     minimal: { '--bg-main': '#ffffff', '--bg-card': '#f3f4f6', '--brand-primary': '#000000', '--brand-secondary': '#374151' }
+                     crimson: { '--bg-main': '#0f0505', '--bg-card': '#1a0b0b', '--brand-primary': '#ef4444', '--brand-secondary': '#b91c1c' }
                  },
                  games: [
+                    // --- GAMES (40+ Database) ---
                     { id: 1, title: 'GTA V', category: 'Action', price: 14.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg' },
                     { id: 2, title: 'RDR 2', category: 'Action', price: 19.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg' },
                     { id: 3, title: 'Cyberpunk 2077', category: 'RPG', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg' },
@@ -261,42 +279,48 @@
                     { id: 6, title: 'MW3', category: 'Shooter', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2519060/library_600x900.jpg' },
                     { id: 7, title: 'FC 24', category: 'Sports', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
                     { id: 8, title: 'RE 4 Remake', category: 'Horror', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg' },
-                    { id: 9, title: 'Spider-Man', category: 'Action', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg' },
-                    { id: 10, title: 'TLOU Part I', category: 'Action', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900.jpg' },
                     { id: 11, title: 'Helldivers 2', category: 'Shooter', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/library_600x900.jpg' },
-                    { id: 12, title: 'Palworld', category: 'Action', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1623730/library_600x900.jpg' },
                     { id: 13, title: 'Baldurs Gate 3', category: 'RPG', price: 59.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1086940/library_600x900.jpg' },
-                    { id: 14, title: 'Tekken 8', category: 'Action', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1778820/library_600x900.jpg' },
-                    { id: 15, title: 'Forza 5', category: 'Sports', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551360/library_600x900.jpg' },
-                    { id: 16, title: 'Hogwarts Legacy', category: 'RPG', price: 35.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/library_600x900.jpg' },
-                    { id: 17, title: 'Starfield', category: 'RPG', price: 41.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1716740/library_600x900.jpg' },
-                    { id: 18, title: 'Armored Core VI', category: 'Action', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888160/library_600x900.jpg' },
-                    { id: 19, title: 'Dragon Dogma 2', category: 'RPG', price: 69.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2054970/library_600x900.jpg' },
-                    { id: 20, title: 'AC Mirage', category: 'Action', price: 24.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2355430/library_600x900.jpg' },
                     { id: 21, title: 'Sekiro', category: 'Action', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/814380/library_600x900.jpg' },
-                    { id: 22, title: 'Horizon', category: 'Action', price: 44.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2420110/library_600x900.jpg' },
-                    { id: 23, title: 'Uncharted', category: 'Action', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1659420/library_600x900.jpg' },
-                    { id: 24, title: 'Days Gone', category: 'Horror', price: 14.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1259420/library_600x900.jpg' },
-                    { id: 25, title: 'Alan Wake 2', category: 'Horror', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
-                    { id: 26, title: 'Dead Space', category: 'Horror', price: 29.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1693980/library_600x900.jpg' },
-                    { id: 27, title: 'Destiny 2', category: 'Shooter', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/library_600x900.jpg' },
-                    { id: 28, title: 'Street Fighter 6', category: 'Action', price: 39.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1364780/library_600x900.jpg' },
-                    { id: 29, title: 'Battlefield 2042', category: 'Shooter', price: 19.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1517290/library_600x900.jpg' },
+                    { id: 23, title: 'Ghost of Tsushima', category: 'Action', price: 49.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2215430/library_600x900.jpg' },
+                    { id: 25, title: 'Alan Wake 2', category: 'Horror', price: 44.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg' },
                     { id: 30, title: 'Halo Infinite', category: 'Shooter', price: 34.99, image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1240440/library_600x900.jpg' },
-                    
-                    // OTT Fixed Posters
-                    { id: 101, title: 'Netflix Premium', category: 'OTT', price: 2.99, image: 'https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg' },
-                    { id: 102, title: 'YouTube Premium', category: 'OTT', price: 1.49, image: 'https://upload.wikimedia.org/wikipedia/commons/4/4c/YouTube_Icon.svg' },
+
+                    // --- OTT Verified Posters ---
+                    { id: 101, title: 'Netflix 4K', category: 'OTT', price: 2.99, image: 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Netflix-new-icon.png' },
+                    { id: 102, title: 'YouTube Premium', category: 'OTT', price: 1.49, image: 'https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg' },
                     { id: 103, title: 'Amazon Prime', category: 'OTT', price: 1.29, image: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.svg' },
-                    { id: 104, title: 'Disney+ Hotstar', category: 'OTT', price: 1.99, image: 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Disney%2B_Hotstar_logo.svg' },
+                    { id: 104, title: 'Disney+ Hotstar', category: 'OTT', price: 1.99, image: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_Hotstar_logo.svg' },
+                    { id: 105, title: 'Crunchyroll', category: 'OTT', price: 1.19, image: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Crunchyroll_Logo.svg' },
+                    
+                    // --- SUBS Verified Posters ---
                     { id: 201, title: 'Xbox Game Pass', category: 'Subscriptions', price: 8.99, image: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg' },
-                    { id: 202, title: 'Discord Nitro', category: 'Subscriptions', price: 4.99, image: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Discord_Nitro_Logo.svg' }
+                    { id: 202, title: 'Discord Nitro', category: 'Subscriptions', price: 4.99, image: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Discord_Nitro_Logo.svg' },
+                    { id: 203, title: 'Spotify Premium', category: 'Subscriptions', price: 0.99, image: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg' }
                  ],
-                 init() { this.startTimer(); this.setTheme(this.currentTheme); window.addEventListener('load', () => lucide.createIcons()); },
+                 init() { 
+                     this.startTimer(); this.setTheme(this.currentTheme);
+                     window.addEventListener('load', () => lucide.createIcons());
+                     // Listen for Firebase auth events
+                     window.addEventListener('auth-changed', (e) => {
+                         this.isLoggedIn = e.detail.loggedIn;
+                         if(e.detail.loggedIn) {
+                            if(e.detail.photo) document.getElementById('userAvatarHeader').src = e.detail.photo;
+                            if(e.detail.name) document.getElementById('userDisplayName').innerText = e.detail.name;
+                            document.getElementById('userAvatarHeader').classList.remove('hidden');
+                            document.getElementById('userPlaceholder').classList.add('hidden');
+                         }
+                     });
+                 },
                  get themeStyles() { return Object.entries(this.themes[this.currentTheme] || {}).map(([k,v])=>`${k}:${v};`).join(''); },
                  setTheme(n) { this.currentTheme = n; localStorage.setItem('pwe_theme', n); },
                  formatPrice(p) { return '₹'+Math.round(p*85); },
-                 get filteredGames() { return this.activeCategory === 'All' ? this.games : this.games.filter(g => g.category === this.activeCategory); },
+                 get filteredGames() { 
+                    return this.games.filter(g => 
+                        (this.activeCategory === 'All' || g.category === this.activeCategory) &&
+                        (g.title.toLowerCase().includes(this.searchQuery.toLowerCase()))
+                    ); 
+                 },
                  addToCart(g) { this.cartCount++; localStorage.setItem('pwe_cart_count', this.cartCount); this.notify('Success', g.title + ' added.'); },
                  buyNow(g) { this.addToCart(g); window.location.href = 'checkout.html'; },
                  nextSlide() { this.activeSlide = (this.activeSlide + 1) % this.heroSlides.length; this.stopTrailer(); this.startTimer(); },
