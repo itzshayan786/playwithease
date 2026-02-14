@@ -3,27 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Placed | PlayWithEase</title>
+    <title>Success</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body style="display:flex; align-items:center; justify-content:center; height:100vh;">
-
-    <div class="container" style="text-align:center;">
-        <div style="font-size:4rem; margin-bottom:20px;">🎉</div>
-        <h1>Order Successful!</h1>
-        <p style="color:var(--text-muted); margin:10px 0;">Order ID: <span id="orderIdDisplay" style="color:var(--primary)"></span></p>
-        
-        <div style="max-width:400px; margin:30px auto; background:var(--surface); padding:20px; border-radius:12px;">
-            <p>To receive your digital key immediately, please send the confirmation to our WhatsApp support.</p>
-            <br>
-            <a id="waLink" href="#" target="_blank" class="btn" style="background:#25D366; color:white; display:block; padding:15px;">
-                Verify on WhatsApp 💬
-            </a>
-            <br>
-            <a href="index.html" class="btn btn-secondary">Return to Store</a>
-        </div>
+<body style="display:flex; align-items:center; justify-content:center; height:100vh; text-align:center;">
+    <div class="container">
+        <h1 style="font-size:3rem; color:var(--primary)">Order Placed!</h1>
+        <p id="orderInfo" style="margin:20px 0; color:#aaa;"></p>
+        <a id="waBtn" href="#" class="btn btn-primary" style="background:#25D366;">Confirm on WhatsApp</a>
+        <br><br>
+        <a href="index.html" class="btn btn-secondary">Continue Shopping</a>
     </div>
-
     <script type="module" src="app.js"></script>
 </body>
 </html>
