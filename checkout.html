@@ -3,180 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Checkout | PlayWithEase</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;600;800&family=Orbitron:wght@900&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>Checkout</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'], tech: ['Rajdhani', 'sans-serif'], display: ['Orbitron', 'sans-serif'] },
-                    colors: { bg: { main: '#080808', card: '#101010' }, brand: { primary: '#2563eb', secondary: '#ff00aa', green: '#10b981' } }
-                }
-            }
+            theme: { extend: { colors: { brand: { 500: '#8b5cf6' } } } }
         }
     </script>
-    <style>
-        .glass { background: rgba(16, 16, 16, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
-        .success-checkmark { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: dash 2s ease-in-out forwards; }
-        @keyframes dash { to { stroke-dashoffset: 0; } }
-    </style>
+    <style>body { background: #020617; color: white; font-family: 'Outfit'; }</style>
 </head>
+<body class="p-4 md:p-10">
 
-<body class="bg-bg-main text-white antialiased min-h-screen" x-data="checkoutPageLogic()">
-
-    <nav class="fixed top-0 w-full z-50 glass h-20 flex items-center">
-        <div class="max-w-[1200px] mx-auto px-6 w-full flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <i data-lucide="lock" class="text-brand-green"></i>
-                <span class="font-display font-bold text-xl tracking-wider">SECURE<span class="text-white">CHECKOUT</span></span>
-            </div>
-            <a href="cart.html" class="text-xs font-bold text-gray-500 hover:text-white">CANCEL</a>
-        </div>
-    </nav>
-
-    <main class="max-w-[1000px] mx-auto px-6 pt-32 pb-20 grid grid-cols-1 md:grid-cols-2 gap-12">
-
-        <div class="space-y-8">
-            
-            <div>
-                <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><span class="w-6 h-6 bg-white text-black rounded-full flex items-center justify-center text-xs">1</span> BILLING DETAILS</h3>
-                <div class="space-y-4">
-                    <input type="email" placeholder="Email Address (For Key Delivery)" class="w-full bg-bg-card border border-white/10 rounded-lg p-3 text-sm focus:border-brand-primary outline-none">
-                    <input type="text" placeholder="Full Name" class="w-full bg-bg-card border border-white/10 rounded-lg p-3 text-sm focus:border-brand-primary outline-none">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="space-y-6">
+            <h2 class="text-2xl font-bold mb-4">Billing Details</h2>
+            <form id="checkout-form" class="space-y-4">
+                <input type="text" id="name" placeholder="Full Name" class="w-full bg-white/5 border border-white/10 p-3 rounded-lg text-white" required>
+                <input type="email" id="email" placeholder="Email Address" class="w-full bg-white/5 border border-white/10 p-3 rounded-lg text-white" required>
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" placeholder="Card Number (Fake)" class="bg-white/5 border border-white/10 p-3 rounded-lg text-white">
+                    <input type="text" placeholder="MM/YY" class="bg-white/5 border border-white/10 p-3 rounded-lg text-white">
                 </div>
-            </div>
-
-            <div>
-                <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><span class="w-6 h-6 bg-white text-black rounded-full flex items-center justify-center text-xs">2</span> PAYMENT METHOD</h3>
-                
-                <div class="flex gap-4 mb-4">
-                    <button @click="method = 'UPI'" :class="method === 'UPI' ? 'border-brand-primary bg-brand-primary/10' : 'border-white/10 bg-bg-card'" class="flex-1 border rounded-xl p-4 flex flex-col items-center gap-2 transition">
-                        <i data-lucide="smartphone" :class="method === 'UPI' ? 'text-brand-primary' : 'text-gray-500'"></i>
-                        <span class="text-xs font-bold">UPI / QR</span>
-                    </button>
-                    <button @click="method = 'CARD'" :class="method === 'CARD' ? 'border-brand-primary bg-brand-primary/10' : 'border-white/10 bg-bg-card'" class="flex-1 border rounded-xl p-4 flex flex-col items-center gap-2 transition">
-                        <i data-lucide="credit-card" :class="method === 'CARD' ? 'text-brand-primary' : 'text-gray-500'"></i>
-                        <span class="text-xs font-bold">CARD</span>
-                    </button>
-                </div>
-
-                <div x-show="method === 'UPI'" class="bg-white p-4 rounded-xl flex items-center gap-4">
-                    <img :src="qrCode" class="w-24 h-24 mix-blend-multiply">
-                    <div class="text-black">
-                        <p class="text-xs font-bold uppercase tracking-widest text-gray-500">Scan to Pay</p>
-                        <p class="font-bold text-xl" x-text="formatPrice(total)"></p>
-                        <p class="text-[10px] text-gray-500 mt-1">GPay • PhonePe • Paytm</p>
-                    </div>
-                </div>
-
-                <div x-show="method === 'CARD'" class="space-y-3 p-4 bg-bg-card border border-white/10 rounded-xl">
-                    <input type="text" placeholder="Card Number" class="w-full bg-black border border-white/10 rounded p-3 text-sm">
-                    <div class="flex gap-3">
-                        <input type="text" placeholder="MM/YY" class="w-1/2 bg-black border border-white/10 rounded p-3 text-sm">
-                        <input type="text" placeholder="CVC" class="w-1/2 bg-black border border-white/10 rounded p-3 text-sm">
-                    </div>
-                </div>
-            </div>
-
+                <button type="submit" class="w-full bg-brand-500 hover:bg-brand-600 py-4 rounded-xl font-bold text-lg shadow-lg shadow-brand-500/20 mt-4">Pay Now <span id="pay-amt"></span></button>
+            </form>
         </div>
 
-        <div>
-            <div class="bg-bg-card border border-white/10 rounded-2xl p-6 sticky top-24">
-                <h3 class="font-bold mb-4">ORDER SUMMARY</h3>
-                
-                <div class="max-h-60 overflow-y-auto mb-4 space-y-2 pr-2 custom-scrollbar">
-                    <template x-for="item in items">
-                        <div class="flex justify-between items-center text-sm">
-                            <div class="flex items-center gap-3">
-                                <img :src="item.image" class="w-10 h-14 object-cover rounded">
-                                <div>
-                                    <p class="font-bold text-white truncate w-32" x-text="item.title"></p>
-                                    <p class="text-xs text-gray-500">x<span x-text="item.qty || 1"></span></p>
-                                </div>
-                            </div>
-                            <span class="text-gray-300" x-text="formatPrice(item.price * (item.qty || 1))"></span>
-                        </div>
-                    </template>
-                </div>
-
-                <div class="border-t border-white/10 pt-4 flex justify-between items-center mb-6">
-                    <span class="text-gray-400">Total to Pay</span>
-                    <span class="text-2xl font-display font-bold text-brand-primary" x-text="formatPrice(total)"></span>
-                </div>
-
-                <button @click="pay" class="w-full py-4 bg-brand-green hover:bg-green-500 text-black font-bold font-display uppercase tracking-widest rounded-xl transition shadow-[0_0_20px_rgba(16,185,129,0.3)] flex items-center justify-center gap-2">
-                    <i data-lucide="lock" class="w-4 h-4"></i> Pay Now
-                </button>
-            </div>
-        </div>
-
-    </main>
-
-    <div x-show="success" style="display: none;" class="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center">
-        <div class="text-center">
-            <svg class="w-24 h-24 text-green-500 mx-auto mb-6 success-checkmark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-            <h1 class="text-4xl font-display font-bold mb-2">PAYMENT SUCCESSFUL</h1>
-            <p class="text-gray-500 mb-8">Redirecting to your library...</p>
-            <div class="w-48 h-1 bg-gray-800 rounded-full mx-auto overflow-hidden">
-                <div class="w-full h-full bg-green-500 animate-[progress_2s_ease-in-out]"></div>
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-6 h-fit">
+            <h3 class="font-bold text-xl mb-4">Order Summary</h3>
+            <div id="order-items" class="space-y-3 mb-4"></div>
+            <div class="border-t border-white/10 pt-4 flex justify-between font-bold text-xl">
+                <span>Total</span>
+                <span id="total-price">$0.00</span>
             </div>
         </div>
     </div>
 
-    <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('checkoutPageLogic', () => ({
-                method: 'UPI',
-                success: false,
-                items: [],
-                currency: localStorage.getItem('pwe_currency') || 'INR',
+    <div id="success-modal" class="fixed inset-0 bg-black/90 flex items-center justify-center z-50 hidden">
+        <div class="bg-[#0f172a] border border-white/10 p-8 rounded-2xl text-center max-w-sm">
+            <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4 text-green-500"><i data-lucide="check" class="w-8 h-8"></i></div>
+            <h2 class="text-2xl font-bold text-white mb-2">Order Confirmed!</h2>
+            <p class="text-gray-400 mb-6 text-sm">Your Order ID: <span id="order-id" class="font-mono text-white"></span></p>
+            <a href="index.html" class="block w-full py-3 bg-white text-black font-bold rounded-lg">Return to Store</a>
+        </div>
+    </div>
 
-                init() {
-                    // Load items
-                    this.items = JSON.parse(localStorage.getItem('pwe_cart_items') || '[]').map(i => ({ ...i, qty: i.qty || 1 }));
-                    
-                    if(this.items.length === 0) window.location.href = 'cart.html';
-                    
-                    lucide.createIcons();
-                },
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-                get total() {
-                    return this.items.reduce((sum, item) => sum + (item.price * (item.qty || 1)), 0);
-                },
+        const firebaseConfig = { apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs", projectId: "playwithease" };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-                get qrCode() {
-                    // Generate Real QR
-                    const amount = this.currency === 'USD' ? this.total * 85 : this.total;
-                    return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=shayanff98@okhdfcbank&pn=PlayWithEase&am=${amount}`;
-                },
+        const cart = JSON.parse(localStorage.getItem('pwe_cart')) || [];
+        const total = cart.reduce((a,b) => a + (b.price * b.qty), 0);
 
-                formatPrice(p) { 
-                    return this.currency === 'USD' ? '$'+p.toFixed(2) : '₹'+Math.round(p * 85); 
-                },
+        // Render
+        document.getElementById('order-items').innerHTML = cart.map(i => `
+            <div class="flex justify-between text-sm">
+                <span class="text-gray-400">${i.qty}x ${i.name}</span>
+                <span>$${(i.price * i.qty).toFixed(2)}</span>
+            </div>
+        `).join('');
+        document.getElementById('total-price').innerText = `$${total.toFixed(2)}`;
+        document.getElementById('pay-amt').innerText = `$${total.toFixed(2)}`;
 
-                pay() {
-                    this.success = true;
-                    
-                    // Logic to Save Order & Clear Cart
-                    setTimeout(() => {
-                        const oldOrders = JSON.parse(localStorage.getItem('pwe_orders') || '[]');
-                        const newOrders = [...oldOrders, ...this.items];
-                        localStorage.setItem('pwe_orders', JSON.stringify(newOrders));
-                        
-                        localStorage.removeItem('pwe_cart_items');
-                        localStorage.setItem('pwe_cart_count', 0);
-                        
-                        window.location.href = 'profile.html';
-                    }, 3000);
-                }
-            }))
+        // Handle Submit
+        document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if(cart.length === 0) return alert('Cart is empty');
+
+            const order = {
+                customer: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                items: cart,
+                total: total,
+                status: 'pending',
+                createdAt: serverTimestamp()
+            };
+
+            try {
+                const docRef = await addDoc(collection(db, 'orders'), order);
+                localStorage.removeItem('pwe_cart');
+                document.getElementById('order-id').innerText = docRef.id.slice(0, 8);
+                document.getElementById('success-modal').classList.remove('hidden');
+                lucide.createIcons();
+            } catch (err) {
+                console.error(err);
+                alert('Order failed. Try again.');
+            }
         });
+        lucide.createIcons();
     </script>
-    <style> @keyframes progress { 0% { width: 0%; } 100% { width: 100%; } } </style>
 </body>
 </html>
