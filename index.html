@@ -1,155 +1,91 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayWithEase | Premium Store</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
-                    colors: { brand: { 500: '#8b5cf6', 600: '#7c3aed' }, dark: { 900: '#020617', 800: '#0f172a' } }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { background: #020617; color: white; }
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); }
-        .neon-glow:hover { box-shadow: 0 0 20px rgba(139, 92, 246, 0.4); border-color: rgba(139, 92, 246, 0.5); }
-    </style>
+    <title>PlayWithEase | Digital Game Store</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="pb-20 md:pb-0">
+<body>
 
-    <nav class="fixed top-0 w-full z-50 glass border-b border-white/10">
-        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-            <a href="index.html" class="flex items-center gap-2 font-bold text-xl">
-                <i data-lucide="gamepad-2" class="text-brand-500"></i> PlayWithEase
-            </a>
-            <div class="hidden md:flex gap-6 text-sm text-gray-400">
-                <a href="index.html" class="text-white">Store</a>
-                <a href="#" class="hover:text-white">Library</a>
-                <a href="#" class="hover:text-white">Support</a>
-            </div>
-            <div class="flex items-center gap-4">
-                <button onclick="toggleCart()" class="relative p-2 text-gray-400 hover:text-white">
-                    <i data-lucide="shopping-bag" class="w-6 h-6"></i>
-                    <span id="cart-badge" class="absolute top-0 right-0 bg-brand-600 text-[10px] w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
-                </button>
-                <div id="auth-links">
-                    <a href="login.html" class="px-4 py-2 bg-brand-600 hover:bg-brand-500 rounded-lg font-bold text-sm">Login</a>
+    <nav>
+        <div class="container nav-content">
+            <a href="index.html" class="logo">PlayWithEase</a>
+            <div class="nav-links">
+                <select onchange="setTheme(this.value)" style="background:var(--bg); color:var(--text); padding:5px;">
+                    <option value="neon">Neon</option>
+                    <option value="minimal">Minimal</option>
+                    <option value="cyber">Cyber</option>
+                    <option value="amoled">Amoled</option>
+                </select>
+                <a href="index.html">Store</a>
+                <a href="profile.html">Profile</a>
+                <div class="cart-icon" onclick="toggleCart()">
+                    🛒 <span class="cart-badge">0</span>
                 </div>
             </div>
         </div>
     </nav>
 
-    <header class="pt-24 pb-12 px-4 text-center">
-        <h1 class="text-4xl md:text-6xl font-extrabold mb-4"><span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-cyan-400">Level Up</span> Your Game</h1>
-        <p class="text-gray-400 max-w-xl mx-auto mb-8">Premium digital keys, subscriptions, and gaming assets. Instant delivery.</p>
-        
-        <div class="max-w-md mx-auto relative group">
-            <input type="text" id="search-input" placeholder="Search for games..." class="w-full bg-white/5 border border-white/10 rounded-full py-3 pl-12 pr-4 focus:border-brand-500 focus:outline-none focus:bg-white/10 transition-all">
-            <i data-lucide="search" class="absolute left-4 top-3.5 text-gray-500 w-5 h-5"></i>
-            <div id="ai-suggestions" class="absolute top-14 left-0 w-full bg-dark-800 border border-white/10 rounded-xl p-2 hidden z-40"></div>
-        </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-4 pb-20">
-        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2"><i data-lucide="zap" class="text-yellow-400 w-5 h-5"></i> Trending Now</h2>
-        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="container premiere-section">
+        <h2 class="section-title">🔥 World Premiere</h2>
+        <div class="trailer-grid">
+            <div class="trailer-card">
+                <img src="https://i.ytimg.com/vi/QdBZY2fkU-0/maxresdefault.jpg" class="trailer-bg">
+                <div class="trailer-content">
+                    <h3>GTA VI</h3>
+                    <div style="margin-top:10px;">
+                        <button class="btn btn-primary" onclick="openTrailer('QdBZY2fkU-0')">▶ Watch Trailer</button>
+                        <button class="btn btn-secondary" onclick="addToCart('gta6')">Pre-order</button>
+                    </div>
+                </div>
             </div>
-    </main>
-
-    <div id="cart-drawer" class="fixed inset-0 z-[60] pointer-events-none">
-        <div id="cart-backdrop" onclick="toggleCart()" class="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 transition-opacity hidden pointer-events-auto"></div>
-        <div id="cart-panel" class="absolute top-0 right-0 w-full max-w-md h-full bg-dark-800 border-l border-white/10 shadow-2xl transform translate-x-full transition-transform flex flex-col pointer-events-auto">
-            <div class="p-5 border-b border-white/10 flex justify-between items-center bg-dark-900/95">
-                <h2 class="font-bold text-lg">Your Cart</h2>
-                <button onclick="toggleCart()"><i data-lucide="x" class="text-gray-400 hover:text-white"></i></button>
-            </div>
-            <div id="cart-items" class="flex-1 overflow-y-auto p-5 space-y-4"></div>
-            <div class="p-5 border-t border-white/10 bg-dark-900">
-                <div class="flex justify-between mb-4 text-xl font-bold"><span>Total</span><span id="cart-total">₹0</span></div>
-                <a href="checkout.html" class="block w-full py-3 bg-brand-600 text-center font-bold rounded-xl hover:bg-brand-500">Checkout</a>
+            <div class="trailer-card">
+                <img src="https://i.ytimg.com/vi/XG1Ll2CVhug/maxresdefault.jpg" class="trailer-bg">
+                <div class="trailer-content">
+                    <h3>Forza Horizon 6</h3>
+                    <div style="margin-top:10px;">
+                        <button class="btn btn-primary" onclick="openTrailer('XG1Ll2CVhug')">▶ Watch Trailer</button>
+                        <button class="btn btn-secondary" onclick="addToCart('forza6')">Pre-order</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <button onclick="toggleChat()" class="fixed bottom-24 md:bottom-8 right-6 w-14 h-14 bg-gradient-to-tr from-brand-600 to-cyan-500 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform z-40">
-        <i data-lucide="sparkles" class="w-7 h-7 text-white"></i>
-    </button>
+    <div class="container" style="padding-top: 20px;">
+        <h2 class="section-title">Catalog</h2>
+        <div class="filters">
+            <button class="filter-btn active">All</button>
+            <button class="filter-btn">Action</button>
+            <button class="filter-btn">Sports</button>
+            <button class="filter-btn">OTT</button>
+        </div>
+        <div id="productGrid" class="product-grid">
+            </div>
+    </div>
 
-    <div id="ai-chat" class="fixed bottom-24 right-6 w-80 h-96 glass rounded-2xl hidden flex-col z-40 border border-brand-500/30">
-        <div class="p-4 bg-brand-600/20 border-b border-white/10 flex justify-between">
-            <span class="font-bold flex gap-2"><i data-lucide="bot"></i> AI Assistant</span>
-            <button onclick="toggleChat()"><i data-lucide="x" class="w-4 h-4"></i></button>
+    <div id="cartDrawer" class="cart-drawer">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button onclick="toggleCart()" class="btn-secondary">X</button>
         </div>
-        <div class="flex-1 p-4 overflow-y-auto text-sm text-gray-300 space-y-2">
-            <div class="bg-white/10 p-2 rounded-lg rounded-tl-none self-start">Hi! Looking for FPS games or RPGs today?</div>
-        </div>
-        <div class="p-3">
-            <input type="text" placeholder="Ask anything..." class="w-full bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-brand-500 outline-none">
+        <div id="cartItemsContainer" class="cart-items">
+            </div>
+        <div class="cart-footer">
+            <h3>Total: <span id="drawerTotal">₹0</span></h3>
+            <a href="checkout.html" class="btn btn-primary" style="display:block; text-align:center; margin-top:10px;">Checkout Now</a>
+            <a href="cart.html" style="display:block; text-align:center; margin-top:10px; font-size:0.9rem;">View Full Cart</a>
         </div>
     </div>
 
-    <div class="md:hidden fixed bottom-0 w-full bg-dark-900 border-t border-white/10 flex justify-around p-3 z-50">
-        <a href="index.html" class="flex flex-col items-center text-brand-500"><i data-lucide="home" class="w-5 h-5"></i><span class="text-[10px]">Home</span></a>
-        <button onclick="toggleCart()" class="flex flex-col items-center text-gray-400"><i data-lucide="shopping-bag" class="w-5 h-5"></i><span class="text-[10px]">Cart</span></button>
-        <a href="profile.html" class="flex flex-col items-center text-gray-400"><i data-lucide="user" class="w-5 h-5"></i><span class="text-[10px]">Profile</span></a>
+    <div id="videoModal" class="video-modal">
+        <div class="video-container">
+            <span class="close-modal" onclick="closeTrailer()">&times;</span>
+            <iframe id="videoFrame" width="100%" height="100%" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
     </div>
 
     <script type="module" src="app.js"></script>
-    <script>
-        // Shared Logic
-        const products = [
-            { id: 1, name: "Cyberpunk 2077", price: 2999, img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&q=80", cat: "RPG" },
-            { id: 2, name: "Valorant Points", price: 799, img: "https://images.unsplash.com/photo-1542751110-97427bbecf20?w=500&q=80", cat: "Credits" },
-            { id: 3, name: "Elden Ring", price: 3499, img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=500&q=80", cat: "RPG" },
-            { id: 4, name: "Modern Warfare 3", price: 4999, img: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=500&q=80", cat: "FPS" }
-        ];
-
-        // Global function to be called from modules
-        window.renderProducts = () => {
-            const grid = document.getElementById('product-grid');
-            if(!grid) return;
-            grid.innerHTML = products.map(p => `
-                <div class="glass rounded-xl overflow-hidden group hover:border-brand-500/50 transition-all neon-glow">
-                    <div class="h-40 bg-gray-800 relative">
-                        <img src="${p.img}" class="w-full h-full object-cover">
-                        <button onclick="window.addToCart(${p.id})" class="absolute bottom-2 right-2 bg-brand-600 p-2 rounded-lg shadow-lg hover:scale-110 transition-transform">
-                            <i data-lucide="plus" class="w-4 h-4 text-white"></i>
-                        </button>
-                    </div>
-                    <div class="p-4">
-                        <span class="text-xs text-brand-400 font-bold uppercase">${p.cat}</span>
-                        <h3 class="font-bold text-lg leading-tight mb-2">${p.name}</h3>
-                        <p class="text-xl font-bold">₹${p.price}</p>
-                    </div>
-                </div>
-            `).join('');
-            lucide.createIcons();
-        };
-
-        window.toggleCart = () => {
-            const panel = document.getElementById('cart-panel');
-            const back = document.getElementById('cart-backdrop');
-            panel.classList.toggle('translate-x-full');
-            back.classList.toggle('hidden');
-            setTimeout(() => back.classList.toggle('opacity-0'), 10);
-            window.renderCartUI();
-        };
-
-        window.toggleChat = () => {
-            document.getElementById('ai-chat').classList.toggle('hidden');
-            document.getElementById('ai-chat').classList.toggle('flex');
-        }
-
-        renderProducts();
-    </script>
 </body>
 </html>
