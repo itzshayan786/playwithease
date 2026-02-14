@@ -1,100 +1,281 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Checkout | PlayWithEase</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         tailwind.config = {
-            theme: { extend: { colors: { brand: { 500: '#8b5cf6' } } } }
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    colors: {
+                        brand: { 500: '#8b5cf6', 600: '#7c3aed' },
+                        dark: { 900: '#020617', 800: '#0f172a' }
+                    },
+                    animation: { 'fade-in': 'fadeIn 0.5s ease-out forwards' },
+                    keyframes: { fadeIn: { '0%': { opacity: '0' } , '100%': { opacity: '1' } } }
+                }
+            }
         }
     </script>
-    <style>body { background: #020617; color: white; font-family: 'Outfit'; }</style>
+    <style>
+        body { background: #020617; color: white; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .input-glass { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.2s; }
+        .input-glass:focus { border-color: #8b5cf6; outline: none; background: rgba(15, 23, 42, 0.9); }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+    </style>
 </head>
-<body class="p-4 md:p-10">
+<body class="pb-24 md:pb-10 min-h-screen">
 
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="space-y-6">
-            <h2 class="text-2xl font-bold mb-4">Billing Details</h2>
-            <form id="checkout-form" class="space-y-4">
-                <input type="text" id="name" placeholder="Full Name" class="w-full bg-white/5 border border-white/10 p-3 rounded-lg text-white" required>
-                <input type="email" id="email" placeholder="Email Address" class="w-full bg-white/5 border border-white/10 p-3 rounded-lg text-white" required>
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="text" placeholder="Card Number (Fake)" class="bg-white/5 border border-white/10 p-3 rounded-lg text-white">
-                    <input type="text" placeholder="MM/YY" class="bg-white/5 border border-white/10 p-3 rounded-lg text-white">
-                </div>
-                <button type="submit" class="w-full bg-brand-500 hover:bg-brand-600 py-4 rounded-xl font-bold text-lg shadow-lg shadow-brand-500/20 mt-4">Pay Now <span id="pay-amt"></span></button>
-            </form>
-        </div>
-
-        <div class="bg-white/5 border border-white/10 rounded-2xl p-6 h-fit">
-            <h3 class="font-bold text-xl mb-4">Order Summary</h3>
-            <div id="order-items" class="space-y-3 mb-4"></div>
-            <div class="border-t border-white/10 pt-4 flex justify-between font-bold text-xl">
-                <span>Total</span>
-                <span id="total-price">$0.00</span>
+    <nav class="sticky top-0 z-50 glass h-16 flex items-center mb-8 bg-[#020617]/80">
+        <div class="max-w-7xl mx-auto px-4 w-full flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 font-bold text-xl">
+                <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center"><i data-lucide="chevron-left" class="w-5 h-5"></i></div>
+                <span class="hidden md:inline">Back to Store</span>
+                <span class="md:hidden">Checkout</span>
+            </a>
+            <div class="flex items-center gap-2 text-sm text-gray-400">
+                <i data-lucide="shield-check" class="w-4 h-4 text-green-500"></i> Secure Payment
             </div>
         </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8 animate-fade-in">
+        
+        <div class="lg:col-span-7 space-y-6">
+            
+            <section class="glass rounded-2xl p-6">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2"><i data-lucide="user" class="text-brand-500"></i> Contact Info</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase font-bold ml-1">Full Name</label>
+                        <input type="text" id="name" class="w-full mt-1 p-3 rounded-xl input-glass" placeholder="John Doe" required>
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase font-bold ml-1">Email Address</label>
+                        <input type="email" id="email" class="w-full mt-1 p-3 rounded-xl input-glass" placeholder="email@example.com" required>
+                    </div>
+                </div>
+            </section>
+
+            <section class="glass rounded-2xl p-6">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2"><i data-lucide="credit-card" class="text-brand-500"></i> Payment Method</h2>
+                
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <button type="button" class="p-4 rounded-xl border border-brand-500 bg-brand-500/10 flex items-center justify-center gap-2 transition-all">
+                        <i data-lucide="credit-card" class="w-5 h-5"></i> Card
+                    </button>
+                    <button type="button" class="p-4 rounded-xl border border-white/10 bg-white/5 opacity-60 hover:opacity-100 flex items-center justify-center gap-2 transition-all">
+                        <i data-lucide="wallet" class="w-5 h-5"></i> PayPal
+                    </button>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase font-bold ml-1">Card Number</label>
+                        <div class="relative">
+                            <i data-lucide="lock" class="absolute left-3 top-3.5 w-4 h-4 text-gray-500"></i>
+                            <input type="text" class="w-full pl-10 p-3 rounded-xl input-glass" placeholder="0000 0000 0000 0000">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs text-gray-400 uppercase font-bold ml-1">Expiry</label>
+                            <input type="text" class="w-full mt-1 p-3 rounded-xl input-glass" placeholder="MM/YY">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 uppercase font-bold ml-1">CVC</label>
+                            <input type="text" class="w-full mt-1 p-3 rounded-xl input-glass" placeholder="123">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="lg:col-span-5">
+            <div class="glass rounded-2xl p-6 sticky top-24">
+                <h2 class="text-xl font-bold mb-6">Order Summary</h2>
+                
+                <div id="cart-items-container" class="space-y-4 max-h-[400px] overflow-y-auto scrollbar-hide mb-6">
+                    <div class="text-center text-gray-500 py-4">Loading cart...</div>
+                </div>
+
+                <div class="space-y-3 pt-4 border-t border-white/10 text-sm text-gray-400">
+                    <div class="flex justify-between">
+                        <span>Subtotal</span>
+                        <span id="subtotal-price" class="text-white font-mono">$0.00</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Tax (Estimated)</span>
+                        <span class="text-white font-mono">$0.00</span>
+                    </div>
+                    <div class="flex justify-between items-center pt-4 border-t border-white/10 text-lg font-bold text-white">
+                        <span>Total</span>
+                        <span id="total-price" class="text-brand-400 font-mono">$0.00</span>
+                    </div>
+                </div>
+
+                <button id="checkout-btn" class="hidden lg:flex w-full mt-6 py-4 bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-brand-500/20 items-center justify-center gap-2 transition-all active:scale-[0.98] disabled:opacity-50">
+                    <span>Confirm Order</span>
+                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <div class="fixed bottom-0 left-0 w-full p-4 glass border-t border-white/10 lg:hidden z-40 bg-[#020617]/90 backdrop-blur-xl">
+        <div class="flex items-center justify-between mb-2">
+            <span class="text-sm text-gray-400">Total</span>
+            <span id="mobile-total" class="font-bold text-xl text-white font-mono">$0.00</span>
+        </div>
+        <button id="mobile-checkout-btn" class="w-full py-3 bg-brand-600 text-white font-bold rounded-xl shadow-lg active:scale-95 transition-transform">
+            Pay Now
+        </button>
     </div>
 
-    <div id="success-modal" class="fixed inset-0 bg-black/90 flex items-center justify-center z-50 hidden">
-        <div class="bg-[#0f172a] border border-white/10 p-8 rounded-2xl text-center max-w-sm">
-            <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4 text-green-500"><i data-lucide="check" class="w-8 h-8"></i></div>
-            <h2 class="text-2xl font-bold text-white mb-2">Order Confirmed!</h2>
-            <p class="text-gray-400 mb-6 text-sm">Your Order ID: <span id="order-id" class="font-mono text-white"></span></p>
-            <a href="index.html" class="block w-full py-3 bg-white text-black font-bold rounded-lg">Return to Store</a>
+    <div id="success-overlay" class="fixed inset-0 z-50 bg-[#020617] flex flex-col items-center justify-center hidden">
+        <div class="w-24 h-24 rounded-full bg-green-500/20 flex items-center justify-center mb-6 animate-bounce">
+            <i data-lucide="check" class="w-12 h-12 text-green-500"></i>
         </div>
+        <h2 class="text-3xl font-bold text-white mb-2">Order Confirmed!</h2>
+        <p class="text-gray-400 mb-8">Order ID: <span id="success-order-id" class="text-brand-400 font-mono">#---</span></p>
+        <a href="index.html" class="px-8 py-3 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-colors">
+            Return to Store
+        </a>
     </div>
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
         import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-        const firebaseConfig = { apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs", projectId: "playwithease" };
+        const firebaseConfig = {
+            apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+            authDomain: "playwithease.firebaseapp.com",
+            projectId: "playwithease",
+            storageBucket: "playwithease.appspot.com",
+            messagingSenderId: "189729941006",
+            appId: "1:189729941006:web:362653774b92416c357e5f",
+            measurementId: "G-1C3B31KQ7C"
+        };
+
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const cart = JSON.parse(localStorage.getItem('pwe_cart')) || [];
-        const total = cart.reduce((a,b) => a + (b.price * b.qty), 0);
-
-        // Render
-        document.getElementById('order-items').innerHTML = cart.map(i => `
-            <div class="flex justify-between text-sm">
-                <span class="text-gray-400">${i.qty}x ${i.name}</span>
-                <span>$${(i.price * i.qty).toFixed(2)}</span>
-            </div>
-        `).join('');
-        document.getElementById('total-price').innerText = `$${total.toFixed(2)}`;
-        document.getElementById('pay-amt').innerText = `$${total.toFixed(2)}`;
-
-        // Handle Submit
-        document.getElementById('checkout-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if(cart.length === 0) return alert('Cart is empty');
-
-            const order = {
-                customer: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                items: cart,
-                total: total,
-                status: 'pending',
-                createdAt: serverTimestamp()
-            };
-
-            try {
-                const docRef = await addDoc(collection(db, 'orders'), order);
-                localStorage.removeItem('pwe_cart');
-                document.getElementById('order-id').innerText = docRef.id.slice(0, 8);
-                document.getElementById('success-modal').classList.remove('hidden');
-                lucide.createIcons();
-            } catch (err) {
-                console.error(err);
-                alert('Order failed. Try again.');
+        // Load Cart
+        let cart = JSON.parse(localStorage.getItem('pwe_cart')) || [];
+        
+        // DOM Elements
+        const container = document.getElementById('cart-items-container');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const btnDesktop = document.getElementById('checkout-btn');
+        const btnMobile = document.getElementById('mobile-checkout-btn');
+        
+        // 1. Auth Listener (Auto-fill)
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                emailInput.value = user.email;
+                nameInput.value = user.displayName || '';
+                nameInput.readOnly = false; // Allow edit
+                emailInput.readOnly = true;
             }
         });
+
+        // 2. Render Cart
+        const renderCart = () => {
+            if (cart.length === 0) {
+                container.innerHTML = '<div class="text-center text-gray-500 py-10">Your cart is empty. <br><a href="index.html" class="text-brand-400 underline">Go Shopping</a></div>';
+                updateTotals(0);
+                btnDesktop.disabled = true;
+                btnMobile.disabled = true;
+                return;
+            }
+
+            let total = 0;
+            container.innerHTML = cart.map(item => {
+                total += item.price * item.qty;
+                return `
+                    <div class="flex gap-4 items-center bg-white/5 p-3 rounded-xl border border-white/5">
+                        <img src="${item.image}" class="w-14 h-14 object-cover rounded-lg bg-gray-800">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-bold text-sm truncate text-gray-200">${item.name}</h4>
+                            <p class="text-xs text-gray-500">Qty: ${item.qty}</p>
+                        </div>
+                        <span class="font-bold text-sm text-brand-400">$${(item.price * item.qty).toFixed(2)}</span>
+                    </div>
+                `;
+            }).join('');
+            
+            updateTotals(total);
+        };
+
+        const updateTotals = (total) => {
+            const fmt = `$${total.toFixed(2)}`;
+            document.getElementById('subtotal-price').textContent = fmt;
+            document.getElementById('total-price').textContent = fmt;
+            document.getElementById('mobile-total').textContent = fmt;
+        };
+
+        // 3. Checkout Logic
+        const handleCheckout = async () => {
+            if (cart.length === 0) return;
+            if (!nameInput.value || !emailInput.value) {
+                alert("Please fill in contact details.");
+                nameInput.focus();
+                return;
+            }
+
+            // Set Loading
+            const originalText = btnDesktop.innerHTML;
+            btnDesktop.innerHTML = 'Processing...';
+            btnDesktop.disabled = true;
+            btnMobile.innerHTML = 'Processing...';
+            btnMobile.disabled = true;
+
+            const total = cart.reduce((a,b) => a + (b.price * b.qty), 0);
+
+            try {
+                // Save to Firestore
+                const orderData = {
+                    items: cart,
+                    total: total,
+                    customerName: nameInput.value,
+                    customerEmail: emailInput.value,
+                    userId: auth.currentUser ? auth.currentUser.uid : 'guest',
+                    status: 'paid', // Mock payment success
+                    createdAt: serverTimestamp()
+                };
+
+                const docRef = await addDoc(collection(db, 'orders'), orderData);
+                
+                // Success State
+                localStorage.removeItem('pwe_cart'); // Clear Cart
+                document.getElementById('success-order-id').textContent = '#' + docRef.id.slice(0,8).toUpperCase();
+                document.getElementById('success-overlay').classList.remove('hidden');
+
+            } catch (error) {
+                console.error(error);
+                alert("Order failed. Please try again.");
+                btnDesktop.innerHTML = originalText;
+                btnDesktop.disabled = false;
+                btnMobile.innerHTML = 'Pay Now';
+                btnMobile.disabled = false;
+            }
+        };
+
+        btnDesktop.addEventListener('click', handleCheckout);
+        btnMobile.addEventListener('click', handleCheckout);
+
+        // Init
+        renderCart();
         lucide.createIcons();
     </script>
 </body>
