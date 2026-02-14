@@ -13,25 +13,30 @@
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container auth-container">
         <div class="auth-box">
-            <h2>Welcome Back</h2>
-            <p style="color:var(--text-muted); margin-bottom:20px;">Login to access your library</p>
+            <h2 style="margin-bottom: 10px;">Welcome Back</h2>
+            <p style="color: var(--text-muted); margin-bottom: 30px;">Sign in to access your digital library.</p>
             
-            <button onclick="handleLogin()" class="btn btn-primary" style="width:100%; margin-bottom:15px; background:white; color:#333;">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" style="vertical-align:middle; margin-right:8px;">
+            <button onclick="handleLogin()" class="btn btn-primary" style="width: 100%; background: white; color: black; margin-bottom: 20px;">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" style="margin-right:10px;">
                 Sign in with Google
             </button>
             
-            <div style="margin: 20px 0; border-top:1px solid var(--border)"></div>
-            
-            <div class="form-group">
-                <input type="email" placeholder="Email Address">
+            <div style="position: relative; margin: 20px 0;">
+                <hr style="border: 0; border-top: 1px solid var(--border);">
+                <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--surface); padding: 0 10px; font-size: 0.8rem; color: var(--text-muted);">OR</span>
             </div>
-            <div class="form-group">
-                <input type="password" placeholder="Password">
+
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" placeholder="name@example.com">
             </div>
-            <button class="btn btn-secondary" style="width:100%">Login with Email</button>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" placeholder="••••••••">
+            </div>
+            <button class="btn btn-secondary" style="width: 100%;">Sign In</button>
         </div>
     </div>
 
