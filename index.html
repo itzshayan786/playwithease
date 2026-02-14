@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayWithEase | Ultimate Store</title>
+    <title>PlayWithEase | Digital Store</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,81 +11,85 @@
     <nav>
         <div class="container nav-content">
             <a href="index.html" class="logo">PlayWithEase</a>
-            <div class="nav-links">
-                <a href="index.html">Store</a>
-                <a id="navLoginBtn" href="login.html" class="btn btn-secondary" style="padding: 5px 15px;">Login</a>
-                <div class="cart-icon" onclick="toggleCart()">
+            <div class="nav-actions">
+                <select onchange="setTheme(this.value)" style="background:transparent; color:var(--text-muted); border:none; font-size:0.9rem;">
+                    <option value="default">PlayStation</option>
+                    <option value="minimal">Minimal</option>
+                    <option value="midnight">Midnight</option>
+                    <option value="amoled">Amoled</option>
+                </select>
+                <a id="navAuthBtn" href="login.html" class="btn btn-secondary" style="padding: 8px 16px;">Login</a>
+                <button class="icon-btn" onclick="toggleCart()">
                     🛒 <span class="cart-badge">0</span>
-                </div>
+                </button>
             </div>
         </div>
     </nav>
 
+    <div class="hero">
+        <img src="https://gmedia.playstation.com/is/image/SIEPDC/grand-theft-auto-6-hero-banner-desktop-01-en-05dec23?$4000px$" class="hero-bg">
+        <div class="container" style="position:relative; z-index:2; width:100%;">
+            <div class="hero-content">
+                <div class="hero-badges">
+                    <span class="tag">Coming 2025</span>
+                    <span class="tag">Open World</span>
+                </div>
+                <h1>Grand Theft Auto VI</h1>
+                <p>Welcome to Leonida. Grand Theft Auto VI heads to the state of Leonida, home to the neon-soaked streets of Vice City and beyond.</p>
+                <div style="display:flex; gap:16px;">
+                    <button onclick="openTrailer('QdBZY2fkU-0')" class="btn btn-primary">▶ Watch Trailer</button>
+                    <button onclick="addToCart('gta6')" class="btn btn-secondary">Pre-Order ₹5,499</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         
-        <div class="search-section">
-            <input type="text" class="search-bar" placeholder="🔍 Search 100+ Games, OTT, Gift Cards..." onkeyup="searchProducts(this.value)">
+        <div class="section-title">
+            <span>Explore</span>
+            <input type="text" placeholder="Search..." onkeyup="searchProducts(this.value)" 
+                   style="font-size:0.9rem; padding:8px 16px; background:var(--surface); border:1px solid var(--border); color:white; border-radius:20px;">
         </div>
 
-        <div class="premiere-section">
-            <h2 class="section-header">🔥 World Premiere Trailers</h2>
-            <div class="trailer-grid">
-                <div class="trailer-card">
-                    <img src="https://i.ytimg.com/vi/QdBZY2fkU-0/maxresdefault.jpg" class="trailer-bg">
-                    <div class="trailer-content">
-                        <h2>Grand Theft Auto VI</h2>
-                        <div style="margin-top:10px;">
-                            <button onclick="openTrailer('QdBZY2fkU-0')" class="btn btn-primary">▶ Watch</button>
-                            <button onclick="addToCart('gta6')" class="btn btn-secondary">Pre-order ₹5499</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="trailer-card">
-                    <img src="https://i.ytimg.com/vi/XG1Ll2CVhug/maxresdefault.jpg" class="trailer-bg">
-                    <div class="trailer-content">
-                        <h2>Forza Horizon 6</h2>
-                        <div style="margin-top:10px;">
-                            <button onclick="openTrailer('XG1Ll2CVhug')" class="btn btn-primary">▶ Watch</button>
-                            <button onclick="addToCart('forza6')" class="btn btn-secondary">Pre-order ₹4999</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterCat('All')">All</button>
+            <button class="filter-btn" onclick="filterCat('Games')">Games</button>
+            <button class="filter-btn" onclick="filterCat('OTT')">Subscriptions</button>
+            <button class="filter-btn" onclick="filterCat('Action')">Action</button>
+            <button class="filter-btn" onclick="filterCat('Racing')">Racing</button>
         </div>
 
-        <div class="cat-pill-container">
-            <button class="cat-pill active" onclick="filterCat('All')">All</button>
-            <button class="cat-pill" onclick="filterCat('Games')">🎮 Games</button>
-            <button class="cat-pill" onclick="filterCat('OTT')">📺 OTT & Subs</button>
-            <button class="cat-pill" onclick="filterCat('GiftCard')">🎁 Gift Cards</button>
-            <button class="cat-pill" onclick="filterCat('Pre-order')">🔥 Trending</button>
-        </div>
-
-        <h2 class="section-header">Discover Catalog</h2>
-        <div id="productGrid" class="product-grid">
+        <div id="productGrid" class="grid">
             </div>
 
-    </div>
-
-    <div id="cartDrawer" class="cart-drawer">
-        <div style="padding:20px; border-bottom:1px solid #333; display:flex; justify-content:space-between;">
-            <h3>My Cart</h3>
-            <button onclick="toggleCart()" style="background:none; color:white; font-size:1.2rem">X</button>
-        </div>
-        <div id="cartDrawerItems" style="flex:1; overflow-y:auto;"></div>
-        <div style="padding:20px; background:#111;">
-            <div style="display:flex; justify-content:space-between; font-size:1.2rem; font-weight:bold; margin-bottom:15px;">
-                <span>Total:</span>
-                <span id="drawerTotal">₹0</span>
-            </div>
-            <a href="checkout.html" class="btn btn-primary" style="display:block; text-align:center;">Checkout Now</a>
+        <div style="margin: 80px 0; padding: 40px; background: var(--surface); border-radius: var(--radius); text-align: center;">
+            <h2 style="margin-bottom:10px;">PlayWithEase Guarantee</h2>
+            <p style="color:var(--text-muted)">Instant digital delivery • Secure UPI Payments • 24/7 Support</p>
         </div>
     </div>
 
-    <div id="videoModal" class="modal-overlay">
-        <div class="video-box">
+    <div class="drawer-overlay" onclick="toggleCart()"></div>
+    <div class="drawer">
+        <div class="drawer-header">
+            <h3>Your Cart</h3>
+            <button onclick="toggleCart()" style="background:none; color:var(--text); font-size:1.5rem;">&times;</button>
+        </div>
+        <div id="cartItems" class="drawer-body">
+            </div>
+        <div class="drawer-footer">
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:bold; font-size:1.2rem;">
+                <span>Total</span>
+                <span class="cart-total">₹0</span>
+            </div>
+            <a href="checkout.html" class="btn btn-primary" style="width:100%">Checkout</a>
+        </div>
+    </div>
+
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
             <span class="close-modal" onclick="closeTrailer()">&times;</span>
-            <iframe id="videoFrame" width="100%" height="100%" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <iframe id="videoFrame" width="100%" height="100%" frameborder="0" allow="autoplay"></iframe>
         </div>
     </div>
 
