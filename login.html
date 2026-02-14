@@ -1,406 +1,268 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sign In - PlayWithEase</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <script src="https://unpkg.com/lucide@latest"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlayWithEase Login</title>
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: {
-                        glass: {
-                            100: 'rgba(255, 255, 255, 0.1)',
-                            200: 'rgba(255, 255, 255, 0.2)',
-                            border: 'rgba(255, 255, 255, 0.08)',
-                        },
-                        brand: {
-                            start: '#6366f1', // Indigo 500
-                            end: '#8b5cf6',   // Violet 500
-                        }
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.6s ease-out forwards',
-                        'slide-up': 'slideUp 0.4s ease-out forwards',
-                    },
-                    keyframes: {
-                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-                        slideUp: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } }
-                    }
-                }
-            }
-        }
-    </script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
-    <style>
-        /* Custom Scrollbar & Base Styles */
-        body {
-            background-color: #0f172a; /* Slate 900 */
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%);
-            background-attachment: fixed;
-            -webkit-font-smoothing: antialiased;
-        }
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
 
-        /* Glass Utility */
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
+body{
+font-family:'Poppins',sans-serif;
+background:#000;
+overflow-x:hidden;
+overflow-y:auto;
+min-height:100vh;
+}
 
-        /* Input Auto-fill Fix for Dark Mode */
-        input:-webkit-autofill,
-        input:-webkit-autofill:hover, 
-        input:-webkit-autofill:focus {
-            -webkit-text-fill-color: white;
-            -webkit-box-shadow: 0 0 0px 1000px #1e293b inset;
-            transition: background-color 5000s ease-in-out 0s;
-        }
+/* ===== POSTER WALL ===== */
+.poster-wall{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+grid-auto-rows:160px;
+gap:4px;
+z-index:-1;
+animation:slowMove 60s linear infinite;
+}
 
-        /* Loader Spinner */
-        .spinner {
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top: 3px solid #ffffff;
-            width: 20px;
-            height: 20px;
-            -webkit-animation: spin 1s linear infinite; /* Safari */
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.poster-wall img{
+width:100%;
+height:100%;
+object-fit:cover;
+filter:brightness(0.5) blur(2px);
+}
 
-        /* Hide Scrollbar for Toast Container */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-    </style>
+@keyframes slowMove{
+0%{transform:translateY(0);}
+50%{transform:translateY(-20px);}
+100%{transform:translateY(0);}
+}
+
+/* ===== LOGIN BOX ===== */
+.login-container{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:90%;
+max-width:450px;
+background:#0f172a;
+padding:55px 45px;
+border-radius:20px;
+box-shadow:0 30px 90px rgba(0,0,0,0.9);
+color:#fff;
+text-align:center;
+}
+
+.login-container h2{
+font-family:'Orbitron';
+margin-bottom:25px;
+font-size:26px;
+}
+
+.login-container input{
+width:100%;
+padding:14px;
+margin-bottom:18px;
+border-radius:8px;
+border:1px solid #1e293b;
+background:#1e293b;
+color:#fff;
+font-size:14px;
+}
+
+.login-container button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:8px;
+background:linear-gradient(135deg,#2563eb,#3b82f6);
+color:#fff;
+font-weight:600;
+cursor:pointer;
+transition:.3s;
+}
+
+.login-container button:disabled{
+opacity:0.6;
+cursor:not-allowed;
+}
+
+.login-container button:hover{
+transform:scale(1.05);
+box-shadow:0 10px 30px rgba(59,130,246,0.6);
+}
+
+.options{
+display:flex;
+justify-content:space-between;
+font-size:12px;
+margin-bottom:18px;
+}
+
+.error-msg{
+color:#ef4444;
+font-size:13px;
+margin-bottom:12px;
+display:none;
+}
+
+.spinner{
+border:3px solid rgba(255,255,255,0.2);
+border-top:3px solid #fff;
+border-radius:50%;
+width:18px;
+height:18px;
+animation:spin 1s linear infinite;
+display:inline-block;
+vertical-align:middle;
+margin-left:8px;
+}
+
+@keyframes spin{
+100%{transform:rotate(360deg);}
+}
+</style>
 </head>
 
-<body class="min-h-screen flex items-center justify-center p-4 text-slate-200">
+<body>
 
-    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
+<div class="poster-wall" id="posterWall"></div>
 
-    <main class="w-full max-w-[420px] glass-panel rounded-2xl p-6 sm:p-8 opacity-0 animate-fade-in relative overflow-hidden">
-        
-        <div class="absolute -top-20 -left-20 w-40 h-40 bg-brand-start rounded-full mix-blend-screen filter blur-[60px] opacity-20 pointer-events-none"></div>
+<div class="login-container">
+<h2>PlayWithEase</h2>
 
-        <div class="text-center mb-8 relative z-10">
-            <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-brand-start to-brand-end mb-4 shadow-lg shadow-indigo-500/20">
-                <i data-lucide="gamepad-2" class="text-white w-6 h-6"></i>
-            </div>
-            <h1 class="text-2xl font-bold text-white tracking-tight">PlayWithEase</h1>
-            <p class="text-slate-400 text-sm mt-2">Welcome back! Please enter your details.</p>
-        </div>
+<div class="error-msg" id="errorBox"></div>
 
-        <form id="login-form" class="space-y-5 relative z-10" novalidate>
-            
-            <div class="space-y-1.5 group">
-                <label for="email" class="text-xs font-medium text-slate-300 ml-1">Email</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500 group-focus-within:text-indigo-400 transition-colors">
-                        <i data-lucide="mail" class="w-5 h-5"></i>
-                    </div>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        class="w-full pl-10 pr-4 py-3 bg-slate-800/50 border border-glass-border rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-200 text-base"
-                        placeholder="you@example.com"
-                        autocomplete="email"
-                        required
-                    >
-                </div>
-            </div>
+<input type="email" id="email" placeholder="Enter Email">
+<input type="password" id="password" placeholder="Enter Password">
 
-            <div class="space-y-1.5 group">
-                <div class="flex justify-between items-center ml-1">
-                    <label for="password" class="text-xs font-medium text-slate-300">Password</label>
-                    <a href="#" class="text-xs text-indigo-400 hover:text-indigo-300 transition-colors" tabindex="-1">Forgot password?</a>
-                </div>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500 group-focus-within:text-indigo-400 transition-colors">
-                        <i data-lucide="lock" class="w-5 h-5"></i>
-                    </div>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        class="w-full pl-10 pr-12 py-3 bg-slate-800/50 border border-glass-border rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-200 text-base"
-                        placeholder="••••••••"
-                        autocomplete="current-password"
-                        required
-                    >
-                    <button 
-                        type="button" 
-                        id="toggle-password" 
-                        class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-white transition-colors focus:outline-none cursor-pointer"
-                        aria-label="Toggle password visibility"
-                    >
-                        <i data-lucide="eye" class="w-5 h-5" id="eye-icon"></i>
-                        <i data-lucide="eye-off" class="w-5 h-5 hidden" id="eye-off-icon"></i>
-                    </button>
-                </div>
-            </div>
+<div class="options">
+<label><input type="checkbox" onclick="togglePass()"> Show Password</label>
+<label><input type="checkbox"> Remember Me</label>
+</div>
 
-            <div class="pt-2 space-y-4">
-                <button 
-                    type="submit" 
-                    id="submit-btn"
-                    class="w-full relative flex items-center justify-center py-3 px-4 bg-gradient-to-r from-brand-start to-brand-end hover:from-indigo-400 hover:to-violet-400 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/25 transform transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
-                >
-                    <span class="btn-text">Sign In</span>
-                    <div class="btn-loader hidden absolute">
-                        <div class="spinner"></div>
-                    </div>
-                </button>
+<button id="loginBtn" onclick="login()">Login</button>
 
-                <div class="relative flex items-center py-1">
-                    <div class="flex-grow border-t border-glass-border"></div>
-                    <span class="flex-shrink-0 mx-4 text-xs text-slate-500 uppercase tracking-wider">Or continue with</span>
-                    <div class="flex-grow border-t border-glass-border"></div>
-                </div>
+<p style="margin-top:12px;font-size:13px;">
+<a href="forgot.html" style="color:#3b82f6;text-decoration:none;">
+Forgot Password?
+</a>
+</p>
 
-                <button 
-                    type="button" 
-                    id="google-btn"
-                    class="w-full flex items-center justify-center gap-3 py-3 px-4 bg-white text-slate-900 font-medium rounded-xl hover:bg-slate-100 transition-all duration-200 active:scale-[0.98] disabled:opacity-70"
-                >
-                    <svg class="w-5 h-5" viewBox="0 0 24 24">
-                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                    </svg>
-                    Google
-                </button>
-            </div>
-        </form>
+<p style="margin-top:15px;font-size:13px;">
+New user? <span onclick="register()">Create Account</span>
+</p>
+</div>
+<script type="module">
 
-        <p class="text-center text-sm text-slate-400 mt-8 relative z-10">
-            Don't have an account? 
-            <a href="#" class="text-indigo-400 font-medium hover:text-indigo-300 transition-colors hover:underline">Sign up for free</a>
-        </p>
-    </main>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { 
+getAuth, 
+signInWithEmailAndPassword, 
+createUserWithEmailAndPassword,
+sendPasswordResetEmail 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-    <script type="module">
-        // ------------------------------------------------------------------
-        // CONFIGURATION & SETUP
-        // ------------------------------------------------------------------
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+/* 🔥 PASTE REAL CONFIG */
+const firebaseConfig = {
+apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+authDomain: "playwithease.firebaseapp.com",
+projectId: "playwithease",
+storageBucket: "playwithease.firebasestorage.app",
+messagingSenderId: "189729941006",
+appId: "1:189729941006:web:362653774b92416c357e5f",
+measurementId: "G-1C3B31KQ7C"
+};
 
-        // TODO: Replace with your actual Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "your-app.firebaseapp.com",
-            projectId: "your-app",
-            storageBucket: "your-app.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:abcdef"
-        };
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-        // Initialize Firebase (Singleton pattern to prevent multi-init errors)
-        let app, auth;
-        try {
-            app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-        } catch (e) {
-            console.warn("Firebase config missing or invalid. UI running in demo mode.");
-        }
+/* ===== POPULAR WORKING GAME IDS ===== */
+const gameIDs=[
+271590,1174180,1091500,1593500,1245620,570,730,578080,
+292030,377160,440,945360,1817070,1086940,739630,
+990080,601150,394360,252950,976730,812140
+];
 
-        // Initialize Icons
-        lucide.createIcons();
+const posterWall=document.getElementById("posterWall");
 
-        // ------------------------------------------------------------------
-        // DOM ELEMENTS (Cached for performance)
-        // ------------------------------------------------------------------
-        const DOM = {
-            form: document.getElementById('login-form'),
-            email: document.getElementById('email'),
-            password: document.getElementById('password'),
-            submitBtn: document.getElementById('submit-btn'),
-            btnText: document.querySelector('.btn-text'),
-            btnLoader: document.querySelector('.btn-loader'),
-            togglePassBtn: document.getElementById('toggle-password'),
-            eyeIcon: document.getElementById('eye-icon'),
-            eyeOffIcon: document.getElementById('eye-off-icon'),
-            googleBtn: document.getElementById('google-btn'),
-            toastContainer: document.getElementById('toast-container')
-        };
+for(let i=0;i<120;i++){
+let img=document.createElement("img");
+img.src=`https://cdn.cloudflare.steamstatic.com/steam/apps/${gameIDs[i%gameIDs.length]}/header.jpg`;
+posterWall.appendChild(img);
+}
 
-        // ------------------------------------------------------------------
-        // UI UTILITIES
-        // ------------------------------------------------------------------
-        
-        /**
-         * Sets the loading state of the primary button
-         * @param {boolean} isLoading 
-         */
-        const setLoading = (isLoading) => {
-            DOM.submitBtn.disabled = isLoading;
-            DOM.googleBtn.disabled = isLoading;
-            DOM.email.disabled = isLoading;
-            DOM.password.disabled = isLoading;
+/* ===== LOGIN ===== */
+window.login=function(){
+const btn=document.getElementById("loginBtn");
+const email=document.getElementById("email").value;
+const password=document.getElementById("password").value;
+const errorBox=document.getElementById("errorBox");
 
-            if (isLoading) {
-                DOM.btnText.classList.add('invisible');
-                DOM.btnLoader.classList.remove('hidden');
-            } else {
-                DOM.btnText.classList.remove('invisible');
-                DOM.btnLoader.classList.add('hidden');
-            }
-        };
+errorBox.style.display="none";
+btn.disabled=true;
+btn.innerHTML="Authenticating <span class='spinner'></span>";
 
-        /**
-         * Shows a polished toast notification
-         * @param {string} message 
-         * @param {'success'|'error'} type 
-         */
-        const showToast = (message, type = 'success') => {
-            const toast = document.createElement('div');
-            const icon = type === 'success' ? 'check-circle' : 'alert-circle';
-            const colors = type === 'success' 
-                ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-400' 
-                : 'bg-red-500/10 border-red-500/50 text-red-400';
+signInWithEmailAndPassword(auth,email,password)
+.then(()=>{
+window.location.href="index.html";
+})
+.catch(err=>{
+errorBox.innerText=err.message;
+errorBox.style.display="block";
+btn.disabled=false;
+btn.innerHTML="Login";
+});
+}
 
-            toast.className = `
-                pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl border backdrop-blur-md shadow-xl 
-                transform transition-all duration-300 translate-x-full opacity-0 ${colors}
-            `;
-            
-            toast.innerHTML = `
-                <i data-lucide="${icon}" class="w-5 h-5 flex-shrink-0"></i>
-                <span class="text-sm font-medium">${message}</span>
-            `;
+window.register=function(){
+const email=document.getElementById("email").value;
+const password=document.getElementById("password").value;
+createUserWithEmailAndPassword(auth,email,password)
+.then(()=>alert("Account Created"))
+.catch(err=>alert(err.message));
+}
 
-            DOM.toastContainer.appendChild(toast);
-            lucide.createIcons({ root: toast });
+window.togglePass=function(){
+const pass=document.getElementById("password");
+pass.type=pass.type==="password"?"text":"password";
+}
+window.resetPassword = function(){
 
-            // Animate In
-            requestAnimationFrame(() => {
-                toast.classList.remove('translate-x-full', 'opacity-0');
-            });
+const email=document.getElementById("email").value;
+const errorBox=document.getElementById("errorBox");
 
-            // Remove after delay
-            setTimeout(() => {
-                toast.classList.add('translate-x-full', 'opacity-0');
-                setTimeout(() => toast.remove(), 300);
-            }, 4000);
-        };
+if(!email){
+errorBox.innerText="Please enter your email first.";
+errorBox.style.display="block";
+return;
+}
 
-        /**
-         * Maps Firebase error codes to friendly messages
-         */
-        const getFriendlyErrorMessage = (error) => {
-            const code = error.code;
-            const map = {
-                'auth/invalid-email': 'Please enter a valid email address.',
-                'auth/user-disabled': 'This account has been disabled.',
-                'auth/user-not-found': 'No account found with this email.',
-                'auth/wrong-password': 'Incorrect password. Please try again.',
-                'auth/too-many-requests': 'Too many failed attempts. Try again later.',
-                'auth/network-request-failed': 'Network error. Check your connection.'
-            };
-            return map[code] || error.message || 'An unexpected error occurred.';
-        };
+sendPasswordResetEmail(auth,email)
+.then(()=>{
+errorBox.style.color="#22c55e";
+errorBox.innerText="Password reset link sent to your email.";
+errorBox.style.display="block";
+})
+.catch(err=>{
+errorBox.style.color="#ef4444";
+errorBox.innerText=err.message;
+errorBox.style.display="block";
+});
 
-        // ------------------------------------------------------------------
-        // EVENT HANDLERS
-        // ------------------------------------------------------------------
+}
 
-        // Password Toggle Logic
-        DOM.togglePassBtn.addEventListener('click', () => {
-            const type = DOM.password.type === 'password' ? 'text' : 'password';
-            DOM.password.type = type;
-            
-            if (type === 'text') {
-                DOM.eyeIcon.classList.add('hidden');
-                DOM.eyeOffIcon.classList.remove('hidden');
-            } else {
-                DOM.eyeIcon.classList.remove('hidden');
-                DOM.eyeOffIcon.classList.add('hidden');
-            }
-        });
+</script>
 
-        // Email / Password Login
-        DOM.form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const email = DOM.email.value.trim();
-            const password = DOM.password.value;
-
-            // Basic Validation
-            if (!email || !password) {
-                showToast('Please fill in all fields', 'error');
-                return;
-            }
-
-            setLoading(true);
-
-            try {
-                if (!auth) throw new Error("Firebase not configured");
-                
-                await signInWithEmailAndPassword(auth, email, password);
-                showToast('Successfully signed in!', 'success');
-                // Redirect would happen here
-                // window.location.href = '/dashboard';
-            } catch (error) {
-                // Mocking success for demo purposes if no API key
-                if (error.message === "Firebase not configured") {
-                    setTimeout(() => {
-                        showToast('Demo Mode: Login Successful', 'success');
-                        setLoading(false);
-                    }, 1500);
-                    return;
-                }
-                showToast(getFriendlyErrorMessage(error), 'error');
-                setLoading(false);
-            }
-        });
-
-        // Google Login
-        DOM.googleBtn.addEventListener('click', async () => {
-            setLoading(true);
-            try {
-                if (!auth) throw new Error("Firebase not configured");
-                const provider = new GoogleAuthProvider();
-                await signInWithPopup(auth, provider);
-                showToast('Welcome back!', 'success');
-            } catch (error) {
-                 if (error.message === "Firebase not configured") {
-                    setTimeout(() => {
-                        showToast('Demo Mode: Google Login Successful', 'success');
-                        setLoading(false);
-                    }, 1500);
-                    return;
-                }
-                showToast(getFriendlyErrorMessage(error), 'error');
-                setLoading(false);
-            }
-        });
-
-        // Add subtle hover glow effect tracking mouse position (Micro-interaction)
-        document.querySelectorAll('.glass-panel').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--x', `${x}px`);
-                card.style.setProperty('--y', `${y}px`);
-            });
-        });
-
-    </script>
 </body>
 </html>
