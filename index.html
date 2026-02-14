@@ -1,98 +1,422 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayWithEase | Digital Store</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <title>PlayWithEase | Premium Digital Store</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <nav>
-        <div class="container nav-content">
-            <a href="index.html" class="logo">PlayWithEase</a>
-            <div class="nav-actions">
-                <select onchange="setTheme(this.value)" style="background:transparent; color:var(--text-muted); border:none; font-size:0.9rem;">
-                    <option value="default">PlayStation</option>
-                    <option value="minimal">Minimal</option>
-                    <option value="midnight">Midnight</option>
-                    <option value="amoled">Amoled</option>
-                </select>
-                <a id="navAuthBtn" href="login.html" class="btn btn-secondary" style="padding: 8px 16px;">Login</a>
-                <button class="icon-btn" onclick="toggleCart()">
-                    🛒 <span class="cart-badge">0</span>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#050505',
+                            surface: '#121212',
+                            accent: '#3b82f6', // Playstation Blue-ish
+                            text: '#f3f4f6'
+                        }
+                    },
+                    backgroundImage: {
+                        'hero-gradient': 'linear-gradient(to top, #050505 0%, transparent 60%)',
+                        'card-gradient': 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar Hide */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Glass Effect */
+        .glass {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Card Hover Animation */
+        .game-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -5px rgba(0,0,0,0.4);
+        }
+
+        body {
+            background-color: #050505;
+            color: #f3f4f6;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-blue-500 selection:text-white">
+
+    <nav class="fixed w-full z-50 glass transition-all duration-300">
+        <div class="max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
+                    P
+                </div>
+                <span class="text-xl font-bold tracking-tight group-hover:text-white transition-colors">PlayWithEase</span>
+            </a>
+
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
+                <a href="#" class="text-white hover:text-blue-400 transition-colors">Store</a>
+                <a href="#ott" class="hover:text-white transition-colors">Subscriptions</a>
+                <a href="#new" class="hover:text-white transition-colors">New Releases</a>
+                <a href="#" class="hover:text-white transition-colors">Support</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-magnifying-glass text-lg"></i>
                 </button>
+                <a href="login.html" class="hidden md:block px-5 py-2 rounded-full border border-white/10 hover:bg-white hover:text-black transition-all text-sm font-medium">
+                    Log In
+                </a>
+                <div class="relative cursor-pointer">
+                    <i class="fa-solid fa-bag-shopping text-xl text-gray-300 hover:text-white transition-colors"></i>
+                    <span class="absolute -top-1 -right-1 w-4 h-4 bg-blue-600 text-[10px] font-bold flex items-center justify-center rounded-full">0</span>
+                </div>
             </div>
         </div>
     </nav>
 
-    <div class="hero">
-        <img src="https://gmedia.playstation.com/is/image/SIEPDC/grand-theft-auto-6-hero-banner-desktop-01-en-05dec23?$4000px$" class="hero-bg">
-        <div class="container" style="position:relative; z-index:2; width:100%;">
-            <div class="hero-content">
-                <div class="hero-badges">
-                    <span class="tag">Coming 2025</span>
-                    <span class="tag">Open World</span>
-                </div>
-                <h1>Grand Theft Auto VI</h1>
-                <p>Welcome to Leonida. Grand Theft Auto VI heads to the state of Leonida, home to the neon-soaked streets of Vice City and beyond.</p>
-                <div style="display:flex; gap:16px;">
-                    <button onclick="openTrailer('QdBZY2fkU-0')" class="btn btn-primary">▶ Watch Trailer</button>
-                    <button onclick="addToCart('gta6')" class="btn btn-secondary">Pre-Order ₹5,499</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
+    <header class="relative w-full h-[85vh] min-h-[600px] overflow-hidden group">
+        <img src="https://images.unsplash.com/photo-1621259182902-885475665bc8?q=80&w=2070&auto=format&fit=crop" 
+             alt="Hero Background" 
+             class="absolute inset-0 w-full h-full object-cover transition-transform duration-[10s] group-hover:scale-105 filter brightness-75">
         
-        <div class="section-title">
-            <span>Explore</span>
-            <input type="text" placeholder="Search..." onkeyup="searchProducts(this.value)" 
-                   style="font-size:0.9rem; padding:8px 16px; background:var(--surface); border:1px solid var(--border); color:white; border-radius:20px;">
-        </div>
+        <div class="absolute inset-0 bg-hero-gradient"></div>
 
-        <div class="filters">
-            <button class="filter-btn active" onclick="filterCat('All')">All</button>
-            <button class="filter-btn" onclick="filterCat('Games')">Games</button>
-            <button class="filter-btn" onclick="filterCat('OTT')">Subscriptions</button>
-            <button class="filter-btn" onclick="filterCat('Action')">Action</button>
-            <button class="filter-btn" onclick="filterCat('Racing')">Racing</button>
+        <div class="absolute bottom-0 left-0 w-full p-6 md:p-12 pb-20 max-w-[1400px] mx-auto flex flex-col items-start justify-end h-full">
+            <span class="px-3 py-1 bg-blue-600 text-xs font-bold uppercase tracking-wider rounded mb-4">World Premiere</span>
+            <h1 class="text-5xl md:text-7xl font-black mb-4 leading-tight tracking-tighter">
+                GRAND THEFT <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">AUTO VI</span>
+            </h1>
+            <p class="text-gray-300 max-w-lg text-lg mb-8 leading-relaxed">
+                Welcome to Leonida. Experience the next evolution of the open-world experience with the most immersive story ever told.
+            </p>
+            <div class="flex flex-wrap gap-4">
+                <button onclick="document.getElementById('trailerModal').classList.remove('hidden')" class="px-8 py-3.5 bg-white text-black rounded-full font-bold hover:bg-gray-200 transition-transform hover:scale-105 flex items-center gap-2">
+                    <i class="fa-solid fa-play"></i> Watch Trailer
+                </button>
+                <button class="px-8 py-3.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full font-bold hover:bg-white/20 transition-all flex items-center gap-2">
+                    Pre-Order ₹5,499
+                </button>
+            </div>
         </div>
+    </header>
 
-        <div id="productGrid" class="grid">
+    <section class="max-w-[1400px] mx-auto px-6 py-12 border-b border-white/5">
+        <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+            <button class="flex items-center gap-3 px-6 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/30 transition-all min-w-max">
+                <i class="fa-solid fa-gamepad text-blue-400"></i> <span class="font-medium">All Games</span>
+            </button>
+            <button class="flex items-center gap-3 px-6 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/30 transition-all min-w-max">
+                <i class="fa-solid fa-tv text-pink-400"></i> <span class="font-medium">OTT & Subs</span>
+            </button>
+            <button class="flex items-center gap-3 px-6 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/30 transition-all min-w-max">
+                <i class="fa-solid fa-gift text-yellow-400"></i> <span class="font-medium">Gift Cards</span>
+            </button>
+            <button class="flex items-center gap-3 px-6 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/30 transition-all min-w-max">
+                <i class="fa-solid fa-headset text-green-400"></i> <span class="font-medium">Services</span>
+            </button>
+        </div>
+    </section>
+
+    <section class="py-12 pl-6 md:pl-12 overflow-hidden">
+        <div class="flex justify-between items-end pr-6 md:pr-12 mb-8 max-w-[1400px] mx-auto">
+            <h2 class="text-2xl md:text-3xl font-bold">Trending Now</h2>
+            <a href="#" class="text-sm text-blue-400 hover:text-blue-300 font-medium">View All <i class="fa-solid fa-chevron-right text-xs ml-1"></i></a>
+        </div>
+        
+        <div class="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pr-12 pb-10">
+            <div class="snap-start shrink-0 w-[280px] md:w-[320px] game-card relative group rounded-2xl overflow-hidden cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1605901309584-818e25960b8f?q=80&w=1000&auto=format&fit=crop" class="w-full aspect-[3/4] object-cover">
+                <div class="absolute inset-0 bg-card-gradient opacity-90"></div>
+                <div class="absolute bottom-0 p-6 w-full">
+                    <span class="text-xs font-bold text-blue-400 uppercase">Racing</span>
+                    <h3 class="text-xl font-bold mb-1">Forza Horizon 6</h3>
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-lg font-semibold">₹4,999</span>
+                        <button class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
 
-        <div style="margin: 80px 0; padding: 40px; background: var(--surface); border-radius: var(--radius); text-align: center;">
-            <h2 style="margin-bottom:10px;">PlayWithEase Guarantee</h2>
-            <p style="color:var(--text-muted)">Instant digital delivery • Secure UPI Payments • 24/7 Support</p>
+            <div class="snap-start shrink-0 w-[280px] md:w-[320px] game-card relative group rounded-2xl overflow-hidden cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=1000&auto=format&fit=crop" class="w-full aspect-[3/4] object-cover">
+                <div class="absolute inset-0 bg-card-gradient opacity-90"></div>
+                <div class="absolute bottom-0 p-6 w-full">
+                    <span class="text-xs font-bold text-purple-400 uppercase">RPG</span>
+                    <h3 class="text-xl font-bold mb-1">Elden Ring: DLC</h3>
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-lg font-semibold">₹2,499</span>
+                        <button class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="snap-start shrink-0 w-[280px] md:w-[320px] game-card relative group rounded-2xl overflow-hidden cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1612287232817-60286063673d?q=80&w=1000&auto=format&fit=crop" class="w-full aspect-[3/4] object-cover">
+                <div class="absolute inset-0 bg-card-gradient opacity-90"></div>
+                <div class="absolute bottom-0 p-6 w-full">
+                    <span class="text-xs font-bold text-red-400 uppercase">Action</span>
+                    <h3 class="text-xl font-bold mb-1">Spider-Man 2</h3>
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-lg font-semibold">₹3,999</span>
+                        <button class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+             <div class="snap-start shrink-0 w-[280px] md:w-[320px] game-card relative group rounded-2xl overflow-hidden cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1000&auto=format&fit=crop" class="w-full aspect-[3/4] object-cover">
+                <div class="absolute inset-0 bg-card-gradient opacity-90"></div>
+                <div class="absolute bottom-0 p-6 w-full">
+                    <span class="text-xs font-bold text-green-400 uppercase">Sports</span>
+                    <h3 class="text-xl font-bold mb-1">FC 25</h3>
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-lg font-semibold">₹4,499</span>
+                        <button class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="ott" class="max-w-[1400px] mx-auto px-6 py-12">
+        <h2 class="text-2xl md:text-3xl font-bold mb-8">Digital Subscriptions</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="group bg-[#1a1a1a] rounded-xl p-6 border border-white/5 hover:border-red-600 transition-colors cursor-pointer relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-red-600 blur-[80px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                <div class="flex items-center justify-between mb-8">
+                    <h3 class="text-2xl font-black text-red-600 tracking-tighter">NETFLIX</h3>
+                    <span class="bg-white/10 px-2 py-1 rounded text-xs">4K UHD</span>
+                </div>
+                <div class="mt-auto">
+                    <p class="text-gray-400 text-sm mb-2">Premium - 1 Month</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xl font-bold">₹649</span>
+                        <button class="text-sm font-semibold text-white bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700">Buy</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group bg-[#1a1a1a] rounded-xl p-6 border border-white/5 hover:border-blue-400 transition-colors cursor-pointer relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-blue-400 blur-[80px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                <div class="flex items-center justify-between mb-8">
+                    <h3 class="text-2xl font-black text-blue-400 tracking-tighter">prime video</h3>
+                    <span class="bg-white/10 px-2 py-1 rounded text-xs">Annual</span>
+                </div>
+                <div class="mt-auto">
+                    <p class="text-gray-400 text-sm mb-2">Prime Membership</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xl font-bold">₹1,499</span>
+                        <button class="text-sm font-semibold text-black bg-blue-400 px-4 py-2 rounded-lg hover:bg-blue-300">Buy</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group bg-[#1a1a1a] rounded-xl p-6 border border-white/5 hover:border-blue-600 transition-colors cursor-pointer relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-blue-800 blur-[80px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                <div class="flex items-center justify-between mb-8">
+                    <h3 class="text-2xl font-black text-white tracking-tighter">Disney+</h3>
+                    <span class="bg-white/10 px-2 py-1 rounded text-xs">Hotstar</span>
+                </div>
+                <div class="mt-auto">
+                    <p class="text-gray-400 text-sm mb-2">Super Plan - 1 Year</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xl font-bold">₹899</span>
+                        <button class="text-sm font-semibold text-white bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700">Buy</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group bg-[#1a1a1a] rounded-xl p-6 border border-white/5 hover:border-green-500 transition-colors cursor-pointer relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-green-500 blur-[80px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                <div class="flex items-center justify-between mb-8">
+                    <h3 class="text-2xl font-black text-green-500 tracking-tighter">Spotify</h3>
+                    <span class="bg-white/10 px-2 py-1 rounded text-xs">No Ads</span>
+                </div>
+                <div class="mt-auto">
+                    <p class="text-gray-400 text-sm mb-2">Individual Premium</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xl font-bold">₹119</span>
+                        <button class="text-sm font-semibold text-black bg-green-500 px-4 py-2 rounded-lg hover:bg-green-400">Buy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="new" class="max-w-[1400px] mx-auto px-6 py-12">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-2xl md:text-3xl font-bold">Explore Catalog</h2>
+            <div class="flex gap-2">
+                <button class="w-8 h-8 rounded border border-white/10 flex items-center justify-center hover:bg-white/10"><i class="fa-solid fa-list"></i></button>
+                <button class="w-8 h-8 rounded bg-white/10 flex items-center justify-center"><i class="fa-solid fa-grid-2"></i></button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            <div class="group cursor-pointer">
+                <div class="relative overflow-hidden rounded-xl aspect-[3/4] mb-3">
+                    <img src="https://images.unsplash.com/photo-1560253023-3ec5d502959f?q=80&w=600&auto=format&fit=crop" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <button class="bg-white text-black px-4 py-2 rounded-full font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+                <h3 class="font-bold text-sm truncate">Cyberpunk 2077</h3>
+                <p class="text-gray-400 text-xs mb-1">RPG • Open World</p>
+                <div class="text-blue-400 font-semibold">₹2,999</div>
+            </div>
+
+            <div class="group cursor-pointer">
+                <div class="relative overflow-hidden rounded-xl aspect-[3/4] mb-3">
+                    <img src="https://images.unsplash.com/photo-1627856014759-08529612289d?q=80&w=600&auto=format&fit=crop" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <button class="bg-white text-black px-4 py-2 rounded-full font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Add to Cart</button>
+                    </div>
+                </div>
+                <h3 class="font-bold text-sm truncate">Call of Duty: MW3</h3>
+                <p class="text-gray-400 text-xs mb-1">Shooter • Multiplayer</p>
+                <div class="text-blue-400 font-semibold">₹5,499</div>
+            </div>
+
+            <div class="group cursor-pointer">
+                <div class="relative overflow-hidden rounded-xl aspect-[3/4] mb-3">
+                    <img src="https://images.unsplash.com/photo-1599507593499-a3f7d7d97663?q=80&w=600&auto=format&fit=crop" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <button class="bg-white text-black px-4 py-2 rounded-full font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Add to Cart</button>
+                    </div>
+                </div>
+                <h3 class="font-bold text-sm truncate">Valorant Points (1000)</h3>
+                <p class="text-gray-400 text-xs mb-1">Currency</p>
+                <div class="text-blue-400 font-semibold">₹999</div>
+            </div>
+
+            <div class="group cursor-pointer">
+                <div class="relative overflow-hidden rounded-xl aspect-[3/4] mb-3">
+                    <img src="https://images.unsplash.com/photo-1551103782-8ab07afd45c1?q=80&w=600&auto=format&fit=crop" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <button class="bg-white text-black px-4 py-2 rounded-full font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Add to Cart</button>
+                    </div>
+                </div>
+                <h3 class="font-bold text-sm truncate">Assassin's Creed Mirage</h3>
+                <p class="text-gray-400 text-xs mb-1">Action • Stealth</p>
+                <div class="text-blue-400 font-semibold">₹3,499</div>
+            </div>
+
+            <div class="group cursor-pointer">
+                <div class="relative overflow-hidden rounded-xl aspect-[3/4] mb-3">
+                    <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=600&auto=format&fit=crop" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <button class="bg-white text-black px-4 py-2 rounded-full font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Add to Cart</button>
+                    </div>
+                </div>
+                <h3 class="font-bold text-sm truncate">God of War Ragnarök</h3>
+                <p class="text-gray-400 text-xs mb-1">Adventure</p>
+                <div class="text-blue-400 font-semibold">₹4,999</div>
+            </div>
+        </div>
+
+        <div class="mt-12 text-center">
+            <button class="px-8 py-3 rounded-full border border-white/20 text-sm font-bold hover:bg-white hover:text-black transition-all">Load More Products</button>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/5 bg-[#080808] pt-16 pb-8 mt-12">
+        <div class="max-w-[1400px] mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <h2 class="text-2xl font-bold mb-4">PlayWithEase</h2>
+                    <p class="text-gray-400 max-w-sm mb-6">The ultimate digital destination for gamers. Instant delivery, secure payments, and premium support.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-blue-600 transition-colors"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-pink-600 transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-blue-800 transition-colors"><i class="fa-brands fa-discord"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Shop</h3>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-white">New Releases</a></li>
+                        <li><a href="#" class="hover:text-white">Best Sellers</a></li>
+                        <li><a href="#" class="hover:text-white">Discounted</a></li>
+                        <li><a href="#" class="hover:text-white">Gift Cards</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Support</h3>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-white">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white">Order Status</a></li>
+                        <li><a href="#" class="hover:text-white">Refund Policy</a></li>
+                        <li><a href="#" class="hover:text-white">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
+                <p>&copy; 2024 PlayWithEase Digital Store. All rights reserved.</p>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white">Privacy Policy</a>
+                    <a href="#" class="hover:text-white">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="trailerModal" class="hidden fixed inset-0 z-[60] bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="w-full max-w-5xl aspect-video bg-black relative rounded-xl overflow-hidden shadow-2xl border border-white/10">
+            <button onclick="document.getElementById('trailerModal').classList.add('hidden')" class="absolute top-4 right-4 z-10 w-10 h-10 bg-black/50 backdrop-blur rounded-full text-white flex items-center justify-center hover:bg-white hover:text-black transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <div class="w-full h-full flex items-center justify-center bg-gray-900 relative group">
+                <img src="https://images.unsplash.com/photo-1621259182902-885475665bc8?q=80&w=2070&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-50">
+                <button class="relative z-10 w-20 h-20 bg-white/20 backdrop-blur rounded-full flex items-center justify-center text-white text-2xl group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-play ml-1"></i>
+                </button>
+                <div class="absolute bottom-8 left-8">
+                    <h3 class="text-2xl font-bold">GTA VI - Official Trailer 1</h3>
+                    <p class="text-gray-300">Rockstar Games</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="drawer-overlay" onclick="toggleCart()"></div>
-    <div class="drawer">
-        <div class="drawer-header">
-            <h3>Your Cart</h3>
-            <button onclick="toggleCart()" style="background:none; color:var(--text); font-size:1.5rem;">&times;</button>
-        </div>
-        <div id="cartItems" class="drawer-body">
-            </div>
-        <div class="drawer-footer">
-            <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:bold; font-size:1.2rem;">
-                <span>Total</span>
-                <span class="cart-total">₹0</span>
-            </div>
-            <a href="checkout.html" class="btn btn-primary" style="width:100%">Checkout</a>
-        </div>
-    </div>
-
-    <div id="videoModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeTrailer()">&times;</span>
-            <iframe id="videoFrame" width="100%" height="100%" frameborder="0" allow="autoplay"></iframe>
-        </div>
-    </div>
-
-    <script type="module" src="app.js"></script>
 </body>
 </html>
