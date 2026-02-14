@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PlayWithEase | Premium Digital Store</title>
+    <title>PlayWithEase | The Ultimate Digital Gaming Store</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <script>
@@ -16,363 +20,551 @@
                 extend: {
                     fontFamily: { sans: ['Outfit', 'sans-serif'] },
                     colors: {
-                        brand: { 500: '#8b5cf6', 600: '#7c3aed' },
-                        dark: { 900: '#0f172a', 800: '#1e293b' }
+                        brand: {
+                            400: '#a78bfa',
+                            500: '#8b5cf6', // Violet
+                            600: '#7c3aed',
+                            glow: '#6366f1' // Indigo
+                        },
+                        dark: {
+                            900: '#020617', // Slate 950
+                            800: '#0f172a', // Slate 900
+                            card: '#1e293b'
+                        }
                     },
-                    animation: { 'float': 'float 6s ease-in-out infinite' },
-                    keyframes: { float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-20px)' } } }
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
                 }
             }
         }
     </script>
+
     <style>
-        body { background: #020617; color: white; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .glass-nav { background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .neon-glow:hover { box-shadow: 0 0 20px rgba(139, 92, 246, 0.4); border-color: rgba(139, 92, 246, 0.5); }
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .loader { border: 2px solid rgba(255,255,255,0.1); border-top: 2px solid #8b5cf6; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* BASE SETTINGS */
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* CUSTOM SCROLLBAR */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* GLASSMORPHISM UTILITIES */
+        .glass {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(139, 92, 246, 0.5);
+            background: rgba(30, 41, 59, 0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -15px rgba(124, 58, 237, 0.3);
+        }
+
+        /* NEON GLOWS */
+        .neon-text { text-shadow: 0 0 20px rgba(139, 92, 246, 0.5); }
+        .bg-grid-pattern {
+            background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        /* UTILITY */
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
     </style>
 </head>
-<body class="antialiased selection:bg-brand-500 selection:text-white pb-24 md:pb-0">
+<body class="relative">
 
-    <nav class="fixed top-0 w-full z-50 glass-nav h-16 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
-            <a href="index.html" class="flex items-center gap-2 font-bold text-xl tracking-tight">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-brand-500/20">
-                    <i data-lucide="gamepad-2" class="w-5 h-5 text-white"></i>
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-brand-600 rounded-full mix-blend-screen filter blur-[120px] opacity-20 animate-pulse-slow"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-cyan-600 rounded-full mix-blend-screen filter blur-[120px] opacity-10 animate-pulse-slow" style="animation-delay: 2s;"></div>
+    </div>
+
+    <nav class="fixed top-0 w-full z-50 glass transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <div class="relative w-10 h-10 flex items-center justify-center bg-gradient-to-tr from-brand-600 to-indigo-600 rounded-xl shadow-lg shadow-brand-500/20 group-hover:shadow-brand-500/40 transition-all duration-300">
+                        <i data-lucide="gamepad-2" class="text-white w-6 h-6 transform group-hover:rotate-12 transition-transform"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-white group-hover:text-brand-400 transition-colors">PlayWithEase</span>
+                </a>
+
+                <div class="hidden lg:flex flex-1 max-w-lg mx-12 relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i data-lucide="search" class="h-5 w-5 text-gray-500 group-focus-within:text-brand-400 transition-colors"></i>
+                    </div>
+                    <input type="text" class="block w-full pl-10 pr-3 py-2.5 border border-white/10 rounded-xl leading-5 bg-dark-800/50 text-gray-300 placeholder-gray-500 focus:outline-none focus:bg-dark-800 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 sm:text-sm transition-all" placeholder="Search games, DLCs, subscriptions...">
+                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                        <span class="text-gray-600 text-xs border border-gray-700 rounded px-1.5 py-0.5">⌘K</span>
+                    </div>
                 </div>
-                <span class="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">PlayWithEase</span>
-            </a>
 
-            <div class="hidden md:block relative w-96 group">
-                <input type="text" id="search-bar" placeholder="Search games, gear, memberships..." 
-                    class="w-full bg-white/5 border border-white/10 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-brand-500 focus:bg-white/10 transition-all placeholder:text-gray-500">
-                <i data-lucide="search" class="absolute left-3.5 top-2.5 w-4 h-4 text-gray-500 group-focus-within:text-brand-500"></i>
-                <div id="search-results" class="absolute top-12 left-0 w-full glass rounded-xl p-2 hidden opacity-0 transition-opacity duration-200"></div>
+                <div class="hidden md:flex items-center gap-6">
+                    <nav class="flex gap-6 text-sm font-medium text-gray-400">
+                        <a href="index.html" class="text-white hover:text-brand-400 transition-colors">Home</a>
+                        <a href="#" class="hover:text-white transition-colors">Store</a>
+                        <a href="#" class="hover:text-white transition-colors">Deals</a>
+                    </nav>
+
+                    <div class="h-6 w-px bg-white/10 mx-2"></div>
+
+                    <div class="flex items-center gap-4">
+                        <button class="relative p-2 text-gray-400 hover:text-white transition-colors group">
+                            <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+                            <span class="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white transform translate-x-1/4 -translate-y-1/4 bg-brand-600 rounded-full">2</span>
+                        </button>
+                        
+                        <a href="login.html" class="px-6 py-2.5 rounded-xl bg-white text-dark-900 font-bold text-sm hover:bg-gray-100 transition-colors shadow-lg shadow-white/5 hover:shadow-white/10 active:scale-95 transform duration-200">
+                            Login
+                        </a>
+                    </div>
+                </div>
+
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="p-2 rounded-md text-gray-400 hover:text-white hover:bg-white/5 focus:outline-none">
+                        <i data-lucide="menu" class="h-6 w-6"></i>
+                    </button>
+                </div>
             </div>
+        </div>
 
-            <div class="flex items-center gap-4">
-                <button onclick="toggleCart()" class="relative p-2 hover:bg-white/5 rounded-full transition-colors group">
-                    <i data-lucide="shopping-bag" class="w-5 h-5 text-gray-300 group-hover:text-white"></i>
-                    <span id="cart-count" class="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full text-[10px] flex items-center justify-center font-bold hidden">0</span>
-                </button>
-                <div id="auth-section">
-                    <a href="login.html" class="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm font-medium transition-all">Login</a>
-                </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-dark-900/95 backdrop-blur-xl border-t border-white/10 absolute w-full left-0 top-20">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <input type="text" class="block w-full mb-4 px-4 py-3 border border-white/10 rounded-xl bg-dark-800/50 text-white placeholder-gray-500 focus:outline-none focus:border-brand-500" placeholder="Search...">
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-white/5">Home</a>
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-white/5">Store</a>
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-white/5">Library</a>
+                <a href="login.html" class="block w-full mt-4 text-center px-4 py-3 rounded-xl bg-brand-600 text-white font-bold">Login / Sign Up</a>
             </div>
         </div>
     </nav>
 
-    <div class="md:hidden mt-16 p-4 pb-0">
-        <div class="relative w-full">
-            <input type="text" onkeyup="handleSearch(this.value)" placeholder="Search..." class="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-10 text-sm">
-            <i data-lucide="search" class="absolute left-3 top-3.5 w-4 h-4 text-gray-500"></i>
+    <header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="lg:w-2/3">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-xs font-bold uppercase tracking-wider mb-6 backdrop-blur-sm animate-fade-in">
+                    <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+                    Winter Sale Live Now
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-white mb-6 leading-[1.1]">
+                    Unleash Your <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-cyan-400 neon-text">Digital Reality</span>
+                </h1>
+                
+                <p class="mt-4 text-xl text-gray-400 max-w-2xl mb-10 font-light leading-relaxed">
+                    Access a library of over 50,000 premium titles. Instant delivery, secure payments, and a community of millions.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#featured" class="px-8 py-4 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-xl shadow-lg shadow-brand-600/30 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                        Shop Now
+                    </a>
+                    <a href="#" class="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold rounded-xl backdrop-blur-sm transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                        <i data-lucide="zap" class="w-5 h-5 text-yellow-400"></i>
+                        View Deals
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden lg:block absolute top-1/2 right-0 transform -translate-y-1/2 translate-x-20 w-[800px] h-[800px] pointer-events-none opacity-60">
+             <div class="absolute inset-0 bg-gradient-to-l from-brand-600/20 to-transparent rounded-full filter blur-3xl"></div>
+             <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1000" class="relative z-10 w-full h-full object-contain mix-blend-lighten animate-float" alt="Gaming Setup">
+        </div>
+    </header>
+
+    <div class="border-y border-white/5 bg-dark-800/50 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="space-y-1">
+                    <p class="text-3xl font-bold text-white">50k+</p>
+                    <p class="text-sm text-gray-500 uppercase tracking-wider">Games Available</p>
+                </div>
+                <div class="space-y-1">
+                    <p class="text-3xl font-bold text-white">2.5M+</p>
+                    <p class="text-sm text-gray-500 uppercase tracking-wider">Active Gamers</p>
+                </div>
+                <div class="space-y-1">
+                    <p class="text-3xl font-bold text-white">0.2s</p>
+                    <p class="text-sm text-gray-500 uppercase tracking-wider">Instant Delivery</p>
+                </div>
+                <div class="space-y-1">
+                    <p class="text-3xl font-bold text-white">24/7</p>
+                    <p class="text-sm text-gray-500 uppercase tracking-wider">Live Support</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <main class="max-w-7xl mx-auto px-4 pt-8 md:pt-24">
-        
-        <div class="glass rounded-2xl p-8 mb-12 relative overflow-hidden group">
-            <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-brand-600/20 to-transparent"></div>
-            <div class="relative z-10 max-w-xl">
-                <span class="inline-block px-3 py-1 rounded-full bg-brand-500/20 text-brand-500 text-xs font-bold mb-4 border border-brand-500/20">NEW ARRIVAL</span>
-                <h1 class="text-4xl md:text-6xl font-bold mb-4 leading-tight">Cyber Future <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-cyan-400">2078</span></h1>
-                <p class="text-gray-400 mb-6 text-sm md:text-base">Experience the next generation of open-world RPG. Ray-tracing enabled, AI-driven NPCs.</p>
-                <button onclick="addToCart({id:'hero-1', name:'Cyber Future 2078', price: 59.99, image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=200'})" class="px-6 py-3 bg-brand-600 hover:bg-brand-500 text-white rounded-xl font-semibold shadow-lg shadow-brand-600/25 transition-all transform active:scale-95 flex items-center gap-2">
-                    <i data-lucide="shopping-cart" class="w-4 h-4"></i> Pre-Order Now
-                </button>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+            <h2 class="text-3xl font-bold text-white flex items-center gap-3">
+                <span class="w-1.5 h-8 bg-brand-500 rounded-full"></span>
+                Trending Now
+            </h2>
+
+            <div class="flex overflow-x-auto gap-3 pb-2 md:pb-0 scrollbar-hide mask-fade">
+                <button class="px-5 py-2.5 rounded-full bg-brand-600 text-white font-medium text-sm whitespace-nowrap shadow-lg shadow-brand-600/20">All Games</button>
+                <button class="px-5 py-2.5 rounded-full bg-dark-800 border border-white/10 text-gray-300 font-medium text-sm whitespace-nowrap hover:bg-white/10 hover:text-white transition-all">Action RPG</button>
+                <button class="px-5 py-2.5 rounded-full bg-dark-800 border border-white/10 text-gray-300 font-medium text-sm whitespace-nowrap hover:bg-white/10 hover:text-white transition-all">Strategy</button>
+                <button class="px-5 py-2.5 rounded-full bg-dark-800 border border-white/10 text-gray-300 font-medium text-sm whitespace-nowrap hover:bg-white/10 hover:text-white transition-all">FPS</button>
+                <button class="px-5 py-2.5 rounded-full bg-dark-800 border border-white/10 text-gray-300 font-medium text-sm whitespace-nowrap hover:bg-white/10 hover:text-white transition-all">Indie</button>
+                <button class="px-5 py-2.5 rounded-full bg-dark-800 border border-white/10 text-gray-300 font-medium text-sm whitespace-nowrap hover:bg-white/10 hover:text-white transition-all">Sports</button>
             </div>
-            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=800" class="absolute top-1/2 -right-20 md:-right-10 w-[300px] md:w-[500px] transform -translate-y-1/2 rotate-[-15deg] group-hover:rotate-0 transition-all duration-700 opacity-60 mix-blend-lighten pointer-events-none">
         </div>
 
-        <div class="flex overflow-x-auto gap-3 pb-6 scrollbar-hide mb-4">
-            <button class="px-4 py-2 rounded-full bg-white text-black font-medium text-sm whitespace-nowrap">All Games</button>
-            <button class="px-4 py-2 rounded-full glass hover:bg-white/10 text-gray-300 text-sm whitespace-nowrap transition-colors">Action</button>
-            <button class="px-4 py-2 rounded-full glass hover:bg-white/10 text-gray-300 text-sm whitespace-nowrap transition-colors">RPG</button>
-            <button class="px-4 py-2 rounded-full glass hover:bg-white/10 text-gray-300 text-sm whitespace-nowrap transition-colors">Strategy</button>
-            <button class="px-4 py-2 rounded-full glass hover:bg-white/10 text-gray-300 text-sm whitespace-nowrap transition-colors">Subscriptions</button>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="featured">
+
+            <div class="glass-card rounded-2xl overflow-hidden group flex flex-col h-full relative">
+                <div class="absolute top-3 left-3 z-10">
+                    <span class="px-2 py-1 bg-red-600 text-white text-[10px] font-bold uppercase rounded">-40%</span>
+                </div>
+                <div class="h-56 relative overflow-hidden bg-gray-800">
+                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=600" alt="Game" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                        <button class="px-6 py-2 bg-white text-black font-bold rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Quick View</button>
+                    </div>
+                </div>
+                <div class="p-5 flex-1 flex flex-col">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold text-brand-400 uppercase tracking-wide">RPG</span>
+                        <div class="flex items-center text-yellow-400 text-xs gap-1">
+                            <i data-lucide="star" class="w-3 h-3 fill-current"></i> 4.9
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1 group-hover:text-brand-400 transition-colors">Cyber Future 2077</h3>
+                    <p class="text-sm text-gray-400 mb-4 line-clamp-2">Explore a neon-drenched metropolis in this open-world masterpiece.</p>
+                    <div class="mt-auto flex items-center justify-between pt-4 border-t border-white/10">
+                        <div class="flex flex-col">
+                            <span class="text-xs text-gray-500 line-through">$59.99</span>
+                            <span class="text-xl font-bold text-white">$35.99</span>
+                        </div>
+                        <button class="w-10 h-10 rounded-lg bg-brand-600 hover:bg-brand-500 flex items-center justify-center text-white transition-colors shadow-lg shadow-brand-600/20">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl overflow-hidden group flex flex-col h-full relative">
+                <div class="absolute top-3 left-3 z-10">
+                    <span class="px-2 py-1 bg-green-600 text-white text-[10px] font-bold uppercase rounded">NEW</span>
+                </div>
+                <div class="h-56 relative overflow-hidden bg-gray-800">
+                    <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=600" alt="Game" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="p-5 flex-1 flex flex-col">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold text-brand-400 uppercase tracking-wide">FPS</span>
+                        <div class="flex items-center text-yellow-400 text-xs gap-1">
+                            <i data-lucide="star" class="w-3 h-3 fill-current"></i> 4.7
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1 group-hover:text-brand-400 transition-colors">Tactical Ops III</h3>
+                    <p class="text-sm text-gray-400 mb-4 line-clamp-2">High-stakes tactical shooter. Team up and secure the objective.</p>
+                    <div class="mt-auto flex items-center justify-between pt-4 border-t border-white/10">
+                        <div class="flex flex-col">
+                            <span class="text-xl font-bold text-white">$69.99</span>
+                        </div>
+                        <button class="w-10 h-10 rounded-lg bg-brand-600 hover:bg-brand-500 flex items-center justify-center text-white transition-colors shadow-lg shadow-brand-600/20">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl overflow-hidden group flex flex-col h-full">
+                <div class="h-56 relative overflow-hidden bg-gray-800">
+                    <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=600" alt="Game" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="p-5 flex-1 flex flex-col">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold text-brand-400 uppercase tracking-wide">Action</span>
+                        <div class="flex items-center text-yellow-400 text-xs gap-1">
+                            <i data-lucide="star" class="w-3 h-3 fill-current"></i> 4.8
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1 group-hover:text-brand-400 transition-colors">Elden Souls</h3>
+                    <p class="text-sm text-gray-400 mb-4 line-clamp-2">A dark fantasy epic. Challenge gods and reclaim your lost honor.</p>
+                    <div class="mt-auto flex items-center justify-between pt-4 border-t border-white/10">
+                        <div class="flex flex-col">
+                            <span class="text-xl font-bold text-white">$49.99</span>
+                        </div>
+                        <button class="w-10 h-10 rounded-lg bg-brand-600 hover:bg-brand-500 flex items-center justify-center text-white transition-colors shadow-lg shadow-brand-600/20">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl overflow-hidden group flex flex-col h-full">
+                <div class="h-56 relative overflow-hidden bg-gray-800">
+                    <img src="https://images.unsplash.com/photo-1533236897111-3e94666b2edf?auto=format&fit=crop&q=80&w=600" alt="Game" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="p-5 flex-1 flex flex-col">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold text-brand-400 uppercase tracking-wide">Strategy</span>
+                        <div class="flex items-center text-yellow-400 text-xs gap-1">
+                            <i data-lucide="star" class="w-3 h-3 fill-current"></i> 4.5
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1 group-hover:text-brand-400 transition-colors">Galactic Wars</h3>
+                    <p class="text-sm text-gray-400 mb-4 line-clamp-2">Command your fleet and conquer the galaxy in real-time strategy.</p>
+                    <div class="mt-auto flex items-center justify-between pt-4 border-t border-white/10">
+                        <div class="flex flex-col">
+                            <span class="text-xs text-gray-500 line-through">$39.99</span>
+                            <span class="text-xl font-bold text-white">$19.99</span>
+                        </div>
+                        <button class="w-10 h-10 rounded-lg bg-brand-600 hover:bg-brand-500 flex items-center justify-center text-white transition-colors shadow-lg shadow-brand-600/20">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl overflow-hidden group flex flex-col h-full">
+                <div class="h-56 relative overflow-hidden bg-gray-800">
+                    <img src="https://images.unsplash.com/photo-1519669556878-63bdad8a1a49?auto=format&fit=crop&q=80&w=600" alt="Game" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="p-5 flex-1 flex flex-col">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold text-brand-400 uppercase tracking-wide">Adventure</span>
+                        <div class="flex items-center text-yellow-400 text-xs gap-1">
+                            <i data-lucide="star" class="w-3 h-3 fill-current"></i> 4.9
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1 group-hover:text-brand-400 transition-colors">Assassin's Legacy</h3>
+                    <p class="text-sm text-gray-400 mb-4 line-clamp-2">Uncover the secrets of the past in this historical open world.</p>
+                    <div class="mt-auto flex items-center justify-between pt-4 border-t border-white/10">
+                        <div class="flex flex-col">
+                            <span class="text-xl font-bold text-white">$59.99</span>
+                        </div>
+                        <button class="w-10 h-10 rounded-lg bg-brand-600 hover:bg-brand-500 flex items-center justify-center text-white transition-colors shadow-lg shadow-brand-600/20">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl overflow-hidden group flex flex-col h-full">
+                <div class="h-56 relative overflow-hidden bg-gray-800">
+                    <img src="https://images.unsplash.com/photo-1595769816263-9b910be24d5f?auto=format&fit=crop&q=80&w=600" alt="Game" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="p-5 flex-1 flex flex-col">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold text-brand-400 uppercase tracking-wide">Racing</span>
+                        <div class="flex items-center text-yellow-400 text-xs gap-1">
+                            <i data-lucide="star" class="w-3 h-3 fill-current"></i> 4.6
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1 group-hover:text-brand-400 transition-colors">Speed Demon</h3>
+                    <p class="text-sm text-gray-400 mb-4 line-clamp-2">High octane street racing with deep customization options.</p>
+                    <div class="mt-auto flex items-center justify-between pt-4 border-t border-white/10">
+                        <div class="flex flex-col">
+                            <span class="text-xl font-bold text-white">$29.99</span>
+                        </div>
+                        <button class="w-10 h-10 rounded-lg bg-brand-600 hover:bg-brand-500 flex items-center justify-center text-white transition-colors shadow-lg shadow-brand-600/20">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl overflow-hidden group flex flex-col h-full">
+                <div class="h-56 relative overflow-hidden bg-gray-800">
+                    <img src="https://images.unsplash.com/photo-1627856014759-2a28d54301e3?auto=format&fit=crop&q=80&w=600" alt="Game" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="p-5 flex-1 flex flex-col">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold text-brand-400 uppercase tracking-wide">Horror</span>
+                        <div class="flex items-center text-yellow-400 text-xs gap-1">
+                            <i data-lucide="star" class="w-3 h-3 fill-current"></i> 4.4
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1 group-hover:text-brand-400 transition-colors">Zombie Outbreak</h3>
+                    <p class="text-sm text-gray-400 mb-4 line-clamp-2">Survive the apocalypse with friends in this co-op shooter.</p>
+                    <div class="mt-auto flex items-center justify-between pt-4 border-t border-white/10">
+                        <div class="flex flex-col">
+                            <span class="text-xs text-gray-500 line-through">$24.99</span>
+                            <span class="text-xl font-bold text-white">$14.99</span>
+                        </div>
+                        <button class="w-10 h-10 rounded-lg bg-brand-600 hover:bg-brand-500 flex items-center justify-center text-white transition-colors shadow-lg shadow-brand-600/20">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl overflow-hidden group flex flex-col h-full">
+                <div class="h-56 relative overflow-hidden bg-gray-800">
+                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=600" alt="Game" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="p-5 flex-1 flex flex-col">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold text-brand-400 uppercase tracking-wide">Indie</span>
+                        <div class="flex items-center text-yellow-400 text-xs gap-1">
+                            <i data-lucide="star" class="w-3 h-3 fill-current"></i> 4.9
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1 group-hover:text-brand-400 transition-colors">Pixel Dungeon</h3>
+                    <p class="text-sm text-gray-400 mb-4 line-clamp-2">A roguelike crawler with infinite replayability.</p>
+                    <div class="mt-auto flex items-center justify-between pt-4 border-t border-white/10">
+                        <div class="flex flex-col">
+                            <span class="text-xl font-bold text-white">$14.99</span>
+                        </div>
+                        <button class="w-10 h-10 rounded-lg bg-brand-600 hover:bg-brand-500 flex items-center justify-center text-white transition-colors shadow-lg shadow-brand-600/20">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <div id="product-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            <div class="col-span-full h-40 flex items-center justify-center">
-                <div class="loader"></div>
-            </div>
+        <div class="mt-16 text-center">
+            <button class="px-8 py-3 bg-dark-800 hover:bg-dark-900 border border-white/10 rounded-full text-white font-medium transition-all transform hover:scale-105">
+                Load More Games
+            </button>
         </div>
 
     </main>
 
-    <div id="cart-drawer" class="fixed inset-0 z-[60] pointer-events-none">
-        <div id="cart-backdrop" onclick="toggleCart()" class="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300 pointer-events-auto hidden"></div>
-        <div id="cart-panel" class="absolute top-0 right-0 w-full max-w-md h-full bg-[#0f172a] border-l border-white/10 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col pointer-events-auto">
-            
-            <div class="p-5 border-b border-white/10 flex justify-between items-center bg-[#0f172a]/90 backdrop-blur">
-                <h2 class="font-bold text-lg flex items-center gap-2"><i data-lucide="shopping-bag" class="w-5 h-5 text-brand-500"></i> Your Cart</h2>
-                <button onclick="toggleCart()" class="p-2 hover:bg-white/5 rounded-lg text-gray-400"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-
-            <div id="cart-items" class="flex-1 overflow-y-auto p-5 space-y-4">
-                <div class="text-center text-gray-500 mt-20">Your cart is empty.</div>
-            </div>
-
-            <div id="cart-recommendations" class="px-5 py-3 bg-brand-900/10 border-y border-white/5 hidden">
-                <p class="text-xs text-brand-400 font-bold mb-2 uppercase tracking-wider flex items-center gap-1"><i data-lucide="sparkles" class="w-3 h-3"></i> AI Suggests</p>
-                <div class="flex gap-3 overflow-x-auto pb-1 scrollbar-hide" id="rec-items"></div>
-            </div>
-
-            <div class="p-5 border-t border-white/10 bg-[#0f172a]">
-                <div class="flex justify-between mb-4 text-gray-400 text-sm">
-                    <span>Subtotal</span>
-                    <span id="cart-total" class="text-white font-bold">$0.00</span>
-                </div>
-                <a href="checkout.html" class="block w-full py-3 bg-white text-black text-center font-bold rounded-xl hover:bg-gray-200 transition-colors">Checkout</a>
-            </div>
+    <section class="relative py-20 overflow-hidden">
+        <div class="absolute inset-0 bg-brand-600/10 skew-y-3 transform origin-bottom-left"></div>
+        <div class="max-w-4xl mx-auto px-4 relative z-10 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Join the <span class="text-brand-400">PlayWithEase</span> Community</h2>
+            <p class="text-gray-400 mb-8 max-w-xl mx-auto">Get exclusive deals, early access to new releases, and weekly gaming news delivered straight to your inbox.</p>
+            <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                <input type="email" placeholder="Enter your email" class="flex-1 px-5 py-3 rounded-xl bg-dark-900 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-brand-500">
+                <button class="px-6 py-3 bg-white text-dark-900 font-bold rounded-xl hover:bg-gray-200 transition-colors">Subscribe</button>
+            </form>
         </div>
-    </div>
+    </section>
 
-    <div class="fixed bottom-20 md:bottom-6 right-6 z-40">
-        <div id="ai-chat-window" class="hidden flex-col w-80 h-96 glass rounded-2xl mb-4 overflow-hidden border border-brand-500/30 shadow-[0_0_30px_rgba(139,92,246,0.2)] animate-slide-up">
-            <div class="bg-brand-600 p-4 flex justify-between items-center">
-                <span class="font-bold flex items-center gap-2"><i data-lucide="bot" class="w-4 h-4"></i> Ease AI</span>
-                <button onclick="toggleChat()" class="text-white/70 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
-            </div>
-            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-sm">
-                <div class="bg-white/10 p-2 rounded-lg rounded-tl-none self-start max-w-[85%]">Hello! I'm your AI gaming assistant. Looking for an RPG or maybe a shooter today?</div>
-            </div>
-            <div class="p-3 border-t border-white/10 bg-black/20">
-                <form onsubmit="handleAIChat(event)" class="relative">
-                    <input type="text" id="ai-input" placeholder="Ask anything..." class="w-full bg-white/5 border border-white/10 rounded-lg py-2 pl-3 pr-8 text-xs focus:outline-none focus:border-brand-500">
-                    <button type="submit" class="absolute right-2 top-1.5 text-brand-500 hover:text-white"><i data-lucide="send" class="w-4 h-4"></i></button>
-                </form>
-            </div>
-        </div>
-        <button onclick="toggleChat()" class="w-12 h-12 bg-gradient-to-r from-brand-600 to-indigo-600 rounded-full flex items-center justify-center shadow-lg shadow-brand-500/40 hover:scale-110 transition-transform">
-            <i data-lucide="message-square" class="w-6 h-6 text-white"></i>
-        </button>
-    </div>
-
-    <div class="md:hidden fixed bottom-0 w-full glass-nav flex justify-around p-3 z-50 border-t border-white/10">
-        <a href="index.html" class="flex flex-col items-center text-brand-500"><i data-lucide="home" class="w-5 h-5"></i><span class="text-[10px] mt-1">Store</span></a>
-        <button onclick="toggleCart()" class="flex flex-col items-center text-gray-400 hover:text-white"><i data-lucide="shopping-bag" class="w-5 h-5"></i><span class="text-[10px] mt-1">Cart</span></button>
-        <a href="profile.html" class="flex flex-col items-center text-gray-400 hover:text-white"><i data-lucide="user" class="w-5 h-5"></i><span class="text-[10px] mt-1">Profile</span></a>
-    </div>
-
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, collection, getDocs, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
-            authDomain: "playwithease.firebaseapp.com",
-            projectId: "playwithease",
-            storageBucket: "playwithease.appspot.com",
-            messagingSenderId: "189729941006",
-            appId: "1:189729941006:web:362653774b92416c357e5f",
-            measurementId: "G-1C3B31KQ7C"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        // --- STATE MANAGEMENT ---
-        let cart = JSON.parse(localStorage.getItem('pwe_cart')) || [];
-        let products = [
-            { id: '1', name: 'Elden Ring: DLC', price: 39.99, category: 'RPG', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=500&q=80', tags: ['Hardcore'] },
-            { id: '2', name: 'Cyberpunk 2077', price: 59.99, category: 'Action', image: 'https://images.unsplash.com/photo-1533236897111-3e94666b2edf?w=500&q=80', tags: ['Futuristic'] },
-            { id: '3', name: 'Valorant Points', price: 19.99, category: 'Service', image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&q=80', tags: ['Currency'] },
-            { id: '4', name: 'Call of Duty: MW3', price: 69.99, category: 'Shooter', image: 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=500&q=80', tags: ['Multiplayer'] }
-        ];
-
-        // --- UI FUNCTIONS ---
-        window.toggleCart = () => {
-            const backdrop = document.getElementById('cart-backdrop');
-            const panel = document.getElementById('cart-panel');
-            
-            if (backdrop.classList.contains('hidden')) {
-                backdrop.classList.remove('hidden');
-                setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
-                panel.classList.remove('translate-x-full');
-            } else {
-                backdrop.classList.add('opacity-0');
-                panel.classList.add('translate-x-full');
-                setTimeout(() => backdrop.classList.add('hidden'), 300);
-            }
-            renderCart();
-            recommendProducts();
-        };
-
-        window.addToCart = (product) => {
-            const existing = cart.find(x => x.id === product.id);
-            if (existing) existing.qty++;
-            else cart.push({ ...product, qty: 1 });
-            
-            saveCart();
-            showToast(`Added ${product.name}`);
-            toggleCart(); // Auto open cart
-        };
-
-        window.updateQty = (id, delta) => {
-            const item = cart.find(x => x.id === id);
-            if (item) {
-                item.qty += delta;
-                if (item.qty <= 0) cart = cart.filter(x => x.id !== id);
-                saveCart();
-                renderCart();
-            }
-        };
-
-        function saveCart() {
-            localStorage.setItem('pwe_cart', JSON.stringify(cart));
-            document.getElementById('cart-count').innerText = cart.reduce((a, b) => a + b.qty, 0);
-            document.getElementById('cart-count').classList.remove('hidden');
-            
-            // If logged in, sync to Firestore (Advanced)
-            if (auth.currentUser) {
-                setDoc(doc(db, 'users', auth.currentUser.uid), { cart }, { merge: true });
-            }
-        }
-
-        function renderCart() {
-            const container = document.getElementById('cart-items');
-            container.innerHTML = cart.length ? '' : '<div class="text-center text-gray-500 mt-20">Your cart is empty.</div>';
-            
-            let total = 0;
-            cart.forEach(item => {
-                total += item.price * item.qty;
-                container.innerHTML += `
-                    <div class="flex gap-4 items-center bg-white/5 p-3 rounded-lg animate-slide-up">
-                        <img src="${item.image}" class="w-16 h-16 object-cover rounded-md">
-                        <div class="flex-1">
-                            <h4 class="font-bold text-sm line-clamp-1">${item.name}</h4>
-                            <p class="text-brand-400 text-xs">$${item.price}</p>
-                            <div class="flex items-center gap-3 mt-2">
-                                <button onclick="updateQty('${item.id}', -1)" class="w-6 h-6 rounded bg-white/10 flex items-center justify-center text-xs hover:bg-white/20">-</button>
-                                <span class="text-xs font-mono">${item.qty}</span>
-                                <button onclick="updateQty('${item.id}', 1)" class="w-6 h-6 rounded bg-white/10 flex items-center justify-center text-xs hover:bg-white/20">+</button>
-                            </div>
+    <footer class="bg-dark-900 border-t border-white/5 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 flex items-center justify-center bg-brand-600 rounded-lg">
+                            <i data-lucide="gamepad-2" class="text-white w-5 h-5"></i>
                         </div>
+                        <span class="font-bold text-xl text-white">PlayWithEase</span>
                     </div>
-                `;
-            });
-            document.getElementById('cart-total').innerText = `$${total.toFixed(2)}`;
-        }
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        The ultimate destination for digital gaming. We provide instant keys, secure transactions, and 24/7 support for gamers worldwide.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-brand-600 hover:text-white transition-all"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-brand-600 hover:text-white transition-all"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-brand-600 hover:text-white transition-all"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-brand-600 hover:text-white transition-all"><i data-lucide="youtube" class="w-4 h-4"></i></a>
+                    </div>
+                </div>
 
-        // --- AUTH ---
-        onAuthStateChanged(auth, async (user) => {
-            const authDiv = document.getElementById('auth-section');
-            if (user) {
-                // Check if admin
-                const userDoc = await getDoc(doc(db, "users", user.uid));
-                const isAdmin = userDoc.exists() && userDoc.data().role === 'admin';
-                
-                authDiv.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        ${isAdmin ? '<a href="admin.html" class="text-xs text-brand-400 uppercase font-bold tracking-wider hover:text-white">Admin Panel</a>' : ''}
-                        <img src="${user.photoURL || 'https://ui-avatars.com/api/?name='+user.email}" class="w-8 h-8 rounded-full border border-white/20">
-                        <button id="logout-btn" class="text-xs text-gray-400 hover:text-white">Logout</button>
-                    </div>
-                `;
-                document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
+                <div>
+                    <h4 class="text-white font-bold mb-6">Quick Links</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">New Releases</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Best Sellers</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Upcoming Games</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">PC Games</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Console Games</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-6">Support</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Order Status</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Returns & Refunds</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Sitemap</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-6">Legal</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Cookie Policy</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Acceptable Use</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-500 text-sm text-center md:text-left">
+                    &copy; 2026 PlayWithEase Inc. All rights reserved.
+                </p>
+                <div class="flex gap-4 opacity-50 grayscale hover:grayscale-0 transition-all duration-300">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" class="h-6" alt="PayPal">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" class="h-6" alt="Mastercard">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" class="h-6" alt="Visa">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('bg-dark-900/90', 'shadow-2xl');
+                navbar.classList.remove('glass');
+            } else {
+                navbar.classList.remove('bg-dark-900/90', 'shadow-2xl');
+                navbar.classList.add('glass');
             }
         });
 
-        // --- APP INIT ---
-        function renderProducts(list) {
-            const grid = document.getElementById('product-grid');
-            grid.innerHTML = list.map(p => `
-                <div class="glass rounded-xl overflow-hidden group hover:bg-white/5 transition-all duration-300 neon-glow">
-                    <div class="relative h-40 overflow-hidden">
-                        <img src="${p.image}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors"></div>
-                        <button onclick='addToCart(${JSON.stringify(p)})' class="absolute bottom-2 right-2 w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center shadow-lg translate-y-10 group-hover:translate-y-0 transition-transform duration-300">
-                            <i data-lucide="plus" class="w-4 h-4 text-white"></i>
-                        </button>
-                    </div>
-                    <div class="p-4">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <span class="text-[10px] text-brand-400 uppercase tracking-wider font-bold">${p.category}</span>
-                                <h3 class="font-bold text-sm leading-tight text-gray-100">${p.name}</h3>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center mt-3">
-                            <span class="text-lg font-bold text-white">$${p.price}</span>
-                            <div class="flex gap-1">
-                                ${p.tags.map(t => `<span class="text-[10px] bg-white/5 px-2 py-0.5 rounded text-gray-400">${t}</span>`).join('')}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-            lucide.createIcons();
-        }
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
 
-        // --- AI FEATURES ---
-        window.toggleChat = () => {
-            const chat = document.getElementById('ai-chat-window');
-            chat.classList.toggle('hidden');
-            chat.classList.toggle('flex');
-        };
-
-        window.handleAIChat = (e) => {
-            e.preventDefault();
-            const input = document.getElementById('ai-input');
-            const msgContainer = document.getElementById('chat-messages');
-            const text = input.value.trim();
-            if(!text) return;
-
-            // User msg
-            msgContainer.innerHTML += `<div class="bg-brand-600/20 p-2 rounded-lg rounded-tr-none self-end max-w-[85%] border border-brand-500/20">${text}</div>`;
-            input.value = '';
-            msgContainer.scrollTop = msgContainer.scrollHeight;
-
-            // Mock AI Response
-            setTimeout(() => {
-                let reply = "I'm checking the database...";
-                if(text.toLowerCase().includes('rpg')) reply = "For RPGs, I highly recommend 'Elden Ring: DLC'. It's currently trending!";
-                else if(text.toLowerCase().includes('price')) reply = "We have deals starting at $19.99 today.";
-                else reply = "That's a great choice! Check our Featured section for similar titles.";
-
-                msgContainer.innerHTML += `<div class="bg-white/10 p-2 rounded-lg rounded-tl-none self-start max-w-[85%] animate-pulse">${reply}</div>`;
-                msgContainer.scrollTop = msgContainer.scrollHeight;
-            }, 1000);
-        };
-
-        function recommendProducts() {
-            // Simple logic: if cart has items, recommend products not in cart
-            const recSection = document.getElementById('cart-recommendations');
-            if(cart.length === 0) { recSection.classList.add('hidden'); return; }
-            
-            const recs = products.filter(p => !cart.find(c => c.id === p.id)).slice(0, 2);
-            if(recs.length > 0) {
-                recSection.classList.remove('hidden');
-                document.getElementById('rec-items').innerHTML = recs.map(p => `
-                    <div onclick='addToCart(${JSON.stringify(p)})' class="min-w-[120px] bg-black/40 rounded-lg p-2 cursor-pointer hover:bg-white/5 border border-white/5">
-                        <img src="${p.image}" class="w-full h-16 object-cover rounded mb-2 opacity-70">
-                        <p class="text-xs font-bold truncate">${p.name}</p>
-                        <p class="text-xs text-brand-400">$${p.price}</p>
-                    </div>
-                `).join('');
-            }
-        }
-
-        function showToast(msg) {
-            const toast = document.createElement('div');
-            toast.className = 'fixed top-20 right-4 bg-brand-600 text-white px-4 py-2 rounded-lg shadow-xl z-[70] flex items-center gap-2 animate-float';
-            toast.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i> ${msg}`;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 2500);
-        }
-
-        // Init
-        renderProducts(products);
-        document.getElementById('cart-count').innerText = cart.reduce((a, b) => a + b.qty, 0);
-        if(cart.length > 0) document.getElementById('cart-count').classList.remove('hidden');
-        lucide.createIcons();
-
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
     </script>
 </body>
 </html>
