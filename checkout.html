@@ -10,42 +10,44 @@
     <nav>
         <div class="container nav-content">
             <a href="index.html" class="logo">PlayWithEase</a>
+            <span>Secure Checkout 🔒</span>
         </div>
     </nav>
 
     <div class="container">
-        <h2 class="section-title" style="margin-top:30px;">Secure Checkout</h2>
-        
         <div class="checkout-grid">
             <div>
-                <div style="background:var(--surface); padding:20px; border-radius:12px; border:1px solid var(--border);">
-                    <h3 style="margin-bottom:15px;">UPI Payment</h3>
-                    <div class="qr-box">
-                        <img id="upiQr" src="" alt="UPI QR Code">
-                        <p style="color:#333; margin-top:10px; font-size:0.9rem;">Scan to Pay</p>
+                <h2 style="margin-bottom: 20px;">Payment Details</h2>
+                <div class="auth-box" style="text-align: center; margin: 0;">
+                    <p style="margin-bottom: 10px; color: var(--text-muted);">Scan via any UPI App</p>
+                    <div class="qr-container">
+                        <img id="upiQr" src="" alt="QR Code" width="200" height="200">
                     </div>
-                    <div class="form-group">
-                        <label>UPI ID</label>
-                        <input type="text" value="shayanff98@okhdfcbank" readonly style="background:var(--bg); cursor:copy;">
+                    <div style="background: var(--bg); padding: 10px; border-radius: 8px; margin-top: 10px; font-family: monospace;">
+                        shayanff98@okhdfcbank
                     </div>
                 </div>
             </div>
 
             <div>
-                <div style="background:var(--surface); padding:20px; border-radius:12px; border:1px solid var(--border);">
-                    <h3 style="margin-bottom:15px;">Order Summary</h3>
-                    <div id="cartItemsContainer"></div> <div style="border-top:1px solid var(--border); margin-top:20px; padding-top:20px;">
-                        <div style="display:flex; justify-content:space-between; font-size:1.2rem; font-weight:bold;">
-                            <span>Total Pay</span>
-                            <span id="checkoutTotal">₹0</span>
+                <h2 style="margin-bottom: 20px;">Order Summary</h2>
+                <div style="background: var(--surface); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border);">
+                    <div class="drawer-body" id="cartItems" style="max-height: 300px; overflow-y: auto; margin-bottom: 20px;">
                         </div>
+                    
+                    <div style="border-top: 1px solid var(--border); padding-top: 20px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--text-muted);">
+                            <span>Subtotal</span>
+                            <span class="cart-total">₹0</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 1.5rem; font-weight: bold;">
+                            <span>Total</span>
+                            <span class="cart-total" style="color: var(--primary);">₹0</span>
+                        </div>
+                        <button id="confirmBtn" class="btn btn-primary" style="width: 100%; padding: 16px;">
+                            I have made the payment
+                        </button>
                     </div>
-                    <button id="confirmOrderBtn" class="btn btn-primary" style="width:100%; margin-top:20px; padding:15px;">
-                        I have made the payment
-                    </button>
-                    <p style="font-size:0.8rem; color:var(--text-muted); margin-top:10px; text-align:center;">
-                        Click above after scanning QR code
-                    </p>
                 </div>
             </div>
         </div>
