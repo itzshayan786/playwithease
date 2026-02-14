@@ -1,47 +1,36 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Profile | PlayWithEase</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>body { background: #020617; color: white; }</style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | PlayWithEase</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="flex flex-col md:flex-row min-h-screen">
-
-    <aside class="w-full md:w-64 bg-[#0f172a] border-r border-white/10 p-6 flex flex-col">
-        <h1 class="font-bold text-xl mb-8 flex items-center gap-2"><i data-lucide="gamepad-2" class="text-indigo-500"></i> PlayWithEase</h1>
-        <nav class="space-y-2 flex-1">
-            <a href="#" class="block px-4 py-2 bg-indigo-600/20 text-indigo-300 rounded-lg border border-indigo-500/30 font-bold">Dashboard</a>
-            <a href="index.html" class="block px-4 py-2 text-gray-400 hover:text-white">Store</a>
-        </nav>
-        <button onclick="window.doLogout()" class="flex items-center gap-2 text-red-400 hover:bg-red-500/10 p-2 rounded-lg transition-colors w-full">
-            <i data-lucide="log-out"></i> Logout
-        </button>
-    </aside>
-
-    <main class="flex-1 p-8">
-        <header class="flex justify-between items-center mb-8">
-            <h2 class="text-2xl font-bold">My Dashboard</h2>
-            <div class="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center font-bold">U</div>
-        </header>
-
-        <div class="bg-[#0f172a] border border-white/10 rounded-2xl p-6 max-w-2xl">
-            <h3 class="text-lg font-bold mb-4 border-b border-white/5 pb-2">Account Info</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="text-xs text-gray-500 uppercase font-bold">Email</label>
-                    <p id="user-email" class="text-lg">Loading...</p>
-                </div>
-                <div>
-                    <label class="text-xs text-gray-500 uppercase font-bold">User ID</label>
-                    <p id="user-id" class="text-sm font-mono text-gray-400">...</p>
-                </div>
+<body>
+    <nav>
+        <div class="container nav-content">
+            <a href="index.html" class="logo">PlayWithEase</a>
+            <div class="nav-links">
+                <button onclick="handleLogout()" class="btn btn-secondary" style="font-size:0.8rem">Logout</button>
             </div>
         </div>
-    </main>
+    </nav>
+
+    <div class="container" style="margin-top:40px;">
+        <div style="background:var(--surface); padding:30px; border-radius:12px; margin-bottom:30px; display:flex; align-items:center; gap:20px;">
+            <div style="width:60px; height:60px; background:var(--primary); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">👤</div>
+            <div>
+                <h2 id="userEmail">Loading...</h2>
+                <span style="color:var(--success);">Verified Member</span>
+            </div>
+        </div>
+
+        <h3 class="section-title">Order History</h3>
+        <div id="orderHistory" style="min-height:200px;">
+            <p style="color:var(--text-muted)">Loading history...</p>
+        </div>
+    </div>
 
     <script type="module" src="app.js"></script>
-    <script>lucide.createIcons();</script>
 </body>
 </html>
