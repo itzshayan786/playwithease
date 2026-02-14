@@ -3,17 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Success</title>
+    <title>Success | PlayWithEase</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body style="display:flex; align-items:center; justify-content:center; height:100vh; text-align:center;">
-    <div class="container">
-        <h1 style="font-size:3rem; color:var(--primary)">Order Placed!</h1>
-        <p id="orderInfo" style="margin:20px 0; color:#aaa;"></p>
-        <a id="waBtn" href="#" class="btn btn-primary" style="background:#25D366;">Confirm on WhatsApp</a>
-        <br><br>
-        <a href="index.html" class="btn btn-secondary">Continue Shopping</a>
+<body style="display: flex; align-items: center; justify-content: center; height: 100vh;">
+
+    <div class="container" style="text-align: center; max-width: 500px;">
+        <div style="width: 80px; height: 80px; background: #00b894; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; font-size: 2.5rem; color: white;">
+            ✓
+        </div>
+        
+        <h1 style="margin-bottom: 10px;">Order Successful!</h1>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">
+            Order ID: <span id="orderIdDisplay" style="color: var(--text); font-weight: bold;"></span>
+        </p>
+
+        <div style="background: var(--surface); padding: 20px; border-radius: var(--radius); margin-bottom: 30px;">
+            <p style="margin-bottom: 15px;">To receive your digital code instantly, please confirm this order on WhatsApp.</p>
+            <a id="waLink" href="#" target="_blank" class="btn" style="background: #25D366; color: white; width: 100%;">
+                Verify on WhatsApp 💬
+            </a>
+        </div>
+
+        <a href="index.html" class="btn btn-secondary">Return to Store</a>
     </div>
+
     <script type="module" src="app.js"></script>
 </body>
 </html>
