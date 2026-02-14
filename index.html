@@ -24,7 +24,7 @@
                         brand: {
                             dark: '#050505',
                             surface: '#121212',
-                            accent: '#3b82f6', // Playstation Blue-ish
+                            accent: '#3b82f6', 
                             text: '#f3f4f6'
                         }
                     },
@@ -39,13 +39,8 @@
 
     <style>
         /* Custom Scrollbar Hide */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
         /* Glass Effect */
         .glass {
@@ -56,18 +51,14 @@
         }
 
         /* Card Hover Animation */
-        .game-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .game-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px -5px rgba(0,0,0,0.4);
-        }
+        .game-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .game-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px -5px rgba(0,0,0,0.4); }
 
-        body {
-            background-color: #050505;
-            color: #f3f4f6;
-        }
+        body { background-color: #050505; color: #f3f4f6; }
+        
+        /* Dropdown Animation */
+        .dropdown-enter { opacity: 0; transform: translateY(-10px); pointer-events: none; }
+        .dropdown-active { opacity: 1; transform: translateY(0); pointer-events: auto; }
     </style>
 </head>
 <body class="antialiased selection:bg-blue-500 selection:text-white">
@@ -85,16 +76,31 @@
                 <a href="#" class="text-white hover:text-blue-400 transition-colors">Store</a>
                 <a href="#ott" class="hover:text-white transition-colors">Subscriptions</a>
                 <a href="#new" class="hover:text-white transition-colors">New Releases</a>
-                <a href="#" class="hover:text-white transition-colors">Support</a>
             </div>
 
             <div class="flex items-center gap-4">
                 <button class="text-gray-400 hover:text-white transition-colors">
                     <i class="fa-solid fa-magnifying-glass text-lg"></i>
                 </button>
-                <a href="login.html" class="hidden md:block px-5 py-2 rounded-full border border-white/10 hover:bg-white hover:text-black transition-all text-sm font-medium">
-                    Log In
-                </a>
+                
+                <button id="loginBtn" class="hidden md:block px-5 py-2 rounded-full border border-white/10 hover:bg-white hover:text-black transition-all text-sm font-medium">
+                    Log In with Google
+                </button>
+
+                <div id="userProfile" class="hidden relative">
+                    <button id="userMenuBtn" class="flex items-center gap-2 px-2 py-1 rounded-full hover:bg-white/5 border border-transparent hover:border-white/10 transition-all">
+                        <img id="userAvatar" src="" class="w-8 h-8 rounded-full border border-white/20">
+                        <span id="userName" class="text-sm font-medium hidden lg:block"></span>
+                    </button>
+                    
+                    <div id="userDropdown" class="absolute right-0 mt-2 w-48 bg-[#121212] border border-white/10 rounded-xl shadow-2xl p-2 dropdown-enter transition-all duration-200">
+                        <div class="px-4 py-2 text-xs text-gray-500 border-b border-white/5 mb-2">Account</div>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/10 rounded-lg">Profile</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/10 rounded-lg">Orders</a>
+                        <button id="logoutBtn" class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 rounded-lg mt-1">Sign Out</button>
+                    </div>
+                </div>
+
                 <div class="relative cursor-pointer">
                     <i class="fa-solid fa-bag-shopping text-xl text-gray-300 hover:text-white transition-colors"></i>
                     <span class="absolute -top-1 -right-1 w-4 h-4 bg-blue-600 text-[10px] font-bold flex items-center justify-center rounded-full">0</span>
@@ -176,21 +182,6 @@
                     <h3 class="text-xl font-bold mb-1">Elden Ring: DLC</h3>
                     <div class="flex justify-between items-center mt-2">
                         <span class="text-lg font-semibold">₹2,499</span>
-                        <button class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors">
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="snap-start shrink-0 w-[280px] md:w-[320px] game-card relative group rounded-2xl overflow-hidden cursor-pointer">
-                <img src="https://images.unsplash.com/photo-1612287232817-60286063673d?q=80&w=1000&auto=format&fit=crop" class="w-full aspect-[3/4] object-cover">
-                <div class="absolute inset-0 bg-card-gradient opacity-90"></div>
-                <div class="absolute bottom-0 p-6 w-full">
-                    <span class="text-xs font-bold text-red-400 uppercase">Action</span>
-                    <h3 class="text-xl font-bold mb-1">Spider-Man 2</h3>
-                    <div class="flex justify-between items-center mt-2">
-                        <span class="text-lg font-semibold">₹3,999</span>
                         <button class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors">
                             <i class="fa-solid fa-plus"></i>
                         </button>
@@ -294,9 +285,7 @@
                 <div class="relative overflow-hidden rounded-xl aspect-[3/4] mb-3">
                     <img src="https://images.unsplash.com/photo-1560253023-3ec5d502959f?q=80&w=600&auto=format&fit=crop" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110">
                     <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <button class="bg-white text-black px-4 py-2 rounded-full font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                            Add to Cart
-                        </button>
+                        <button class="bg-white text-black px-4 py-2 rounded-full font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Add to Cart</button>
                     </div>
                 </div>
                 <h3 class="font-bold text-sm truncate">Cyberpunk 2077</h3>
@@ -352,10 +341,6 @@
                 <div class="text-blue-400 font-semibold">₹4,999</div>
             </div>
         </div>
-
-        <div class="mt-12 text-center">
-            <button class="px-8 py-3 rounded-full border border-white/20 text-sm font-bold hover:bg-white hover:text-black transition-all">Load More Products</button>
-        </div>
     </section>
 
     <footer class="border-t border-white/5 bg-[#080808] pt-16 pb-8 mt-12">
@@ -364,37 +349,24 @@
                 <div class="col-span-1 md:col-span-2">
                     <h2 class="text-2xl font-bold mb-4">PlayWithEase</h2>
                     <p class="text-gray-400 max-w-sm mb-6">The ultimate digital destination for gamers. Instant delivery, secure payments, and premium support.</p>
-                    <div class="flex gap-4">
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-blue-600 transition-colors"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-pink-600 transition-colors"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-blue-800 transition-colors"><i class="fa-brands fa-discord"></i></a>
-                    </div>
                 </div>
                 <div>
                     <h3 class="font-bold mb-4">Shop</h3>
                     <ul class="space-y-2 text-gray-400 text-sm">
                         <li><a href="#" class="hover:text-white">New Releases</a></li>
                         <li><a href="#" class="hover:text-white">Best Sellers</a></li>
-                        <li><a href="#" class="hover:text-white">Discounted</a></li>
-                        <li><a href="#" class="hover:text-white">Gift Cards</a></li>
                     </ul>
                 </div>
                 <div>
                     <h3 class="font-bold mb-4">Support</h3>
                     <ul class="space-y-2 text-gray-400 text-sm">
                         <li><a href="#" class="hover:text-white">Help Center</a></li>
-                        <li><a href="#" class="hover:text-white">Order Status</a></li>
-                        <li><a href="#" class="hover:text-white">Refund Policy</a></li>
                         <li><a href="#" class="hover:text-white">Contact Us</a></li>
                     </ul>
                 </div>
             </div>
             <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
                 <p>&copy; 2024 PlayWithEase Digital Store. All rights reserved.</p>
-                <div class="flex gap-6 mt-4 md:mt-0">
-                    <a href="#" class="hover:text-white">Privacy Policy</a>
-                    <a href="#" class="hover:text-white">Terms of Service</a>
-                </div>
             </div>
         </div>
     </footer>
@@ -404,19 +376,94 @@
             <button onclick="document.getElementById('trailerModal').classList.add('hidden')" class="absolute top-4 right-4 z-10 w-10 h-10 bg-black/50 backdrop-blur rounded-full text-white flex items-center justify-center hover:bg-white hover:text-black transition-colors">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            
             <div class="w-full h-full flex items-center justify-center bg-gray-900 relative group">
                 <img src="https://images.unsplash.com/photo-1621259182902-885475665bc8?q=80&w=2070&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-50">
                 <button class="relative z-10 w-20 h-20 bg-white/20 backdrop-blur rounded-full flex items-center justify-center text-white text-2xl group-hover:scale-110 transition-transform">
                     <i class="fa-solid fa-play ml-1"></i>
                 </button>
-                <div class="absolute bottom-8 left-8">
-                    <h3 class="text-2xl font-bold">GTA VI - Official Trailer 1</h3>
-                    <p class="text-gray-300">Rockstar Games</p>
-                </div>
             </div>
         </div>
     </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // Your Config
+        const firebaseConfig = {
+          apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+          authDomain: "playwithease.firebaseapp.com",
+          projectId: "playwithease",
+          storageBucket: "playwithease.appspot.com",
+          messagingSenderId: "189729941006",
+          appId: "1:189729941006:web:362653774b92416c357e5f",
+          measurementId: "G-1C3B31KQ7C"
+        };
+
+        // Initialize
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        // DOM Elements
+        const loginBtn = document.getElementById('loginBtn');
+        const userProfile = document.getElementById('userProfile');
+        const userAvatar = document.getElementById('userAvatar');
+        const userName = document.getElementById('userName');
+        const userMenuBtn = document.getElementById('userMenuBtn');
+        const userDropdown = document.getElementById('userDropdown');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // Logic: Sign In
+        loginBtn.addEventListener('click', async () => {
+            try {
+                await signInWithPopup(auth, provider);
+            } catch (error) {
+                console.error("Login Failed", error);
+                alert("Login failed. Please try again.");
+            }
+        });
+
+        // Logic: Auth State Monitor
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Logged In
+                loginBtn.classList.add('hidden');
+                userProfile.classList.remove('hidden');
+                
+                // Set User Data
+                userName.textContent = user.displayName;
+                userAvatar.src = user.photoURL || 'https://via.placeholder.com/32';
+            } else {
+                // Logged Out
+                loginBtn.classList.remove('hidden');
+                userProfile.classList.add('hidden');
+            }
+        });
+
+        // Logic: Dropdown Toggle
+        userMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userDropdown.classList.toggle('dropdown-enter');
+            userDropdown.classList.toggle('dropdown-active');
+        });
+
+        // Close Dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userProfile.contains(e.target)) {
+                userDropdown.classList.add('dropdown-enter');
+                userDropdown.classList.remove('dropdown-active');
+            }
+        });
+
+        // Logic: Sign Out
+        logoutBtn.addEventListener('click', () => {
+            signOut(auth).then(() => {
+                userDropdown.classList.add('dropdown-enter');
+                userDropdown.classList.remove('dropdown-active');
+            });
+        });
+    </script>
 
 </body>
 </html>
