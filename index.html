@@ -2,35 +2,33 @@
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayWithEase | Premium Digital Store</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PlayWithEase | Ultimate Digital Store</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
                     colors: {
-                        brand: {
-                            dark: '#050505',
-                            surface: '#121212',
-                            accent: '#3b82f6', 
-                            text: '#f3f4f6'
-                        }
+                        bg: '#030303',
+                        surface: '#0f0f0f',
+                        primary: '#3b82f6',
+                        accent: '#8b5cf6'
                     },
-                    backgroundImage: {
-                        'hero-gradient': 'linear-gradient(to top, #050505 0%, transparent 60%)',
-                        'card-gradient': 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%)'
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'slide-up': 'slideUp 0.5s ease-out'
+                    },
+                    keyframes: {
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+                        slideUp: { '0%': { transform: 'translateY(20px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } }
                     }
                 }
             }
@@ -38,350 +36,319 @@
     </script>
 
     <style>
-        /* Custom Scrollbar Hide */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* CORE STYLES */
+        body { background-color: #030303; color: #ffffff; overflow-x: hidden; }
         
-        /* Glass Effect */
+        /* Glassmorphism */
         .glass {
-            background: rgba(18, 18, 18, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(15, 15, 15, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        /* Card Hover Animation */
-        .game-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .game-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px -5px rgba(0,0,0,0.4); }
+        /* Hide Scrollbar but keep functionality */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        body { background-color: #050505; color: #f3f4f6; }
+        /* Carousel Transitions */
+        .slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            z-index: 0;
+        }
+        .slide.active { opacity: 1; z-index: 1; }
+
+        /* Mobile Menu Animation */
+        #mobileMenu { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         
-        /* Dropdown Animation */
-        .dropdown-enter { opacity: 0; transform: translateY(-10px); pointer-events: none; }
-        .dropdown-active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        /* Card Hover */
+        .game-card:hover .play-btn { opacity: 1; transform: scale(1); }
     </style>
 </head>
-<body class="antialiased selection:bg-blue-500 selection:text-white">
+<body class="antialiased">
 
-    <nav class="fixed w-full z-50 glass transition-all duration-300">
-        <div class="max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between">
-            <a href="#" class="flex items-center gap-2 group">
-                <div class="w-8 h-8 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
-                    P
-                </div>
-                <span class="text-xl font-bold tracking-tight group-hover:text-white transition-colors">PlayWithEase</span>
-            </a>
-
-            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
-                <a href="#" class="text-white hover:text-blue-400 transition-colors">Store</a>
-                <a href="#ott" class="hover:text-white transition-colors">Subscriptions</a>
-                <a href="#new" class="hover:text-white transition-colors">New Releases</a>
-            </div>
-
-            <div class="flex items-center gap-4">
-                <button class="text-gray-400 hover:text-white transition-colors">
-                    <i class="fa-solid fa-magnifying-glass text-lg"></i>
-                </button>
+    <nav class="fixed top-0 w-full z-50 glass">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
                 
-                <button id="loginBtn" class="hidden md:block px-5 py-2 rounded-full border border-white/10 hover:bg-white hover:text-black transition-all text-sm font-medium">
-                    Log In with Google
-                </button>
+                <a href="#" class="flex items-center gap-2 z-50">
+                    <div class="w-9 h-9 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/30">P</div>
+                    <span class="text-xl font-bold tracking-tight">PlayWithEase</span>
+                </a>
 
-                <div id="userProfile" class="hidden relative">
-                    <button id="userMenuBtn" class="flex items-center gap-2 px-2 py-1 rounded-full hover:bg-white/5 border border-transparent hover:border-white/10 transition-all">
-                        <img id="userAvatar" src="" class="w-8 h-8 rounded-full border border-white/20">
-                        <span id="userName" class="text-sm font-medium hidden lg:block"></span>
-                    </button>
-                    
-                    <div id="userDropdown" class="absolute right-0 mt-2 w-48 bg-[#121212] border border-white/10 rounded-xl shadow-2xl p-2 dropdown-enter transition-all duration-200">
-                        <div class="px-4 py-2 text-xs text-gray-500 border-b border-white/5 mb-2">Account</div>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/10 rounded-lg">Profile</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/10 rounded-lg">Orders</a>
-                        <button id="logoutBtn" class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 rounded-lg mt-1">Sign Out</button>
-                    </div>
+                <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
+                    <a href="#" class="text-white transition-colors">Home</a>
+                    <a href="#store" class="hover:text-white transition-colors">Store</a>
+                    <a href="#ott" class="hover:text-white transition-colors">Subscriptions</a>
+                    <a href="#about" class="hover:text-white transition-colors">Support</a>
                 </div>
 
-                <div class="relative cursor-pointer">
-                    <i class="fa-solid fa-bag-shopping text-xl text-gray-300 hover:text-white transition-colors"></i>
-                    <span class="absolute -top-1 -right-1 w-4 h-4 bg-blue-600 text-[10px] font-bold flex items-center justify-center rounded-full">0</span>
+                <div class="flex items-center gap-4">
+                    <button class="hidden md:flex w-9 h-9 rounded-full border border-white/10 items-center justify-center hover:bg-white/10 transition-colors">
+                        <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
+                    </button>
+
+                    <div id="authContainer">
+                        <button id="loginBtn" class="bg-white text-black px-5 py-2 rounded-full font-bold text-sm hover:bg-gray-200 transition-all flex items-center gap-2">
+                            <i class="fa-brands fa-google"></i> Login
+                        </button>
+
+                        <div id="userProfile" class="hidden relative group">
+                            <button class="flex items-center gap-2 pl-2 pr-1 py-1 rounded-full border border-white/10 hover:bg-white/5 transition-all">
+                                <span id="userName" class="text-xs font-semibold px-2 hidden lg:block">User</span>
+                                <img id="userAvatar" src="" class="w-8 h-8 rounded-full border border-white/20">
+                            </button>
+                            <div class="absolute right-0 mt-2 w-48 bg-[#1a1a1a] border border-white/10 rounded-xl shadow-2xl overflow-hidden hidden group-hover:block animate-fade-in">
+                                <a href="#" class="block px-4 py-3 text-sm hover:bg-white/5 text-gray-300">My Library</a>
+                                <a href="#" class="block px-4 py-3 text-sm hover:bg-white/5 text-gray-300">Billing</a>
+                                <div class="h-px bg-white/10"></div>
+                                <button id="logoutBtn" class="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-white/5">Sign Out</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative cursor-pointer w-9 h-9 flex items-center justify-center">
+                        <i class="fa-solid fa-bag-shopping text-xl text-white"></i>
+                        <span class="absolute top-0 right-0 w-4 h-4 bg-blue-600 text-[10px] font-bold flex items-center justify-center rounded-full border border-black">0</span>
+                    </div>
+
+                    <button id="mobileMenuBtn" class="md:hidden text-2xl text-white">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <header class="relative w-full h-[85vh] min-h-[600px] overflow-hidden group">
-        <img src="https://images.unsplash.com/photo-1621259182902-885475665bc8?q=80&w=2070&auto=format&fit=crop" 
-             alt="Hero Background" 
-             class="absolute inset-0 w-full h-full object-cover transition-transform duration-[10s] group-hover:scale-105 filter brightness-75">
-        
-        <div class="absolute inset-0 bg-hero-gradient"></div>
+    <div id="mobileMenu" class="fixed inset-0 z-40 bg-black transform translate-x-full pt-24 px-6 md:hidden">
+        <div class="flex flex-col gap-6 text-xl font-medium">
+            <a href="#" class="border-b border-white/10 pb-4">Home</a>
+            <a href="#store" class="border-b border-white/10 pb-4">Store</a>
+            <a href="#ott" class="border-b border-white/10 pb-4">Subscriptions</a>
+            <a href="#" class="text-gray-400">Support</a>
+        </div>
+    </div>
 
-        <div class="absolute bottom-0 left-0 w-full p-6 md:p-12 pb-20 max-w-[1400px] mx-auto flex flex-col items-start justify-end h-full">
-            <span class="px-3 py-1 bg-blue-600 text-xs font-bold uppercase tracking-wider rounded mb-4">World Premiere</span>
-            <h1 class="text-5xl md:text-7xl font-black mb-4 leading-tight tracking-tighter">
-                GRAND THEFT <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">AUTO VI</span>
-            </h1>
-            <p class="text-gray-300 max-w-lg text-lg mb-8 leading-relaxed">
-                Welcome to Leonida. Experience the next evolution of the open-world experience with the most immersive story ever told.
-            </p>
-            <div class="flex flex-wrap gap-4">
-                <button onclick="document.getElementById('trailerModal').classList.remove('hidden')" class="px-8 py-3.5 bg-white text-black rounded-full font-bold hover:bg-gray-200 transition-transform hover:scale-105 flex items-center gap-2">
-                    <i class="fa-solid fa-play"></i> Watch Trailer
-                </button>
-                <button class="px-8 py-3.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full font-bold hover:bg-white/20 transition-all flex items-center gap-2">
-                    Pre-Order ₹5,499
-                </button>
+    <header class="relative w-full h-[90vh] min-h-[600px] overflow-hidden bg-black">
+        
+        <div class="slide active" style="background-image: url('https://images.hdqwalls.com/wallpapers/gta-vi-4k-mile-high-club-vo.jpg'); background-size: cover; background-position: center;">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#030303] via-black/40 to-black/30"></div>
+            <div class="absolute bottom-0 left-0 w-full p-6 md:p-12 pb-24 max-w-7xl mx-auto z-10">
+                <span class="inline-block px-3 py-1 bg-purple-600/80 backdrop-blur text-xs font-bold uppercase tracking-wider rounded mb-4 border border-purple-400/30">Pre-Order Now</span>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/Grand_Theft_Auto_VI.png" class="h-24 md:h-40 mb-4 object-contain opacity-90" alt="GTA VI Logo">
+                <p class="text-gray-200 max-w-xl text-lg mb-8 drop-shadow-md">Welcome to Leonida. Grand Theft Auto VI heads to the state of Leonida, home to the neon-soaked streets of Vice City.</p>
+                <div class="flex gap-4">
+                    <button onclick="playTrailer('QdBZY2fkU-0')" class="px-8 py-3 bg-white text-black rounded-full font-bold hover:scale-105 transition-transform flex items-center gap-2">
+                        <i class="fa-solid fa-play"></i> Trailer
+                    </button>
+                    <button class="px-8 py-3 bg-white/10 backdrop-blur border border-white/20 rounded-full font-bold hover:bg-white/20 transition-all">
+                        ₹5,499
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" style="background-image: url('https://images.hdqwalls.com/wallpapers/forza-horizon-5-4k-game-2022-cl.jpg'); background-size: cover; background-position: center;">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#030303] via-black/40 to-black/30"></div>
+            <div class="absolute bottom-0 left-0 w-full p-6 md:p-12 pb-24 max-w-7xl mx-auto z-10">
+                <span class="inline-block px-3 py-1 bg-blue-600/80 backdrop-blur text-xs font-bold uppercase tracking-wider rounded mb-4">Coming Soon</span>
+                <h1 class="text-6xl font-black italic mb-4">FORZA <span class="text-blue-500">HORIZON 6</span></h1>
+                <p class="text-gray-200 max-w-xl text-lg mb-8 drop-shadow-md">Explore the vibrant landscapes of Japan in the most realistic racing experience ever created.</p>
+                <div class="flex gap-4">
+                    <button onclick="playTrailer('XG1Ll2CVhug')" class="px-8 py-3 bg-white text-black rounded-full font-bold hover:scale-105 transition-transform flex items-center gap-2">
+                        <i class="fa-solid fa-play"></i> Trailer
+                    </button>
+                    <button class="px-8 py-3 bg-white/10 backdrop-blur border border-white/20 rounded-full font-bold hover:bg-white/20 transition-all">
+                        Pre-Order
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute right-6 top-1/2 -translate-y-1/2 flex flex-col gap-4 z-20">
+            <div class="w-1 h-12 bg-white/20 rounded-full overflow-hidden">
+                <div class="w-full h-1/2 bg-white rounded-full"></div>
             </div>
         </div>
     </header>
 
-    <section class="max-w-[1400px] mx-auto px-6 py-12 border-b border-white/5">
-        <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2">
-            <button class="flex items-center gap-3 px-6 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/30 transition-all min-w-max">
-                <i class="fa-solid fa-gamepad text-blue-400"></i> <span class="font-medium">All Games</span>
-            </button>
-            <button class="flex items-center gap-3 px-6 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/30 transition-all min-w-max">
-                <i class="fa-solid fa-tv text-pink-400"></i> <span class="font-medium">OTT & Subs</span>
-            </button>
-            <button class="flex items-center gap-3 px-6 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/30 transition-all min-w-max">
-                <i class="fa-solid fa-gift text-yellow-400"></i> <span class="font-medium">Gift Cards</span>
-            </button>
-            <button class="flex items-center gap-3 px-6 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/30 transition-all min-w-max">
-                <i class="fa-solid fa-headset text-green-400"></i> <span class="font-medium">Services</span>
-            </button>
+    <div class="border-b border-white/5 bg-[#030303] sticky top-20 z-30 backdrop-blur-md bg-opacity-80">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex gap-3 overflow-x-auto no-scrollbar">
+                <button class="px-6 py-2 rounded-full bg-white text-black font-bold text-sm whitespace-nowrap">🔥 Featured</button>
+                <button class="px-6 py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-sm whitespace-nowrap hover:bg-white/10">🎮 PS5 Games</button>
+                <button class="px-6 py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-sm whitespace-nowrap hover:bg-white/10">🕹️ PC Games</button>
+                <button class="px-6 py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-sm whitespace-nowrap hover:bg-white/10">📺 OTT</button>
+                <button class="px-6 py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-sm whitespace-nowrap hover:bg-white/10">🎁 Gift Cards</button>
+            </div>
         </div>
-    </section>
+    </div>
 
-    <section class="py-12 pl-6 md:pl-12 overflow-hidden">
-        <div class="flex justify-between items-end pr-6 md:pr-12 mb-8 max-w-[1400px] mx-auto">
-            <h2 class="text-2xl md:text-3xl font-bold">Trending Now</h2>
-            <a href="#" class="text-sm text-blue-400 hover:text-blue-300 font-medium">View All <i class="fa-solid fa-chevron-right text-xs ml-1"></i></a>
-        </div>
+    <main class="max-w-7xl mx-auto px-4 py-12" id="store">
         
-        <div class="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pr-12 pb-10">
-            <div class="snap-start shrink-0 w-[280px] md:w-[320px] game-card relative group rounded-2xl overflow-hidden cursor-pointer">
-                <img src="https://images.unsplash.com/photo-1605901309584-818e25960b8f?q=80&w=1000&auto=format&fit=crop" class="w-full aspect-[3/4] object-cover">
-                <div class="absolute inset-0 bg-card-gradient opacity-90"></div>
-                <div class="absolute bottom-0 p-6 w-full">
-                    <span class="text-xs font-bold text-blue-400 uppercase">Racing</span>
-                    <h3 class="text-xl font-bold mb-1">Forza Horizon 6</h3>
-                    <div class="flex justify-between items-center mt-2">
-                        <span class="text-lg font-semibold">₹4,999</span>
-                        <button class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors">
+        <div class="flex items-end justify-between mb-8">
+            <h2 class="text-2xl font-bold">Trending Games</h2>
+            <a href="#" class="text-sm text-blue-500 hover:text-blue-400">View All</a>
+        </div>
+
+        <div class="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-8">
+            
+            <div class="snap-start shrink-0 w-[280px] group cursor-pointer">
+                <div class="relative aspect-[3/4] rounded-2xl overflow-hidden mb-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/8/85/Spider-Man_2_cover.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all duration-300">
                             <i class="fa-solid fa-plus"></i>
                         </button>
                     </div>
                 </div>
+                <h3 class="font-bold text-white truncate">Spider-Man 2</h3>
+                <p class="text-xs text-gray-500">Action • Insomniac</p>
+                <div class="text-blue-400 font-bold mt-1">₹4,499</div>
             </div>
 
-            <div class="snap-start shrink-0 w-[280px] md:w-[320px] game-card relative group rounded-2xl overflow-hidden cursor-pointer">
-                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=1000&auto=format&fit=crop" class="w-full aspect-[3/4] object-cover">
-                <div class="absolute inset-0 bg-card-gradient opacity-90"></div>
-                <div class="absolute bottom-0 p-6 w-full">
-                    <span class="text-xs font-bold text-purple-400 uppercase">RPG</span>
-                    <h3 class="text-xl font-bold mb-1">Elden Ring: DLC</h3>
-                    <div class="flex justify-between items-center mt-2">
-                        <span class="text-lg font-semibold">₹2,499</span>
-                        <button class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors">
+            <div class="snap-start shrink-0 w-[280px] group cursor-pointer">
+                <div class="relative aspect-[3/4] rounded-2xl overflow-hidden mb-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/b/b9/Elden_Ring_Box_Art.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all duration-300">
                             <i class="fa-solid fa-plus"></i>
                         </button>
                     </div>
                 </div>
+                <h3 class="font-bold text-white truncate">Elden Ring</h3>
+                <p class="text-xs text-gray-500">RPG • FromSoftware</p>
+                <div class="text-blue-400 font-bold mt-1">₹2,999</div>
             </div>
 
-             <div class="snap-start shrink-0 w-[280px] md:w-[320px] game-card relative group rounded-2xl overflow-hidden cursor-pointer">
-                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1000&auto=format&fit=crop" class="w-full aspect-[3/4] object-cover">
-                <div class="absolute inset-0 bg-card-gradient opacity-90"></div>
-                <div class="absolute bottom-0 p-6 w-full">
-                    <span class="text-xs font-bold text-green-400 uppercase">Sports</span>
-                    <h3 class="text-xl font-bold mb-1">FC 25</h3>
-                    <div class="flex justify-between items-center mt-2">
-                        <span class="text-lg font-semibold">₹4,499</span>
-                        <button class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors">
+            <div class="snap-start shrink-0 w-[280px] group cursor-pointer">
+                <div class="relative aspect-[3/4] rounded-2xl overflow-hidden mb-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/a/a3/Call_of_Duty_Modern_Warfare_III_2023_key_art.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                     <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all duration-300">
                             <i class="fa-solid fa-plus"></i>
                         </button>
                     </div>
                 </div>
+                <h3 class="font-bold text-white truncate">Call of Duty: MW3</h3>
+                <p class="text-xs text-gray-500">FPS • Activision</p>
+                <div class="text-blue-400 font-bold mt-1">₹5,499</div>
             </div>
-        </div>
-    </section>
 
-    <section id="ott" class="max-w-[1400px] mx-auto px-6 py-12">
-        <h2 class="text-2xl md:text-3xl font-bold mb-8">Digital Subscriptions</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="group bg-[#1a1a1a] rounded-xl p-6 border border-white/5 hover:border-red-600 transition-colors cursor-pointer relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-24 h-24 bg-red-600 blur-[80px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
-                <div class="flex items-center justify-between mb-8">
-                    <h3 class="text-2xl font-black text-red-600 tracking-tighter">NETFLIX</h3>
-                    <span class="bg-white/10 px-2 py-1 rounded text-xs">4K UHD</span>
-                </div>
-                <div class="mt-auto">
-                    <p class="text-gray-400 text-sm mb-2">Premium - 1 Month</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-xl font-bold">₹649</span>
-                        <button class="text-sm font-semibold text-white bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700">Buy</button>
+             <div class="snap-start shrink-0 w-[280px] group cursor-pointer">
+                <div class="relative aspect-[3/4] rounded-2xl overflow-hidden mb-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/4/44/Red_Dead_Redemption_II.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                     <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all duration-300">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
                     </div>
                 </div>
-            </div>
-
-            <div class="group bg-[#1a1a1a] rounded-xl p-6 border border-white/5 hover:border-blue-400 transition-colors cursor-pointer relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-24 h-24 bg-blue-400 blur-[80px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
-                <div class="flex items-center justify-between mb-8">
-                    <h3 class="text-2xl font-black text-blue-400 tracking-tighter">prime video</h3>
-                    <span class="bg-white/10 px-2 py-1 rounded text-xs">Annual</span>
-                </div>
-                <div class="mt-auto">
-                    <p class="text-gray-400 text-sm mb-2">Prime Membership</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-xl font-bold">₹1,499</span>
-                        <button class="text-sm font-semibold text-black bg-blue-400 px-4 py-2 rounded-lg hover:bg-blue-300">Buy</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="group bg-[#1a1a1a] rounded-xl p-6 border border-white/5 hover:border-blue-600 transition-colors cursor-pointer relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-24 h-24 bg-blue-800 blur-[80px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
-                <div class="flex items-center justify-between mb-8">
-                    <h3 class="text-2xl font-black text-white tracking-tighter">Disney+</h3>
-                    <span class="bg-white/10 px-2 py-1 rounded text-xs">Hotstar</span>
-                </div>
-                <div class="mt-auto">
-                    <p class="text-gray-400 text-sm mb-2">Super Plan - 1 Year</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-xl font-bold">₹899</span>
-                        <button class="text-sm font-semibold text-white bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700">Buy</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="group bg-[#1a1a1a] rounded-xl p-6 border border-white/5 hover:border-green-500 transition-colors cursor-pointer relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-24 h-24 bg-green-500 blur-[80px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
-                <div class="flex items-center justify-between mb-8">
-                    <h3 class="text-2xl font-black text-green-500 tracking-tighter">Spotify</h3>
-                    <span class="bg-white/10 px-2 py-1 rounded text-xs">No Ads</span>
-                </div>
-                <div class="mt-auto">
-                    <p class="text-gray-400 text-sm mb-2">Individual Premium</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-xl font-bold">₹119</span>
-                        <button class="text-sm font-semibold text-black bg-green-500 px-4 py-2 rounded-lg hover:bg-green-400">Buy</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="new" class="max-w-[1400px] mx-auto px-6 py-12">
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="text-2xl md:text-3xl font-bold">Explore Catalog</h2>
-            <div class="flex gap-2">
-                <button class="w-8 h-8 rounded border border-white/10 flex items-center justify-center hover:bg-white/10"><i class="fa-solid fa-list"></i></button>
-                <button class="w-8 h-8 rounded bg-white/10 flex items-center justify-center"><i class="fa-solid fa-grid-2"></i></button>
+                <h3 class="font-bold text-white truncate">Red Dead Redemption 2</h3>
+                <p class="text-xs text-gray-500">Open World • Rockstar</p>
+                <div class="text-blue-400 font-bold mt-1">₹1,999</div>
             </div>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            <div class="group cursor-pointer">
-                <div class="relative overflow-hidden rounded-xl aspect-[3/4] mb-3">
-                    <img src="https://images.unsplash.com/photo-1560253023-3ec5d502959f?q=80&w=600&auto=format&fit=crop" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <button class="bg-white text-black px-4 py-2 rounded-full font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Add to Cart</button>
-                    </div>
-                </div>
-                <h3 class="font-bold text-sm truncate">Cyberpunk 2077</h3>
-                <p class="text-gray-400 text-xs mb-1">RPG • Open World</p>
-                <div class="text-blue-400 font-semibold">₹2,999</div>
+        <div id="ott" class="mt-16">
+            <div class="flex items-end justify-between mb-8">
+                <h2 class="text-2xl font-bold">Premium Subscriptions</h2>
             </div>
-
-            <div class="group cursor-pointer">
-                <div class="relative overflow-hidden rounded-xl aspect-[3/4] mb-3">
-                    <img src="https://images.unsplash.com/photo-1627856014759-08529612289d?q=80&w=600&auto=format&fit=crop" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <button class="bg-white text-black px-4 py-2 rounded-full font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Add to Cart</button>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="relative p-6 rounded-2xl bg-[#141414] border border-white/10 overflow-hidden group cursor-pointer hover:border-red-600 transition-colors">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-red-600 blur-[80px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" class="h-8 mb-8" alt="Netflix">
+                    <div class="mt-8">
+                        <p class="text-gray-400 text-xs uppercase tracking-wider">Premium 4K</p>
+                        <div class="flex justify-between items-end mt-2">
+                            <span class="text-2xl font-bold text-white">₹649<span class="text-xs text-gray-500 font-normal">/mo</span></span>
+                            <button class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-red-700">Buy</button>
+                        </div>
                     </div>
                 </div>
-                <h3 class="font-bold text-sm truncate">Call of Duty: MW3</h3>
-                <p class="text-gray-400 text-xs mb-1">Shooter • Multiplayer</p>
-                <div class="text-blue-400 font-semibold">₹5,499</div>
-            </div>
 
-            <div class="group cursor-pointer">
-                <div class="relative overflow-hidden rounded-xl aspect-[3/4] mb-3">
-                    <img src="https://images.unsplash.com/photo-1599507593499-a3f7d7d97663?q=80&w=600&auto=format&fit=crop" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <button class="bg-white text-black px-4 py-2 rounded-full font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Add to Cart</button>
+                <div class="relative p-6 rounded-2xl bg-[#0d1624] border border-white/10 overflow-hidden group cursor-pointer hover:border-blue-400 transition-colors">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-400 blur-[80px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Amazon_Prime_Video_logo.svg" class="h-8 mb-8" alt="Prime">
+                    <div class="mt-8">
+                        <p class="text-gray-400 text-xs uppercase tracking-wider">Annual Plan</p>
+                        <div class="flex justify-between items-end mt-2">
+                            <span class="text-2xl font-bold text-white">₹1,499<span class="text-xs text-gray-500 font-normal">/yr</span></span>
+                            <button class="bg-blue-500 text-black px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-400">Buy</button>
+                        </div>
                     </div>
                 </div>
-                <h3 class="font-bold text-sm truncate">Valorant Points (1000)</h3>
-                <p class="text-gray-400 text-xs mb-1">Currency</p>
-                <div class="text-blue-400 font-semibold">₹999</div>
-            </div>
 
-            <div class="group cursor-pointer">
-                <div class="relative overflow-hidden rounded-xl aspect-[3/4] mb-3">
-                    <img src="https://images.unsplash.com/photo-1551103782-8ab07afd45c1?q=80&w=600&auto=format&fit=crop" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <button class="bg-white text-black px-4 py-2 rounded-full font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Add to Cart</button>
+                <div class="relative p-6 rounded-2xl bg-[#121212] border border-white/10 overflow-hidden group cursor-pointer hover:border-green-500 transition-colors">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-green-500 blur-[80px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                    <img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_Green.png" class="h-8 mb-8" alt="Spotify">
+                    <div class="mt-8">
+                        <p class="text-gray-400 text-xs uppercase tracking-wider">Individual</p>
+                        <div class="flex justify-between items-end mt-2">
+                            <span class="text-2xl font-bold text-white">₹119<span class="text-xs text-gray-500 font-normal">/mo</span></span>
+                            <button class="bg-green-500 text-black px-4 py-2 rounded-lg text-sm font-bold hover:bg-green-400">Buy</button>
+                        </div>
                     </div>
                 </div>
-                <h3 class="font-bold text-sm truncate">Assassin's Creed Mirage</h3>
-                <p class="text-gray-400 text-xs mb-1">Action • Stealth</p>
-                <div class="text-blue-400 font-semibold">₹3,499</div>
-            </div>
 
-            <div class="group cursor-pointer">
-                <div class="relative overflow-hidden rounded-xl aspect-[3/4] mb-3">
-                    <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=600&auto=format&fit=crop" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <button class="bg-white text-black px-4 py-2 rounded-full font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Add to Cart</button>
+                <div class="relative p-6 rounded-2xl bg-[#0f101f] border border-white/10 overflow-hidden group cursor-pointer hover:border-indigo-500 transition-colors">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-indigo-500 blur-[80px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                    <img src="https://secure-media.hotstarext.com/web-assets/prod/images/brand-logos/disney-hotstar-logo-dark.svg" class="h-8 mb-8" alt="Hotstar">
+                    <div class="mt-8">
+                        <p class="text-gray-400 text-xs uppercase tracking-wider">Super Plan</p>
+                        <div class="flex justify-between items-end mt-2">
+                            <span class="text-2xl font-bold text-white">₹899<span class="text-xs text-gray-500 font-normal">/yr</span></span>
+                            <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-indigo-700">Buy</button>
+                        </div>
                     </div>
                 </div>
-                <h3 class="font-bold text-sm truncate">God of War Ragnarök</h3>
-                <p class="text-gray-400 text-xs mb-1">Adventure</p>
-                <div class="text-blue-400 font-semibold">₹4,999</div>
             </div>
         </div>
-    </section>
 
-    <footer class="border-t border-white/5 bg-[#080808] pt-16 pb-8 mt-12">
-        <div class="max-w-[1400px] mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+    </main>
+
+    <footer class="border-t border-white/5 bg-black py-16">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
                 <div class="col-span-1 md:col-span-2">
-                    <h2 class="text-2xl font-bold mb-4">PlayWithEase</h2>
-                    <p class="text-gray-400 max-w-sm mb-6">The ultimate digital destination for gamers. Instant delivery, secure payments, and premium support.</p>
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold">P</div>
+                        <span class="text-xl font-bold">PlayWithEase</span>
+                    </div>
+                    <p class="text-gray-400 text-sm max-w-sm mb-6">Your #1 destination for digital gaming keys, subscriptions, and services. Instant delivery via WhatsApp and Email.</p>
                 </div>
                 <div>
-                    <h3 class="font-bold mb-4">Shop</h3>
-                    <ul class="space-y-2 text-gray-400 text-sm">
-                        <li><a href="#" class="hover:text-white">New Releases</a></li>
-                        <li><a href="#" class="hover:text-white">Best Sellers</a></li>
+                    <h4 class="font-bold text-white mb-6">Support</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white">Refund Policy</a></li>
+                        <li><a href="#" class="hover:text-white">Terms of Service</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="font-bold mb-4">Support</h3>
-                    <ul class="space-y-2 text-gray-400 text-sm">
-                        <li><a href="#" class="hover:text-white">Help Center</a></li>
-                        <li><a href="#" class="hover:text-white">Contact Us</a></li>
+                    <h4 class="font-bold text-white mb-6">Contact</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white">Email Us</a></li>
+                        <li><a href="#" class="hover:text-white">WhatsApp Support</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
-                <p>&copy; 2024 PlayWithEase Digital Store. All rights reserved.</p>
+            <div class="border-t border-white/5 mt-12 pt-8 text-center text-xs text-gray-600">
+                &copy; 2024 PlayWithEase. Built by Senior Architect.
             </div>
         </div>
     </footer>
 
-    <div id="trailerModal" class="hidden fixed inset-0 z-[60] bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="w-full max-w-5xl aspect-video bg-black relative rounded-xl overflow-hidden shadow-2xl border border-white/10">
-            <button onclick="document.getElementById('trailerModal').classList.add('hidden')" class="absolute top-4 right-4 z-10 w-10 h-10 bg-black/50 backdrop-blur rounded-full text-white flex items-center justify-center hover:bg-white hover:text-black transition-colors">
+    <div id="trailerModal" class="hidden fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="relative w-full max-w-5xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+            <button onclick="closeTrailer()" class="absolute top-4 right-4 z-20 w-10 h-10 bg-black/50 backdrop-blur rounded-full text-white hover:bg-white hover:text-black flex items-center justify-center transition-colors">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <div class="w-full h-full flex items-center justify-center bg-gray-900 relative group">
-                <img src="https://images.unsplash.com/photo-1621259182902-885475665bc8?q=80&w=2070&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-50">
-                <button class="relative z-10 w-20 h-20 bg-white/20 backdrop-blur rounded-full flex items-center justify-center text-white text-2xl group-hover:scale-110 transition-transform">
-                    <i class="fa-solid fa-play ml-1"></i>
-                </button>
-            </div>
+            <iframe id="youtubeFrame" class="w-full h-full" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
     </div>
 
@@ -389,7 +356,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // Your Config
+        // --- FIREBASE CONFIG ---
         const firebaseConfig = {
           apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
           authDomain: "playwithease.firebaseapp.com",
@@ -400,70 +367,94 @@
           measurementId: "G-1C3B31KQ7C"
         };
 
-        // Initialize
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
-        // DOM Elements
+        // --- DOM ELEMENTS ---
         const loginBtn = document.getElementById('loginBtn');
         const userProfile = document.getElementById('userProfile');
-        const userAvatar = document.getElementById('userAvatar');
         const userName = document.getElementById('userName');
-        const userMenuBtn = document.getElementById('userMenuBtn');
-        const userDropdown = document.getElementById('userDropdown');
+        const userAvatar = document.getElementById('userAvatar');
         const logoutBtn = document.getElementById('logoutBtn');
 
-        // Logic: Sign In
+        // --- AUTH LOGIC ---
         loginBtn.addEventListener('click', async () => {
             try {
                 await signInWithPopup(auth, provider);
-            } catch (error) {
-                console.error("Login Failed", error);
-                alert("Login failed. Please try again.");
+            } catch (err) {
+                alert("Login Error: " + err.message);
             }
         });
 
-        // Logic: Auth State Monitor
+        logoutBtn.addEventListener('click', () => signOut(auth));
+
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // Logged In
                 loginBtn.classList.add('hidden');
                 userProfile.classList.remove('hidden');
-                
-                // Set User Data
-                userName.textContent = user.displayName;
-                userAvatar.src = user.photoURL || 'https://via.placeholder.com/32';
+                userName.textContent = user.displayName.split(' ')[0]; // First name only
+                userAvatar.src = user.photoURL;
             } else {
-                // Logged Out
                 loginBtn.classList.remove('hidden');
                 userProfile.classList.add('hidden');
             }
         });
+    </script>
 
-        // Logic: Dropdown Toggle
-        userMenuBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            userDropdown.classList.toggle('dropdown-enter');
-            userDropdown.classList.toggle('dropdown-active');
-        });
+    <script>
+        // --- MOBILE MENU LOGIC ---
+        const menuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        let isMenuOpen = false;
 
-        // Close Dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!userProfile.contains(e.target)) {
-                userDropdown.classList.add('dropdown-enter');
-                userDropdown.classList.remove('dropdown-active');
+        menuBtn.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                mobileMenu.classList.remove('translate-x-full');
+                menuBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+            } else {
+                mobileMenu.classList.add('translate-x-full');
+                menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
             }
         });
 
-        // Logic: Sign Out
-        logoutBtn.addEventListener('click', () => {
-            signOut(auth).then(() => {
-                userDropdown.classList.add('dropdown-enter');
-                userDropdown.classList.remove('dropdown-active');
-            });
+        // --- CAROUSEL LOGIC ---
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        // Change slide every 6 seconds
+        setInterval(nextSlide, 6000);
+
+        // --- TRAILER MODAL LOGIC ---
+        const modal = document.getElementById('trailerModal');
+        const frame = document.getElementById('youtubeFrame');
+
+        window.playTrailer = (videoId) => {
+            modal.classList.remove('hidden');
+            // Little delay to allow display:block to apply before opacity transition
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+            frame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&modestbranding=1&rel=0`;
+        };
+
+        window.closeTrailer = () => {
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                frame.src = ''; // Stop video
+            }, 300);
+        };
+        
+        // Close on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') window.closeTrailer();
         });
     </script>
-
 </body>
 </html>
