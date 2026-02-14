@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayWithEase | Digital Game Store</title>
+    <title>PlayWithEase | Ultimate Store</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,14 +12,8 @@
         <div class="container nav-content">
             <a href="index.html" class="logo">PlayWithEase</a>
             <div class="nav-links">
-                <select onchange="setTheme(this.value)" style="background:var(--bg); color:var(--text); padding:5px;">
-                    <option value="neon">Neon</option>
-                    <option value="minimal">Minimal</option>
-                    <option value="cyber">Cyber</option>
-                    <option value="amoled">Amoled</option>
-                </select>
                 <a href="index.html">Store</a>
-                <a href="profile.html">Profile</a>
+                <a id="navLoginBtn" href="login.html" class="btn btn-secondary" style="padding: 5px 15px;">Login</a>
                 <div class="cart-icon" onclick="toggleCart()">
                     🛒 <span class="cart-badge">0</span>
                 </div>
@@ -27,60 +21,69 @@
         </div>
     </nav>
 
-    <div class="container premiere-section">
-        <h2 class="section-title">🔥 World Premiere</h2>
-        <div class="trailer-grid">
-            <div class="trailer-card">
-                <img src="https://i.ytimg.com/vi/QdBZY2fkU-0/maxresdefault.jpg" class="trailer-bg">
-                <div class="trailer-content">
-                    <h3>GTA VI</h3>
-                    <div style="margin-top:10px;">
-                        <button class="btn btn-primary" onclick="openTrailer('QdBZY2fkU-0')">▶ Watch Trailer</button>
-                        <button class="btn btn-secondary" onclick="addToCart('gta6')">Pre-order</button>
-                    </div>
-                </div>
-            </div>
-            <div class="trailer-card">
-                <img src="https://i.ytimg.com/vi/XG1Ll2CVhug/maxresdefault.jpg" class="trailer-bg">
-                <div class="trailer-content">
-                    <h3>Forza Horizon 6</h3>
-                    <div style="margin-top:10px;">
-                        <button class="btn btn-primary" onclick="openTrailer('XG1Ll2CVhug')">▶ Watch Trailer</button>
-                        <button class="btn btn-secondary" onclick="addToCart('forza6')">Pre-order</button>
-                    </div>
-                </div>
-            </div>
+    <div class="container">
+        
+        <div class="search-section">
+            <input type="text" class="search-bar" placeholder="🔍 Search 100+ Games, OTT, Gift Cards..." onkeyup="searchProducts(this.value)">
         </div>
-    </div>
 
-    <div class="container" style="padding-top: 20px;">
-        <h2 class="section-title">Catalog</h2>
-        <div class="filters">
-            <button class="filter-btn active">All</button>
-            <button class="filter-btn">Action</button>
-            <button class="filter-btn">Sports</button>
-            <button class="filter-btn">OTT</button>
+        <div class="premiere-section">
+            <h2 class="section-header">🔥 World Premiere Trailers</h2>
+            <div class="trailer-grid">
+                <div class="trailer-card">
+                    <img src="https://i.ytimg.com/vi/QdBZY2fkU-0/maxresdefault.jpg" class="trailer-bg">
+                    <div class="trailer-content">
+                        <h2>Grand Theft Auto VI</h2>
+                        <div style="margin-top:10px;">
+                            <button onclick="openTrailer('QdBZY2fkU-0')" class="btn btn-primary">▶ Watch</button>
+                            <button onclick="addToCart('gta6')" class="btn btn-secondary">Pre-order ₹5499</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="trailer-card">
+                    <img src="https://i.ytimg.com/vi/XG1Ll2CVhug/maxresdefault.jpg" class="trailer-bg">
+                    <div class="trailer-content">
+                        <h2>Forza Horizon 6</h2>
+                        <div style="margin-top:10px;">
+                            <button onclick="openTrailer('XG1Ll2CVhug')" class="btn btn-primary">▶ Watch</button>
+                            <button onclick="addToCart('forza6')" class="btn btn-secondary">Pre-order ₹4999</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <div class="cat-pill-container">
+            <button class="cat-pill active" onclick="filterCat('All')">All</button>
+            <button class="cat-pill" onclick="filterCat('Games')">🎮 Games</button>
+            <button class="cat-pill" onclick="filterCat('OTT')">📺 OTT & Subs</button>
+            <button class="cat-pill" onclick="filterCat('GiftCard')">🎁 Gift Cards</button>
+            <button class="cat-pill" onclick="filterCat('Pre-order')">🔥 Trending</button>
+        </div>
+
+        <h2 class="section-header">Discover Catalog</h2>
         <div id="productGrid" class="product-grid">
             </div>
+
     </div>
 
     <div id="cartDrawer" class="cart-drawer">
-        <div class="cart-header">
-            <h3>Your Cart</h3>
-            <button onclick="toggleCart()" class="btn-secondary">X</button>
+        <div style="padding:20px; border-bottom:1px solid #333; display:flex; justify-content:space-between;">
+            <h3>My Cart</h3>
+            <button onclick="toggleCart()" style="background:none; color:white; font-size:1.2rem">X</button>
         </div>
-        <div id="cartItemsContainer" class="cart-items">
+        <div id="cartDrawerItems" style="flex:1; overflow-y:auto;"></div>
+        <div style="padding:20px; background:#111;">
+            <div style="display:flex; justify-content:space-between; font-size:1.2rem; font-weight:bold; margin-bottom:15px;">
+                <span>Total:</span>
+                <span id="drawerTotal">₹0</span>
             </div>
-        <div class="cart-footer">
-            <h3>Total: <span id="drawerTotal">₹0</span></h3>
-            <a href="checkout.html" class="btn btn-primary" style="display:block; text-align:center; margin-top:10px;">Checkout Now</a>
-            <a href="cart.html" style="display:block; text-align:center; margin-top:10px; font-size:0.9rem;">View Full Cart</a>
+            <a href="checkout.html" class="btn btn-primary" style="display:block; text-align:center;">Checkout Now</a>
         </div>
     </div>
 
-    <div id="videoModal" class="video-modal">
-        <div class="video-container">
+    <div id="videoModal" class="modal-overlay">
+        <div class="video-box">
             <span class="close-modal" onclick="closeTrailer()">&times;</span>
             <iframe id="videoFrame" width="100%" height="100%" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
