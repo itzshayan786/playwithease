@@ -4,61 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | PlayWithEase</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>body { background: #020617; color: white; }</style>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="flex items-center justify-center min-h-screen p-4 bg-[url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1920&q=80')] bg-cover bg-center">
-    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
-
-    <div class="relative w-full max-w-md bg-[#0f172a]/90 border border-white/10 p-8 rounded-2xl shadow-2xl">
-        <a href="index.html" class="absolute top-4 left-4 text-gray-400 hover:text-white"><i data-lucide="arrow-left"></i></a>
-        
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold mb-2">Welcome Back</h1>
-            <p class="text-gray-400 text-sm">Sign in to access your library</p>
+<body>
+    <nav>
+        <div class="container nav-content">
+            <a href="index.html" class="logo">PlayWithEase</a>
         </div>
+    </nav>
 
-        <form id="login-form" class="space-y-4">
-            <input type="email" id="email" placeholder="Email" class="w-full bg-black/40 border border-white/10 rounded-lg p-3 focus:border-indigo-500 outline-none" required>
-            <input type="password" id="password" placeholder="Password" class="w-full bg-black/40 border border-white/10 rounded-lg p-3 focus:border-indigo-500 outline-none" required>
-            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 py-3 rounded-lg font-bold transition-colors">Sign In</button>
-        </form>
-        
-        <div class="mt-6 text-center">
-            <button id="google-btn" class="w-full bg-white text-black font-bold py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-100">
-                <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5"> Sign in with Google
+    <div class="container">
+        <div class="auth-box">
+            <h2>Welcome Back</h2>
+            <p style="color:var(--text-muted); margin-bottom:20px;">Login to access your library</p>
+            
+            <button onclick="handleLogin()" class="btn btn-primary" style="width:100%; margin-bottom:15px; background:white; color:#333;">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" style="vertical-align:middle; margin-right:8px;">
+                Sign in with Google
             </button>
+            
+            <div style="margin: 20px 0; border-top:1px solid var(--border)"></div>
+            
+            <div class="form-group">
+                <input type="email" placeholder="Email Address">
+            </div>
+            <div class="form-group">
+                <input type="password" placeholder="Password">
+            </div>
+            <button class="btn btn-secondary" style="width:100%">Login with Email</button>
         </div>
-        <p id="error" class="text-red-400 text-sm text-center mt-4 hidden"></p>
     </div>
 
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-
-        const app = initializeApp({ apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs", authDomain: "playwithease.firebaseapp.com", projectId: "playwithease" });
-        const auth = getAuth(app);
-
-        // Auto redirect only if already logged in
-        onAuthStateChanged(auth, (user) => {
-            if (user) window.location.href = 'profile.html';
-        });
-
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            try {
-                await signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value);
-            } catch (err) {
-                document.getElementById('error').innerText = "Invalid credentials.";
-                document.getElementById('error').classList.remove('hidden');
-            }
-        });
-
-        document.getElementById('google-btn').addEventListener('click', async () => {
-            try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch (err) { console.error(err); }
-        });
-        lucide.createIcons();
-    </script>
+    <script type="module" src="app.js"></script>
 </body>
 </html>
