@@ -2,413 +2,81 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PlayWithEase | Professional Menswear Store</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlayWithEase | Premium Gaming Store</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-<body class="antialiased">
+<body>
 
-    <div id="trailerModal" class="hidden fixed inset-0 z-[9999] flex items-center justify-center p-2 md:p-20 opacity-0 transition-opacity duration-500">
-        <div class="relative w-full max-w-6xl aspect-video bg-black rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_100px_rgba(37,99,235,0.2)]">
-            <button onclick="closeTrailer()" class="absolute top-4 right-4 z-[10000] w-12 h-12 bg-black/50 rounded-full text-white flex items-center justify-center border border-white/10 hover:bg-white hover:text-black transition-all">
-                <i class="fa-solid fa-xmark text-xl"></i>
-            </button>
-            <iframe id="ytFrame" class="w-full h-full" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        </div>
+<header>
+    <a href="index.html" class="logo">PlayWithEase</a>
+    <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search games, subscriptions..." onkeyup="filterProducts()">
+    </div>
+    <div class="nav-links">
+        <button onclick="toggleCart()" style="background:none; border:none; cursor:pointer;">
+            <span class="material-icons">shopping_bag</span>
+            <span id="cart-count">0</span>
+        </button>
+        <a href="profile.html" class="material-icons">account_circle</a>
+    </div>
+</header>
+
+<section class="hero" style="height: 400px; background: #000; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; color: white; text-align: center;">
+    <div style="z-index: 2;">
+        <h1 style="font-size: 3rem; margin-bottom: 1rem;">Experience the Next Gen</h1>
+        <button class="btn btn-primary" onclick="openTrailer('https://www.youtube.com/embed/QdBZY2fkU-0')" style="width: auto;">Watch GTA VI Trailer</button>
+    </div>
+    <div style="position: absolute; top: 0; opacity: 0.5; width: 100%;">
+        <img src="https://image.api.playstation.com/vulcan/ap/rnd/202312/0517/8d91b48b11110034a74288002df35c2b0b181284a1e9e243.jpg" width="100%">
+    </div>
+</section>
+
+<main class="container">
+    <div class="filters" style="margin-bottom: 2rem; display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 10px;">
+        <button class="btn" onclick="setCategory('all')">All</button>
+        <button class="btn" onclick="setCategory('ps5')">PS5 Games</button>
+        <button class="btn" onclick="setCategory('pc')">PC Games</button>
+        <button class="btn" onclick="setCategory('subscriptions')">Subscriptions</button>
     </div>
 
-    <div id="cartOverlay" onclick="closeDrawers()" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[1500] hidden opacity-0 transition-all duration-300"></div>
-    <div id="toastContainer" class="fixed top-24 left-1/2 -translate-x-1/2 z-[10000] pointer-events-none flex flex-col gap-2"></div>
-
-    <div id="aiAssistant" class="fixed bottom-24 right-6 md:bottom-12 md:right-12 z-ai">
-        <button onclick="toggleAI()" class="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center text-white shadow-2xl ai-trigger">
-            <i class="fa-solid fa-robot text-xl"></i>
-        </button>
-        <div id="aiBox" class="absolute bottom-20 right-0 w-[300px] bg-surface border border-white/10 rounded-3xl shadow-2xl hidden overflow-hidden">
-            <div class="bg-primary p-5 flex items-center justify-between">
-                <span class="font-black text-[10px] uppercase tracking-widest text-white">EaseAI Intelligence</span>
-                <button onclick="toggleAI()"><i class="fa-solid fa-chevron-down"></i></button>
-            </div>
-            <div class="p-5 h-72 overflow-y-auto space-y-4 no-scrollbar text-[11px]" id="aiChat">
-                <div class="bg-white/5 p-3 rounded-xl border border-white/5">Marketplace analysis complete. How can I facilitate your purchase?</div>
-            </div>
-            <div class="p-4 border-t border-white/5 flex gap-2">
-                <input type="text" id="aiInput" placeholder="Ask AI..." class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs outline-none focus:border-primary text-white">
-                <button onclick="sendAI()" class="bg-primary px-4 rounded-xl text-white"><i class="fa-solid fa-paper-plane"></i></button>
-            </div>
+    <div class="product-grid" id="product-list">
         </div>
+</main>
+
+<nav class="mobile-nav">
+    <a href="index.html" class="material-icons">home</a>
+    <span class="material-icons" onclick="document.getElementById('search-input').focus()">search</span>
+    <span class="material-icons" onclick="toggleCart()">shopping_bag</span>
+    <a href="profile.html" class="material-icons">person</a>
+</nav>
+
+<div id="cart-drawer">
+    <h2>Your Cart</h2>
+    <hr><br>
+    <div id="cart-items"></div>
+    <div style="position: absolute; bottom: 2rem; width: 80%;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+            <span>Total:</span>
+            <span id="cart-total">₹0</span>
+        </div>
+        <button class="btn btn-primary" onclick="location.href='checkout.html'">Checkout Now</button>
     </div>
+</div>
 
-    <nav class="fixed top-0 w-full z-nav glass-nav h-16 md:h-20">
-        <div class="max-w-[1600px] mx-auto px-4 md:px-10 h-full flex items-center justify-between gap-6">
-            
-            <a href="#" class="flex items-center gap-2 group">
-                <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-black italic text-lg shadow-lg">P</div>
-                <div class="flex flex-col leading-none">
-                    <span class="text-lg font-black italic uppercase text-white tracking-tighter">PlayWithEase</span>
-                    <span class="text-[8px] text-gray-500 font-black uppercase tracking-[0.2em] mt-1">Premium All-In-One</span>
-                </div>
-            </a>
-
-            <div class="hidden md:flex flex-1 max-w-lg relative group">
-                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-600"></i>
-                <input type="text" id="globalSearch" onkeyup="handleGlobalSearch()" placeholder="Search Products..." 
-                    class="w-full bg-[#050505] border border-white/5 rounded-full py-3 pl-12 pr-6 text-xs text-white outline-none focus:border-primary transition-all">
-            </div>
-
-            <div class="flex items-center gap-2 md:gap-6">
-                <div id="authModule">
-                    <button id="loginBtn" onclick="toggleAuthModal()" class="bg-white text-black px-5 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-gray-200">Sign In</button>
-                    <div id="userProfile" class="hidden relative group">
-                        <button class="flex items-center gap-2 p-1 rounded-xl border border-white/10 hover:bg-white/5">
-                            <img id="userAvatar" src="" class="w-8 h-8 rounded-lg">
-                            <span id="userNameDisplay" class="hidden lg:block text-[10px] font-black uppercase pr-2">Gamer</span>
-                        </button>
-                        <div class="absolute right-0 mt-3 w-52 bg-surface border border-white/10 rounded-2xl hidden group-hover:block p-2 shadow-2xl">
-                            <button onclick="handleLogout()" class="w-full text-left p-3 text-[10px] font-black text-red-500 uppercase tracking-widest hover:bg-red-500/5 rounded-xl transition-all">Sign Out</button>
-                        </div>
-                    </div>
-                </div>
-                <button onclick="toggleCart()" class="relative p-2 text-gray-400 hover:text-white">
-                    <i class="fa-solid fa-bag-shopping text-xl"></i>
-                    <span id="cartBadge" class="absolute -top-1 -right-1 bg-primary text-white text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center border border-bg hidden">0</span>
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    <div class="md:hidden fixed bottom-0 left-0 right-0 z-nav bottom-nav flex items-center justify-around px-4 border-t border-white/5">
-        <button onclick="location.reload()" class="flex flex-col items-center gap-1 text-primary">
-            <i class="fa-solid fa-house-user text-lg"></i>
-            <span class="text-[8px] font-black uppercase">Home</span>
-        </button>
-        <button onclick="toggleWishlistDrawer()" class="flex flex-col items-center gap-1 text-gray-500">
-            <i class="fa-regular fa-heart text-lg"></i>
-            <span class="text-[8px] font-black uppercase">Likes</span>
-        </button>
-        <div onclick="toggleCart()" class="relative -top-5 w-14 h-14 bg-primary rounded-2xl border-4 border-[#020202] flex items-center justify-center text-white shadow-2xl">
-            <i class="fa-solid fa-cart-shopping text-xl"></i>
-        </div>
-        <button onclick="showSection('medSection')" class="flex flex-col items-center gap-1 text-gray-500">
-            <i class="fa-solid fa-pills text-lg"></i>
-            <span class="text-[8px] font-black uppercase">Pharmacy</span>
-        </button>
-        <button onclick="toggleAuthModal()" class="flex flex-col items-center gap-1 text-gray-500">
-            <i class="fa-regular fa-user-circle text-lg"></i>
-            <span class="text-[8px] font-black uppercase">Auth</span>
-        </button>
+<footer style="background: #1a1a1a; color: white; padding: 4rem 5% 6rem; text-align: center;">
+    <p>&copy; 2026 PlayWithEase Store. All Rights Reserved.</p>
+    <p style="margin-top: 1rem; opacity: 0.6;">Designed & Developed by Shayan Akhtar</p>
+    <div style="margin-top: 2rem; display: flex; justify-content: center; gap: 1rem; opacity: 0.5;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" width="50">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" width="60">
     </div>
+</footer>
 
-    <header class="relative w-full hero-height mt-16 md:mt-20 overflow-hidden bg-black">
-        <div class="slide active">
-            <div class="absolute inset-0 bg-[url('https://www.rockstargames.com/VI/_next/image?url=%2FVI%2F_next%2Fstatic%2Fmedia%2FJason_and_Lucia_02_With_Logos_landscape.93ab5523.jpg&w=1366&q=75')] bg-cover bg-center ken-burns opacity-60"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-bg to-transparent"></div>
-            <div class="absolute bottom-10 left-0 w-full p-6 md:p-20 z-10">
-                <span class="px-4 py-1 bg-primary text-white text-[9px] font-black uppercase rounded mb-4 inline-block italic">Trending #1</span>
-                <h1 class="text-3xl md:text-7xl font-black italic tracking-tighter text-white uppercase mb-6 drop-shadow-2xl">Grand Theft Auto <span class="text-primary underline">VI</span></h1>
-                <div class="flex gap-3">
-                    <button onclick="playTrailer('QdBZY2fkU-0')" class="px-8 py-3 bg-white text-black rounded-xl font-black text-[10px] uppercase tracking-widest btn-shine"><i class="fa-solid fa-play mr-2"></i> Watch Trailer</button>
-                    <button onclick="addToCart('gta6')" class="px-8 py-3 bg-white/10 border border-white/20 rounded-xl font-black text-[10px] text-white uppercase backdrop-blur-xl">Pre-Order</button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <main class="main-container py-12 md:py-24 space-y-24">
-        
-        <section id="medSection" class="reveal">
-            <div class="flex items-center gap-3 mb-10 border-l-4 border-green-500 pl-4">
-                <h2 class="text-2xl md:text-4xl font-black italic uppercase tracking-tighter">Pharmacy <span class="text-green-500">Core</span></h2>
-            </div>
-            
-            <div class="product-grid">
-                <div class="card-pro p-5 group card-med" data-sector="meds" data-title="paracetamol">
-                    <div class="card-img-wrap mb-4 flex items-center justify-center p-8">
-                        <img src="https://cdn-icons-png.flaticon.com/512/3024/3024509.png" class="w-2/3 filter invert brightness-200 opacity-80 group-hover:scale-110 transition-transform duration-700">
-                    </div>
-                    <h3 class="font-black text-xs uppercase tracking-tighter text-white mb-1">Paracetamol 500mg</h3>
-                    <p class="text-[8px] text-gray-500 font-bold uppercase tracking-widest mb-4 italic">10 Tablet Strip</p>
-                    <div class="flex items-center justify-between border-t border-white/5 pt-4">
-                        <span class="text-sm font-black text-green-500 italic tracking-tighter">₹45.00</span>
-                        <button onclick="addToCart('para500')" class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white"><i class="fa-solid fa-plus text-[10px]"></i></button>
-                    </div>
-                </div>
-
-                <div class="card-pro p-5 group card-med" data-sector="meds" data-title="vitaminc">
-                    <div class="card-img-wrap mb-4 flex items-center justify-center p-8">
-                        <img src="https://cdn-icons-png.flaticon.com/512/3024/3024608.png" class="w-2/3 filter invert brightness-200 opacity-80 group-hover:scale-110 transition-transform duration-700">
-                    </div>
-                    <h3 class="font-black text-xs uppercase tracking-tighter text-white mb-1">Vitamin C & Zinc</h3>
-                    <p class="text-[8px] text-gray-500 font-bold uppercase tracking-widest mb-4 italic">Immunity Pack</p>
-                    <div class="flex items-center justify-between border-t border-white/5 pt-4">
-                        <span class="text-sm font-black text-green-500 italic tracking-tighter">₹185.00</span>
-                        <button onclick="addToCart('vitc')" class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white"><i class="fa-solid fa-plus text-[10px]"></i></button>
-                    </div>
-                </div>
-
-                <div class="card-pro p-5 group card-med" data-sector="meds" data-title="insulin">
-                    <div class="card-img-wrap mb-4 flex items-center justify-center p-8">
-                        <img src="https://cdn-icons-png.flaticon.com/512/3024/3024535.png" class="w-2/3 filter invert brightness-200 opacity-80 group-hover:scale-110 transition-transform duration-700">
-                    </div>
-                    <h3 class="font-black text-xs uppercase tracking-tighter text-white mb-1">Insulin Rapid-Pen</h3>
-                    <p class="text-[8px] text-gray-500 font-bold uppercase tracking-widest mb-4 italic">3ml Single Unit</p>
-                    <div class="flex items-center justify-between border-t border-white/5 pt-4">
-                        <span class="text-sm font-black text-green-500 italic tracking-tighter">₹2,499</span>
-                        <button onclick="addToCart('insulin')" class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white"><i class="fa-solid fa-plus text-[10px]"></i></button>
-                    </div>
-                </div>
-
-                <div class="card-pro p-5 group card-med" data-sector="meds" data-title="painbalm">
-                    <div class="card-img-wrap mb-4 flex items-center justify-center p-8">
-                        <img src="https://cdn-icons-png.flaticon.com/512/3024/3024564.png" class="w-2/3 filter invert brightness-200 opacity-80 group-hover:scale-110 transition-transform duration-700">
-                    </div>
-                    <h3 class="font-black text-xs uppercase tracking-tighter text-white mb-1">Recovery Balm</h3>
-                    <p class="text-[8px] text-gray-500 font-bold uppercase tracking-widest mb-4 italic">Fast Relief 50g</p>
-                    <div class="flex items-center justify-between border-t border-white/5 pt-4">
-                        <span class="text-sm font-black text-green-500 italic tracking-tighter">₹120.00</span>
-                        <button onclick="addToCart('balm')" class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white"><i class="fa-solid fa-plus text-[10px]"></i></button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="discSection" class="reveal">
-            <div class="flex items-center gap-3 mb-10 border-l-4 border-primary pl-4">
-                <h2 class="text-2xl md:text-4xl font-black italic uppercase tracking-tighter">Console <span class="text-primary italic">Media</span></h2>
-            </div>
-            
-            <div class="product-grid">
-                <div class="card-pro overflow-hidden group relative">
-                    <div class="card-img-wrap">
-                        <img src="https://m.media-amazon.com/images/I/81q6x-eE0AL._AC_SL1500_.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-all duration-1000">
-                        <div class="absolute top-2 left-2 bg-white text-black text-[7px] font-black px-2 py-0.5 rounded italic">FACTORY SEALED</div>
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-black text-white text-xs uppercase italic tracking-tighter mb-4 leading-none">Spider-Man 2 (PS5)</h3>
-                        <div class="flex items-center justify-between">
-                            <span class="text-lg font-black text-primary italic tracking-tighter">₹4,499</span>
-                            <button onclick="addToCart('sp2disc')" class="px-4 py-2 bg-primary rounded-xl font-black text-[9px] uppercase shadow-lg text-white btn-shine">GET DISC</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-pro overflow-hidden group relative">
-                    <div class="card-img-wrap">
-                        <img src="https://m.media-amazon.com/images/I/81f-9rWe5AL._AC_SL1500_.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-all duration-1000">
-                        <div class="absolute top-2 left-2 bg-white text-black text-[7px] font-black px-2 py-0.5 rounded italic shadow-xl uppercase">Boxed Media</div>
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-black text-white text-xs uppercase italic tracking-tighter mb-4 leading-none">GoW Ragnarok</h3>
-                        <div class="flex items-center justify-between">
-                            <span class="text-lg font-black text-primary italic tracking-tighter">₹3,999</span>
-                            <button onclick="addToCart('gowdisc')" class="px-4 py-2 bg-primary rounded-xl font-black text-[9px] uppercase text-white btn-shine">GET DISC</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="gameHub" class="reveal">
-            <h2 class="text-2xl md:text-4xl font-black italic uppercase tracking-tighter mb-10 border-l-4 border-accent pl-4">Digital <span class="text-accent">Hub</span></h2>
-            <div class="product-grid">
-                <div class="card-pro p-4 group" data-category="ps5">
-                    <div class="card-img-wrap mb-4 flex items-center justify-center bg-gradient-to-br from-[#1c0120] to-black">
-                        <img src="https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_VI.png" class="w-2/3 object-contain drop-shadow-2xl transition-all duration-700 group-hover:scale-110">
-                    </div>
-                    <h3 class="font-black text-[11px] uppercase italic text-white mb-1">Grand Theft Auto VI</h3>
-                    <p class="text-[8px] text-gray-500 font-bold uppercase tracking-widest mb-4">Digital Pre-Order</p>
-                    <div class="flex items-center justify-between border-t border-white/5 pt-4">
-                        <span class="text-sm font-black text-primary italic tracking-tighter">₹5,499</span>
-                        <button onclick="addToCart('gta6')" class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white"><i class="fa-solid fa-plus text-[10px]"></i></button>
-                    </div>
-                </div>
-
-                <div class="card-pro p-4 group" data-category="pc">
-                    <div class="card-img-wrap mb-4">
-                        <img src="https://static.wikia.nocookie.net/forzamotorsport/images/3/33/FH6_Boxart.jpg/revision/latest/scale-to-width-down/1000" class="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110">
-                    </div>
-                    <h3 class="font-black text-[11px] uppercase italic text-white mb-1">Forza Horizon 6</h3>
-                    <p class="text-[8px] text-gray-500 font-bold uppercase mb-4">PC Master License</p>
-                    <div class="flex items-center justify-between border-t border-white/5 pt-4">
-                        <span class="text-sm font-black text-primary italic tracking-tighter">₹4,999</span>
-                        <button onclick="addToCart('fh6')" class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white"><i class="fa-solid fa-plus text-[10px]"></i></button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <div id="authModal" class="hidden fixed inset-0 z-[11000] flex items-center justify-center p-4">
-        <div onclick="toggleAuthModal()" class="absolute inset-0 bg-black/95 backdrop-blur-2xl"></div>
-        <div class="relative w-full max-w-sm bg-surface border border-white/10 rounded-[2.5rem] p-10 shadow-2xl animate-fade-in text-white">
-            <div class="flex border-b border-white/10 mb-8">
-                <button id="tabLogin" onclick="switchTab('login')" class="flex-1 pb-4 text-center text-white border-b-2 border-primary font-black uppercase text-[10px] tracking-widest">Sign In</button>
-                <button id="tabRegister" onclick="switchTab('register')" class="flex-1 pb-4 text-center text-gray-600 hover:text-white font-black uppercase text-[10px] tracking-widest">Join</button>
-            </div>
-            <form id="authForm" onsubmit="handleAuth(event)" class="space-y-6">
-                <input type="email" id="email" required placeholder="AUTHENTICATION EMAIL" class="w-full bg-black border border-white/10 rounded-xl p-4 text-[10px] font-black uppercase outline-none focus:border-primary">
-                <input type="password" id="password" required placeholder="SECRET KEY" class="w-full bg-black border border-white/10 rounded-xl p-4 text-[10px] font-black uppercase outline-none focus:border-primary">
-                <div id="regNameGroup" class="hidden"><input type="text" id="fullName" placeholder="IDENTITY NAME" class="w-full bg-black border border-white/10 rounded-xl p-4 text-[10px] font-black uppercase"></div>
-                <button type="submit" id="submitBtn" class="w-full bg-white text-black font-black py-4 rounded-xl text-[10px] uppercase shadow-2xl transition-all hover:scale-95">Verify Identity</button>
-            </form>
-            <p id="authError" class="text-red-500 text-[9px] text-center mt-6 hidden font-black uppercase italic"></p>
-        </div>
-    </div>
-
-    <div id="cartDrawer" class="fixed top-0 right-0 w-full max-w-[450px] h-full bg-[#020202] z-[2000] transform translate-x-full border-l border-white/5 shadow-2xl flex flex-col transition-transform duration-700">
-        <div class="p-10 border-b border-white/5 flex justify-between items-center text-white">
-            <h2 class="text-2xl font-black tracking-tighter uppercase italic">Inventory Hub</h2>
-            <button onclick="closeDrawers()" class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:text-white transition-all"><i class="fa-solid fa-xmark text-2xl"></i></button>
-        </div>
-        <div id="cartItems" class="flex-1 overflow-y-auto p-10 space-y-8 no-scrollbar scroll-smooth"></div>
-        <div class="p-10 border-t border-white/5 bg-[#030303] space-y-8 text-white text-right">
-            <div><p class="text-gray-700 font-black uppercase text-[10px] tracking-widest italic mb-2">Deployable Assets Total</p><span id="cartTotal" class="text-5xl font-black tracking-tighter italic text-primary">₹0</span></div>
-            <button onclick="location.href='checkout.html'" class="w-full bg-primary hover:bg-blue-600 text-white font-black py-6 rounded-[2rem] shadow-2xl transition-all flex items-center justify-center gap-4 text-sm uppercase tracking-widest italic">DEPLOY PURCHASE <i class="fa-solid fa-shield-check text-xl"></i></button>
-        </div>
-    </div>
-
-    <script>
-        const products = {
-            gta6: { title: "Grand Theft Auto VI", price: 5499, img: "https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_VI.png" },
-            fh6: { title: "Forza Horizon 6", price: 4999, img: "https://static.wikia.nocookie.net/forzamotorsport/images/3/33/FH6_Boxart.jpg" },
-            para500: { title: "Paracetamol 500mg", price: 45, img: "https://cdn-icons-png.flaticon.com/512/3024/3024509.png" },
-            vitc: { title: "Immuno-C Zinc", price: 185, img: "https://cdn-icons-png.flaticon.com/512/3024/3024608.png" },
-            insulin: { title: "Insulin Rapid-Pen", price: 2499, img: "https://cdn-icons-png.flaticon.com/512/3024/3024535.png" },
-            balm: { title: "Recovery Balm", price: 120, img: "https://cdn-icons-png.flaticon.com/512/3024/3024564.png" },
-            sp2disc: { title: "Spider-Man 2 Disc", price: 4499, img: "https://m.media-amazon.com/images/I/81q6x-eE0AL._AC_SL1500_.jpg" },
-            gowdisc: { title: "GoW Ragnarok Disc", price: 3999, img: "https://m.media-amazon.com/images/I/81f-9rWe5AL._AC_SL1500_.jpg" },
-            bms: { title: "BookMyShow GC", price: 500, img: "https://upload.wikimedia.org/wikipedia/en/a/a2/BookMyShow_logo.png" },
-            amz: { title: "Amazon Retail GC", price: 1000, img: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" }
-        };
-
-        let cart = JSON.parse(localStorage.getItem('pwe_cart')) || [];
-        
-        window.addToCart = (id) => {
-            const ex = cart.find(i => i.id === id);
-            if(ex) ex.qty++; else cart.push({id, qty:1});
-            updateUI(); showToast(`SECURED: ${products[id].title}`); toggleCart();
-        };
-
-        function updateUI() {
-            localStorage.setItem('pwe_cart', JSON.stringify(cart));
-            const count = cart.reduce((a,b) => a+b.qty, 0);
-            const totalVal = cart.reduce((a,b) => a + (products[b.id].price * b.qty), 0);
-            
-            ['cartBadge','mobileCartBadge'].forEach(id => {
-                const el = document.getElementById(id);
-                if(el) { el.innerText = count; el.classList.toggle('hidden', count === 0); }
-            });
-            document.getElementById('cartTotal').innerText = `₹${totalVal.toLocaleString()}`;
-            
-            document.getElementById('cartItems').innerHTML = cart.map(i => `
-                <div class="flex gap-4 bg-white/[0.03] p-4 rounded-2xl border border-white/5 items-center group">
-                    <img src="${products[i.id].img}" class="w-16 h-16 object-contain shadow-2xl bg-black rounded-xl">
-                    <div class="flex-1 min-w-0 text-white self-center">
-                        <p class="font-black text-xs truncate uppercase italic tracking-tighter mb-1">${products[i.id].title}</p>
-                        <p class="text-primary font-black text-[10px] italic">₹${products[i.id].price.toLocaleString()}</p>
-                        <div class="flex items-center gap-4 mt-3">
-                            <div class="flex items-center bg-black rounded-lg px-3 py-1 gap-4 border border-white/5 shadow-inner">
-                                <button onclick="updateQty('${i.id}', -1)" class="text-gray-500 hover:text-white transition-colors text-xs font-black"> - </button>
-                                <span class="text-[10px] font-black text-white font-mono">${i.qty}</span>
-                                <button onclick="updateQty('${i.id}', 1)" class="text-gray-500 hover:text-white transition-colors text-xs font-black"> + </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>`).join('');
-        }
-
-        window.updateQty = (id, change) => {
-            const item = cart.find(i => i.id === id);
-            if(item) { item.qty += change; if(item.qty <= 0) cart = cart.filter(i => i.id !== id); updateUI(); }
-        };
-
-        window.toggleCart = () => { closeDrawers(); document.getElementById('cartDrawer').classList.remove('translate-x-full'); document.getElementById('cartOverlay').classList.remove('hidden'); setTimeout(()=>document.getElementById('cartOverlay').classList.remove('opacity-0'),10); };
-        window.closeDrawers = () => { ['cartDrawer','authModal','mobileMenu'].forEach(id => {const el=document.getElementById(id); if(el) el.classList.add('translate-x-full');}); document.getElementById('cartOverlay').classList.add('hidden'); document.getElementById('cartOverlay').classList.add('opacity-0'); };
-        window.toggleAI = () => document.getElementById('aiBox').classList.toggle('hidden');
-        window.playTrailer = (id) => { const m = document.getElementById('trailerModal'); m.classList.remove('hidden'); setTimeout(()=>m.classList.remove('opacity-0'),10); document.getElementById('ytFrame').src=`https://www.youtube.com/embed/${id}?autoplay=1&rel=0`; };
-        window.closeTrailer = () => { const m = document.getElementById('trailerModal'); m.classList.add('opacity-0'); setTimeout(()=>{m.classList.add('hidden'); document.getElementById('ytFrame').src='';}, 800); };
-        window.toggleAuthModal = () => document.getElementById('authModal').classList.toggle('hidden');
-        function showToast(m) { const t = document.createElement('div'); t.className="bg-primary/95 backdrop-blur-xl text-white px-8 py-4 rounded-[2rem] text-[9px] font-black tracking-[0.3em] uppercase animate-fade-in shadow-2xl italic border border-white/10"; t.innerHTML = `<i class="fa-solid fa-bolt mr-2"></i> ${m}`; document.getElementById('toastContainer').appendChild(t); setTimeout(()=>t.remove(),3000); }
-
-        window.onload = () => { updateUI(); initObserve(); };
-        function initObserve() { const obs = new IntersectionObserver((es) => { es.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); }); }, { threshold: 0.1 }); document.querySelectorAll('.reveal').forEach(el => obs.observe(el)); }
-
-        window.sendAI = () => {
-            const input = document.getElementById('aiInput');
-            if(!input.value) return;
-            const chat = document.getElementById('aiChat');
-            const msg = document.createElement('div');
-            msg.className = "bg-primary/20 p-4 rounded-2xl text-white ml-auto w-fit max-w-[85%] font-black italic";
-            msg.innerText = input.value;
-            chat.appendChild(msg);
-            input.value = "";
-            setTimeout(() => {
-                const rep = document.createElement('div');
-                rep.className = "bg-white/5 p-4 rounded-2xl text-gray-400 mr-auto w-fit max-w-[85%] border border-white/5 font-bold italic";
-                rep.innerText = "Analyzing secure marketplace channels for requested units... Operation Pending.";
-                chat.appendChild(rep);
-                chat.scrollTop = chat.scrollHeight;
-            }, 1200);
-        };
-    </script>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        const fbConfig = { apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs", authDomain: "playwithease.firebaseapp.com", projectId: "playwithease", storageBucket: "playwithease.appspot.com", messagingSenderId: "189729941006", appId: "1:189729941006:web:362653774b92416c357e5f" };
-        const app = initializeApp(fbConfig);
-        const auth = getAuth(app);
-        
-        // ABSOLUTE OBSERVER FIX
-        onAuthStateChanged(auth, (user) => {
-            const loginBtn = document.getElementById('loginBtn');
-            const profile = document.getElementById('userProfile');
-            const avatar = document.getElementById('userAvatar');
-            const nameDisp = document.getElementById('userNameDisplay');
-
-            if (user) {
-                loginBtn.style.display = 'none';
-                profile.classList.remove('hidden');
-                avatar.src = `https://ui-avatars.com/api/?name=${user.displayName || 'G'}&background=2563eb&color=fff&bold=true`;
-                nameDisp.innerText = (user.displayName || user.email.split('@')[0]).toUpperCase();
-                document.getElementById('authModal').classList.add('hidden');
-            } else {
-                loginBtn.style.display = 'block';
-                profile.classList.add('hidden');
-            }
-        });
-
-        window.switchTab = (m) => {
-            const isL = m === 'login';
-            document.getElementById('tabLogin').className = isL ? "flex-1 pb-6 text-center text-white border-b-4 border-primary font-black uppercase text-xs" : "flex-1 pb-6 text-center text-gray-700 font-black";
-            document.getElementById('tabRegister').className = !isL ? "flex-1 pb-6 text-center text-white border-b-4 border-primary font-black uppercase text-xs" : "flex-1 pb-6 text-center text-gray-700 font-black";
-            document.getElementById('regNameGroup').classList.toggle('hidden', isL);
-        };
-
-        window.handleAuth = async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            const err = document.getElementById('authError');
-            btn.disabled = true; btn.innerText = "OPENING SECURE CHANNEL...";
-            try {
-                if(btn.innerText.includes('Verify')) {
-                    await signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value);
-                } else {
-                    const c = await createUserWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value);
-                    await updateProfile(c.user, { displayName: document.getElementById('fullName').value });
-                }
-                location.reload();
-            } catch (e) {
-                err.innerText = "ACCESS DENIED: KEY FAILURE";
-                err.classList.remove('hidden'); btn.disabled = false; btn.innerText = "RE-ATTEMPT";
-            }
-        };
-
-        window.handleLogout = () => { signOut(auth).then(() => location.reload()); };
-    </script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
