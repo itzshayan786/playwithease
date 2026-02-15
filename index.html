@@ -22,7 +22,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Saira', sans-serif; }
-        body { background-color: var(--bg); color: white; overflow-x: hidden; }
+        body { background-color: var(--bg); color: white; overflow-x: hidden; user-select: none; }
         
         /* --- BACKGROUND AMBIENCE --- */
         .ambient-glow {
@@ -103,7 +103,7 @@
         }
         .btn-glass:hover { background: white; color: black; }
 
-        /* --- HERO SWITCHER (THE FIX) --- */
+        /* --- HERO SWITCHER --- */
         .hero-switch {
             position: absolute; bottom: 40px; right: 60px; display: flex; gap: 20px; z-index: 20;
         }
@@ -118,14 +118,14 @@
             position: absolute; bottom: 5px; left: 10px; font-size: 10px; font-weight: 700; text-shadow: 0 0 5px black;
         }
 
-        /* --- HORIZONTAL RAILS (PS STORE STYLE) --- */
+        /* --- SHELVES --- */
         .shelf { padding: 40px 0 40px 60px; }
         .shelf-title { font-size: 22px; margin-bottom: 20px; font-weight: 300; }
         .shelf-title b { font-weight: 700; }
 
         .rail {
             display: flex; gap: 25px; overflow-x: auto; padding-bottom: 30px; padding-right: 60px;
-            scrollbar-width: none; /* Hide scrollbar */
+            scrollbar-width: none;
         }
         .rail::-webkit-scrollbar { display: none; }
 
@@ -139,22 +139,39 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.5); position: relative;
         }
         .card-art img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .game-card:hover .card-art { box-shadow: 0 0 0 3px white; } /* PS Focus State */
+        .game-card:hover .card-art { box-shadow: 0 0 0 3px white; }
 
         .card-meta { margin-top: 15px; opacity: 0.7; transition: 0.3s; }
         .game-card:hover .card-meta { opacity: 1; }
         .card-title { font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-price { font-size: 13px; color: var(--text-grey); margin-top: 4px; }
 
-        /* --- OFFLINE GAME MODAL --- */
+        /* --- SHOOTER GAME MODAL --- */
         .game-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111; z-index: 5000;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #050505; z-index: 5000;
             display: none; flex-direction: column; justify-content: center; align-items: center;
         }
-        canvas { background: #000; border: 2px solid #333; box-shadow: 0 0 50px rgba(0, 112, 209, 0.2); }
-        .game-ui { text-align: center; margin-bottom: 20px; }
-        .game-ui h2 { font-size: 40px; color: var(--sony-blue); text-transform: uppercase; letter-spacing: 5px; }
+        .game-container { position: relative; width: 800px; height: 600px; box-shadow: 0 0 100px rgba(0, 112, 209, 0.3); border: 2px solid #222; background: #000; border-radius: 8px; overflow: hidden; }
+        canvas { display: block; width: 100%; height: 100%; cursor: crosshair; }
+        
+        .game-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);
+            z-index: 2;
+        }
+        .game-overlay.hidden { display: none; }
+        
+        .game-title-text { font-size: 48px; font-weight: 800; color: white; letter-spacing: 5px; margin-bottom: 20px; text-shadow: 0 0 20px var(--sony-blue); }
+        .game-controls { color: #aaa; margin-bottom: 40px; text-align: center; line-height: 1.6; }
+        .game-controls kbd { border: 1px solid #555; padding: 2px 6px; border-radius: 4px; color: white; background: #222; }
+
+        .hud {
+            position: absolute; top: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between;
+            pointer-events: none; z-index: 1; font-family: 'Courier New', monospace; font-weight: bold;
+        }
+        .hp-bar-bg { width: 200px; height: 20px; background: #333; border: 1px solid #555; transform: skewX(-20deg); }
+        .hp-bar-fill { width: 100%; height: 100%; background: #00ff88; transition: width 0.1s; box-shadow: 0 0 10px #00ff88; }
 
         /* --- VIDEO MODAL --- */
         .video-overlay {
@@ -178,9 +195,9 @@
         </div>
 
         <div style="display: flex; gap: 20px; align-items: center;">
-            <div class="offline-btn" onclick="startOfflineGame()">
-                <i class="fas fa-wifi" style="text-decoration: line-through;"></i>
-                NO INTERNET? PLAY THIS
+            <div class="offline-btn" onclick="openShooterGame()">
+                <i class="fas fa-gamepad"></i>
+                PLAY CYBER DEFENSE
             </div>
             <div class="nav-item"><i class="fas fa-search"></i></div>
             <div class="nav-item"><i class="fas fa-shopping-bag"></i></div>
@@ -231,14 +248,33 @@
             </div>
     </div>
 
-    <div class="game-modal" id="offlineGame">
-        <div class="game-ui">
-            <h2>Neon Runner</h2>
-            <p>Press SPACE or TAP to Jump. Avoid Red Blocks.</p>
-            <p id="score">Score: 0</p>
-            <button class="btn-glass" onclick="closeGame()" style="margin: 20px auto;">Exit Game</button>
+    <div class="game-modal" id="shooterModal">
+        <button class="btn-glass" onclick="closeShooterGame()" style="position: absolute; top: 30px; right: 30px;">EXIT TO STORE</button>
+        
+        <div class="game-container">
+            <div class="hud">
+                <div class="hp-bar-bg"><div class="hp-bar-fill" id="gameHP"></div></div>
+                <div style="color: #00ff88; text-shadow: 0 0 10px #00ff88;">SCORE: <span id="gameScore">0</span></div>
+            </div>
+            
+            <div class="game-overlay" id="startScreen">
+                <div class="game-title-text">CYBER DEFENSE</div>
+                <div class="game-controls">
+                    <p><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> Move</p>
+                    <p><kbd>MOUSE</kbd> Aim</p>
+                    <p><kbd>CLICK</kbd> Shoot</p>
+                </div>
+                <button class="btn-primary" onclick="startGame()">START MISSION</button>
+            </div>
+
+            <div class="game-overlay hidden" id="gameOverScreen">
+                <div class="game-title-text" style="color: #ff3333; text-shadow: 0 0 20px red;">MISSION FAILED</div>
+                <div style="font-size: 24px; margin-bottom: 30px;">FINAL SCORE: <span id="finalScore">0</span></div>
+                <button class="btn-primary" onclick="startGame()">RETRY</button>
+            </div>
+
+            <canvas id="shooterCanvas"></canvas>
         </div>
-        <canvas id="gameCanvas" width="800" height="400"></canvas>
     </div>
 
     <div class="video-overlay" id="videoOverlay">
@@ -247,23 +283,21 @@
     </div>
 
     <script>
-        // --- 1. HERO LOGIC (The Switcher) ---
+        // --- 1. HERO LOGIC ---
         const games = {
             gta: {
                 title: "Grand Theft Auto VI",
                 desc: "Welcome to Leonida. Experience the next evolution of the open world with Jason and Lucia in the most immersive Vice City ever created.",
                 bg: "https://images.hdqwalls.com/wallpapers/gta-vi-4k-logo-fo.jpg",
                 trailer: "QdBZY2fkU-0",
-                price: "$69.99",
-                color: "#ff0055" // Vice City Pink
+                price: "$69.99"
             },
             forza: {
                 title: "Forza Horizon 6",
                 desc: "The Horizon Festival moves to Japan. Drift through neon-lit Tokyo streets and race down Mount Fuji in the most visually stunning racer ever made.",
                 bg: "https://images.hdqwalls.com/wallpapers/forza-horizon-5-4k-game-3r.jpg",
                 trailer: "FYH9n37B7Yw",
-                price: "$59.99",
-                color: "#00d2d3" // Horizon Blue
+                price: "$59.99"
             }
         };
 
@@ -274,11 +308,9 @@
             activeGame = gameKey;
             const data = games[gameKey];
 
-            // Update Active Card UI
             document.querySelectorAll('.switch-card').forEach(el => el.classList.remove('active'));
             event.currentTarget.classList.add('active');
 
-            // Fade Out Content
             const bg = document.getElementById('hero-bg');
             const text = document.getElementById('hero-text');
             
@@ -286,12 +318,9 @@
             bg.style.opacity = 0;
 
             setTimeout(() => {
-                // Update Data
                 bg.src = data.bg;
                 document.getElementById('hero-title').innerText = data.title;
                 document.getElementById('hero-desc').innerText = data.desc;
-                
-                // Fade In
                 bg.style.opacity = 1;
                 text.classList.add('visible');
             }, 500);
@@ -308,7 +337,7 @@
             document.getElementById('youtube-embed').src = "";
         }
 
-        // --- 2. GAME RAILS POPULATION ---
+        // --- 2. GAME RAILS ---
         const railData = [
             { t: "Elden Ring", p: "$39.99", i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co848v.jpg" },
             { t: "Black Myth: Wukong", p: "$59.99", i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co8ush.jpg" },
@@ -319,107 +348,238 @@
         ];
 
         const rail = document.getElementById('trending-rail');
-        // Duplicate for demo
         [...railData, ...railData].forEach(g => {
             rail.innerHTML += `
                 <div class="game-card">
-                    <div class="card-art">
-                        <img src="${g.i}" loading="lazy">
-                    </div>
-                    <div class="card-meta">
-                        <div class="card-title">${g.t}</div>
-                        <div class="card-price">${g.p}</div>
-                    </div>
-                </div>
-            `;
+                    <div class="card-art"><img src="${g.i}" loading="lazy"></div>
+                    <div class="card-meta"><div class="card-title">${g.t}</div><div class="card-price">${g.p}</div></div>
+                </div>`;
         });
-        document.getElementById('soon-rail').innerHTML = rail.innerHTML; // Copy for demo
+        document.getElementById('soon-rail').innerHTML = rail.innerHTML;
 
-        // --- 3. OFFLINE MINI-GAME (NEON RUNNER) ---
-        const canvas = document.getElementById('gameCanvas');
+        // --- 3. CYBER DEFENSE SHOOTER ENGINE ---
+        const canvas = document.getElementById('shooterCanvas');
         const ctx = canvas.getContext('2d');
-        let gameLoop;
-        let player = { x: 50, y: 350, w: 30, h: 30, dy: 0, jump: -12, grounded: true };
-        let obstacles = [];
-        let frame = 0;
+        canvas.width = 800; canvas.height = 600;
+
+        let gameLoopId;
+        let lastTime = 0;
         let score = 0;
-        let gameActive = false;
+        let isGameOver = false;
 
-        function startOfflineGame() {
-            document.getElementById('offlineGame').style.display = 'flex';
-            gameActive = true;
-            resetGame();
-            requestAnimationFrame(updateGame);
+        // Entities
+        const player = { x: 400, y: 300, radius: 15, speed: 5, hp: 100, maxHp: 100 };
+        let bullets = [];
+        let enemies = [];
+        let particles = [];
+        
+        // Input
+        const keys = { w: false, a: false, s: false, d: false };
+        const mouse = { x: 0, y: 0 };
+
+        function openShooterGame() {
+            document.getElementById('shooterModal').style.display = 'flex';
+            window.addEventListener('keydown', handleKey);
+            window.addEventListener('keyup', handleKey);
+            canvas.addEventListener('mousemove', handleMouse);
+            canvas.addEventListener('mousedown', shoot);
+        }
+
+        function closeShooterGame() {
+            document.getElementById('shooterModal').style.display = 'none';
+            cancelAnimationFrame(gameLoopId);
+            window.removeEventListener('keydown', handleKey);
+            window.removeEventListener('keyup', handleKey);
+        }
+
+        function startGame() {
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('gameOverScreen').classList.add('hidden');
             
-            // Input
-            window.addEventListener('keydown', e => { if(e.code === 'Space') jump(); });
-            canvas.addEventListener('click', jump);
+            // Reset Game State
+            player.x = 400; player.y = 300; player.hp = 100;
+            bullets = []; enemies = []; particles = []; score = 0;
+            isGameOver = false;
+            updateHUD();
+
+            gameLoopId = requestAnimationFrame(loop);
         }
 
-        function closeGame() {
-            document.getElementById('offlineGame').style.display = 'none';
-            gameActive = false;
-        }
+        function loop(timestamp) {
+            if(isGameOver) return;
+            const dt = timestamp - lastTime;
+            lastTime = timestamp;
 
-        function jump() {
-            if(player.grounded) {
-                player.dy = player.jump;
-                player.grounded = false;
-            }
-        }
-
-        function resetGame() {
-            player.y = 350; player.dy = 0;
-            obstacles = []; frame = 0; score = 0;
-        }
-
-        function updateGame() {
-            if(!gameActive) return;
-            ctx.clearRect(0,0, canvas.width, canvas.height);
-
-            // Physics
-            player.dy += 0.6; // Gravity
-            player.y += player.dy;
-            if(player.y > 350) { player.y = 350; player.dy = 0; player.grounded = true; }
-
-            // Draw Player
-            ctx.fillStyle = '#0070d1'; // PS Blue
-            ctx.shadowBlur = 20; ctx.shadowColor = '#0070d1';
-            ctx.fillRect(player.x, player.y, player.w, player.h);
-
-            // Obstacles
-            if(frame % 100 === 0) {
-                obstacles.push({ x: canvas.width, y: 340, w: 20, h: 40 });
-            }
+            update();
+            draw();
             
-            obstacles.forEach((obs, index) => {
-                obs.x -= 5;
-                ctx.fillStyle = '#ff3333';
-                ctx.shadowBlur = 10; ctx.shadowColor = 'red';
-                ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+            // Enemy Spawner
+            if(Math.random() < 0.02 + (score * 0.0001)) spawnEnemy();
 
-                // Collision
-                if(player.x < obs.x + obs.w && player.x + player.w > obs.x &&
-                   player.y < obs.y + obs.h && player.y + player.h > obs.y) {
-                    resetGame(); // Simple restart on die
-                }
+            gameLoopId = requestAnimationFrame(loop);
+        }
 
-                // Score
-                if(obs.x + obs.w < 0) { obstacles.splice(index, 1); score++; }
+        function update() {
+            // Player Movement
+            if(keys.w && player.y > 0) player.y -= player.speed;
+            if(keys.s && player.y < canvas.height) player.y += player.speed;
+            if(keys.a && player.x > 0) player.x -= player.speed;
+            if(keys.d && player.x < canvas.width) player.x += player.speed;
+
+            // Bullets
+            bullets.forEach((b, i) => {
+                b.x += b.vx; b.y += b.vy;
+                if(b.x < 0 || b.x > canvas.width || b.y < 0 || b.y > canvas.height) bullets.splice(i, 1);
             });
 
-            // HUD
-            ctx.shadowBlur = 0;
-            ctx.fillStyle = 'white';
-            ctx.font = "20px Saira";
-            ctx.fillText("Score: " + score, 700, 30);
-            document.getElementById('score').innerText = "Score: " + score;
+            // Enemies
+            enemies.forEach((e, i) => {
+                const angle = Math.atan2(player.y - e.y, player.x - e.x);
+                e.x += Math.cos(angle) * e.speed;
+                e.y += Math.sin(angle) * e.speed;
 
-            frame++;
-            requestAnimationFrame(updateGame);
+                // Collision with Player
+                const dist = Math.hypot(player.x - e.x, player.y - e.y);
+                if(dist < player.radius + e.radius) {
+                    player.hp -= 10;
+                    enemies.splice(i, 1);
+                    screenShake();
+                    updateHUD();
+                    spawnParticles(e.x, e.y, '#ff3333', 5);
+                    if(player.hp <= 0) gameOver();
+                }
+
+                // Collision with Bullets
+                bullets.forEach((b, bi) => {
+                    const bDist = Math.hypot(b.x - e.x, b.y - e.y);
+                    if(bDist < e.radius + 5) {
+                        enemies.splice(i, 1);
+                        bullets.splice(bi, 1);
+                        score += 100;
+                        updateHUD();
+                        spawnParticles(e.x, e.y, '#ff3333', 10);
+                        spawnParticles(e.x, e.y, '#ffffff', 5);
+                    }
+                });
+            });
+
+            // Particles
+            particles.forEach((p, i) => {
+                p.x += p.vx; p.y += p.vy; p.life -= 0.05;
+                if(p.life <= 0) particles.splice(i, 1);
+            });
         }
 
-        // --- 4. FIREBASE AUTH ---
+        function draw() {
+            // Trail Effect
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Player (Triangle pointing to mouse)
+            ctx.save();
+            ctx.translate(player.x, player.y);
+            const angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
+            ctx.rotate(angle);
+            ctx.fillStyle = '#0070d1';
+            ctx.shadowBlur = 15; ctx.shadowColor = '#0070d1';
+            ctx.beginPath();
+            ctx.moveTo(15, 0); ctx.lineTo(-10, 10); ctx.lineTo(-10, -10);
+            ctx.fill();
+            ctx.restore();
+
+            // Draw Bullets
+            ctx.fillStyle = '#00ff88';
+            ctx.shadowColor = '#00ff88';
+            bullets.forEach(b => {
+                ctx.beginPath(); ctx.arc(b.x, b.y, 3, 0, Math.PI*2); ctx.fill();
+            });
+
+            // Draw Enemies
+            enemies.forEach(e => {
+                ctx.fillStyle = '#ff3333';
+                ctx.shadowColor = 'red';
+                ctx.beginPath();
+                ctx.rect(e.x - e.radius, e.y - e.radius, e.radius*2, e.radius*2);
+                ctx.fill();
+            });
+
+            // Draw Particles
+            particles.forEach(p => {
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = p.life;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
+                ctx.globalAlpha = 1;
+            });
+        }
+
+        function shoot() {
+            if(isGameOver) return;
+            const angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
+            const velocity = { x: Math.cos(angle) * 12, y: Math.sin(angle) * 12 };
+            bullets.push({ x: player.x, y: player.y, vx: velocity.x, vy: velocity.y });
+        }
+
+        function spawnEnemy() {
+            const side = Math.floor(Math.random() * 4);
+            let x, y;
+            if(side === 0) { x = Math.random()*canvas.width; y = -20; }
+            if(side === 1) { x = canvas.width+20; y = Math.random()*canvas.height; }
+            if(side === 2) { x = Math.random()*canvas.width; y = canvas.height+20; }
+            if(side === 3) { x = -20; y = Math.random()*canvas.height; }
+            
+            enemies.push({ x, y, radius: 15, speed: 2 + Math.random() });
+        }
+
+        function spawnParticles(x, y, color, count) {
+            for(let i=0; i<count; i++) {
+                particles.push({
+                    x, y, color,
+                    vx: (Math.random()-0.5) * 5,
+                    vy: (Math.random()-0.5) * 5,
+                    life: 1, size: Math.random() * 3
+                });
+            }
+        }
+
+        function updateHUD() {
+            document.getElementById('gameScore').innerText = score;
+            document.getElementById('gameHP').style.width = player.hp + '%';
+            if(player.hp < 30) document.getElementById('gameHP').style.background = 'red';
+            else document.getElementById('gameHP').style.background = '#00ff88';
+        }
+
+        function gameOver() {
+            isGameOver = true;
+            document.getElementById('finalScore').innerText = score;
+            document.getElementById('gameOverScreen').classList.remove('hidden');
+        }
+
+        function screenShake() {
+            canvas.style.transform = `translate(${Math.random()*10-5}px, ${Math.random()*10-5}px)`;
+            setTimeout(() => canvas.style.transform = 'translate(0,0)', 50);
+        }
+
+        // Input Handlers
+        function handleKey(e) {
+            if(e.type === 'keydown') {
+                if(e.key === 'w') keys.w = true;
+                if(e.key === 'a') keys.a = true;
+                if(e.key === 's') keys.s = true;
+                if(e.key === 'd') keys.d = true;
+            } else {
+                if(e.key === 'w') keys.w = false;
+                if(e.key === 'a') keys.a = false;
+                if(e.key === 's') keys.s = false;
+                if(e.key === 'd') keys.d = false;
+            }
+        }
+        function handleMouse(e) {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        }
+
+        // --- 4. FIREBASE AUTH (User Provided Config) ---
         const firebaseConfig = {
             apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
             authDomain: "playwithease.firebaseapp.com",
@@ -436,9 +596,7 @@
             const provider = new firebase.auth.GoogleAuthProvider();
 
             window.handleLogin = () => {
-                auth.signInWithPopup(provider).then(res => {
-                    console.log("Logged in");
-                }).catch(e => alert(e.message));
+                auth.signInWithPopup(provider).catch(e => alert(e.message));
             };
 
             auth.onAuthStateChanged(user => {
@@ -451,7 +609,6 @@
                     btn.onclick = handleLogin;
                 }
             });
-
         } catch(e) { console.log("Firebase config error"); }
 
     </script>
