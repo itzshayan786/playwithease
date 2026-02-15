@@ -19,6 +19,7 @@
             --sony-blue: #0070d1;
             --accent: #ffffff;
             --text-grey: #b3b3b3;
+            --danger: #ff3333;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Saira', sans-serif; }
@@ -55,6 +56,13 @@
         .auth-btn {
             background: white; color: black; padding: 8px 24px; border-radius: 20px;
             font-weight: 700; font-size: 13px; cursor: pointer; border: none;
+        }
+
+        .cart-icon-wrapper { position: relative; cursor: pointer; }
+        .cart-badge {
+            position: absolute; top: -5px; right: -8px; background: var(--sony-blue);
+            color: white; font-size: 10px; font-weight: bold; width: 16px; height: 16px;
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
         }
 
         /* --- HERO SECTION (DYNAMIC) --- */
@@ -141,10 +149,58 @@
         .card-art img { width: 100%; height: 100%; object-fit: cover; }
         .game-card:hover .card-art { box-shadow: 0 0 0 3px white; }
 
+        .add-to-cart-btn {
+            position: absolute; bottom: 10px; right: 10px; width: 35px; height: 35px;
+            background: var(--sony-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            opacity: 0; transform: translateY(10px); transition: 0.3s; color: white;
+        }
+        .game-card:hover .add-to-cart-btn { opacity: 1; transform: translateY(0); }
+        .add-to-cart-btn:hover { background: white; color: var(--sony-blue); }
+
         .card-meta { margin-top: 15px; opacity: 0.7; transition: 0.3s; }
         .game-card:hover .card-meta { opacity: 1; }
         .card-title { font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-price { font-size: 13px; color: var(--text-grey); margin-top: 4px; }
+
+        /* --- CART SIDEBAR --- */
+        .cart-sidebar {
+            position: fixed; top: 0; right: -400px; width: 350px; height: 100%;
+            background: #111; border-left: 1px solid #333; z-index: 2000;
+            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex; flex-direction: column; box-shadow: -10px 0 50px rgba(0,0,0,0.5);
+        }
+        .cart-sidebar.open { right: 0; }
+        
+        .cart-header {
+            padding: 20px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center;
+            font-size: 18px; font-weight: 700;
+        }
+        .close-cart { cursor: pointer; color: var(--text-grey); transition: 0.2s; }
+        .close-cart:hover { color: white; }
+
+        .cart-items { flex: 1; overflow-y: auto; padding: 20px; }
+        .cart-item {
+            display: flex; gap: 15px; margin-bottom: 20px; background: #1a1a1a; padding: 10px; border-radius: 8px;
+            position: relative; transition: 0.2s;
+        }
+        .cart-item:hover { background: #222; }
+        .cart-img { width: 60px; height: 80px; object-fit: cover; border-radius: 4px; }
+        .cart-info { display: flex; flex-direction: column; justify-content: center; }
+        .cart-title { font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+        .cart-price { font-size: 12px; color: var(--sony-blue); font-weight: 700; }
+        
+        .remove-item {
+            position: absolute; top: 10px; right: 10px; color: #555; cursor: pointer; font-size: 12px;
+        }
+        .remove-item:hover { color: var(--danger); }
+
+        .cart-footer { padding: 25px; border-top: 1px solid #222; background: #0a0a0a; }
+        .total-row { display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+        .checkout-btn {
+            width: 100%; padding: 15px; background: var(--sony-blue); color: white;
+            border: none; border-radius: 30px; font-weight: 700; cursor: pointer; transition: 0.2s;
+        }
+        .checkout-btn:hover { opacity: 0.9; }
 
         /* --- SHOOTER GAME MODAL --- */
         .game-modal {
@@ -200,10 +256,32 @@
                 PLAY CYBER DEFENSE
             </div>
             <div class="nav-item"><i class="fas fa-search"></i></div>
-            <div class="nav-item"><i class="fas fa-shopping-bag"></i></div>
+            
+            <div class="nav-item cart-icon-wrapper" onclick="toggleCart()">
+                <i class="fas fa-shopping-bag"></i>
+                <div class="cart-badge" id="cartBadge">0</div>
+            </div>
+
             <button class="auth-btn" id="loginBtn" onclick="handleLogin()">Sign In</button>
         </div>
     </header>
+
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <span>Your Cart</span>
+            <span class="close-cart" onclick="toggleCart()">&times;</span>
+        </div>
+        <div class="cart-items" id="cartItemsContainer">
+            <div style="text-align: center; color: #555; margin-top: 50px;">Your cart is empty.</div>
+        </div>
+        <div class="cart-footer">
+            <div class="total-row">
+                <span>Total</span>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <button class="checkout-btn">Checkout</button>
+        </div>
+    </div>
 
     <section class="hero" id="hero-section">
         <img id="hero-bg" src="https://images.hdqwalls.com/wallpapers/gta-vi-4k-logo-fo.jpg" class="hero-bg-img">
@@ -219,7 +297,7 @@
             </p>
             <div class="price-tag">Pre-Order <span>$69.99</span></div>
             <div class="action-row">
-                <button class="btn-primary">Pre-Order Now</button>
+                <button class="btn-primary" onclick="addToCart('Grand Theft Auto VI', 69.99, 'https://images.hdqwalls.com/wallpapers/gta-vi-4k-logo-fo.jpg')">Pre-Order Now</button>
                 <button class="btn-glass" onclick="playTrailer()"><i class="fas fa-play"></i> Watch Trailer</button>
             </div>
         </div>
@@ -290,14 +368,16 @@
                 desc: "Welcome to Leonida. Experience the next evolution of the open world with Jason and Lucia in the most immersive Vice City ever created.",
                 bg: "https://images.hdqwalls.com/wallpapers/gta-vi-4k-logo-fo.jpg",
                 trailer: "QdBZY2fkU-0",
-                price: "$69.99"
+                price: "$69.99",
+                cleanPrice: 69.99
             },
             forza: {
                 title: "Forza Horizon 6",
                 desc: "The Horizon Festival moves to Japan. Drift through neon-lit Tokyo streets and race down Mount Fuji in the most visually stunning racer ever made.",
                 bg: "https://images.hdqwalls.com/wallpapers/forza-horizon-5-4k-game-3r.jpg",
                 trailer: "FYH9n37B7Yw",
-                price: "$59.99"
+                price: "$59.99",
+                cleanPrice: 59.99
             }
         };
 
@@ -321,6 +401,10 @@
                 bg.src = data.bg;
                 document.getElementById('hero-title').innerText = data.title;
                 document.getElementById('hero-desc').innerText = data.desc;
+                // Update button action for Add to Cart
+                const btn = document.querySelector('.action-row .btn-primary');
+                btn.onclick = () => addToCart(data.title, data.cleanPrice, data.bg);
+                
                 bg.style.opacity = 1;
                 text.classList.add('visible');
             }, 500);
@@ -339,25 +423,90 @@
 
         // --- 2. GAME RAILS ---
         const railData = [
-            { t: "Elden Ring", p: "$39.99", i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co848v.jpg" },
-            { t: "Black Myth: Wukong", p: "$59.99", i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co8ush.jpg" },
-            { t: "Spider-Man 2", p: "$69.99", i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co660r.jpg" },
-            { t: "God of War Ragnarök", p: "$49.99", i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co5s5v.jpg" },
-            { t: "Cyberpunk 2077", p: "$29.99", i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mjs.jpg" },
-            { t: "Resident Evil 4", p: "$39.99", i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co628e.jpg" },
+            { t: "Elden Ring", p: 39.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co848v.jpg" },
+            { t: "Black Myth: Wukong", p: 59.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co8ush.jpg" },
+            { t: "Spider-Man 2", p: 69.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co660r.jpg" },
+            { t: "God of War Ragnarök", p: 49.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co5s5v.jpg" },
+            { t: "Cyberpunk 2077", p: 29.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mjs.jpg" },
+            { t: "Resident Evil 4", p: 39.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co628e.jpg" },
         ];
 
         const rail = document.getElementById('trending-rail');
         [...railData, ...railData].forEach(g => {
             rail.innerHTML += `
                 <div class="game-card">
-                    <div class="card-art"><img src="${g.i}" loading="lazy"></div>
-                    <div class="card-meta"><div class="card-title">${g.t}</div><div class="card-price">${g.p}</div></div>
+                    <div class="card-art">
+                        <img src="${g.i}" loading="lazy">
+                        <div class="add-to-cart-btn" onclick="addToCart('${g.t}', ${g.p}, '${g.i}')">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <div class="card-meta"><div class="card-title">${g.t}</div><div class="card-price">$${g.p}</div></div>
                 </div>`;
         });
         document.getElementById('soon-rail').innerHTML = rail.innerHTML;
 
-        // --- 3. CYBER DEFENSE SHOOTER ENGINE ---
+        // --- 3. CART SYSTEM LOGIC ---
+        let cart = [];
+
+        function toggleCart() {
+            const sidebar = document.getElementById('cartSidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        function addToCart(title, price, image) {
+            cart.push({ title, price, image });
+            updateCartUI();
+            
+            // Animation for feedback
+            const badge = document.getElementById('cartBadge');
+            badge.style.transform = "scale(1.5)";
+            setTimeout(() => badge.style.transform = "scale(1)", 200);
+            
+            // Auto open cart on add
+            document.getElementById('cartSidebar').classList.add('open');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cartItemsContainer');
+            const totalEl = document.getElementById('cartTotal');
+            const badge = document.getElementById('cartBadge');
+
+            badge.innerText = cart.length;
+
+            if (cart.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: #555; margin-top: 50px;">Your cart is empty.</div>';
+                totalEl.innerText = "$0.00";
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                total += item.price;
+                html += `
+                    <div class="cart-item">
+                        <img src="${item.image}" class="cart-img">
+                        <div class="cart-info">
+                            <div class="cart-title">${item.title}</div>
+                            <div class="cart-price">$${item.price.toFixed(2)}</div>
+                        </div>
+                        <div class="remove-item" onclick="removeFromCart(${index})"><i class="fas fa-trash"></i></div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            totalEl.innerText = "$" + total.toFixed(2);
+        }
+
+        // --- 4. CYBER DEFENSE SHOOTER ENGINE ---
         const canvas = document.getElementById('shooterCanvas');
         const ctx = canvas.getContext('2d');
         canvas.width = 800; canvas.height = 600;
@@ -579,7 +728,7 @@
             mouse.y = e.clientY - rect.top;
         }
 
-        // --- 4. FIREBASE AUTH (User Provided Config) ---
+        // --- 5. FIREBASE AUTH ---
         const firebaseConfig = {
             apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
             authDomain: "playwithease.firebaseapp.com",
