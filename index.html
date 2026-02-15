@@ -23,8 +23,8 @@
                         accent: '#8b5cf6'
                     },
                     animation: {
-                        'fade-in': 'fadeIn 0.5s ease-out',
-                        'slide-up': 'slideUp 0.5s ease-out'
+                        'fade-in': 'fadeIn 0.3s ease-out',
+                        'slide-up': 'slideUp 0.4s ease-out'
                     },
                     keyframes: {
                         fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
@@ -47,6 +47,13 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
+        .glass-panel {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         /* Hide Scrollbar */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -56,7 +63,7 @@
             position: absolute;
             inset: 0;
             opacity: 0;
-            transition: opacity 1.5s ease-in-out;
+            transition: opacity 1.0s ease-in-out;
             z-index: 0;
             background-size: cover;
             background-position: center;
@@ -68,6 +75,15 @@
         
         /* Card Hover */
         .game-card:hover .play-btn { opacity: 1; transform: scale(1); }
+        
+        /* Input Autofill Fix */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #1a1a1a inset !important;
+            -webkit-text-fill-color: white !important;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -94,8 +110,8 @@
                     </button>
 
                     <div id="authContainer">
-                        <button id="loginBtn" class="bg-white text-black px-5 py-2 rounded-full font-bold text-sm hover:bg-gray-200 transition-all flex items-center gap-2">
-                            <i class="fa-brands fa-google"></i> Login
+                        <button onclick="toggleAuthModal()" id="loginBtn" class="bg-white text-black px-5 py-2 rounded-full font-bold text-sm hover:bg-gray-200 transition-all flex items-center gap-2">
+                            Log In
                         </button>
 
                         <div id="userProfile" class="hidden relative group">
@@ -104,8 +120,8 @@
                                 <img id="userAvatar" src="" class="w-8 h-8 rounded-full border border-white/20 object-cover">
                             </button>
                             <div class="absolute right-0 mt-2 w-48 bg-[#1a1a1a] border border-white/10 rounded-xl shadow-2xl overflow-hidden hidden group-hover:block animate-fade-in">
-                                <a href="profile.html" class="block px-4 py-3 text-sm hover:bg-white/5 text-gray-300">My Profile</a>
-                                <a href="#" class="block px-4 py-3 text-sm hover:bg-white/5 text-gray-300">Billing</a>
+                                <a href="#" class="block px-4 py-3 text-sm hover:bg-white/5 text-gray-300">My Profile</a>
+                                <a href="#" class="block px-4 py-3 text-sm hover:bg-white/5 text-gray-300">Orders</a>
                                 <div class="h-px bg-white/10"></div>
                                 <button id="logoutBtn" class="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-white/5">Sign Out</button>
                             </div>
@@ -134,19 +150,16 @@
         </div>
     </div>
 
-    <header class="relative w-full h-[90vh] min-h-[600px] overflow-hidden bg-black">
+    <header id="heroCarousel" class="relative w-full h-[90vh] min-h-[600px] overflow-hidden bg-black touch-pan-y">
         
         <div class="slide active" style="background-image: url('https://www.rockstargames.com/VI/_next/image?url=%2FVI%2F_next%2Fstatic%2Fmedia%2FJason_and_Lucia_02_With_Logos_landscape.93ab5523.jpg&w=1366&q=75');">
             <div class="absolute inset-0 bg-gradient-to-t from-[#030303] via-black/10 to-transparent"></div>
             <div class="absolute bottom-0 left-0 w-full p-6 md:p-12 pb-24 max-w-7xl mx-auto z-10">
                 <span class="inline-block px-3 py-1 bg-purple-600/80 backdrop-blur text-xs font-bold uppercase tracking-wider rounded mb-4 border border-purple-400/30 shadow-[0_0_15px_rgba(147,51,234,0.5)]">World Premiere</span>
-                
                 <div class="h-0 md:h-10 mb-4"></div> 
-
                 <p class="text-gray-200 max-w-xl text-lg mb-8 drop-shadow-md font-medium" style="text-shadow: 0 2px 10px rgba(0,0,0,0.8);">
                     Welcome to Leonida. Grand Theft Auto VI heads to the state of Leonida, home to the neon-soaked streets of Vice City.
                 </p>
-                
                 <div class="flex gap-4">
                     <button onclick="playTrailer('QdBZY2fkU-0')" class="px-8 py-3 bg-white text-black rounded-full font-bold hover:scale-105 transition-transform flex items-center gap-2 shadow-xl">
                         <i class="fa-solid fa-play"></i> Trailer
@@ -162,13 +175,10 @@
             <div class="absolute inset-0 bg-gradient-to-t from-[#030303] via-black/20 to-transparent"></div>
             <div class="absolute bottom-0 left-0 w-full p-6 md:p-12 pb-24 max-w-7xl mx-auto z-10">
                 <span class="inline-block px-3 py-1 bg-blue-600/80 backdrop-blur text-xs font-bold uppercase tracking-wider rounded mb-4 shadow-[0_0_15px_rgba(37,99,235,0.5)]">Coming Soon</span>
-                
                 <img src="https://cdn.forza.net/strapi-uploads/assets/logo_black_fh6_700993660b.svg" class="h-20 md:h-32 mb-6 object-contain filter invert drop-shadow-lg" alt="Forza Horizon 6">
-                
                 <p class="text-gray-200 max-w-xl text-lg mb-8 drop-shadow-md font-medium" style="text-shadow: 0 2px 10px rgba(0,0,0,0.8);">
                     Explore the most beautiful and comprehensive racing world ever created.
                 </p>
-
                 <div class="flex gap-4">
                     <button onclick="playTrailer('XG1Ll2CVhug')" class="px-8 py-3 bg-white text-black rounded-full font-bold hover:scale-105 transition-transform flex items-center gap-2 shadow-xl">
                         <i class="fa-solid fa-play"></i> Trailer
@@ -208,10 +218,10 @@
 
         <div class="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-8">
             
-            <div class="snap-start shrink-0 w-[280px] group cursor-pointer">
-                <div class="relative aspect-[3/4] rounded-2xl overflow-hidden mb-3">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/8/85/Spider-Man_2_cover.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+            <div class="snap-start shrink-0 w-[280px] group cursor-pointer game-card">
+                <div class="relative aspect-[2/3] rounded-2xl overflow-hidden mb-3 border border-white/5">
+                    <img src="https://gmedia.playstation.com/is/image/SIEPDC/marvels-spider-man-2-keyart-01-en-25may23?$1200px$" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center play-btn">
                         <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all duration-300">
                             <i class="fa-solid fa-plus"></i>
                         </button>
@@ -222,10 +232,10 @@
                 <div class="text-blue-400 font-bold mt-1">₹4,499</div>
             </div>
 
-            <div class="snap-start shrink-0 w-[280px] group cursor-pointer">
-                <div class="relative aspect-[3/4] rounded-2xl overflow-hidden mb-3">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/b/b9/Elden_Ring_Box_Art.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+            <div class="snap-start shrink-0 w-[280px] group cursor-pointer game-card">
+                <div class="relative aspect-[2/3] rounded-2xl overflow-hidden mb-3 border border-white/5">
+                    <img src="https://image.api.playstation.com/vulcan/ap/rnd/202110/2000/phvVT0qZfcRms5qDAk0SI3CM.png" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center play-btn">
                         <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all duration-300">
                             <i class="fa-solid fa-plus"></i>
                         </button>
@@ -236,10 +246,10 @@
                 <div class="text-blue-400 font-bold mt-1">₹2,999</div>
             </div>
 
-            <div class="snap-start shrink-0 w-[280px] group cursor-pointer">
-                <div class="relative aspect-[3/4] rounded-2xl overflow-hidden mb-3">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/a/a3/Call_of_Duty_Modern_Warfare_III_2023_key_art.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                     <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+            <div class="snap-start shrink-0 w-[280px] group cursor-pointer game-card">
+                <div class="relative aspect-[2/3] rounded-2xl overflow-hidden mb-3 border border-white/5">
+                    <img src="https://image.api.playstation.com/vulcan/ap/rnd/202308/0217/b3749448f21789c037803730e20ce5b06d91c28c8646b14f.png" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                     <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center play-btn">
                         <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all duration-300">
                             <i class="fa-solid fa-plus"></i>
                         </button>
@@ -250,10 +260,10 @@
                 <div class="text-blue-400 font-bold mt-1">₹5,499</div>
             </div>
 
-             <div class="snap-start shrink-0 w-[280px] group cursor-pointer">
-                <div class="relative aspect-[3/4] rounded-2xl overflow-hidden mb-3">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/4/44/Red_Dead_Redemption_II.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                     <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+             <div class="snap-start shrink-0 w-[280px] group cursor-pointer game-card">
+                <div class="relative aspect-[2/3] rounded-2xl overflow-hidden mb-3 border border-white/5">
+                    <img src="https://image.api.playstation.com/vulcan/ap/rnd/202010/2016/9ba3a918a38c234a5d4818a7c126d45e053a99e74c8b2586.png" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                     <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center play-btn">
                         <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all duration-300">
                             <i class="fa-solid fa-plus"></i>
                         </button>
@@ -355,6 +365,60 @@
         </div>
     </footer>
 
+    <div id="authModal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4">
+        <div onclick="toggleAuthModal()" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+        
+        <div class="relative w-full max-w-md glass-panel rounded-2xl p-8 shadow-2xl transform transition-all animate-slide-up">
+            <button onclick="toggleAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <div class="flex justify-center mb-6">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-2xl shadow-lg">P</div>
+            </div>
+
+            <div class="flex border-b border-white/10 mb-6">
+                <button id="tabLogin" onclick="switchTab('login')" class="flex-1 pb-3 text-center text-white border-b-2 border-blue-500 font-medium transition-colors">Log In</button>
+                <button id="tabRegister" onclick="switchTab('register')" class="flex-1 pb-3 text-center text-gray-400 hover:text-white transition-colors">Sign Up</button>
+            </div>
+
+            <form id="authForm" onsubmit="handleAuth(event)" class="space-y-4">
+                <div class="space-y-1">
+                    <label class="text-xs text-gray-400 font-semibold uppercase">Email</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-gray-500"></i>
+                        <input type="email" id="email" required placeholder="name@example.com" 
+                            class="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-xs text-gray-400 font-semibold uppercase">Password</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-lock absolute left-4 top-3.5 text-gray-500"></i>
+                        <input type="password" id="password" required placeholder="••••••••" 
+                            class="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
+                    </div>
+                </div>
+
+                <div id="registerNameGroup" class="hidden space-y-1">
+                    <label class="text-xs text-gray-400 font-semibold uppercase">Full Name</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-user absolute left-4 top-3.5 text-gray-500"></i>
+                        <input type="text" id="fullName" placeholder="John Doe" 
+                            class="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-lg shadow-lg shadow-blue-600/20 transition-all transform hover:-translate-y-0.5 mt-2">
+                    Log In
+                </button>
+            </form>
+
+            <p id="authError" class="text-red-400 text-xs text-center mt-4 hidden"></p>
+        </div>
+    </div>
+
     <div id="trailerModal" class="hidden fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="relative w-full max-w-5xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/10">
             <button onclick="closeTrailer()" class="absolute top-4 right-4 z-20 w-10 h-10 bg-black/50 backdrop-blur rounded-full text-white hover:bg-white hover:text-black flex items-center justify-center transition-colors">
@@ -366,7 +430,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         // --- FIREBASE CONFIG ---
         const firebaseConfig = {
@@ -381,47 +445,100 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
 
-        // --- DOM ELEMENTS ---
+        // --- UI ELEMENTS ---
         const loginBtn = document.getElementById('loginBtn');
         const userProfile = document.getElementById('userProfile');
         const userName = document.getElementById('userName');
         const userAvatar = document.getElementById('userAvatar');
         const logoutBtn = document.getElementById('logoutBtn');
+        const authError = document.getElementById('authError');
 
-        // --- AUTH LOGIC ---
-        loginBtn.addEventListener('click', async () => {
-            try {
-                await signInWithPopup(auth, provider);
-            } catch (err) {
-                alert("Login Error: " + err.message);
-            }
-        });
-
-        logoutBtn.addEventListener('click', () => signOut(auth));
-
+        // --- AUTH STATE OBSERVER ---
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                loginBtn.classList.add('hidden');
+                // Logged In
+                document.getElementById('authContainer').querySelector('#loginBtn').classList.add('hidden');
                 userProfile.classList.remove('hidden');
                 
-                // Get Name
                 const displayName = user.displayName ? user.displayName.split(' ')[0] : 'User';
                 userName.textContent = displayName;
                 
-                // Get Photo (With Fallback)
-                if (user.photoURL) {
-                    userAvatar.src = user.photoURL;
-                } else {
-                    // Generates a placeholder image with Initials
-                    userAvatar.src = `https://ui-avatars.com/api/?name=${displayName}&background=random&color=fff`;
-                }
+                // Avatar Fallback
+                userAvatar.src = user.photoURL || `https://ui-avatars.com/api/?name=${displayName}&background=3b82f6&color=fff&bold=true`;
+                
+                // Close modal if open
+                document.getElementById('authModal').classList.add('hidden');
             } else {
-                loginBtn.classList.remove('hidden');
+                // Logged Out
+                document.getElementById('authContainer').querySelector('#loginBtn').classList.remove('hidden');
                 userProfile.classList.add('hidden');
             }
         });
+
+        // --- AUTH FORM LOGIC ---
+        window.isLoginMode = true;
+
+        window.toggleAuthModal = () => {
+            const modal = document.getElementById('authModal');
+            modal.classList.toggle('hidden');
+            authError.classList.add('hidden');
+        };
+
+        window.switchTab = (mode) => {
+            const tabLogin = document.getElementById('tabLogin');
+            const tabRegister = document.getElementById('tabRegister');
+            const registerNameGroup = document.getElementById('registerNameGroup');
+            const submitBtn = document.getElementById('submitBtn');
+            const form = document.getElementById('authForm');
+            
+            form.reset();
+            authError.classList.add('hidden');
+
+            if (mode === 'login') {
+                window.isLoginMode = true;
+                tabLogin.className = "flex-1 pb-3 text-center text-white border-b-2 border-blue-500 font-medium transition-colors";
+                tabRegister.className = "flex-1 pb-3 text-center text-gray-400 hover:text-white transition-colors";
+                registerNameGroup.classList.add('hidden');
+                submitBtn.textContent = "Log In";
+            } else {
+                window.isLoginMode = false;
+                tabRegister.className = "flex-1 pb-3 text-center text-white border-b-2 border-blue-500 font-medium transition-colors";
+                tabLogin.className = "flex-1 pb-3 text-center text-gray-400 hover:text-white transition-colors";
+                registerNameGroup.classList.remove('hidden');
+                submitBtn.textContent = "Create Account";
+            }
+        };
+
+        window.handleAuth = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const fullName = document.getElementById('fullName').value;
+            const submitBtn = document.getElementById('submitBtn');
+            
+            authError.classList.add('hidden');
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Processing...";
+
+            try {
+                if (window.isLoginMode) {
+                    await signInWithEmailAndPassword(auth, email, password);
+                } else {
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    await updateProfile(userCredential.user, { displayName: fullName });
+                    // Reload to update UI with new name
+                    window.location.reload(); 
+                }
+            } catch (error) {
+                authError.textContent = error.message.replace('Firebase: ', '');
+                authError.classList.remove('hidden');
+                submitBtn.disabled = false;
+                submitBtn.textContent = window.isLoginMode ? "Log In" : "Create Account";
+            }
+        };
+
+        document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
     </script>
 
     <script>
@@ -441,23 +558,54 @@
             }
         });
 
-        // --- CAROUSEL LOGIC ---
+        // --- CAROUSEL LOGIC WITH TOUCH SWIPE ---
         const slides = document.querySelectorAll('.slide');
         const slideIndicator = document.getElementById('slideIndicator');
+        const heroContainer = document.getElementById('heroCarousel');
         let currentSlide = 0;
+        let slideInterval;
 
-        function nextSlide() {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
             
             // Move Indicator
-            if(currentSlide === 0) slideIndicator.style.transform = 'translateY(0)';
+            if(index === 0) slideIndicator.style.transform = 'translateY(0)';
             else slideIndicator.style.transform = 'translateY(100%)';
         }
 
-        // Change slide every 6 seconds
-        setInterval(nextSlide, 6000);
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        // Auto Slide
+        slideInterval = setInterval(nextSlide, 6000);
+
+        // --- SWIPE GESTURES ---
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        heroContainer.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+            clearInterval(slideInterval); // Stop auto-slide on interaction
+        }, {passive: true});
+
+        heroContainer.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+            slideInterval = setInterval(nextSlide, 6000); // Restart auto-slide
+        }, {passive: true});
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) nextSlide(); // Swipe Left
+            if (touchEndX > touchStartX + 50) prevSlide(); // Swipe Right
+        }
 
         // --- TRAILER MODAL LOGIC ---
         const modal = document.getElementById('trailerModal');
@@ -465,7 +613,6 @@
 
         window.playTrailer = (videoId) => {
             modal.classList.remove('hidden');
-            // Little delay to allow display:block to apply before opacity transition
             setTimeout(() => modal.classList.remove('opacity-0'), 10);
             frame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&modestbranding=1&rel=0`;
         };
@@ -474,11 +621,10 @@
             modal.classList.add('opacity-0');
             setTimeout(() => {
                 modal.classList.add('hidden');
-                frame.src = ''; // Stop video
+                frame.src = ''; 
             }, 300);
         };
         
-        // Close on escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') window.closeTrailer();
         });
