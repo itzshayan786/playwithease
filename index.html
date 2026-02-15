@@ -3,80 +3,403 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayWithEase | Premium Gaming Store</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>GameVault | Buy Games Cheaper</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --primary: #6c5ce7; /* Eneba-like Purple */
+            --accent: #fdcb6e;  /* Warning/Discount Yellow */
+            --danger: #ff7675;  /* Sale Red */
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #ffffff;
+            --text-muted: #b2bec3;
+            --border: #2d3436;
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body { background-color: var(--dark-bg); color: var(--text-main); line-height: 1.6; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- HEADER & NAV --- */
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 0 5%;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo { font-size: 28px; font-weight: 800; color: var(--text-main); letter-spacing: -1px; }
+        .logo span { color: var(--primary); }
+
+        .search-bar {
+            flex: 0 1 500px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            padding-right: 50px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            background: #2d3436;
+            color: white;
+            font-size: 14px;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+        }
+
+        .nav-actions { display: flex; gap: 20px; align-items: center; }
+        .nav-btn { font-weight: 600; font-size: 14px; cursor: pointer; }
+        .cart-icon { position: relative; }
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: var(--danger);
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2670&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hero h1 { font-size: 48px; margin-bottom: 20px; font-weight: 800; }
+        .hero p { font-size: 18px; color: var(--text-muted); margin-bottom: 30px; max-width: 600px; }
+        
+        .cta-btn {
+            background: var(--primary);
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        .cta-btn:hover { background: #5649c0; transform: translateY(-2px); }
+
+        /* --- TRUST BADGES --- */
+        .trust-strip {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            padding: 20px 0;
+            background: #252525;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .trust-item { display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 13px; font-weight: 600; }
+        .trust-item i { color: var(--primary); font-size: 18px; }
+
+        /* --- PRODUCT GRID --- */
+        .container { max-width: 1400px; margin: 40px auto; padding: 0 20px; }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 25px;
+        }
+        
+        .section-title { font-size: 24px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .section-title i { color: var(--danger); }
+        .view-all { color: var(--primary); font-weight: 600; font-size: 14px; }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 25px;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid transparent;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .card-image {
+            height: 320px; /* Portrait aspect ratio standard for games */
+            width: 100%;
+            object-fit: cover;
+            position: relative;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--danger);
+            color: white;
+            font-weight: 800;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .region-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .card-content { padding: 15px; }
+        
+        .game-title {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .price-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .old-price { font-size: 12px; color: var(--text-muted); text-decoration: line-through; }
+        .new-price { font-size: 18px; font-weight: 700; color: var(--accent); }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            padding: 60px 5%;
+            margin-top: 80px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-col h4 { margin-bottom: 20px; color: white; }
+        .footer-col ul li { margin-bottom: 10px; color: var(--text-muted); font-size: 14px; cursor: pointer; transition: 0.2s; }
+        .footer-col ul li:hover { color: var(--primary); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-container { flex-wrap: wrap; height: auto; padding: 15px 0; }
+            .search-bar { order: 3; flex: 1 1 100%; margin-top: 15px; }
+            .nav-actions { order: 2; }
+            .hero h1 { font-size: 32px; }
+            .card-image { height: 200px; }
+        }
+    </style>
 </head>
 <body>
 
-<header>
-    <a href="index.html" class="logo">PlayWithEase</a>
-    <div class="search-bar">
-        <input type="text" id="search-input" placeholder="Search games, subscriptions..." onkeyup="filterProducts()">
-    </div>
-    <div class="nav-links">
-        <button onclick="toggleCart()" style="background:none; border:none; cursor:pointer;">
-            <span class="material-icons">shopping_bag</span>
-            <span id="cart-count">0</span>
-        </button>
-        <a href="profile.html" class="material-icons">account_circle</a>
-    </div>
-</header>
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">Game<span>Vault</span></a>
+            
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="Search games (e.g. Elden Ring, FIFA 24)...">
+                <button class="search-btn"><i class="fas fa-search"></i></button>
+            </div>
 
-<section class="hero" style="height: 400px; background: #000; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; color: white; text-align: center;">
-    <div style="z-index: 2;">
-        <h1 style="font-size: 3rem; margin-bottom: 1rem;">Experience the Next Gen</h1>
-        <button class="btn btn-primary" onclick="openTrailer('https://www.youtube.com/embed/QdBZY2fkU-0')" style="width: auto;">Watch GTA VI Trailer</button>
-    </div>
-    <div style="position: absolute; top: 0; opacity: 0.5; width: 100%;">
-        <img src="https://image.api.playstation.com/vulcan/ap/rnd/202312/0517/8d91b48b11110034a74288002df35c2b0b181284a1e9e243.jpg" width="100%">
-    </div>
-</section>
-
-<main class="container">
-    <div class="filters" style="margin-bottom: 2rem; display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 10px;">
-        <button class="btn" onclick="setCategory('all')">All</button>
-        <button class="btn" onclick="setCategory('ps5')">PS5 Games</button>
-        <button class="btn" onclick="setCategory('pc')">PC Games</button>
-        <button class="btn" onclick="setCategory('subscriptions')">Subscriptions</button>
-    </div>
-
-    <div class="product-grid" id="product-list">
+            <div class="nav-actions">
+                <div class="nav-btn">Log In</div>
+                <div class="nav-btn">Register</div>
+                <div class="nav-btn cart-icon">
+                    <i class="fas fa-shopping-cart fa-lg"></i>
+                    <span class="cart-badge">2</span>
+                </div>
+            </div>
         </div>
-</main>
+    </header>
 
-<nav class="mobile-nav">
-    <a href="index.html" class="material-icons">home</a>
-    <span class="material-icons" onclick="document.getElementById('search-input').focus()">search</span>
-    <span class="material-icons" onclick="toggleCart()">shopping_bag</span>
-    <a href="profile.html" class="material-icons">person</a>
-</nav>
+    <section class="hero">
+        <h1>Unleash Your Next Adventure</h1>
+        <p>Get the best deals on Steam, Origin, Xbox, and PlayStation keys. Instant delivery, guaranteed.</p>
+        <a href="#trending" class="cta-btn">Start Browsing</a>
+    </section>
 
-<div id="cart-drawer">
-    <h2>Your Cart</h2>
-    <hr><br>
-    <div id="cart-items"></div>
-    <div style="position: absolute; bottom: 2rem; width: 80%;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
-            <span>Total:</span>
-            <span id="cart-total">₹0</span>
+    <div class="trust-strip">
+        <div class="trust-item"><i class="fas fa-bolt"></i> Instant Digital Delivery</div>
+        <div class="trust-item"><i class="fas fa-shield-alt"></i> 100% Secure Checkout</div>
+        <div class="trust-item"><i class="fas fa-headset"></i> 24/7 Human Support</div>
+        <div class="trust-item"><i class="fas fa-star"></i> 4.9/5 TrustScore</div>
+    </div>
+
+    <div class="container" id="trending">
+        
+        <div class="section-header">
+            <h2 class="section-title"><i class="fas fa-fire"></i> Trending Now</h2>
+            <a href="#" class="view-all">View Leaderboard <i class="fas fa-arrow-right"></i></a>
         </div>
-        <button class="btn btn-primary" onclick="location.href='checkout.html'">Checkout Now</button>
-    </div>
-</div>
+        <div class="game-grid" id="trending-grid">
+            </div>
 
-<footer style="background: #1a1a1a; color: white; padding: 4rem 5% 6rem; text-align: center;">
-    <p>&copy; 2026 PlayWithEase Store. All Rights Reserved.</p>
-    <p style="margin-top: 1rem; opacity: 0.6;">Designed & Developed by Shayan Akhtar</p>
-    <div style="margin-top: 2rem; display: flex; justify-content: center; gap: 1rem; opacity: 0.5;">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" width="50">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" width="60">
-    </div>
-</footer>
+        <br><br><br>
 
-<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
-<script src="app.js"></script>
+        <div class="section-header">
+            <h2 class="section-title"><i class="fas fa-hourglass-half"></i> Hot Pre-Orders</h2>
+            <a href="#" class="view-all">See All <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="game-grid" id="preorder-grid">
+            </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo">Game<span>Vault</span></div>
+                <p style="color: var(--text-muted); font-size: 13px; margin-top: 15px;">
+                    The world's leading marketplace for digital game keys. Safe, fast, and affordable.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul>
+                    <li>Help Center</li>
+                    <li>How to Redeem</li>
+                    <li>Refund Policy</li>
+                    <li>Contact Us</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Business</h4>
+                <ul>
+                    <li>Sell on GameVault</li>
+                    <li>Affiliate Program</li>
+                    <li>API Access</li>
+                    <li>Jobs</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Payment Methods</h4>
+                <div style="font-size: 24px; color: var(--text-muted); display: flex; gap: 15px;">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                    <i class="fab fa-bitcoin"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mock Data to simulate a database response
+        const trendingGames = [
+            { title: "Elden Ring: Shadow of the Erdtree", price: 39.99, oldPrice: 49.99, discount: 20, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co848v.jpg", region: "Global" },
+            { title: "Black Myth: Wukong", price: 54.50, oldPrice: 59.99, discount: 10, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co8ush.jpg", region: "Global" },
+            { title: "EA Sports FC 24", price: 18.99, oldPrice: 69.99, discount: 73, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co6lpb.jpg", region: "EU" },
+            { title: "Cyberpunk 2077", price: 29.99, oldPrice: 59.99, discount: 50, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mjs.jpg", region: "Global" },
+            { title: "God of War Ragnarök", price: 45.00, oldPrice: 59.99, discount: 25, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co5s5v.jpg", region: "US" },
+        ];
+
+        const preorderGames = [
+            { title: "Grand Theft Auto VI", price: 69.99, oldPrice: 69.99, discount: 0, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co86bd.jpg", region: "Global" },
+            { title: "Monster Hunter Wilds", price: 59.99, oldPrice: 69.99, discount: 15, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co7k5w.jpg", region: "Global" },
+            { title: "Hades II", price: 25.00, oldPrice: 29.99, discount: 12, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co86au.jpg", region: "Global" },
+            { title: "S.T.A.L.K.E.R. 2", price: 49.99, oldPrice: 59.99, discount: 18, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co3hck.jpg", region: "EU" },
+        ];
+
+        // Function to generate Cards
+        function renderCards(data, containerId) {
+            const container = document.getElementById(containerId);
+            let html = '';
+
+            data.forEach(game => {
+                // Determine if we show discount badge
+                const discountHtml = game.discount > 0 
+                    ? `<span class="discount-badge">-${game.discount}%</span>` 
+                    : '';
+                
+                // Determine old price display
+                const oldPriceHtml = game.oldPrice > game.price 
+                    ? `<span class="old-price">$${game.oldPrice}</span>` 
+                    : '<span></span>';
+
+                html += `
+                    <div class="game-card">
+                        <div class="card-image-wrapper">
+                            <img src="${game.img}" alt="${game.title}" class="card-image">
+                            ${discountHtml}
+                            <span class="region-badge"><i class="fas fa-globe"></i> ${game.region}</span>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="game-title" title="${game.title}">${game.title}</h3>
+                            <div class="price-wrapper">
+                                ${oldPriceHtml}
+                                <span class="new-price">$${game.price.toFixed(2)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCards(trendingGames, 'trending-grid');
+            renderCards(preorderGames, 'preorder-grid');
+        });
+    </script>
 </body>
 </html>
