@@ -2,44 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Authorize Order | PlayWithEase Secure</title>
+    <title>Secure Checkout | PlayWithEase Enterprise</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-black text-white p-6 md:p-20">
     <div class="max-w-6xl mx-auto flex flex-col gap-20">
-        <header class="flex justify-between items-center border-b border-white/5 pb-10">
-            <h1 class="text-6xl font-black italic uppercase italic tracking-tighter">SECURE <span class="text-primary">ORDER</span></h1>
-            <p class="bg-primary/10 text-primary px-6 py-2 rounded-full font-black text-xs">ENCRYPTION: AES-256</p>
+        <header class="flex justify-between items-center border-b border-white/5 pb-12">
+            <h1 class="text-7xl font-black italic tracking-tighter">SECURE <span class="text-primary">CHECKOUT</span></h1>
+            <div class="text-right"><p class="text-[10px] text-gray-500 font-black uppercase tracking-widest">Encyption Level</p><p class="text-green-500 font-black italic">AES-256 BIT</p></div>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
-            <div>
-                <h2 class="text-2xl font-black uppercase mb-8">Deployment Details</h2>
-                <form class="space-y-6">
-                    <input type="text" placeholder="LEGAL IDENTITY NAME" class="w-full bg-surface border border-white/10 rounded-2xl p-6 outline-none focus:border-primary">
-                    <input type="email" placeholder="SECURE DELIVERY EMAIL" class="w-full bg-surface border border-white/10 rounded-2xl p-6 outline-none focus:border-primary">
-                    <div class="grid grid-cols-2 gap-6">
-                        <input type="text" placeholder="UPI ID / VPA" class="w-full bg-surface border border-white/10 rounded-2xl p-6 outline-none focus:border-primary">
-                        <input type="text" placeholder="PH NO." class="w-full bg-surface border border-white/10 rounded-2xl p-6 outline-none focus:border-primary">
-                    </div>
-                    <button type="button" class="w-full btn-premium py-8 rounded-[2.5rem] font-black text-2xl italic uppercase tracking-[0.2em]">Authorize Order Delivery</button>
-                </form>
+            <div class="space-y-12">
+                <section>
+                    <h2 class="text-xl font-black uppercase italic mb-8 border-l-4 border-primary pl-6">Deployment Details</h2>
+                    <form class="space-y-6">
+                        <input type="text" placeholder="LEGAL NAME" class="w-full bg-surface border border-white/10 rounded-3xl p-6 outline-none focus:border-primary text-white">
+                        <input type="email" placeholder="SECURE DELIVERY EMAIL" class="w-full bg-surface border border-white/10 rounded-3xl p-6 outline-none focus:border-primary text-white">
+                        <div class="grid grid-cols-2 gap-6"><input type="text" placeholder="UPI ID" class="w-full bg-surface border border-white/10 rounded-3xl p-6 outline-none focus:border-primary"><input type="text" placeholder="CONTACT" class="w-full bg-surface border border-white/10 rounded-3xl p-6 outline-none focus:border-primary"></div>
+                        <button type="button" class="w-full btn-titan py-8 rounded-[3rem] font-black text-2xl uppercase italic shadow-[0_0_50px_rgba(37,99,235,0.4)]">Authorize Purchase</button>
+                    </form>
+                </section>
             </div>
             
             <div class="card-pro p-12 h-fit">
-                <h2 class="text-xl font-black uppercase mb-10 tracking-widest border-b border-white/5 pb-6">Asset Summary</h2>
-                <div id="summary" class="space-y-6 mb-10"></div>
-                <div class="border-t border-white/5 pt-10 flex justify-between items-end">
-                    <span class="text-gray-500 font-bold uppercase text-[10px] tracking-widest italic">Net Assets Total</span>
-                    <span id="total" class="text-6xl font-black text-primary italic tracking-tighter">₹0</span>
+                <h2 class="text-2xl font-black italic uppercase mb-10 tracking-widest border-b border-white/5 pb-8 text-primary">Order Summary</h2>
+                <div id="checkoutSummary" class="space-y-6"></div>
+                <div class="border-t border-white/5 pt-12 flex justify-between items-end">
+                    <div><span class="text-gray-500 font-black uppercase text-[10px]">Net Payable</span><p class="text-green-500 text-xs font-bold mt-1">Verified License</p></div>
+                    <span id="checkoutTotal" class="text-7xl font-black text-white italic tracking-tighter">₹0</span>
                 </div>
             </div>
         </div>
     </div>
     <script>
         const cart = JSON.parse(localStorage.getItem('pwe_cart')) || [];
-        // Implementation of price logic follows...
+        const products = {
+            gta6: { title: "Grand Theft Auto VI", price: 5499 },
+            para500: { title: "Paracetamol", price: 45 },
+            vitc: { title: "Vitamin C", price: 185 },
+            insulin: { title: "Insulin", price: 2499 },
+            sp2disc: { title: "Spider-Man 2 Disc", price: 4499 },
+            gowdisc: { title: "GoW Disc", price: 3999 },
+            nf: { title: "Netflix", price: 649 },
+            pr: { title: "Amazon Prime", price: 1499 },
+            bms: { title: "BookMyShow", price: 500 }
+        };
+
+        const total = cart.reduce((a, b) => a + (products[b.id].price * b.qty), 0);
+        document.getElementById('checkoutTotal').innerText = `₹${total.toLocaleString()}`;
+        document.getElementById('checkoutSummary').innerHTML = cart.map(i => `<div class="flex justify-between items-center"><p class="font-bold text-gray-300 uppercase italic">${products[i.id].title} x ${i.qty}</p><span class="font-black">₹${(products[i.id].price * i.qty).toLocaleString()}</span></div>`).join('');
     </script>
 </body>
 </html>
