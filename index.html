@@ -52,9 +52,6 @@
         .glow-purple:hover { box-shadow: 0 0 30px rgba(147, 51, 234, 0.5); }
         .glow-yellow:hover { box-shadow: 0 0 30px rgba(234, 179, 8, 0.5); }
         
-        /* MOBILE SEARCH */
-        #mobileSearchBar { transition: max-height 0.3s ease-in-out; }
-        
         /* GTA 6 Special Gradient */
         .bg-gta { background: linear-gradient(135deg, #2e0228, #0a0a0a, #03182b); }
     </style>
@@ -77,7 +74,7 @@
                 </div>
                 <div class="hidden md:flex flex-1 max-w-md mx-8 relative group">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-500 group-focus-within:text-blue-500 transition-colors"></i>
-                    <input type="text" id="searchInput" placeholder="Search games, gifts..." class="w-full bg-[#1a1a1a] border border-white/10 rounded-full py-2.5 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-blue-500 focus:bg-black transition-all placeholder-gray-500">
+                    <input type="text" id="searchInput" placeholder="Search games, subscriptions..." class="w-full bg-[#1a1a1a] border border-white/10 rounded-full py-2.5 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-blue-500 focus:bg-black transition-all placeholder-gray-500">
                 </div>
                 <div class="flex items-center gap-3 md:gap-5">
                     <button id="mobileSearchToggle" class="md:hidden text-white p-2"><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -111,8 +108,8 @@
         <div class="flex flex-col gap-6 text-xl font-medium">
             <a href="#" class="border-b border-white/10 pb-4 text-gray-200">Home</a>
             <a href="#store" class="border-b border-white/10 pb-4 text-gray-200">Store</a>
-            <a href="#ott" class="border-b border-white/10 pb-4 text-gray-200">Subscriptions</a>
             <a href="#gift" class="border-b border-white/10 pb-4 text-gray-200">Gift Cards</a>
+            <a href="#ott" class="border-b border-white/10 pb-4 text-gray-200">Subscriptions</a>
             <a href="#" class="text-gray-400">Support</a>
         </div>
     </div>
@@ -164,23 +161,25 @@
             <h2 class="text-xl md:text-2xl font-bold">Trending Now</h2>
             <span id="resultCount" class="text-xs md:text-sm text-gray-400">All games</span>
         </div>
-        <div id="gameGrid" class="flex gap-4 md:gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4 reveal">
+        <div id="gameGrid" class="flex gap-4 md:gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-10 reveal">
             <div class="shrink-0 w-[160px] md:w-[260px] aspect-[2/3] rounded-xl skeleton"></div>
             <div class="shrink-0 w-[160px] md:w-[260px] aspect-[2/3] rounded-xl skeleton"></div>
             <div class="shrink-0 w-[160px] md:w-[260px] aspect-[2/3] rounded-xl skeleton"></div>
             <div class="shrink-0 w-[160px] md:w-[260px] aspect-[2/3] rounded-xl skeleton"></div>
         </div>
 
-        <div id="gift" class="mt-12 md:mt-16 reveal">
+        <div id="gift" class="mt-8 md:mt-12 reveal">
             <h2 class="text-xl md:text-2xl font-bold mb-6">Digital Gift Cards</h2>
-            <div id="giftGrid" class="flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6 pb-4 md:pb-0">
+            <div id="giftGrid" class="flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6 pb-10 md:pb-0">
+                <div class="shrink-0 w-[165px] h-40 rounded-xl skeleton"></div>
                 <div class="shrink-0 w-[165px] h-40 rounded-xl skeleton"></div>
             </div>
         </div>
 
-        <div id="ott" class="mt-12 md:mt-16 reveal">
+        <div id="ott" class="mt-8 md:mt-12 reveal">
             <h2 class="text-xl md:text-2xl font-bold mb-6">Subscriptions</h2>
-            <div id="ottGrid" class="flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6 pb-4 md:pb-0">
+            <div id="ottGrid" class="flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6 pb-10 md:pb-0">
+                <div class="shrink-0 w-[165px] h-40 rounded-xl skeleton"></div>
                 <div class="shrink-0 w-[165px] h-40 rounded-xl skeleton"></div>
             </div>
         </div>
@@ -195,13 +194,6 @@
                         <span class="text-xl font-bold">PlayWithEase</span>
                     </div>
                     <p class="text-gray-400 text-sm max-w-sm mb-6">Your #1 destination for digital gaming keys, subscriptions, and services. Instant delivery via WhatsApp and Email.</p>
-                    <div class="max-w-xs">
-                        <p class="text-xs font-bold text-gray-500 uppercase mb-2">Stay Updated</p>
-                        <div class="flex gap-2">
-                            <input type="email" placeholder="Email Address" class="bg-[#1a1a1a] border border-white/10 rounded-lg px-3 py-2 text-sm w-full focus:border-blue-500 outline-none">
-                            <button class="bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg text-white transition-colors"><i class="fa-solid fa-arrow-right"></i></button>
-                        </div>
-                    </div>
                 </div>
                 <div>
                     <h4 class="font-bold text-white mb-4">Support</h4>
@@ -280,7 +272,7 @@
     </div>
 
     <script>
-        // 1. FIXED IMAGE DATABASE (STEAM/WIKIMEDIA CDN)
+        // 1. FIXED IMAGE DATABASE
         const db = {
             gta6: { title: "Grand Theft Auto VI", price: 5499, oldPrice: 6999, img: "https://static.wikia.nocookie.net/gtawiki/images/a/a5/Artwork-Trailer2Thumbnail2-GTAVI.jpg/revision/latest/scale-to-width-down/1000?cb=20250506170600", cat: "ps5 action", rating: 5.0, platform: "PS5", stock: 50 },
             fh6: { title: "Forza Horizon 6", price: 4999, oldPrice: 5999, img: "https://static.wikia.nocookie.net/forzamotorsport/images/3/33/FH6_Boxart.jpg/revision/latest/scale-to-width-down/1000?cb=20260123050250", cat: "pc sports", rating: 4.8, platform: "PC", stock: 12 },
@@ -288,9 +280,9 @@
             elden: { title: "Elden Ring", price: 2999, oldPrice: 3999, img: "https://upload.wikimedia.org/wikipedia/en/b/b9/Elden_Ring_Box_art.jpg", cat: "pc ps5 action", rating: 5.0, platform: "PC", stock: 100 },
             fc24: { title: "EA Sports FC 24", price: 3499, oldPrice: 4499, img: "https://thumbnails.pcgamingwiki.com/2/27/EA_Sports_FC_24_cover.jpg/300px-EA_Sports_FC_24_cover.jpg", cat: "ps5 sports pc", rating: 4.2, platform: "PS5", stock: 20 },
             mw3: { title: "Call of Duty: MW3", price: 5499, oldPrice: 6499, img: "https://upload.wikimedia.org/wikipedia/en/f/f6/MWIII_Cover_Art.png", cat: "pc ps5 action", rating: 4.5, platform: "PC", stock: 15 },
-            rdr2: { title: "Red Dead Redemption 2", price: 1999, oldPrice: 2999, img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg", cat: "pc ps5 action", rating: 4.9, platform: "PC", stock: 8 },
-            cp2077: { title: "Cyberpunk 2077", price: 2499, oldPrice: 3499, img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg", cat: "pc ps5 action", rating: 4.7, platform: "PC", stock: 10 },
-            gow: { title: "God of War Ragnarök", price: 3999, oldPrice: 4999, img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg", cat: "ps5 action", rating: 4.9, platform: "PS5", stock: 4 },
+            rdr2: { title: "Red Dead Redemption 2", price: 1999, oldPrice: 2999, img: "https://upload.wikimedia.org/wikipedia/en/4/44/Red_Dead_Redemption_II.jpg", cat: "pc ps5 action", rating: 4.9, platform: "PC", stock: 8 },
+            cp2077: { title: "Cyberpunk 2077", price: 2499, oldPrice: 3499, img: "https://upload.wikimedia.org/wikipedia/en/9/9f/Cyberpunk_2077_box_art.jpg", cat: "pc ps5 action", rating: 4.7, platform: "PC", stock: 10 },
+            gow: { title: "God of War Ragnarök", price: 3999, oldPrice: 4999, img: "https://upload.wikimedia.org/wikipedia/en/e/ee/God_of_War_Ragnar%C3%B6k_cover.jpg", cat: "ps5 action", rating: 4.9, platform: "PS5", stock: 4 },
             mc: { title: "Minecraft", price: 1999, oldPrice: 2499, img: "https://upload.wikimedia.org/wikipedia/en/b/b6/Minecraft_2024_cover_art.png", cat: "pc ps5", rating: 4.8, platform: "PC", stock: 200 },
             
             // OTT
@@ -303,7 +295,7 @@
             hs_sup: { title: "Hotstar Super", price: 899, img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/800px-Disney%2B_logo.svg.png", type: "ott", tag: "Super" },
             hs_prem: { title: "Disney+ Premium", price: 299, img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/800px-Disney%2B_logo.svg.png", type: "ott", tag: "Monthly" },
 
-            // GIFT CARDS
+            // GIFT CARDS (High-Res Wiki/Amazon Logos)
             bms_500: { title: "BookMyShow ₹500", price: 500, img: "https://upload.wikimedia.org/wikipedia/en/a/a2/BookMyShow_logo.png", type: "gift", tag: "Cinema" },
             amz_1000: { title: "Amazon ₹1000", price: 1000, img: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg", type: "gift", tag: "Shopping" },
             psn_1000: { title: "PSN ₹1000", price: 1000, img: "https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_logo.svg", type: "gift", tag: "Gaming" },
@@ -317,7 +309,7 @@
         let wishlist = JSON.parse(localStorage.getItem('pwe_wishlist')) || [];
         let discountMultiplier = 1;
 
-        // 2. RENDERER WITH SKELETON DELAY
+        // 2. RENDERER
         function renderContent() {
             setTimeout(() => {
                 const gameGrid = document.getElementById('gameGrid');
@@ -551,12 +543,28 @@
         const performSearch = (q) => {
             const term = q.toLowerCase();
             let count = 0;
-            document.querySelectorAll('.game-card').forEach(card => {
-                const title = card.getAttribute('data-title');
-                if(title.includes(term)) { card.classList.remove('hidden'); count++; }
-                else card.classList.add('hidden');
+            
+            // Special handling for Gift Cards category
+            const gameGrid = document.getElementById('gameGrid');
+            const giftGrid = document.getElementById('gift');
+            const ottSection = document.getElementById('ott');
+            
+            // If searching, show all containers that might have matches
+            // (Simplified logic: Show all during search, filter individual cards)
+            gameGrid.classList.remove('hidden');
+            ottSection.classList.remove('hidden');
+            giftGrid.classList.remove('hidden');
+
+            document.querySelectorAll('.game-card, .relative.snap-start').forEach(card => {
+                const title = card.querySelector('h3, h4')?.textContent.toLowerCase() || '';
+                if(title.includes(term)) { 
+                    card.classList.remove('hidden'); 
+                    count++; 
+                } else { 
+                    card.classList.add('hidden'); 
+                }
             });
-            document.getElementById('resultCount').textContent = q ? `Found ${count} games` : 'All games';
+            document.getElementById('resultCount').textContent = q ? `Found ${count} items` : 'All items';
         };
         document.getElementById('searchInput').addEventListener('input', e => performSearch(e.target.value));
         document.getElementById('mobileSearchInput').addEventListener('input', e => performSearch(e.target.value));
@@ -580,7 +588,9 @@
             } else {
                 gameGrid.classList.remove('hidden');
                 ottSection.classList.remove('hidden');
-                // Don't hide gift section, just scroll past it or filter
+                // Gift grid usually hidden unless 'All' or 'Gift'
+                if(cat === 'all') giftGrid.classList.remove('hidden');
+                else giftGrid.classList.add('hidden');
             }
 
             document.querySelectorAll('.game-card').forEach(card => {
