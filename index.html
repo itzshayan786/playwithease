@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PlayWithEase | Next-Gen Store</title>
+    <title>PlayWithEase | Premium Store</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -185,7 +185,6 @@
                         <span class="text-xl font-bold">PlayWithEase</span>
                     </div>
                     <p class="text-gray-400 text-sm max-w-sm mb-6">Your #1 destination for digital gaming keys, subscriptions, and services. Instant delivery via WhatsApp and Email.</p>
-                    
                     <div class="max-w-xs">
                         <p class="text-xs font-bold text-gray-500 uppercase mb-2">Stay Updated</p>
                         <div class="flex gap-2">
@@ -199,7 +198,6 @@
                     <ul class="space-y-2 text-sm text-gray-400">
                         <li><a href="#" class="hover:text-white">Help Center</a></li>
                         <li><a href="#" class="hover:text-white">Refund Policy</a></li>
-                        <li><a href="#" class="hover:text-white">Terms of Service</a></li>
                     </ul>
                 </div>
                 <div>
@@ -272,18 +270,19 @@
     </div>
 
     <script>
-        // 1. ADVANCED DB (Added Original Price for Discount Logic)
+        // 1. FIXED IMAGE DATABASE (AMAZON/WIKI CDNS)
         const db = {
-            gta6: { title: "Grand Theft Auto VI", price: 5499, oldPrice: 6999, img: "https://upload.wikimedia.org/wikipedia/commons/5/59/Grand_Theft_Auto_VI.png", cat: "ps5 action", rating: 5.0, platform: "PS5", stock: 50 },
-            fh6: { title: "Forza Horizon 6", price: 4999, oldPrice: 5999, img: "https://store-images.s-microsoft.com/image/apps.38888.13510798887356280.93b3a79d-a417-4888-81d0-14923e275988.a844961d-381c-4b5c-b17b-a01c3855a9b8", cat: "pc sports", rating: 4.8, platform: "PC", stock: 12 },
-            sp2: { title: "Marvel's Spider-Man 2", price: 4499, oldPrice: 4999, img: "https://gmedia.playstation.com/is/image/SIEPDC/marvels-spider-man-2-keyart-01-en-25may23?$1200px$", cat: "ps5 action", rating: 4.9, platform: "PS5", stock: 5 },
-            elden: { title: "Elden Ring", price: 2999, oldPrice: 3999, img: "https://image.api.playstation.com/vulcan/ap/rnd/202110/2000/phvVT0qZfcRms5qDAk0SI3CM.png", cat: "pc ps5 action", rating: 5.0, platform: "PC", stock: 100 },
-            fc24: { title: "EA Sports FC 24", price: 3499, oldPrice: 4499, img: "https://image.api.playstation.com/vulcan/ap/rnd/202307/0610/b841755d78a9947963d42c3848b598dd673a30f143714c63.png", cat: "ps5 sports pc", rating: 4.2, platform: "PS5", stock: 20 },
-            mw3: { title: "Call of Duty: MW3", price: 5499, oldPrice: 6499, img: "https://image.api.playstation.com/vulcan/ap/rnd/202308/0217/b3749448f21789c037803730e20ce5b06d91c28c8646b14f.png", cat: "pc ps5 action", rating: 4.5, platform: "PC", stock: 15 },
-            rdr2: { title: "Red Dead Redemption 2", price: 1999, oldPrice: 2999, img: "https://image.api.playstation.com/vulcan/ap/rnd/202010/2016/9ba3a918a38c234a5d4818a7c126d45e053a99e74c8b2586.png", cat: "pc ps5 action", rating: 4.9, platform: "PC", stock: 8 },
-            cp2077: { title: "Cyberpunk 2077", price: 2499, oldPrice: 3499, img: "https://image.api.playstation.com/vulcan/ap/rnd/202302/2015/e8784d169d5185960098f99e4f16b248a39d8995a9d6e4b9.png", cat: "pc ps5 action", rating: 4.7, platform: "PC", stock: 10 },
-            gow: { title: "God of War Ragnarök", price: 3999, oldPrice: 4999, img: "https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png", cat: "ps5 action", rating: 4.9, platform: "PS5", stock: 4 },
-            mc: { title: "Minecraft", price: 1999, oldPrice: 2499, img: "https://image.api.playstation.com/vulcan/img/rnd/202111/1715/C20G8k92d9A2Fj2Z5s4D1j4u.png", cat: "pc ps5", rating: 4.8, platform: "PC", stock: 200 },
+            gta6: { title: "Grand Theft Auto VI", price: 5499, oldPrice: 6999, img: "https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_VI.png", cat: "ps5 action", rating: 5.0, platform: "PS5", stock: 50 },
+            fh6: { title: "Forza Horizon 6", price: 4999, oldPrice: 5999, img: "https://upload.wikimedia.org/wikipedia/en/8/86/Forza_Horizon_5_cover_art.jpg", cat: "pc sports", rating: 4.8, platform: "PC", stock: 12 }, // Placeholder FH5
+            sp2: { title: "Marvel's Spider-Man 2", price: 4499, oldPrice: 4999, img: "https://m.media-amazon.com/images/I/81q6x-eE0AL._AC_SL1500_.jpg", cat: "ps5 action", rating: 4.9, platform: "PS5", stock: 5 },
+            elden: { title: "Elden Ring", price: 2999, oldPrice: 3999, img: "https://m.media-amazon.com/images/I/812C2R-P+6L._AC_SL1500_.jpg", cat: "pc ps5 action", rating: 5.0, platform: "PC", stock: 100 },
+            fc24: { title: "EA Sports FC 24", price: 3499, oldPrice: 4499, img: "https://m.media-amazon.com/images/I/817+Vf1M-6L._AC_SL1500_.jpg", cat: "ps5 sports pc", rating: 4.2, platform: "PS5", stock: 20 },
+            mw3: { title: "Call of Duty: MW3", price: 5499, oldPrice: 6499, img: "https://m.media-amazon.com/images/I/81A+1a6iB8L._AC_SL1500_.jpg", cat: "pc ps5 action", rating: 4.5, platform: "PC", stock: 15 },
+            rdr2: { title: "Red Dead Redemption 2", price: 1999, oldPrice: 2999, img: "https://m.media-amazon.com/images/I/910x02h7j+L._AC_SL1500_.jpg", cat: "pc ps5 action", rating: 4.9, platform: "PC", stock: 8 },
+            cp2077: { title: "Cyberpunk 2077", price: 2499, oldPrice: 3499, img: "https://m.media-amazon.com/images/I/81r3stj21QL._AC_SL1500_.jpg", cat: "pc ps5 action", rating: 4.7, platform: "PC", stock: 10 },
+            gow: { title: "God of War Ragnarök", price: 3999, oldPrice: 4999, img: "https://m.media-amazon.com/images/I/81f-9rWe5AL._AC_SL1500_.jpg", cat: "ps5 action", rating: 4.9, platform: "PS5", stock: 4 },
+            mc: { title: "Minecraft", price: 1999, oldPrice: 2499, img: "https://m.media-amazon.com/images/I/811q4Yt3b+L._AC_SL1500_.jpg", cat: "pc ps5", rating: 4.8, platform: "PC", stock: 200 },
+            
             // OTT
             nf_prem: { title: "Netflix Premium (4K)", price: 649, img: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg", type: "ott", tag: "Premium" },
             nf_mob: { title: "Netflix Mobile", price: 149, img: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg", type: "ott", tag: "Mobile" },
@@ -298,15 +297,17 @@
         let wishlist = JSON.parse(localStorage.getItem('pwe_wishlist')) || [];
         let discountMultiplier = 1;
 
-        // 2. RENDERER (With Skeletons & Delays)
+        // 2. RENDERER WITH SKELETON DELAY
         function renderContent() {
-            // Simulated Delay for Skeleton Effect
             setTimeout(() => {
                 const gameGrid = document.getElementById('gameGrid');
                 const ottGrid = document.getElementById('ottGrid');
                 gameGrid.innerHTML = ''; ottGrid.innerHTML = '';
 
                 Object.entries(db).forEach(([id, item]) => {
+                    // IMAGE FALLBACK HANDLER
+                    const imgTag = `<img src="${item.img}" onerror="this.src='https://placehold.co/400x600/1a1a1a/FFF?text=No+Image'" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">`;
+
                     if(item.type === 'ott') {
                         let glow = item.title.includes('Netflix') ? 'glow-red' : item.title.includes('Prime') ? 'glow-blue' : item.title.includes('Spotify') ? 'glow-green' : 'glow-purple';
                         let btn = item.title.includes('Netflix') ? 'bg-red-600' : item.title.includes('Prime') ? 'bg-blue-500' : item.title.includes('Spotify') ? 'bg-green-500' : 'bg-indigo-600';
@@ -328,7 +329,7 @@
                         gameGrid.innerHTML += `
                         <div class="game-card snap-start shrink-0 w-[160px] md:w-[260px] lg:w-[280px] group cursor-pointer" data-title="${item.title.toLowerCase()}" data-category="${item.cat}">
                             <div class="relative aspect-[2/3] rounded-xl md:rounded-2xl overflow-hidden mb-2 md:mb-3 border border-white/5 shadow-lg bg-[#1a1a1a]">
-                                <img src="${item.img}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                ${imgTag}
                                 <div class="absolute top-2 right-2 flex gap-1">
                                     <span class="px-2 py-1 bg-green-500 text-black text-[10px] font-bold rounded">-${discount}%</span>
                                     <button onclick="toggleWishlist('${id}')" class="heart-btn ${isWishlisted} w-6 h-6 bg-black/50 backdrop-blur rounded flex items-center justify-center hover:bg-white/20 transition-all z-20"><i class="fa-regular fa-heart text-xs"></i></button>
@@ -352,22 +353,18 @@
                 });
                 updateWishlistCount();
                 initScrollReveal();
-            }, 800); // 800ms Simulating Network Delay for Skeletons
+            }, 800);
         }
         
-        // 3. SCROLL REVEAL LOGIC
+        // 3. SCROLL REVEAL
         function initScrollReveal() {
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if(entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                    }
-                });
+                entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('active'); });
             }, { threshold: 0.1 });
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         }
 
-        // 4. WISHLIST LOGIC
+        // 4. WISHLIST
         window.toggleWishlist = (id) => {
             if(wishlist.includes(id)) wishlist = wishlist.filter(i => i !== id);
             else wishlist.push(id);
@@ -404,7 +401,7 @@
         window.toggleWishlistDrawer = () => {
             renderWishlistDrawer();
             const drawer = document.getElementById('wishlistDrawer');
-            const overlay = document.getElementById('cartOverlay'); // Reusing overlay
+            const overlay = document.getElementById('cartOverlay');
             const isOpen = !drawer.classList.contains('translate-x-full');
             drawer.classList.toggle('translate-x-full', isOpen);
             overlay.classList.toggle('hidden', isOpen);
@@ -416,7 +413,7 @@
             document.getElementById('cartOverlay').classList.add('hidden');
         };
 
-        // 5. CART & PROMO LOGIC
+        // 5. CART & PROMO
         let cart = JSON.parse(localStorage.getItem('pwe_cart')) || [];
 
         window.applyPromo = () => {
@@ -460,7 +457,6 @@
             
             document.getElementById('cartCount').textContent = cart.reduce((a,b) => a + b.qty, 0);
             document.getElementById('cartCount').classList.toggle('hidden', cart.length === 0);
-            
             document.getElementById('cartSubtotal').textContent = `₹${subtotal.toLocaleString()}`;
             document.getElementById('cartTotal').textContent = `₹${total.toLocaleString()}`;
             if(discount > 0) document.getElementById('cartDiscount').textContent = `-₹${discount.toLocaleString()}`;
@@ -507,7 +503,7 @@
         renderContent();
         updateCartUI();
 
-        // 6. SEARCH & FILTER (Kept same)
+        // 6. SEARCH & FILTER
         const performSearch = (q) => {
             const term = q.toLowerCase();
             let count = 0;
@@ -534,7 +530,7 @@
             document.getElementById('resultCount').textContent = cat === 'all' ? 'All games' : `Showing ${count} games`;
         };
 
-        // 7. CAROUSEL & TRAILER (Kept same)
+        // 7. CAROUSEL & TRAILER
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;
         setInterval(() => {
