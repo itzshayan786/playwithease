@@ -50,9 +50,13 @@
         .glow-blue:hover { box-shadow: 0 0 30px rgba(59, 130, 246, 0.5); }
         .glow-green:hover { box-shadow: 0 0 30px rgba(34, 197, 94, 0.5); }
         .glow-purple:hover { box-shadow: 0 0 30px rgba(147, 51, 234, 0.5); }
+        .glow-yellow:hover { box-shadow: 0 0 30px rgba(234, 179, 8, 0.5); }
         
         /* MOBILE SEARCH */
         #mobileSearchBar { transition: max-height 0.3s ease-in-out; }
+        
+        /* GTA 6 Special Gradient */
+        .bg-gta { background: linear-gradient(135deg, #2e0228, #0a0a0a, #03182b); }
     </style>
 </head>
 <body class="antialiased flex flex-col min-h-screen">
@@ -73,7 +77,7 @@
                 </div>
                 <div class="hidden md:flex flex-1 max-w-md mx-8 relative group">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-500 group-focus-within:text-blue-500 transition-colors"></i>
-                    <input type="text" id="searchInput" placeholder="Search games, subscriptions..." class="w-full bg-[#1a1a1a] border border-white/10 rounded-full py-2.5 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-blue-500 focus:bg-black transition-all placeholder-gray-500">
+                    <input type="text" id="searchInput" placeholder="Search games, gifts..." class="w-full bg-[#1a1a1a] border border-white/10 rounded-full py-2.5 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-blue-500 focus:bg-black transition-all placeholder-gray-500">
                 </div>
                 <div class="flex items-center gap-3 md:gap-5">
                     <button id="mobileSearchToggle" class="md:hidden text-white p-2"><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -108,6 +112,7 @@
             <a href="#" class="border-b border-white/10 pb-4 text-gray-200">Home</a>
             <a href="#store" class="border-b border-white/10 pb-4 text-gray-200">Store</a>
             <a href="#ott" class="border-b border-white/10 pb-4 text-gray-200">Subscriptions</a>
+            <a href="#gift" class="border-b border-white/10 pb-4 text-gray-200">Gift Cards</a>
             <a href="#" class="text-gray-400">Support</a>
         </div>
     </div>
@@ -148,8 +153,8 @@
                 <button onclick="filterGames('all')" class="cat-btn active px-4 py-1.5 md:px-6 md:py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-xs md:text-sm whitespace-nowrap hover:bg-white/10 transition-all">🔥 All</button>
                 <button onclick="filterGames('ps5')" class="cat-btn px-4 py-1.5 md:px-6 md:py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-xs md:text-sm whitespace-nowrap hover:bg-white/10 transition-all">🎮 PS5</button>
                 <button onclick="filterGames('pc')" class="cat-btn px-4 py-1.5 md:px-6 md:py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-xs md:text-sm whitespace-nowrap hover:bg-white/10 transition-all">🕹️ PC</button>
+                <button onclick="filterGames('gift')" class="cat-btn px-4 py-1.5 md:px-6 md:py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-xs md:text-sm whitespace-nowrap hover:bg-white/10 transition-all">🎁 Gift Cards</button>
                 <button onclick="filterGames('action')" class="cat-btn px-4 py-1.5 md:px-6 md:py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-xs md:text-sm whitespace-nowrap hover:bg-white/10 transition-all">⚔️ Action</button>
-                <button onclick="filterGames('sports')" class="cat-btn px-4 py-1.5 md:px-6 md:py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-xs md:text-sm whitespace-nowrap hover:bg-white/10 transition-all">⚽ Sports</button>
             </div>
         </div>
     </div>
@@ -166,12 +171,16 @@
             <div class="shrink-0 w-[160px] md:w-[260px] aspect-[2/3] rounded-xl skeleton"></div>
         </div>
 
+        <div id="gift" class="mt-12 md:mt-16 reveal">
+            <h2 class="text-xl md:text-2xl font-bold mb-6">Digital Gift Cards</h2>
+            <div id="giftGrid" class="flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6 pb-4 md:pb-0">
+                <div class="shrink-0 w-[165px] h-40 rounded-xl skeleton"></div>
+            </div>
+        </div>
+
         <div id="ott" class="mt-12 md:mt-16 reveal">
             <h2 class="text-xl md:text-2xl font-bold mb-6">Subscriptions</h2>
             <div id="ottGrid" class="flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6 pb-4 md:pb-0">
-                <div class="shrink-0 w-[165px] h-40 rounded-xl skeleton"></div>
-                <div class="shrink-0 w-[165px] h-40 rounded-xl skeleton"></div>
-                <div class="shrink-0 w-[165px] h-40 rounded-xl skeleton"></div>
                 <div class="shrink-0 w-[165px] h-40 rounded-xl skeleton"></div>
             </div>
         </div>
@@ -199,7 +208,6 @@
                     <ul class="space-y-2 text-sm text-gray-400">
                         <li><a href="#" class="hover:text-white">Help Center</a></li>
                         <li><a href="#" class="hover:text-white">Refund Policy</a></li>
-                        <li><a href="#" class="hover:text-white">Terms of Service</a></li>
                     </ul>
                 </div>
                 <div>
@@ -272,18 +280,18 @@
     </div>
 
     <script>
-        // 1. FIXED IMAGE DATABASE (STEAM CDN FOR STABILITY)
+        // 1. FIXED IMAGE DATABASE (STEAM/WIKIMEDIA CDN)
         const db = {
-            gta6: { title: "Grand Theft Auto VI", price: 5499, oldPrice: 6999, img: "https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_VI.png", cat: "ps5 action", rating: 5.0, platform: "PS5", stock: 50 },
-            fh6: { title: "Forza Horizon 6", price: 4999, oldPrice: 5999, img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551360/library_600x900.jpg", cat: "pc sports", rating: 4.8, platform: "PC", stock: 12 },
-            sp2: { title: "Marvel's Spider-Man 2", price: 4499, oldPrice: 4999, img: "https://image.api.playstation.com/vulcan/ap/rnd/202306/1219/60eca379b6d89d9191e366487d29662b775f0f353393998f.png", cat: "ps5 action", rating: 4.9, platform: "PS5", stock: 5 },
-            elden: { title: "Elden Ring", price: 2999, oldPrice: 3999, img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg", cat: "pc ps5 action", rating: 5.0, platform: "PC", stock: 100 },
-            fc24: { title: "EA Sports FC 24", price: 3499, oldPrice: 4499, img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg", cat: "ps5 sports pc", rating: 4.2, platform: "PS5", stock: 20 },
-            mw3: { title: "Call of Duty: MW3", price: 5499, oldPrice: 6499, img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2344520/library_600x900.jpg", cat: "pc ps5 action", rating: 4.5, platform: "PC", stock: 15 },
+            gta6: { title: "Grand Theft Auto VI", price: 5499, oldPrice: 6999, img: "https://static.wikia.nocookie.net/gtawiki/images/a/a5/Artwork-Trailer2Thumbnail2-GTAVI.jpg/revision/latest/scale-to-width-down/1000?cb=20250506170600", cat: "ps5 action", rating: 5.0, platform: "PS5", stock: 50 },
+            fh6: { title: "Forza Horizon 6", price: 4999, oldPrice: 5999, img: "https://static.wikia.nocookie.net/forzamotorsport/images/3/33/FH6_Boxart.jpg/revision/latest/scale-to-width-down/1000?cb=20260123050250", cat: "pc sports", rating: 4.8, platform: "PC", stock: 12 },
+            sp2: { title: "Marvel's Spider-Man 2", price: 4499, oldPrice: 4999, img: "https://static.wikia.nocookie.net/spidermanps4/images/d/d4/Marvel%27s_Spider-Man_2_front_cover_%28US%29.png/revision/latest/scale-to-width-down/1000?cb=20230608203237", cat: "ps5 action", rating: 4.9, platform: "PS5", stock: 5 },
+            elden: { title: "Elden Ring", price: 2999, oldPrice: 3999, img: "https://upload.wikimedia.org/wikipedia/en/b/b9/Elden_Ring_Box_art.jpg", cat: "pc ps5 action", rating: 5.0, platform: "PC", stock: 100 },
+            fc24: { title: "EA Sports FC 24", price: 3499, oldPrice: 4499, img: "https://thumbnails.pcgamingwiki.com/2/27/EA_Sports_FC_24_cover.jpg/300px-EA_Sports_FC_24_cover.jpg", cat: "ps5 sports pc", rating: 4.2, platform: "PS5", stock: 20 },
+            mw3: { title: "Call of Duty: MW3", price: 5499, oldPrice: 6499, img: "https://upload.wikimedia.org/wikipedia/en/f/f6/MWIII_Cover_Art.png", cat: "pc ps5 action", rating: 4.5, platform: "PC", stock: 15 },
             rdr2: { title: "Red Dead Redemption 2", price: 1999, oldPrice: 2999, img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg", cat: "pc ps5 action", rating: 4.9, platform: "PC", stock: 8 },
             cp2077: { title: "Cyberpunk 2077", price: 2499, oldPrice: 3499, img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg", cat: "pc ps5 action", rating: 4.7, platform: "PC", stock: 10 },
             gow: { title: "God of War Ragnarök", price: 3999, oldPrice: 4999, img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg", cat: "ps5 action", rating: 4.9, platform: "PS5", stock: 4 },
-            mc: { title: "Minecraft", price: 1999, oldPrice: 2499, img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1672970/library_600x900.jpg", cat: "pc ps5", rating: 4.8, platform: "PC", stock: 200 },
+            mc: { title: "Minecraft", price: 1999, oldPrice: 2499, img: "https://upload.wikimedia.org/wikipedia/en/b/b6/Minecraft_2024_cover_art.png", cat: "pc ps5", rating: 4.8, platform: "PC", stock: 200 },
             
             // OTT
             nf_prem: { title: "Netflix Premium (4K)", price: 649, img: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/800px-Netflix_2015_logo.svg.png", type: "ott", tag: "Premium" },
@@ -293,7 +301,17 @@
             sp_ind: { title: "Spotify Individual", price: 119, img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Spotify_logo_with_text.svg/800px-Spotify_logo_with_text.svg.png", type: "ott", tag: "Individual" },
             sp_duo: { title: "Spotify Duo", price: 165, img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Spotify_logo_with_text.svg/800px-Spotify_logo_with_text.svg.png", type: "ott", tag: "Duo" },
             hs_sup: { title: "Hotstar Super", price: 899, img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/800px-Disney%2B_logo.svg.png", type: "ott", tag: "Super" },
-            hs_prem: { title: "Disney+ Premium", price: 299, img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/800px-Disney%2B_logo.svg.png", type: "ott", tag: "Monthly" }
+            hs_prem: { title: "Disney+ Premium", price: 299, img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/800px-Disney%2B_logo.svg.png", type: "ott", tag: "Monthly" },
+
+            // GIFT CARDS
+            bms_500: { title: "BookMyShow ₹500", price: 500, img: "https://upload.wikimedia.org/wikipedia/en/a/a2/BookMyShow_logo.png", type: "gift", tag: "Cinema" },
+            amz_1000: { title: "Amazon ₹1000", price: 1000, img: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg", type: "gift", tag: "Shopping" },
+            psn_1000: { title: "PSN ₹1000", price: 1000, img: "https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_logo.svg", type: "gift", tag: "Gaming" },
+            steam_500: { title: "Steam ₹500", price: 500, img: "https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg", type: "gift", tag: "Gaming" },
+            gplay_100: { title: "Google Play ₹100", price: 100, img: "https://upload.wikimedia.org/wikipedia/commons/d/d0/Google_Play_Arrow_logo.svg", type: "gift", tag: "Apps" },
+            apple_1000: { title: "Apple ₹1000", price: 1000, img: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg", type: "gift", tag: "Apps" },
+            flipkart_500: { title: "Flipkart ₹500", price: 500, img: "https://upload.wikimedia.org/wikipedia/en/2/29/Flipkart_logo.png", type: "gift", tag: "Shopping" },
+            zomato_500: { title: "Zomato Gold", price: 500, img: "https://upload.wikimedia.org/wikipedia/commons/b/bd/Zomato_Logo.svg", type: "gift", tag: "Food" }
         };
 
         let wishlist = JSON.parse(localStorage.getItem('pwe_wishlist')) || [];
@@ -304,7 +322,8 @@
             setTimeout(() => {
                 const gameGrid = document.getElementById('gameGrid');
                 const ottGrid = document.getElementById('ottGrid');
-                gameGrid.innerHTML = ''; ottGrid.innerHTML = '';
+                const giftGrid = document.getElementById('giftGrid');
+                gameGrid.innerHTML = ''; ottGrid.innerHTML = ''; giftGrid.innerHTML = '';
 
                 Object.entries(db).forEach(([id, item]) => {
                     const fallback = "this.src='https://placehold.co/600x900/1a1a1a/FFF?text=No+Image'";
@@ -321,7 +340,20 @@
                                 <button onclick="addToCart('${id}')" class="${btn} text-white px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-xs font-bold w-full md:w-auto shadow-lg hover:opacity-80">Add</button>
                             </div></div>
                         </div>`;
-                    } else {
+                    } 
+                    else if (item.type === 'gift') {
+                        giftGrid.innerHTML += `
+                        <div class="relative snap-start shrink-0 w-[165px] md:w-auto p-4 md:p-6 rounded-xl md:rounded-2xl bg-[#141414] border border-white/10 overflow-hidden group cursor-pointer transition-colors hover:shadow-[0_0_25px_rgba(234,179,8,0.3)]">
+                            <div class="h-16 mb-4 flex items-center justify-center bg-white/5 rounded-lg"><img src="${item.img}" onerror="${fallback}" class="h-8 object-contain"></div>
+                            <div class="mt-auto"><p class="text-yellow-500 text-[10px] md:text-xs uppercase font-bold">${item.tag}</p>
+                            <h4 class="text-white font-bold text-sm mb-2 truncate">${item.title}</h4>
+                            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mt-2 gap-2">
+                                <span class="text-lg font-bold">₹${item.price}</span>
+                                <button onclick="addToCart('${id}')" class="bg-yellow-600 text-black px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-xs font-bold w-full md:w-auto shadow-lg hover:bg-yellow-500">Buy</button>
+                            </div></div>
+                        </div>`;
+                    }
+                    else {
                         const isWishlisted = wishlist.includes(id) ? 'active text-red-500' : 'text-white';
                         const icon = item.platform === 'PS5' ? 'fa-playstation' : 'fa-windows';
                         const discount = Math.round(((item.oldPrice - item.price) / item.oldPrice) * 100);
@@ -333,7 +365,7 @@
                         let imgTag = `<img src="${item.img}" onerror="${fallback}" class="${imgClass}">`;
                         
                         if(id === 'gta6') {
-                            bgClass = "bg-gta"; // Defined in CSS
+                            bgClass = "bg-gta"; 
                             imgTag = `<div class="w-full h-full flex items-center justify-center p-4 bg-gradient-to-br from-purple-900 via-black to-pink-900"><img src="${item.img}" class="w-full object-contain"></div>`;
                         }
 
@@ -534,6 +566,23 @@
             document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
             event.currentTarget.classList.add('active');
             let count = 0;
+            
+            // Handle specific category logic
+            const gameGrid = document.getElementById('gameGrid');
+            const giftGrid = document.getElementById('gift');
+            const ottSection = document.getElementById('ott');
+
+            if(cat === 'gift') {
+                gameGrid.classList.add('hidden');
+                ottSection.classList.add('hidden');
+                giftGrid.classList.remove('hidden');
+                return;
+            } else {
+                gameGrid.classList.remove('hidden');
+                ottSection.classList.remove('hidden');
+                // Don't hide gift section, just scroll past it or filter
+            }
+
             document.querySelectorAll('.game-card').forEach(card => {
                 const c = card.getAttribute('data-category');
                 if(cat === 'all' || c.includes(cat)) { card.classList.remove('hidden'); count++; }
