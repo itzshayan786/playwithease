@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="PlayWithEase - GTA VI Pre-orders Live Now.">
-    <title>PlayWithEase | GTA VI HQ</title>
+    <title>PlayWithEase | World Premiere Event</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -15,364 +14,394 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
     <style>
-        /* --- CORE THEME --- */
+        /* --- 1. PREMIUM VARIABLES --- */
         :root {
-            --bg-body: #0f1014;
-            --bg-card: #1b1c21;
-            --bg-header: #1b1c21;
-            --primary: #6c5ce7;
-            --primary-hover: #5649c0;
-            --accent: #fdcb6e; 
-            --premium: #e1b12c; /* Gold for GTA Premium */
+            --bg-deep: #050505;
+            --bg-card: #141414;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            
+            /* GTA Theme Colors */
+            --gta-accent: #ff9f43;
+            --gta-grad: linear-gradient(135deg, #ff9f43, #ee5253);
+            
+            /* Forza Theme Colors */
+            --forza-accent: #00d2d3;
+            --forza-grad: linear-gradient(135deg, #00d2d3, #5f27cd);
+
             --text-main: #ffffff;
-            --text-muted: #aab2bd;
-            --border: #2d3436;
-            --radius: 12px;
+            --text-muted: #8395a7;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-body); color: var(--text-main); overflow-x: hidden; }
-        a { text-decoration: none; color: inherit; transition: 0.2s; }
-        img { display: block; max-width: 100%; }
+        body { background-color: var(--bg-deep); color: var(--text-main); overflow-x: hidden; }
+        h1, h2, h3 { font-family: 'Montserrat', sans-serif; }
         button { cursor: pointer; border: none; outline: none; }
 
-        /* --- UTILITIES --- */
-        .container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
-        .hidden { display: none !important; }
-        
-        /* --- HEADER --- */
+        /* --- 2. GLASS NAVBAR --- */
         header {
-            background: var(--bg-header);
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(5, 5, 5, 0.7);
+            backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
-            height: 72px;
-            position: sticky; top: 0; z-index: 100;
+            height: 80px; display: flex; align-items: center;
+        }
+        .nav-container {
+            width: 90%; max-width: 1400px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo { font-size: 26px; font-weight: 900; letter-spacing: -1px; display: flex; align-items: center; gap: 10px; }
+        .logo span { background: var(--gta-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* Search */
+        .search-wrapper { flex: 1; max-width: 500px; position: relative; margin: 0 40px; }
+        .search-input {
+            width: 100%; background: var(--glass); border: 1px solid var(--border);
+            padding: 14px 25px; padding-right: 50px; border-radius: 50px; color: white;
+            font-size: 14px; transition: 0.3s;
+        }
+        .search-input:focus { background: rgba(255,255,255,0.1); border-color: var(--gta-accent); }
+
+        /* Nav Items */
+        .nav-right { display: flex; align-items: center; gap: 25px; }
+        .nav-item { color: var(--text-muted); font-weight: 600; font-size: 14px; transition: 0.3s; cursor: pointer; }
+        .nav-item:hover { color: white; }
+        .btn-login {
+            padding: 10px 24px; border-radius: 30px; font-weight: 700; font-size: 14px;
+            background: white; color: black; transition: 0.3s;
+        }
+        .btn-login:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,255,255,0.3); }
+
+        /* --- 3. DYNAMIC HERO SLIDER --- */
+        .hero-wrapper {
+            height: 100vh; position: relative; overflow: hidden;
             display: flex; align-items: center;
         }
-        .nav-wrapper { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-        .logo { font-size: 24px; font-weight: 800; color: white; display: flex; gap: 8px; align-items: center; }
-        .logo span { color: var(--primary); }
 
-        /* Search */
-        .search-container { flex: 1; max-width: 500px; margin: 0 40px; position: relative; }
-        .search-input {
-            width: 100%; background: #0f1014; border: 1px solid var(--border);
-            padding: 12px 20px; padding-right: 45px; border-radius: 50px; color: white;
+        /* Background Layers */
+        .hero-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center; transition: opacity 0.8s ease-in-out;
+            z-index: 1;
         }
-        .search-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; color: var(--text-muted); }
-
-        /* Nav Actions */
-        .nav-actions { display: flex; align-items: center; gap: 20px; }
-        .icon-link { position: relative; color: var(--text-muted); cursor: pointer; }
-        .icon-link:hover { color: white; }
-        .badge {
-            position: absolute; top: -8px; right: -8px; background: var(--primary);
-            color: white; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 10px;
+        .bg-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2;
+            background: linear-gradient(to right, #050505 10%, rgba(5,5,5,0.8) 40%, transparent);
         }
 
-        /* --- HERO (GTA THEMED) --- */
-        .hero {
-            position: relative; height: 500px; display: flex; align-items: center;
-            /* GTA VI Theme Background */
-            background: linear-gradient(to right, rgba(15,16,20,0.9) 30%, rgba(15,16,20,0.4)),
-                        url('https://images.hdqwalls.com/wallpapers/gta-vi-4k-logo-fo.jpg');
-            background-size: cover; background-position: center;
+        .hero-content {
+            position: relative; z-index: 10; width: 90%; max-width: 1400px; margin: 0 auto;
+            opacity: 0; transform: translateY(30px); transition: 0.5s;
         }
-        .hero-content { position: relative; z-index: 2; max-width: 600px; padding-left: 20px; }
-        .hero h1 { font-size: 56px; font-weight: 900; margin-bottom: 15px; line-height: 1.1; }
-        .hero span.highlight { color: #ff7675; text-shadow: 0 0 20px rgba(255,118,117,0.4); }
+        .hero-content.active { opacity: 1; transform: translateY(0); }
+
+        /* Hero Typography */
+        .premiere-tag {
+            display: inline-block; padding: 8px 16px; border-radius: 4px;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+            font-size: 12px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+            margin-bottom: 20px; color: white;
+        }
+        .hero-title { font-size: 80px; line-height: 0.95; font-weight: 900; margin-bottom: 20px; text-transform: uppercase; }
+        .hero-desc { max-width: 600px; color: #dcdde1; font-size: 18px; margin-bottom: 40px; line-height: 1.6; }
+
+        /* Buttons */
+        .cta-row { display: flex; gap: 20px; }
+        .btn-hero-primary {
+            padding: 16px 40px; border-radius: 4px; font-weight: 800; text-transform: uppercase;
+            font-size: 16px; color: white; border: none; clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
+            transition: 0.3s;
+        }
+        .btn-hero-secondary {
+            padding: 16px 30px; border-radius: 4px; font-weight: 700; text-transform: uppercase;
+            font-size: 14px; color: white; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px); display: flex; align-items: center; gap: 10px; transition: 0.3s;
+        }
+        .btn-hero-secondary:hover { background: white; color: black; }
+
+        /* Slider Controls */
+        .slider-controls {
+            position: absolute; bottom: 40px; right: 5%; z-index: 20;
+            display: flex; gap: 10px;
+        }
+        .slide-dot {
+            width: 60px; height: 5px; background: rgba(255,255,255,0.2); cursor: pointer; transition: 0.3s;
+        }
+        .slide-dot.active { background: white; width: 100px; }
+
+        /* --- 4. PRODUCT STORE --- */
+        .store-section { padding: 80px 0; background: #050505; position: relative; z-index: 10; }
+        .container { width: 90%; max-width: 1400px; margin: 0 auto; }
         
-        .hero-btns { display: flex; gap: 15px; margin-top: 30px; }
-        .btn-cta { 
-            padding: 14px 32px; font-size: 16px; font-weight: 700; border-radius: 8px; 
-            background: var(--primary); color: white; transition: 0.3s;
+        .section-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
+        .section-title { font-size: 32px; font-weight: 800; }
+        .section-title span { color: var(--gta-accent); }
+
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px; }
+
+        .card {
+            background: var(--bg-card); border-radius: 16px; overflow: hidden;
+            border: 1px solid var(--border); transition: 0.4s ease; position: relative; group;
         }
-        .btn-cta:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.3); }
+
+        .card-img-wrap { position: relative; width: 100%; aspect-ratio: 3/4; overflow: hidden; }
+        .card-img { width: 100%; height: 100%; object-fit: cover; transition: 0.4s; }
+        .card:hover .card-img { transform: scale(1.1); }
         
-        .btn-trailer { 
-            padding: 14px 32px; font-size: 16px; font-weight: 700; border-radius: 8px; 
-            background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(5px); display: flex; align-items: center; gap: 10px;
+        .card-info { padding: 20px; }
+        .card-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+        .card-price { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+        .price-val { font-size: 18px; font-weight: 700; color: white; }
+        .add-btn {
+            width: 35px; height: 35px; border-radius: 50%; background: white; color: black;
+            display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.8); transition: 0.3s;
         }
-        .btn-trailer:hover { background: white; color: black; }
+        .card:hover .add-btn { opacity: 1; transform: scale(1); }
 
-        /* --- GAME GRID --- */
-        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin: 40px 0 25px 0; }
-        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; margin-bottom: 80px; }
-
-        .game-card {
-            background: var(--bg-card); border-radius: var(--radius); overflow: hidden;
-            border: 1px solid transparent; transition: 0.3s; position: relative; cursor: pointer;
+        /* --- 5. MODALS (Login & Video) --- */
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 3000;
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+            display: none; justify-content: center; align-items: center;
         }
-        .game-card:hover { transform: translateY(-7px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-color: var(--border); }
+        .modal.active { display: flex; animation: fadeIn 0.3s; }
         
-        /* Premium Card Styling */
-        .game-card.premium-card { border: 1px solid var(--premium); box-shadow: 0 0 15px rgba(225, 177, 44, 0.1); }
-        .game-card.premium-card:hover { box-shadow: 0 0 25px rgba(225, 177, 44, 0.3); }
+        /* Video Modal */
+        .video-box { width: 80%; max-width: 1000px; aspect-ratio: 16/9; position: relative; }
+        iframe { width: 100%; height: 100%; border: none; border-radius: 10px; box-shadow: 0 0 50px rgba(255,255,255,0.1); }
+        .close-modal { position: absolute; top: -40px; right: 0; color: white; font-size: 30px; cursor: pointer; }
 
-        .card-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; }
-        .card-body { padding: 15px; }
-        .game-title { font-size: 16px; font-weight: 700; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .price-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
-        .price { font-size: 18px; font-weight: 700; color: #fab1a0; }
-
-        /* --- LOGIN MODAL --- */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 2000;
-            display: flex; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; transition: 0.3s; backdrop-filter: blur(5px);
+        /* Login Modal */
+        .login-card {
+            background: #141414; width: 400px; padding: 40px; border-radius: 20px;
+            border: 1px solid var(--border); text-align: center;
         }
-        .modal-overlay.active { opacity: 1; pointer-events: all; }
-
-        .login-box {
-            background: #1b1c21; padding: 40px; border-radius: 16px; width: 400px;
-            border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            text-align: center; transform: scale(0.9); transition: 0.3s;
-        }
-        .modal-overlay.active .login-box { transform: scale(1); }
-
         .login-input {
-            width: 100%; padding: 12px; margin-bottom: 15px; background: #0f1014;
-            border: 1px solid var(--border); color: white; border-radius: 6px;
+            width: 100%; padding: 15px; background: #0a0a0a; border: 1px solid var(--border);
+            color: white; border-radius: 8px; margin-bottom: 15px;
         }
-        .btn-login { width: 100%; padding: 12px; background: var(--primary); color: white; font-weight: 700; border-radius: 6px; margin-bottom: 15px; }
-        .btn-google { width: 100%; padding: 12px; background: white; color: black; font-weight: 700; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-submit { width: 100%; padding: 15px; background: white; color: black; font-weight: 800; border-radius: 8px; }
 
-        /* --- TRAILER MODAL --- */
-        .trailer-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: black; z-index: 3000; display: none;
-        }
-        .trailer-container { width: 100%; height: 100%; position: relative; display: flex; justify-content: center; align-items: center; }
-        .close-trailer {
-            position: absolute; top: 30px; right: 30px; color: white; font-size: 40px; cursor: pointer; z-index: 3001; opacity: 0.7;
-        }
-        .close-trailer:hover { opacity: 1; }
-        iframe { width: 90%; height: 90%; border: none; }
+        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
 
-        /* User Profile in Nav */
-        .user-nav { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .user-avatar { width: 35px; height: 35px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; }
-        
+        /* User Profile */
+        .user-pill {
+            display: flex; align-items: center; gap: 10px;
+            background: var(--glass); padding: 5px 15px; border-radius: 30px; border: 1px solid var(--border);
+        }
+        .avatar { width: 30px; height: 30px; background: linear-gradient(to right, #ff9f43, #ee5253); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+
     </style>
 </head>
 <body>
 
     <header>
-        <div class="container nav-wrapper">
+        <div class="nav-container">
             <a href="#" class="logo">
-                <i class="fas fa-gamepad"></i> PlayWith<span>Ease</span>
+                <i class="fas fa-gamepad" style="color:white;"></i> 
+                PlayWith<span>Ease</span>
             </a>
-
-            <div class="search-container">
-                <input type="text" class="search-input" placeholder="Search GTA 6, Elden Ring...">
-                <button class="search-btn"><i class="fas fa-search"></i></button>
+            
+            <div class="search-wrapper">
+                <input type="text" class="search-input" placeholder="Search store...">
             </div>
 
-            <div class="nav-actions">
-                <div class="icon-link"><i class="fas fa-shopping-cart fa-lg"></i> <span class="badge">0</span></div>
+            <div class="nav-right">
+                <div class="nav-item">Store</div>
+                <div class="nav-item">Library</div>
+                <div class="nav-item"><i class="fas fa-shopping-cart"></i></div>
                 
-                <div id="auth-section">
-                    <button class="btn-cta" style="padding: 8px 20px; font-size: 14px;" onclick="openLogin()">Log In</button>
+                <div id="auth-container">
+                    <button class="btn-login" onclick="toggleLogin()">Log In</button>
                 </div>
             </div>
         </div>
     </header>
 
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div style="color: var(--premium); font-weight: 700; margin-bottom: 10px; letter-spacing: 2px;">PRE-ORDER NOW</div>
-                <h1>Grand Theft Auto <span class="highlight">VI</span></h1>
-                <p style="font-size: 18px; color: #dcdde1; margin-bottom: 30px;">Welcome to Leonida. The most immersive evolution of the Grand Theft Auto series yet.</p>
-                
-                <div class="hero-btns">
-                    <button class="btn-cta">Pre-Order Now ($69.99)</button>
-                    <button class="btn-trailer" onclick="openTrailer()">
-                        <i class="fas fa-play"></i> Watch Trailer 1
-                    </button>
-                </div>
+    <div class="hero-wrapper">
+        <div class="hero-bg active" id="bg-gta" style="background-image: url('https://images.hdqwalls.com/wallpapers/gta-vi-4k-logo-fo.jpg'); opacity: 1;"></div>
+        
+        <div class="hero-bg" id="bg-forza" style="background-image: url('https://images.hdqwalls.com/wallpapers/forza-horizon-5-4k-game-3r.jpg'); opacity: 0;"></div>
+        
+        <div class="bg-overlay"></div>
+
+        <div class="hero-content active" id="content-gta">
+            <div class="premiere-tag" style="color: var(--gta-accent); border-color: var(--gta-accent);">Global Premiere</div>
+            <h1 class="hero-title">Grand Theft<br><span style="color: transparent; background: var(--gta-grad); -webkit-background-clip: text;">Auto VI</span></h1>
+            <p class="hero-desc">Return to Vice City in the most immersive open-world experience ever created. Pre-order the Premium Deluxe Edition for exclusive content.</p>
+            <div class="cta-row">
+                <button class="btn-hero-primary" style="background: var(--gta-grad);">Pre-Order $69.99</button>
+                <button class="btn-hero-secondary" onclick="openVideo('QdBZY2fkU-0')"><i class="fas fa-play"></i> Watch Trailer 1</button>
             </div>
+        </div>
+
+        <div class="hero-content" id="content-forza" style="position: absolute; top: 50%; transform: translateY(-50%); display: none;">
+            <div class="premiere-tag" style="color: var(--forza-accent); border-color: var(--forza-accent);">World Reveal</div>
+            <h1 class="hero-title">Forza<br><span style="color: transparent; background: var(--forza-grad); -webkit-background-clip: text;">Horizon 6</span></h1>
+            <p class="hero-desc">Explore the neon-soaked streets of Tokyo. Next-gen physics, dynamic weather, and the largest car roster in history.</p>
+            <div class="cta-row">
+                <button class="btn-hero-primary" style="background: var(--forza-grad);">Pre-Order $59.99</button>
+                <button class="btn-hero-secondary" onclick="openVideo('FYH9n37B7Yw')"><i class="fas fa-play"></i> Watch Gameplay</button>
+            </div>
+        </div>
+
+        <div class="slider-controls">
+            <div class="slide-dot active" onclick="setSlide(0)"></div>
+            <div class="slide-dot" onclick="setSlide(1)"></div>
+        </div>
+    </div>
+
+    <section class="store-section">
+        <div class="container">
+            <div class="section-head">
+                <h2 class="section-title">Trending <span>This Week</span></h2>
+                <div style="color: #8395a7; cursor: pointer;">View All <i class="fas fa-arrow-right"></i></div>
+            </div>
+
+            <div class="game-grid" id="game-grid">
+                </div>
         </div>
     </section>
 
-    <div class="container">
-        
-        <div class="section-header">
-            <h2 style="font-size: 24px; font-weight: 700;"><i class="fas fa-fire" style="color: #ff7675;"></i> Featured Releases</h2>
-        </div>
-
-        <div class="game-grid" id="game-grid">
-            </div>
-
-    </div>
-
-    <div class="modal-overlay" id="loginModal">
-        <div class="login-box">
-            <div style="text-align: right; margin-bottom: 10px; cursor: pointer;" onclick="closeLogin()"><i class="fas fa-times"></i></div>
-            <h2 style="margin-bottom: 20px;">Welcome Back</h2>
-            <input type="email" id="email" class="login-input" placeholder="Email Address">
-            <input type="password" id="password" class="login-input" placeholder="Password">
-            <button class="btn-login" onclick="handleEmailLogin()">Sign In</button>
-            
-            <div style="margin: 20px 0; color: var(--text-muted); font-size: 12px;">OR CONTINUE WITH</div>
-            
-            <button class="btn-google" onclick="handleGoogleLogin()">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="20" alt="G">
-                Google
-            </button>
-        </div>
-    </div>
-
-    <div class="trailer-modal" id="trailerModal">
-        <div class="trailer-container">
-            <div class="close-trailer" onclick="closeTrailer()">&times;</div>
+    <div class="modal" id="videoModal">
+        <div class="video-box">
+            <div class="close-modal" onclick="closeVideo()">&times;</div>
             <iframe id="youtube-frame" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
     </div>
 
+    <div class="modal" id="loginModal">
+        <div class="login-card">
+            <div class="close-modal" style="position:relative; top:0; right:0; text-align:right; margin-bottom:20px;" onclick="toggleLogin()">&times;</div>
+            <h2 style="margin-bottom: 30px;">Welcome Back</h2>
+            <input type="email" id="email" class="login-input" placeholder="Email Address">
+            <input type="password" id="pass" class="login-input" placeholder="Password">
+            <button class="btn-submit" onclick="login()">Sign In</button>
+            <div style="margin-top: 15px; font-size: 12px; color: grey;">Or sign in with Google</div>
+        </div>
+    </div>
+
     <script>
-        // --- 1. GAME DATA (Including GTA VI Variants) ---
-        const games = [
-            {
-                title: "GTA VI: Standard Edition",
-                price: 69.99,
-                image: "https://upload.wikimedia.org/wikipedia/en/d/db/Grand_Theft_Auto_VI_cover_art.jpg", // Placeholder art
-                platform: "Xbox / PS5",
-                isPremium: false
-            },
-            {
-                title: "GTA VI: Premium Deluxe",
-                price: 119.99,
-                image: "https://wallpapers.com/images/hd/gta-6-logo-on-black-background-b6j0j6z1j6z1j6z1.jpg",
-                platform: "Xbox / PS5",
-                isPremium: true
-            },
-            {
-                title: "Elden Ring: Shadow of the Erdtree",
-                price: 39.99,
-                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co848v.jpg",
-                platform: "Steam",
-                isPremium: false
-            },
-            {
-                title: "Black Myth: Wukong",
-                price: 59.99,
-                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co8ush.jpg",
-                platform: "Steam",
-                isPremium: false
-            },
-            {
-                title: "Call of Duty: Black Ops 6",
-                price: 69.99,
-                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co85cg.jpg",
-                platform: "Battle.net",
-                isPremium: false
-            }
+        // --- 1. HERO SLIDER LOGIC ---
+        let currentSlide = 0;
+        const slides = [
+            { bg: 'bg-gta', content: 'content-gta' },
+            { bg: 'bg-forza', content: 'content-forza' }
         ];
 
-        // --- 2. RENDER GAMES ---
-        const grid = document.getElementById('game-grid');
-        games.forEach(game => {
-            const premiumClass = game.isPremium ? 'premium-card' : '';
-            const premiumBadge = game.isPremium ? '<span style="position:absolute; top:10px; right:10px; background:#e1b12c; color:black; font-weight:800; padding:4px 8px; border-radius:4px; font-size:11px;">PREMIUM</span>' : '';
+        function setSlide(index) {
+            // Hide all
+            document.querySelectorAll('.hero-bg').forEach(el => el.style.opacity = '0');
+            document.querySelectorAll('.hero-content').forEach(el => {
+                el.classList.remove('active');
+                setTimeout(() => el.style.display = 'none', 500);
+            });
+            document.querySelectorAll('.slide-dot').forEach(el => el.classList.remove('active'));
+
+            // Show selected
+            document.getElementById(slides[index].bg).style.opacity = '1';
             
+            const content = document.getElementById(slides[index].content);
+            content.style.display = 'block';
+            // Slight delay to allow display:block to render before opacity transition
+            setTimeout(() => content.classList.add('active'), 50);
+
+            document.querySelectorAll('.slide-dot')[index].classList.add('active');
+            currentSlide = index;
+        }
+
+        // Auto slide every 7 seconds
+        setInterval(() => {
+            let next = currentSlide === 0 ? 1 : 0;
+            setSlide(next);
+        }, 7000);
+
+        // --- 2. GAME GRID DATA ---
+        const games = [
+            { title: "Elden Ring: Shadow of the Erdtree", price: 39.99, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co848v.jpg" },
+            { title: "Black Myth: Wukong", price: 59.99, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co8ush.jpg" },
+            { title: "Cyberpunk 2077: Phantom Liberty", price: 29.99, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co5j8h.jpg" },
+            { title: "Call of Duty: Modern Warfare III", price: 69.99, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co6w0w.jpg" },
+            { title: "Starfield", price: 49.99, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co6497.jpg" },
+            { title: "Tekken 8", price: 69.99, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co6y3n.jpg" },
+            { title: "Resident Evil 4 Remake", price: 39.99, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co628e.jpg" },
+            { title: "Spider-Man 2", price: 69.99, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co660r.jpg" }
+        ];
+
+        const grid = document.getElementById('game-grid');
+        games.forEach(g => {
             grid.innerHTML += `
-                <div class="game-card ${premiumClass}">
-                    <div style="position: relative;">
-                        <img src="${game.image}" class="card-img" alt="${game.title}">
-                        ${premiumBadge}
+                <div class="card">
+                    <div class="card-img-wrap">
+                        <img src="${g.img}" class="card-img">
                     </div>
-                    <div class="card-body">
-                        <div style="font-size:12px; color:#aab2bd; margin-bottom:5px;">${game.platform}</div>
-                        <h3 class="game-title">${game.title}</h3>
-                        <div class="price-row">
-                            <span class="price">$${game.price}</span>
-                            <div style="width:30px; height:30px; background:#2d3436; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white;"><i class="fas fa-plus"></i></div>
+                    <div class="card-info">
+                        <div class="card-title">${g.title}</div>
+                        <div class="card-price">
+                            <span class="price-val">$${g.price}</span>
+                            <div class="add-btn"><i class="fas fa-plus"></i></div>
                         </div>
                     </div>
                 </div>
             `;
         });
 
-        // --- 3. TRAILER SYSTEM ---
-        const trailerModal = document.getElementById('trailerModal');
-        const iframe = document.getElementById('youtube-frame');
-
-        function openTrailer() {
-            trailerModal.style.display = 'block';
-            // GTA 6 Trailer 1 Official ID: QdBZY2fkU-0
-            iframe.src = "https://www.youtube.com/embed/QdBZY2fkU-0?autoplay=1&rel=0";
-            document.body.style.overflow = 'hidden';
+        // --- 3. MODAL LOGIC ---
+        function openVideo(id) {
+            document.getElementById('videoModal').classList.add('active');
+            document.getElementById('youtube-frame').src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+        }
+        function closeVideo() {
+            document.getElementById('videoModal').classList.remove('active');
+            document.getElementById('youtube-frame').src = "";
+        }
+        function toggleLogin() {
+            const modal = document.getElementById('loginModal');
+            modal.classList.toggle('active');
         }
 
-        function closeTrailer() {
-            trailerModal.style.display = 'none';
-            iframe.src = ""; // Stop audio
-            document.body.style.overflow = 'auto';
-        }
-
-        // --- 4. FIREBASE CONFIGURATION & AUTH LOGIC ---
-        
-        // TODO: REPLACE THIS WITH YOUR OWN CONFIG FROM FIREBASE CONSOLE
+        // --- 4. FIREBASE AUTH ---
+        // USER PROVIDED CONFIGURATION
         const firebaseConfig = {
             apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
             authDomain: "playwithease.firebaseapp.com",
             projectId: "playwithease",
             storageBucket: "playwithease.firebasestorage.app",
             messagingSenderId: "189729941006",
-            appId: "1:189729941006:web:362653774b92416c357e5f"
+            appId: "1:189729941006:web:362653774b92416c357e5f",
+            measurementId: "G-1C3B31KQ7C"
         };
 
-        // Initialize Firebase
         try {
             firebase.initializeApp(firebaseConfig);
             const auth = firebase.auth();
-            const googleProvider = new firebase.auth.GoogleAuthProvider();
 
-            // Check Auth State Change
             auth.onAuthStateChanged(user => {
-                const authSection = document.getElementById('auth-section');
+                const container = document.getElementById('auth-container');
                 if (user) {
-                    // User is Logged In
-                    authSection.innerHTML = `
-                        <div class="user-nav" onclick="signOut()">
-                            <div style="text-align:right; font-size:12px; margin-right:5px;">
-                                <div style="color:white; font-weight:600;">${user.displayName || user.email}</div>
-                                <div style="color:#aab2bd;">Wallet: $0.00</div>
-                            </div>
-                            <div class="user-avatar">${(user.displayName || "U").charAt(0)}</div>
+                    container.innerHTML = `
+                        <div class="user-pill" onclick="auth.signOut()">
+                            <div class="avatar">${user.email[0].toUpperCase()}</div>
+                            <span style="font-size:14px; font-weight:600;">$0.00</span>
                         </div>
                     `;
-                    closeLogin();
+                    document.getElementById('loginModal').classList.remove('active');
                 } else {
-                    // User is Logged Out
-                    authSection.innerHTML = `<button class="btn-cta" style="padding: 8px 20px; font-size: 14px;" onclick="openLogin()">Log In</button>`;
+                    container.innerHTML = `<button class="btn-login" onclick="toggleLogin()">Log In</button>`;
                 }
             });
 
-            // Login Functions
-            window.handleEmailLogin = () => {
-                const email = document.getElementById('email').value;
-                const pass = document.getElementById('password').value;
-                auth.signInWithEmailAndPassword(email, pass).catch(e => alert(e.message));
-            };
-
-            window.handleGoogleLogin = () => {
-                auth.signInWithPopup(googleProvider).catch(e => alert(e.message));
-            };
-
-            window.signOut = () => {
-                if(confirm('Log out?')) auth.signOut();
-            };
+            window.login = () => {
+                const e = document.getElementById('email').value;
+                const p = document.getElementById('pass').value;
+                auth.signInWithEmailAndPassword(e, p).catch(err => alert(err.message));
+            }
 
         } catch (error) {
-            console.error("Firebase not configured correctly yet. Please edit the script tag.", error);
+            console.error("Firebase Error", error);
         }
-
-        // Modal UI Logic
-        const loginModal = document.getElementById('loginModal');
-        function openLogin() { loginModal.classList.add('active'); }
-        function closeLogin() { loginModal.classList.remove('active'); }
 
     </script>
 </body>
