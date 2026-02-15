@@ -1,97 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Secure Checkout Gateway | PlayWithEase</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body class="bg-black text-white p-6 md:p-24">
-    <div class="max-w-[1400px] mx-auto flex flex-col gap-24">
-        <header class="flex justify-between items-center border-b border-white/5 pb-20">
-            <div>
-                <h1 class="text-8xl font-black italic tracking-tighter uppercase italic leading-none">ORDER <span class="text-primary underline">DECRYPT</span></h1>
-                <p class="text-xs text-gray-600 font-black uppercase tracking-[0.5em] mt-6 italic">Secure Transmission Hub v4.1</p>
-            </div>
-            <div class="text-right">
-                <p class="text-[10px] text-gray-600 font-black uppercase tracking-[0.4em] mb-4">Encryption Level</p>
-                <p class="text-green-500 font-black text-xl italic tracking-widest border border-green-500/20 px-6 py-2 rounded-2xl bg-green-500/5">AES-256 BIT</p>
-            </div>
-        </header>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-40">
-            <div class="space-y-20">
-                <section>
-                    <h2 class="text-2xl font-black uppercase italic tracking-tighter mb-14 border-l-8 border-primary pl-10">Logistics Identity</h2>
-                    <form class="space-y-8">
-                        <div class="space-y-4">
-                            <label class="text-[9px] font-black text-gray-700 tracking-[0.5em] uppercase ml-6">Full Legal Alias</label>
-                            <input type="text" placeholder="COMMANDER NAME" class="w-full bg-[#0d0d0d] border border-white/10 rounded-[2.5rem] p-8 outline-none focus:border-primary text-white font-black italic uppercase text-xs tracking-widest">
-                        </div>
-                        <div class="space-y-4">
-                            <label class="text-[9px] font-black text-gray-700 tracking-[0.5em] uppercase ml-6">Deployment Email</label>
-                            <input type="email" placeholder="IDENTITY@DOMAIN.COM" class="w-full bg-[#0d0d0d] border border-white/10 rounded-[2.5rem] p-8 outline-none focus:border-primary text-white font-black italic uppercase text-xs tracking-widest">
-                        </div>
-                        <div class="grid grid-cols-2 gap-8">
-                            <div class="space-y-4">
-                                <label class="text-[9px] font-black text-gray-700 tracking-[0.5em] uppercase ml-6">UPI Interface (VPA)</label>
-                                <input type="text" placeholder="GAMER@PAY" class="w-full bg-[#0d0d0d] border border-white/10 rounded-[2.5rem] p-8 outline-none focus:border-primary text-white font-black text-xs">
-                            </div>
-                            <div class="space-y-4">
-                                <label class="text-[9px] font-black text-gray-700 tracking-[0.5em] uppercase ml-6">Sync Mobile</label>
-                                <input type="text" placeholder="+91 00000 00000" class="w-full bg-[#0d0d0d] border border-white/10 rounded-[2.5rem] p-8 outline-none focus:border-primary text-white font-black text-xs">
-                            </div>
-                        </div>
-                        <button type="button" class="w-full btn-titan py-10 rounded-[3.5rem] font-black text-3xl uppercase italic shadow-[0_0_100px_rgba(37,99,235,0.4)] tracking-widest mt-12">DEPLOY TRANSACTION</button>
-                    </form>
-                </section>
-            </div>
-            
-            <div class="card-pro p-16 h-fit bg-white/[0.01]">
-                <h2 class="text-3xl font-black italic uppercase mb-16 tracking-tighter border-b border-white/5 pb-10 text-primary">Asset Portfolio</h2>
-                <div id="checkoutSummary" class="space-y-10 mb-20">
-                    </div>
-                <div class="border-t border-white/10 pt-20 flex justify-between items-end">
-                    <div class="flex flex-col gap-4">
-                        <span class="text-gray-600 font-black uppercase text-[11px] tracking-[0.6em] italic">Net Asset Worth</span>
-                        <p class="text-green-500 font-black text-sm tracking-widest italic border-l-4 border-green-500 pl-4">SECURE PROTOCOL ACTIVE</p>
-                    </div>
-                    <span id="checkoutTotal" class="text-8xl font-black text-white italic tracking-tighter italic drop-shadow-[0_0_50px_rgba(255,255,255,0.2)]">₹0</span>
-                </div>
-            </div>
+<main class="container">
+    <div style="max-width: 600px; margin: 0 auto; background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--shadow);">
+        <h2>Complete Your Order</h2>
+        <div id="order-summary" style="margin: 2rem 0;"></div>
+        
+        <div style="text-align: center; background: #f9f9f9; padding: 2rem; border-radius: 8px;">
+            <h3>Scan to Pay via UPI</h3>
+            <p style="font-size: 0.8rem; margin-bottom: 1rem;">Order ID: <span id="order-id"></span></p>
+            <img id="upi-qr" src="" style="width: 200px; margin-bottom: 1rem;">
+            <p><strong>shayanff98@okhdfcbank</strong></p>
+            <button class="btn" onclick="copyUPI()">Copy UPI ID</button>
         </div>
+
+        <button class="btn btn-primary" style="margin-top: 2rem; background: #25D366;" onclick="sendWhatsApp()">
+            Confirm on WhatsApp
+        </button>
     </div>
+</main>
 
-    <script>
-        const cart = JSON.parse(localStorage.getItem('pwe_cart')) || [];
-        const products = {
-            gta6: { title: "Grand Theft Auto VI", price: 5499 },
-            fh6: { title: "Forza Horizon 6", price: 4999 },
-            para500: { title: "Paracetamol 500mg", price: 45 },
-            vitc: { title: "Immuno-C Zinc", price: 185 },
-            insulin: { title: "Insulin Rapid-Pen", price: 2499 },
-            omep: { title: "Omeprazole Gastro", price: 95 },
-            sp2disc: { title: "Spider-Man 2 Disc", price: 4499 },
-            gowdisc: { title: "GoW Ragnarok Disc", price: 3999 },
-            eldendisc: { title: "Elden Ring Disc", price: 3499 },
-            nf: { title: "Netflix Premium", price: 649 },
-            pr: { title: "Amazon Prime Annual", price: 1499 },
-            hs: { title: "Hotstar Super", price: 899 },
-            sp: { title: "Spotify Plan", price: 119 },
-            bms: { title: "BookMyShow Voucher", price: 500 },
-            amz: { title: "Amazon GC", price: 1000 }
-        };
+<script>
+    const orderId = "PWE-" + Math.floor(Math.random() * 1000000);
+    document.getElementById('order-id').innerText = orderId;
 
-        const totalVal = cart.reduce((a, b) => a + (products[b.id].price * b.qty), 0);
-        document.getElementById('checkoutTotal').innerText = `₹${totalVal.toLocaleString()}`;
-        document.getElementById('checkoutSummary').innerHTML = cart.map(i => `
-            <div class="flex justify-between items-center bg-white/[0.03] p-8 rounded-[2rem] border border-white/5">
-                <div class="flex flex-col gap-2">
-                    <p class="font-black text-white uppercase italic text-lg tracking-tight leading-none">${products[i.id].title}</p>
-                    <p class="text-primary text-[10px] font-black uppercase tracking-widest">Asset Unit x ${i.qty}</p>
-                </div>
-                <span class="font-black text-2xl italic tracking-tighter">₹${(products[i.id].price * i.qty).toLocaleString()}</span>
-            </div>`).join('');
-    </script>
-</body>
-</html>
+    const total = JSON.parse(localStorage.getItem('pwe_cart')).reduce((s, i) => s + i.price, 0);
+    
+    // QR Code API (Using Google Charts for stability)
+    const upiLink = `upi://pay?pa=shayanff98@okhdfcbank&pn=PlayWithEase&am=${total}&tn=${orderId}&cu=INR`;
+    document.getElementById('upi-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
+
+    function sendWhatsApp() {
+        const cart = JSON.parse(localStorage.getItem('pwe_cart'));
+        const items = cart.map(i => i.name).join(", ");
+        const msg = `Hello PlayWithEase! I'd like to confirm my order.\n\nOrder ID: ${orderId}\nItems: ${items}\nTotal: ₹${total}\n\nI have completed the payment via UPI.`;
+        window.open(`https://wa.me/91XXXXXXXXXX?text=${encodeURIComponent(msg)}`);
+    }
+</script>
