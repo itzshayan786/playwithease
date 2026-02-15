@@ -3,395 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="PlayWithEase - Buy digital game keys instantly. Steam, Xbox, PlayStation, and more.">
-    <title>PlayWithEase | Digital Game Store</title>
+    <meta name="description" content="PlayWithEase - GTA VI Pre-orders Live Now.">
+    <title>PlayWithEase | GTA VI HQ</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
     <style>
-        /* --- 1. RESET & VARIABLES --- */
+        /* --- CORE THEME --- */
         :root {
-            --bg-body: #0f1014;       /* Deep dark background */
-            --bg-card: #1b1c21;       /* Slightly lighter for cards */
+            --bg-body: #0f1014;
+            --bg-card: #1b1c21;
             --bg-header: #1b1c21;
-            --primary: #6c5ce7;       /* Brand Purple */
+            --primary: #6c5ce7;
             --primary-hover: #5649c0;
-            --accent: #fdcb6e;        /* Gold for stars/premium */
-            --price-color: #fab1a0;   /* Soft Red/Orange for prices */
+            --accent: #fdcb6e; 
+            --premium: #e1b12c; /* Gold for GTA Premium */
             --text-main: #ffffff;
             --text-muted: #aab2bd;
             --border: #2d3436;
             --radius: 12px;
-            --container-width: 1280px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        
-        body { 
-            background-color: var(--bg-body); 
-            color: var(--text-main);
-            -webkit-font-smoothing: antialiased;
-        }
-
+        body { background-color: var(--bg-body); color: var(--text-main); overflow-x: hidden; }
         a { text-decoration: none; color: inherit; transition: 0.2s; }
-        ul { list-style: none; }
         img { display: block; max-width: 100%; }
+        button { cursor: pointer; border: none; outline: none; }
 
-        /* --- 2. HEADER --- */
+        /* --- UTILITIES --- */
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+        .hidden { display: none !important; }
+        
+        /* --- HEADER --- */
         header {
             background: var(--bg-header);
             border-bottom: 1px solid var(--border);
             height: 72px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center;
         }
-
-        .container {
-            width: 90%;
-            max-width: var(--container-width);
-            margin: 0 auto;
-        }
-
-        .nav-wrapper {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-        }
-
-        /* Logo */
-        .logo {
-            font-size: 24px;
-            font-weight: 800;
-            color: white;
-            letter-spacing: -0.5px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .nav-wrapper { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .logo { font-size: 24px; font-weight: 800; color: white; display: flex; gap: 8px; align-items: center; }
         .logo span { color: var(--primary); }
-        .logo i { color: var(--primary); }
 
-        /* Search Bar */
-        .search-container {
-            flex: 1;
-            max-width: 500px;
-            position: relative;
-        }
+        /* Search */
+        .search-container { flex: 1; max-width: 500px; margin: 0 40px; position: relative; }
         .search-input {
-            width: 100%;
-            background: #0f1014;
-            border: 1px solid var(--border);
-            padding: 12px 20px;
-            padding-right: 45px;
-            border-radius: 50px;
-            color: white;
-            font-size: 14px;
-            transition: 0.3s;
+            width: 100%; background: #0f1014; border: 1px solid var(--border);
+            padding: 12px 20px; padding-right: 45px; border-radius: 50px; color: white;
         }
-        .search-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
-        }
-        .search-btn {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
+        .search-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; color: var(--text-muted); }
 
         /* Nav Actions */
         .nav-actions { display: flex; align-items: center; gap: 20px; }
-        
-        .icon-link { 
-            position: relative; 
-            cursor: pointer; 
-            color: var(--text-muted);
-        }
+        .icon-link { position: relative; color: var(--text-muted); cursor: pointer; }
         .icon-link:hover { color: white; }
-        
         .badge {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: var(--primary);
-            color: white;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 10px;
+            position: absolute; top: -8px; right: -8px; background: var(--primary);
+            color: white; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 10px;
         }
 
-        .auth-buttons { display: flex; gap: 10px; }
-        .btn {
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .btn-ghost { background: transparent; color: var(--text-muted); }
-        .btn-ghost:hover { color: white; background: rgba(255,255,255,0.05); }
-        .btn-primary { background: var(--primary); color: white; border: none; }
-        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
-
-        /* --- 3. HERO SECTION --- */
+        /* --- HERO (GTA THEMED) --- */
         .hero {
-            position: relative;
-            height: 420px;
-            display: flex;
-            align-items: center;
-            background: radial-gradient(circle at top right, rgba(108, 92, 231, 0.2), transparent 40%),
-                        linear-gradient(to bottom, rgba(15, 16, 20, 0.3), var(--bg-body)),
-                        url('https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=2665&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
+            position: relative; height: 500px; display: flex; align-items: center;
+            /* GTA VI Theme Background */
+            background: linear-gradient(to right, rgba(15,16,20,0.9) 30%, rgba(15,16,20,0.4)),
+                        url('https://images.hdqwalls.com/wallpapers/gta-vi-4k-logo-fo.jpg');
+            background-size: cover; background-position: center;
         }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 600px;
-        }
-
-        .hero h1 {
-            font-size: 48px;
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 16px;
-            background: linear-gradient(to right, #fff, #aab2bd);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            font-size: 18px;
-            color: #dcdde1;
-            margin-bottom: 32px;
-        }
-
-        .trust-badges {
-            display: flex;
-            gap: 24px;
-            margin-top: 40px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 20px;
-        }
-        .trust-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); font-weight: 500; }
-        .trust-item i { color: var(--accent); }
-
-        /* --- 4. FILTERS & CONTENT --- */
-        .main-layout { margin-top: 40px; margin-bottom: 80px; }
+        .hero-content { position: relative; z-index: 2; max-width: 600px; padding-left: 20px; }
+        .hero h1 { font-size: 56px; font-weight: 900; margin-bottom: 15px; line-height: 1.1; }
+        .hero span.highlight { color: #ff7675; text-shadow: 0 0 20px rgba(255,118,117,0.4); }
         
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 24px;
+        .hero-btns { display: flex; gap: 15px; margin-top: 30px; }
+        .btn-cta { 
+            padding: 14px 32px; font-size: 16px; font-weight: 700; border-radius: 8px; 
+            background: var(--primary); color: white; transition: 0.3s;
         }
+        .btn-cta:hover { background: var(--primary-hover); transform: translateY(-2px); }
         
-        .section-title { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
-        .section-title i { color: var(--primary); }
+        .btn-trailer { 
+            padding: 14px 32px; font-size: 16px; font-weight: 700; border-radius: 8px; 
+            background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(5px); display: flex; align-items: center; gap: 10px;
+        }
+        .btn-trailer:hover { background: white; color: black; }
 
-        /* Platform Tags */
-        .platforms { display: flex; gap: 10px; margin-bottom: 30px; overflow-x: auto; padding-bottom: 5px; }
-        .platform-tag {
-            padding: 8px 16px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 50px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-muted);
-            cursor: pointer;
-            white-space: nowrap;
-        }
-        .platform-tag.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-        .platform-tag:hover:not(.active) { border-color: white; color: white; }
-
-        /* --- 5. GAME GRID --- */
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 24px;
-        }
+        /* --- GAME GRID --- */
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin: 40px 0 25px 0; }
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; margin-bottom: 80px; }
 
         .game-card {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            overflow: hidden;
-            border: 1px solid transparent;
-            transition: 0.3s;
-            position: relative;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
+            background: var(--bg-card); border-radius: var(--radius); overflow: hidden;
+            border: 1px solid transparent; transition: 0.3s; position: relative; cursor: pointer;
         }
-
-        .game-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--border);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .card-img-container {
-            position: relative;
-            width: 100%;
-            padding-top: 133%; /* 3:4 Aspect Ratio */
-            overflow: hidden;
-        }
-
-        .card-img {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
-            transition: 0.3s;
-        }
+        .game-card:hover { transform: translateY(-7px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-color: var(--border); }
         
-        /* Region Badge */
-        .region-badge {
-            position: absolute;
-            top: 10px; right: 10px;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(4px);
-            color: white;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 4px 8px;
-            border-radius: 4px;
-            text-transform: uppercase;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
+        /* Premium Card Styling */
+        .game-card.premium-card { border: 1px solid var(--premium); box-shadow: 0 0 15px rgba(225, 177, 44, 0.1); }
+        .game-card.premium-card:hover { box-shadow: 0 0 25px rgba(225, 177, 44, 0.3); }
 
-        /* Discount Badge */
-        .discount-badge {
-            position: absolute;
-            bottom: 10px; left: 10px;
-            background: var(--primary);
-            color: white;
-            font-size: 11px;
-            font-weight: 800;
-            padding: 3px 6px;
-            border-radius: 4px;
-        }
+        .card-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; }
+        .card-body { padding: 15px; }
+        .game-title { font-size: 16px; font-weight: 700; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .price-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+        .price { font-size: 18px; font-weight: 700; color: #fab1a0; }
 
-        .card-body { padding: 16px; flex-grow: 1; display: flex; flex-direction: column; }
+        /* --- LOGIN MODAL --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 2000;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: 0.3s; backdrop-filter: blur(5px);
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+
+        .login-box {
+            background: #1b1c21; padding: 40px; border-radius: 16px; width: 400px;
+            border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            text-align: center; transform: scale(0.9); transition: 0.3s;
+        }
+        .modal-overlay.active .login-box { transform: scale(1); }
+
+        .login-input {
+            width: 100%; padding: 12px; margin-bottom: 15px; background: #0f1014;
+            border: 1px solid var(--border); color: white; border-radius: 6px;
+        }
+        .btn-login { width: 100%; padding: 12px; background: var(--primary); color: white; font-weight: 700; border-radius: 6px; margin-bottom: 15px; }
+        .btn-google { width: 100%; padding: 12px; background: white; color: black; font-weight: 700; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+
+        /* --- TRAILER MODAL --- */
+        .trailer-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 3000; display: none;
+        }
+        .trailer-container { width: 100%; height: 100%; position: relative; display: flex; justify-content: center; align-items: center; }
+        .close-trailer {
+            position: absolute; top: 30px; right: 30px; color: white; font-size: 40px; cursor: pointer; z-index: 3001; opacity: 0.7;
+        }
+        .close-trailer:hover { opacity: 1; }
+        iframe { width: 90%; height: 90%; border: none; }
+
+        /* User Profile in Nav */
+        .user-nav { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .user-avatar { width: 35px; height: 35px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; }
         
-        .game-title {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 4px;
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            flex-grow: 1;
-        }
-
-        .platform-icon { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
-
-        .price-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: auto;
-        }
-
-        .price-container { display: flex; flex-direction: column; }
-        .old-price { font-size: 11px; text-decoration: line-through; color: var(--text-muted); }
-        .new-price { font-size: 18px; font-weight: 700; color: var(--price-color); }
-        
-        .cart-add-btn {
-            width: 32px; height: 32px;
-            border-radius: 50%;
-            background: #2d3436;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.2s;
-        }
-        .game-card:hover .cart-add-btn { background: var(--primary); }
-
-        /* --- 6. FOOTER --- */
-        footer {
-            background: var(--bg-card);
-            border-top: 1px solid var(--border);
-            padding: 60px 0;
-            margin-top: auto;
-        }
-        
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr 1fr;
-            gap: 40px;
-        }
-
-        .footer-col h3 { font-size: 16px; color: white; margin-bottom: 20px; }
-        .footer-col ul li { margin-bottom: 12px; }
-        .footer-col ul li a { color: var(--text-muted); font-size: 14px; }
-        .footer-col ul li a:hover { color: var(--primary); }
-
-        .payment-methods { display: flex; gap: 15px; font-size: 24px; color: var(--text-muted); margin-top: 20px; }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-wrapper { flex-wrap: wrap; padding: 10px 0; }
-            .search-container { order: 3; flex: 100%; margin-top: 10px; }
-            .nav-actions { order: 2; }
-            .hero { height: auto; padding: 60px 0; }
-            .hero h1 { font-size: 32px; }
-            .footer-grid { grid-template-columns: 1fr; gap: 30px; }
-        }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="container">
-            <div class="nav-wrapper">
-                <a href="#" class="logo">
-                    <i class="fas fa-gamepad"></i>
-                    PlayWith<span>Ease</span>
-                </a>
+        <div class="container nav-wrapper">
+            <a href="#" class="logo">
+                <i class="fas fa-gamepad"></i> PlayWith<span>Ease</span>
+            </a>
 
-                <div class="search-container">
-                    <input type="text" class="search-input" placeholder="Search for games (e.g. Elden Ring)...">
-                    <button class="search-btn"><i class="fas fa-search"></i></button>
-                </div>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search GTA 6, Elden Ring...">
+                <button class="search-btn"><i class="fas fa-search"></i></button>
+            </div>
 
-                <div class="nav-actions">
-                    <div class="icon-link">
-                        <i class="far fa-heart fa-lg"></i>
-                    </div>
-                    <div class="icon-link">
-                        <i class="fas fa-shopping-cart fa-lg"></i>
-                        <span class="badge">2</span>
-                    </div>
-                    <div class="auth-buttons">
-                        <button class="btn btn-ghost">Log In</button>
-                        <button class="btn btn-primary">Sign Up</button>
-                    </div>
+            <div class="nav-actions">
+                <div class="icon-link"><i class="fas fa-shopping-cart fa-lg"></i> <span class="badge">0</span></div>
+                
+                <div id="auth-section">
+                    <button class="btn-cta" style="padding: 8px 20px; font-size: 14px;" onclick="openLogin()">Log In</button>
                 </div>
             </div>
         </div>
@@ -400,238 +181,199 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <div style="display:inline-block; background:rgba(108, 92, 231, 0.2); color: #a29bfe; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-bottom: 15px;">
-                    <i class="fas fa-bolt"></i> FLASH SALE
-                </div>
-                <h1>Level Up Your Library<br>For Less.</h1>
-                <p>Authentic game keys for Steam, Xbox, PlayStation & more. Delivered instantly to your email.</p>
+                <div style="color: var(--premium); font-weight: 700; margin-bottom: 10px; letter-spacing: 2px;">PRE-ORDER NOW</div>
+                <h1>Grand Theft Auto <span class="highlight">VI</span></h1>
+                <p style="font-size: 18px; color: #dcdde1; margin-bottom: 30px;">Welcome to Leonida. The most immersive evolution of the Grand Theft Auto series yet.</p>
                 
-                <button class="btn btn-primary" style="padding: 14px 32px; font-size: 16px;">Browse Deals</button>
-
-                <div class="trust-badges">
-                    <div class="trust-item"><i class="fas fa-check-circle"></i> Instant Delivery</div>
-                    <div class="trust-item"><i class="fas fa-shield-alt"></i> Secure Payment</div>
-                    <div class="trust-item"><i class="fas fa-star"></i> 4.9/5 Reviews</div>
+                <div class="hero-btns">
+                    <button class="btn-cta">Pre-Order Now ($69.99)</button>
+                    <button class="btn-trailer" onclick="openTrailer()">
+                        <i class="fas fa-play"></i> Watch Trailer 1
+                    </button>
                 </div>
             </div>
         </div>
     </section>
 
-    <div class="container main-layout">
+    <div class="container">
         
-        <div class="platforms">
-            <div class="platform-tag active"><i class="fas fa-fire"></i> Trending</div>
-            <div class="platform-tag"><i class="fab fa-steam"></i> Steam</div>
-            <div class="platform-tag"><i class="fab fa-xbox"></i> Xbox</div>
-            <div class="platform-tag"><i class="fab fa-playstation"></i> PlayStation</div>
-            <div class="platform-tag"><i class="fas fa-desktop"></i> Software</div>
+        <div class="section-header">
+            <h2 style="font-size: 24px; font-weight: 700;"><i class="fas fa-fire" style="color: #ff7675;"></i> Featured Releases</h2>
         </div>
 
-        <div class="section-header">
-            <h2 class="section-title"><i class="fas fa-chart-line"></i> Trending Now</h2>
-            <a href="#" style="color: var(--primary); font-weight: 600; font-size: 14px;">View All <i class="fas fa-arrow-right"></i></a>
-        </div>
-        
         <div class="game-grid" id="game-grid">
             </div>
 
     </div>
 
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <div class="logo" style="margin-bottom: 15px;">PlayWith<span>Ease</span></div>
-                    <p style="color: var(--text-muted); font-size: 14px; line-height: 1.6;">
-                        Your trusted partner for digital gaming. We provide the best deals on the market with 24/7 support and instant delivery.
-                    </p>
-                    <div class="payment-methods">
-                        <i class="fab fa-cc-visa"></i>
-                        <i class="fab fa-cc-mastercard"></i>
-                        <i class="fab fa-cc-paypal"></i>
-                        <i class="fab fa-apple-pay"></i>
-                    </div>
-                </div>
-                <div class="footer-col">
-                    <h3>Shop</h3>
-                    <ul>
-                        <li><a href="#">PC Games</a></li>
-                        <li><a href="#">PlayStation</a></li>
-                        <li><a href="#">Xbox</a></li>
-                        <li><a href="#">Nintendo</a></li>
-                        <li><a href="#">Gift Cards</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Support</h3>
-                    <ul>
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">Redeem Guide</a></li>
-                        <li><a href="#">Refund Policy</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Legal</h3>
-                    <ul>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Cookie Settings</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div style="border-top: 1px solid var(--border); margin-top: 40px; padding-top: 20px; text-align: center; color: var(--text-muted); font-size: 13px;">
-                &copy; 2024 PlayWithEase. All rights reserved.
-            </div>
+    <div class="modal-overlay" id="loginModal">
+        <div class="login-box">
+            <div style="text-align: right; margin-bottom: 10px; cursor: pointer;" onclick="closeLogin()"><i class="fas fa-times"></i></div>
+            <h2 style="margin-bottom: 20px;">Welcome Back</h2>
+            <input type="email" id="email" class="login-input" placeholder="Email Address">
+            <input type="password" id="password" class="login-input" placeholder="Password">
+            <button class="btn-login" onclick="handleEmailLogin()">Sign In</button>
+            
+            <div style="margin: 20px 0; color: var(--text-muted); font-size: 12px;">OR CONTINUE WITH</div>
+            
+            <button class="btn-google" onclick="handleGoogleLogin()">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="20" alt="G">
+                Google
+            </button>
         </div>
-    </footer>
+    </div>
+
+    <div class="trailer-modal" id="trailerModal">
+        <div class="trailer-container">
+            <div class="close-trailer" onclick="closeTrailer()">&times;</div>
+            <iframe id="youtube-frame" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+    </div>
 
     <script>
-        // Mock Database of Games
-        // Images are using IGDB style placeholders
+        // --- 1. GAME DATA (Including GTA VI Variants) ---
         const games = [
             {
-                id: 1,
-                title: "Elden Ring: Shadow of the Erdtree",
-                platform: "Steam",
-                region: "Global",
-                price: 39.99,
-                oldPrice: 49.99,
-                discount: 20,
-                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co848v.jpg"
-            },
-            {
-                id: 2,
-                title: "God of War Ragnarök",
-                platform: "Steam",
-                region: "Global",
-                price: 45.00,
-                oldPrice: 59.99,
-                discount: 25,
-                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co5s5v.jpg"
-            },
-            {
-                id: 3,
-                title: "Grand Theft Auto VI (Pre-Order)",
-                platform: "Xbox",
-                region: "Global",
+                title: "GTA VI: Standard Edition",
                 price: 69.99,
-                oldPrice: 69.99,
-                discount: 0,
-                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co86bd.jpg"
+                image: "https://upload.wikimedia.org/wikipedia/en/d/db/Grand_Theft_Auto_VI_cover_art.jpg", // Placeholder art
+                platform: "Xbox / PS5",
+                isPremium: false
             },
             {
-                id: 4,
-                title: "Cyberpunk 2077: Ultimate Edition",
-                platform: "GOG",
-                region: "Global",
-                price: 29.99,
-                oldPrice: 59.99,
-                discount: 50,
-                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mjs.jpg"
+                title: "GTA VI: Premium Deluxe",
+                price: 119.99,
+                image: "https://wallpapers.com/images/hd/gta-6-logo-on-black-background-b6j0j6z1j6z1j6z1.jpg",
+                platform: "Xbox / PS5",
+                isPremium: true
             },
             {
-                id: 5,
-                title: "EA Sports FC 24",
-                platform: "Origin",
-                region: "EU",
-                price: 18.99,
-                oldPrice: 69.99,
-                discount: 73,
-                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co6lpb.jpg"
-            },
-            {
-                id: 6,
-                title: "Minecraft Java & Bedrock",
-                platform: "PC",
-                region: "Global",
-                price: 19.99,
-                oldPrice: 29.99,
-                discount: 33,
-                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co49x5.jpg"
-            },
-            {
-                id: 7,
-                title: "Red Dead Redemption 2",
+                title: "Elden Ring: Shadow of the Erdtree",
+                price: 39.99,
+                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co848v.jpg",
                 platform: "Steam",
-                region: "Global",
-                price: 19.80,
-                oldPrice: 59.99,
-                discount: 67,
-                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1q1f.jpg"
+                isPremium: false
             },
             {
-                id: 8,
-                title: "Call of Duty: Modern Warfare III",
+                title: "Black Myth: Wukong",
+                price: 59.99,
+                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co8ush.jpg",
+                platform: "Steam",
+                isPremium: false
+            },
+            {
+                title: "Call of Duty: Black Ops 6",
+                price: 69.99,
+                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co85cg.jpg",
                 platform: "Battle.net",
-                region: "US",
-                price: 49.99,
-                oldPrice: 69.99,
-                discount: 28,
-                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co6w0w.jpg"
+                isPremium: false
             }
         ];
 
-        // Function to render games
-        function renderGames(gameList) {
-            const grid = document.getElementById('game-grid');
-            let html = '';
-
-            gameList.forEach(game => {
-                // Formatting
-                const discountHtml = game.discount > 0 
-                    ? `<div class="discount-badge">-${game.discount}%</div>` 
-                    : '';
-                
-                const oldPriceHtml = game.discount > 0 
-                    ? `<span class="old-price">$${game.oldPrice.toFixed(2)}</span>` 
-                    : '';
-
-                // FontAwesome Icon selection based on platform
-                let iconClass = 'fa-desktop';
-                if(game.platform.includes('Xbox')) iconClass = 'fa-xbox';
-                if(game.platform.includes('PlayStation')) iconClass = 'fa-playstation';
-                if(game.platform.includes('Steam')) iconClass = 'fa-steam';
-
-                html += `
-                <a href="product.html" class="game-card">
-                    <div class="card-img-container">
-                        <img src="${game.image}" alt="${game.title}" class="card-img">
-                        <div class="region-badge">${game.region}</div>
-                        ${discountHtml}
+        // --- 2. RENDER GAMES ---
+        const grid = document.getElementById('game-grid');
+        games.forEach(game => {
+            const premiumClass = game.isPremium ? 'premium-card' : '';
+            const premiumBadge = game.isPremium ? '<span style="position:absolute; top:10px; right:10px; background:#e1b12c; color:black; font-weight:800; padding:4px 8px; border-radius:4px; font-size:11px;">PREMIUM</span>' : '';
+            
+            grid.innerHTML += `
+                <div class="game-card ${premiumClass}">
+                    <div style="position: relative;">
+                        <img src="${game.image}" class="card-img" alt="${game.title}">
+                        ${premiumBadge}
                     </div>
                     <div class="card-body">
-                        <div class="platform-icon"><i class="fab ${iconClass}"></i> ${game.platform}</div>
+                        <div style="font-size:12px; color:#aab2bd; margin-bottom:5px;">${game.platform}</div>
                         <h3 class="game-title">${game.title}</h3>
                         <div class="price-row">
-                            <div class="price-container">
-                                ${oldPriceHtml}
-                                <span class="new-price">$${game.price.toFixed(2)}</span>
-                            </div>
-                            <div class="cart-add-btn">
-                                <i class="fas fa-plus"></i>
-                            </div>
+                            <span class="price">$${game.price}</span>
+                            <div style="width:30px; height:30px; background:#2d3436; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white;"><i class="fas fa-plus"></i></div>
                         </div>
                     </div>
-                </a>
-                `;
-            });
+                </div>
+            `;
+        });
 
-            grid.innerHTML = html;
+        // --- 3. TRAILER SYSTEM ---
+        const trailerModal = document.getElementById('trailerModal');
+        const iframe = document.getElementById('youtube-frame');
+
+        function openTrailer() {
+            trailerModal.style.display = 'block';
+            // GTA 6 Trailer 1 Official ID: QdBZY2fkU-0
+            iframe.src = "https://www.youtube.com/embed/QdBZY2fkU-0?autoplay=1&rel=0";
+            document.body.style.overflow = 'hidden';
         }
 
-        // Search Functionality
-        const searchInput = document.querySelector('.search-input');
-        searchInput.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            const filtered = games.filter(g => g.title.toLowerCase().includes(term));
-            renderGames(filtered);
-        });
+        function closeTrailer() {
+            trailerModal.style.display = 'none';
+            iframe.src = ""; // Stop audio
+            document.body.style.overflow = 'auto';
+        }
 
-        // Initial Render
-        document.addEventListener('DOMContentLoaded', () => {
-            renderGames(games);
-        });
+        // --- 4. FIREBASE CONFIGURATION & AUTH LOGIC ---
+        
+        // TODO: REPLACE THIS WITH YOUR OWN CONFIG FROM FIREBASE CONSOLE
+        const firebaseConfig = {
+            apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+            authDomain: "playwithease.firebaseapp.com",
+            projectId: "playwithease",
+            storageBucket: "playwithease.firebasestorage.app",
+            messagingSenderId: "189729941006",
+            appId: "1:189729941006:web:362653774b92416c357e5f"
+        };
+
+        // Initialize Firebase
+        try {
+            firebase.initializeApp(firebaseConfig);
+            const auth = firebase.auth();
+            const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+            // Check Auth State Change
+            auth.onAuthStateChanged(user => {
+                const authSection = document.getElementById('auth-section');
+                if (user) {
+                    // User is Logged In
+                    authSection.innerHTML = `
+                        <div class="user-nav" onclick="signOut()">
+                            <div style="text-align:right; font-size:12px; margin-right:5px;">
+                                <div style="color:white; font-weight:600;">${user.displayName || user.email}</div>
+                                <div style="color:#aab2bd;">Wallet: $0.00</div>
+                            </div>
+                            <div class="user-avatar">${(user.displayName || "U").charAt(0)}</div>
+                        </div>
+                    `;
+                    closeLogin();
+                } else {
+                    // User is Logged Out
+                    authSection.innerHTML = `<button class="btn-cta" style="padding: 8px 20px; font-size: 14px;" onclick="openLogin()">Log In</button>`;
+                }
+            });
+
+            // Login Functions
+            window.handleEmailLogin = () => {
+                const email = document.getElementById('email').value;
+                const pass = document.getElementById('password').value;
+                auth.signInWithEmailAndPassword(email, pass).catch(e => alert(e.message));
+            };
+
+            window.handleGoogleLogin = () => {
+                auth.signInWithPopup(googleProvider).catch(e => alert(e.message));
+            };
+
+            window.signOut = () => {
+                if(confirm('Log out?')) auth.signOut();
+            };
+
+        } catch (error) {
+            console.error("Firebase not configured correctly yet. Please edit the script tag.", error);
+        }
+
+        // Modal UI Logic
+        const loginModal = document.getElementById('loginModal');
+        function openLogin() { loginModal.classList.add('active'); }
+        function closeLogin() { loginModal.classList.remove('active'); }
+
     </script>
 </body>
 </html>
