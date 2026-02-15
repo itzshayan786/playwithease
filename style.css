@@ -1,216 +1,95 @@
-/* ============================================================
-PLAYWITHEASE TITAN FRAMEWORK v3.0 - ENTERPRISE EDITION
-============================================================
-*/
-
+/* PLAYWITHEASE EXECUTIVE CORE v4.0 */
 :root {
     --primary: #2563eb;
-    --primary-glow: rgba(37, 99, 235, 0.4);
-    --accent: #7c3aed;
-    --bg: #020202;
-    --surface: #0d0d0d;
-    --card-bg: linear-gradient(180deg, rgba(35, 35, 35, 0.4) 0%, rgba(10, 10, 10, 0.9) 100%);
-    --border: rgba(255, 255, 255, 0.08);
-    --text-main: #f8fafc;
-    --text-dim: #94a3b8;
-    --gold: #fbbf24;
-    --health: #10b981;
+    --bg: #050505;
+    --surface: #0a0a0a;
+    --border: rgba(255, 255, 255, 0.05);
+    --text-muted: #64748b;
 }
 
-/* 1. CORE RESET & VIEWPORT LOCK 
-   ------------------------------------------------------------ */
 html, body {
     overflow-x: hidden !important;
-    width: 100% !important;
+    width: 100%;
     max-width: 100vw;
-    margin: 0;
-    padding: 0;
     background-color: var(--bg);
-    color: var(--text-main);
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
+    color: #f1f5f9;
+    font-family: 'Inter', sans-serif;
+    margin: 0; padding: 0;
     box-sizing: border-box;
 }
 
-*, ::before, ::after {
-    box-sizing: border-box;
-}
+*, ::before, ::after { box-sizing: border-box; }
 
-/* 2. Z-INDEX HIERARCHY 
-   ------------------------------------------------------------ */
-.z-base { z-index: 1; }
-.z-cat { z-index: 400; }
-.z-nav { z-index: 500; }
-.z-overlay { z-index: 1000; }
-.z-drawer { z-index: 1100; }
-.z-ai { z-index: 1200; }
-.z-modal { z-index: 9999 !important; } /* Highest priority for Cinema Mode */
+/* 🟢 LAYER HIERARCHY */
+.z-nav { z-index: 1000; }
+.z-drawer { z-index: 2000; }
+.z-modal { z-index: 9999 !important; }
+.z-ai { z-index: 2500; }
 
-/* 3. DESKTOP PRECISION LAYOUT (Min-Width 1024px)
-   ------------------------------------------------------------ */
+/* 🖥️ DESKTOP: COMPACT PRECISION */
 @media (min-width: 1024px) {
-    main {
-        max-width: 1600px;
-        margin: 0 auto;
-        padding: 4rem 4rem;
-    }
-
-    /* Professional 5-Column Desktop Grid */
+    .main-container { max-width: 1500px; margin: 0 auto; padding: 0 40px; }
     .product-grid {
         display: grid;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-        gap: 2.5rem;
+        grid-template-columns: repeat(6, 1fr); /* 6 columns for high density */
+        gap: 1.5rem;
     }
-
-    .hero-height { height: 85vh; }
-    
-    .nav-height { height: 96px; }
+    .hero-height { height: 75vh; }
 }
 
-/* 4. MOBILE APP LAYOUT (Max-Width 1023px)
-   ------------------------------------------------------------ */
+/* 📱 MOBILE: APP COMPACTNESS */
 @media (max-width: 1023px) {
-    main {
-        padding: 1.5rem 1rem;
-        padding-bottom: 120px; /* Space for Bottom Nav */
-    }
-
-    /* Compact 2-Column Grid for Mobile */
     .product-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        grid-template-columns: repeat(2, 1fr); /* 2 columns exactly */
+        gap: 0.75rem;
     }
-
-    /* Custom Mobile Scrolling Row for Featured */
-    .snap-scroll {
+    .main-container { padding: 0 12px; }
+    .mobile-scroll {
         display: flex;
         overflow-x: auto;
-        gap: 1rem;
-        scroll-snap-type: x mandatory;
+        gap: 0.75rem;
         padding-bottom: 1rem;
+        scroll-snap-type: x mandatory;
     }
-
-    .snap-card {
-        flex-shrink: 0;
-        width: 180px;
-        scroll-snap-align: start;
-    }
-
-    .hero-height { height: 55vh; }
-
-    .bottom-nav {
-        background: rgba(8, 8, 8, 0.98);
-        backdrop-filter: blur(20px);
-        height: 75px;
-        padding-bottom: env(safe-area-inset-bottom);
-    }
+    .mobile-card-width { width: 160px; flex-shrink: 0; scroll-snap-align: start; }
 }
 
-/* 5. PROFESSIONAL COMPONENT STYLES
-   ------------------------------------------------------------ */
-.glass-nav {
-    background: rgba(2, 2, 2, 0.85);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-    border-bottom: 1px solid var(--border);
-}
-
+/* 💎 LUXURY CARD DESIGN */
 .card-pro {
-    background: var(--card-bg);
+    background: #0d0d0d;
     border: 1px solid var(--border);
-    border-radius: 2rem;
-    overflow: hidden;
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative;
+    border-radius: 1rem;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card-pro:hover {
-    transform: translateY(-15px) scale(1.03);
     border-color: var(--primary);
-    box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.9), 
-                0 0 25px var(--primary-glow);
+    background: #111;
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.8);
 }
 
-/* Special Case: Pharmacy Branding */
-.card-med {
-    border-top: 4px solid var(--health);
-}
-.card-med:hover {
-    border-color: var(--health);
-    box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);
-}
-
-/* Special Case: Gift Card Branding */
-.card-gift {
-    border-top: 4px solid var(--gold);
-}
-.card-gift:hover {
-    border-color: var(--gold);
-    box-shadow: 0 20px 40px rgba(251, 191, 36, 0.2);
-}
-
-/* 6. ANIMATIONS & FX
-   ------------------------------------------------------------ */
-.ken-burns {
-    animation: kenBurnsAnim 30s infinite alternate ease-in-out;
-}
-
-@keyframes kenBurnsAnim {
-    from { transform: scale(1); }
-    to { transform: scale(1.2); }
-}
-
-.btn-titan {
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    color: white;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    position: relative;
+.card-img-wrap {
+    aspect-ratio: 3/4;
     overflow: hidden;
-    transition: all 0.4s ease;
+    background: #000;
+    position: relative;
+    border-radius: 0.75rem;
 }
 
-.btn-titan::after {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%;
-    width: 100%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-    transition: 0.6s;
+/* 🎬 CINEMATIC OVERLAY FIX */
+#trailerModal {
+    background: rgba(0,0,0,0.98);
 }
 
-.btn-titan:hover::after { left: 100%; }
-
-.reveal {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+/* 🤖 AI BUBBLE */
+.ai-trigger {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4);
+    animation: pulse-blue 2s infinite;
 }
+@keyframes pulse-blue { 0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(37, 99, 235, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); } }
 
-.reveal.active {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* 7. DRAWER SYSTEMS
-   ------------------------------------------------------------ */
-.drawer-right {
-    position: fixed;
-    top: 0;
-    right: 0;
-    height: 100%;
-    width: 100%;
-    max-width: 480px;
-    background: var(--bg);
-    transform: translateX(100%);
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: -20px 0 60px rgba(0,0,0,0.8);
-    border-left: 1px solid var(--border);
-}
-
-.drawer-right.active {
-    transform: translateX(0);
-}
+/* REVEAL LOGIC */
+.reveal { opacity: 0; transform: translateY(15px); transition: 0.8s ease-out; }
+.reveal.active { opacity: 1; transform: translateY(0); }
