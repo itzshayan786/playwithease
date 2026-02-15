@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PlayWithEase | Ultimate Digital Store</title>
+    <title>PlayWithEase | Premium Gaming Store</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -41,9 +41,9 @@
         
         /* Glassmorphism */
         .glass {
-            background: rgba(15, 15, 15, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(15, 15, 15, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
@@ -76,39 +76,44 @@
         /* Card Hover */
         .game-card:hover .play-btn { opacity: 1; transform: scale(1); }
         
-        /* Input Autofill Fix */
-        input:-webkit-autofill,
-        input:-webkit-autofill:hover, 
-        input:-webkit-autofill:focus, 
-        input:-webkit-autofill:active{
-            -webkit-box-shadow: 0 0 0 30px #1a1a1a inset !important;
-            -webkit-text-fill-color: white !important;
-        }
+        /* Category Active State */
+        .cat-btn.active { background: white; color: black; border-color: white; }
     </style>
 </head>
 <body class="antialiased">
 
     <nav class="fixed top-0 w-full z-50 glass">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
+            <div class="flex items-center justify-between h-20 gap-4">
                 
-                <a href="#" class="flex items-center gap-2 z-50">
-                    <div class="w-9 h-9 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/30">P</div>
-                    <span class="text-xl font-bold tracking-tight">PlayWithEase</span>
+                <a href="#" class="flex items-center gap-2.5 z-50 min-w-max">
+                    <div class="relative w-10 h-10 flex items-center justify-center">
+                        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full drop-shadow-lg">
+                            <rect width="40" height="40" rx="12" fill="url(#paint0_linear)"/>
+                            <path d="M20 12C15.5817 12 12 15.5817 12 20C12 24.4183 15.5817 28 20 28H24C26.2091 28 28 26.2091 28 24V20C28 15.5817 24.4183 12 20 12Z" fill="white" fill-opacity="0.2"/>
+                            <path d="M22 18H18V26H22C24.2091 26 26 24.2091 26 22C26 19.7909 24.2091 18 22 18Z" fill="white"/>
+                            <defs>
+                                <linearGradient id="paint0_linear" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#3B82F6"/>
+                                    <stop offset="1" stop-color="#8B5CF6"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-lg font-bold tracking-tight leading-none">PlayWithEase</span>
+                        <span class="text-[10px] text-blue-400 font-semibold tracking-wider uppercase">Digital Store</span>
+                    </div>
                 </a>
 
-                <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
-                    <a href="#" class="text-white transition-colors">Home</a>
-                    <a href="#store" class="hover:text-white transition-colors">Store</a>
-                    <a href="#ott" class="hover:text-white transition-colors">Subscriptions</a>
-                    <a href="#" class="hover:text-white transition-colors">Support</a>
+                <div class="hidden md:flex flex-1 max-w-md mx-8 relative group">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-500 group-focus-within:text-blue-500 transition-colors"></i>
+                    <input type="text" id="searchInput" placeholder="Search games, subscriptions..." 
+                        class="w-full bg-[#1a1a1a] border border-white/10 rounded-full py-2.5 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-blue-500 focus:bg-black transition-all placeholder-gray-500">
                 </div>
 
                 <div class="flex items-center gap-4">
-                    <button class="hidden md:flex w-9 h-9 rounded-full border border-white/10 items-center justify-center hover:bg-white/10 transition-colors">
-                        <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
-                    </button>
-
+                    
                     <div id="authContainer">
                         <button onclick="toggleAuthModal()" id="loginBtn" class="bg-white text-black px-5 py-2 rounded-full font-bold text-sm hover:bg-gray-200 transition-all flex items-center gap-2">
                             Log In
@@ -128,20 +133,28 @@
                         </div>
                     </div>
 
-                    <div class="relative cursor-pointer w-9 h-9 flex items-center justify-center">
-                        <i class="fa-solid fa-bag-shopping text-xl text-white"></i>
-                        <span class="absolute top-0 right-0 w-4 h-4 bg-blue-600 text-[10px] font-bold flex items-center justify-center rounded-full border border-black">0</span>
+                    <div class="relative cursor-pointer w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">
+                        <i class="fa-solid fa-bag-shopping text-gray-300"></i>
+                        <span class="absolute top-0 right-0 w-4 h-4 bg-blue-600 text-[10px] font-bold flex items-center justify-center rounded-full border border-black shadow-sm">0</span>
                     </div>
 
-                    <button id="mobileMenuBtn" class="md:hidden text-2xl text-white">
+                    <button id="mobileMenuBtn" class="md:hidden text-2xl text-white ml-2">
                         <i class="fa-solid fa-bars"></i>
                     </button>
+                </div>
+            </div>
+            
+            <div class="md:hidden pb-4">
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-500"></i>
+                    <input type="text" id="mobileSearchInput" placeholder="Search..." 
+                        class="w-full bg-[#1a1a1a] border border-white/10 rounded-xl py-2.5 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-blue-500">
                 </div>
             </div>
         </div>
     </nav>
 
-    <div id="mobileMenu" class="fixed inset-0 z-40 bg-black transform translate-x-full pt-24 px-6 md:hidden">
+    <div id="mobileMenu" class="fixed inset-0 z-40 bg-black transform translate-x-full pt-32 px-6 md:hidden">
         <div class="flex flex-col gap-6 text-xl font-medium">
             <a href="#" class="border-b border-white/10 pb-4">Home</a>
             <a href="#store" class="border-b border-white/10 pb-4">Store</a>
@@ -150,7 +163,7 @@
         </div>
     </div>
 
-    <header id="heroCarousel" class="relative w-full h-[90vh] min-h-[600px] overflow-hidden bg-black touch-pan-y">
+    <header id="heroCarousel" class="relative w-full h-[85vh] min-h-[600px] overflow-hidden bg-black touch-pan-y">
         
         <div class="slide active" style="background-image: url('https://www.rockstargames.com/VI/_next/image?url=%2FVI%2F_next%2Fstatic%2Fmedia%2FJason_and_Lucia_02_With_Logos_landscape.93ab5523.jpg&w=1366&q=75');">
             <div class="absolute inset-0 bg-gradient-to-t from-[#030303] via-black/10 to-transparent"></div>
@@ -197,14 +210,24 @@
         </div>
     </header>
 
-    <div class="border-b border-white/5 bg-[#030303] sticky top-20 z-30 backdrop-blur-md bg-opacity-80">
+    <div class="border-b border-white/5 bg-[#030303] sticky top-20 z-30 backdrop-blur-md bg-opacity-90 shadow-2xl">
         <div class="max-w-7xl mx-auto px-4 py-4">
-            <div class="flex gap-3 overflow-x-auto no-scrollbar">
-                <button class="px-6 py-2 rounded-full bg-white text-black font-bold text-sm whitespace-nowrap">🔥 Featured</button>
-                <button class="px-6 py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-sm whitespace-nowrap hover:bg-white/10">🎮 PS5 Games</button>
-                <button class="px-6 py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-sm whitespace-nowrap hover:bg-white/10">🕹️ PC Games</button>
-                <button class="px-6 py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-sm whitespace-nowrap hover:bg-white/10">📺 OTT</button>
-                <button class="px-6 py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-sm whitespace-nowrap hover:bg-white/10">🎁 Gift Cards</button>
+            <div class="flex gap-3 overflow-x-auto no-scrollbar" id="categoryContainer">
+                <button onclick="filterGames('all')" class="cat-btn active px-6 py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-sm whitespace-nowrap hover:bg-white/10 transition-all">
+                    🔥 All Games
+                </button>
+                <button onclick="filterGames('ps5')" class="cat-btn px-6 py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-sm whitespace-nowrap hover:bg-white/10 transition-all">
+                    🎮 PlayStation 5
+                </button>
+                <button onclick="filterGames('pc')" class="cat-btn px-6 py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-sm whitespace-nowrap hover:bg-white/10 transition-all">
+                    🕹️ PC Games
+                </button>
+                <button onclick="filterGames('action')" class="cat-btn px-6 py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-sm whitespace-nowrap hover:bg-white/10 transition-all">
+                    ⚔️ Action
+                </button>
+                <button onclick="filterGames('sports')" class="cat-btn px-6 py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-sm whitespace-nowrap hover:bg-white/10 transition-all">
+                    ⚽ Sports
+                </button>
             </div>
         </div>
     </div>
@@ -212,67 +235,108 @@
     <main class="max-w-7xl mx-auto px-4 py-12" id="store">
         
         <div class="flex items-end justify-between mb-8">
-            <h2 class="text-2xl font-bold">Trending Games</h2>
-            <a href="#" class="text-sm text-blue-500 hover:text-blue-400">View All</a>
+            <h2 class="text-2xl font-bold">Trending Now</h2>
+            <span id="resultCount" class="text-sm text-gray-400">Showing all games</span>
         </div>
 
-        <div class="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-8">
+        <div id="gameGrid" class="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-8">
             
-            <div class="snap-start shrink-0 w-[280px] group cursor-pointer game-card">
-                <div class="relative aspect-[2/3] rounded-2xl overflow-hidden mb-3 border border-white/5">
+            <div class="game-card snap-start shrink-0 w-[260px] md:w-[280px] group cursor-pointer" data-title="marvel's spider-man 2" data-category="ps5 action">
+                <div class="relative aspect-[2/3] rounded-2xl overflow-hidden mb-3 border border-white/5 shadow-lg">
                     <img src="https://gmedia.playstation.com/is/image/SIEPDC/marvels-spider-man-2-keyart-01-en-25may23?$1200px$" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center play-btn">
-                        <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all duration-300">
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
+                        <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all duration-300"><i class="fa-solid fa-plus"></i></button>
                     </div>
                 </div>
                 <h3 class="font-bold text-white truncate">Spider-Man 2</h3>
-                <p class="text-xs text-gray-500">Action • Insomniac</p>
+                <p class="text-xs text-gray-500">PS5 • Action</p>
                 <div class="text-blue-400 font-bold mt-1">₹4,499</div>
             </div>
 
-            <div class="snap-start shrink-0 w-[280px] group cursor-pointer game-card">
-                <div class="relative aspect-[2/3] rounded-2xl overflow-hidden mb-3 border border-white/5">
+            <div class="game-card snap-start shrink-0 w-[260px] md:w-[280px] group cursor-pointer" data-title="elden ring" data-category="pc ps5 action">
+                <div class="relative aspect-[2/3] rounded-2xl overflow-hidden mb-3 border border-white/5 shadow-lg">
                     <img src="https://image.api.playstation.com/vulcan/ap/rnd/202110/2000/phvVT0qZfcRms5qDAk0SI3CM.png" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center play-btn">
-                        <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all duration-300">
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
+                        <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all duration-300"><i class="fa-solid fa-plus"></i></button>
                     </div>
                 </div>
                 <h3 class="font-bold text-white truncate">Elden Ring</h3>
-                <p class="text-xs text-gray-500">RPG • FromSoftware</p>
+                <p class="text-xs text-gray-500">PC / PS5 • RPG</p>
                 <div class="text-blue-400 font-bold mt-1">₹2,999</div>
             </div>
 
-            <div class="snap-start shrink-0 w-[280px] group cursor-pointer game-card">
-                <div class="relative aspect-[2/3] rounded-2xl overflow-hidden mb-3 border border-white/5">
+            <div class="game-card snap-start shrink-0 w-[260px] md:w-[280px] group cursor-pointer" data-title="ea sports fc 24" data-category="ps5 sports pc">
+                <div class="relative aspect-[2/3] rounded-2xl overflow-hidden mb-3 border border-white/5 shadow-lg">
+                    <img src="https://image.api.playstation.com/vulcan/ap/rnd/202307/0610/b841755d78a9947963d42c3848b598dd673a30f143714c63.png" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center play-btn">
+                        <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all duration-300"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                </div>
+                <h3 class="font-bold text-white truncate">EA Sports FC 24</h3>
+                <p class="text-xs text-gray-500">Sports • Football</p>
+                <div class="text-blue-400 font-bold mt-1">₹3,499</div>
+            </div>
+
+            <div class="game-card snap-start shrink-0 w-[260px] md:w-[280px] group cursor-pointer" data-title="call of duty modern warfare 3" data-category="pc ps5 shooter action">
+                <div class="relative aspect-[2/3] rounded-2xl overflow-hidden mb-3 border border-white/5 shadow-lg">
                     <img src="https://image.api.playstation.com/vulcan/ap/rnd/202308/0217/b3749448f21789c037803730e20ce5b06d91c28c8646b14f.png" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                      <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center play-btn">
-                        <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all duration-300">
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
+                        <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all duration-300"><i class="fa-solid fa-plus"></i></button>
                     </div>
                 </div>
                 <h3 class="font-bold text-white truncate">Call of Duty: MW3</h3>
-                <p class="text-xs text-gray-500">FPS • Activision</p>
+                <p class="text-xs text-gray-500">PC / PS5 • Shooter</p>
                 <div class="text-blue-400 font-bold mt-1">₹5,499</div>
             </div>
 
-             <div class="snap-start shrink-0 w-[280px] group cursor-pointer game-card">
-                <div class="relative aspect-[2/3] rounded-2xl overflow-hidden mb-3 border border-white/5">
+             <div class="game-card snap-start shrink-0 w-[260px] md:w-[280px] group cursor-pointer" data-title="red dead redemption 2" data-category="pc ps5 action adventure">
+                <div class="relative aspect-[2/3] rounded-2xl overflow-hidden mb-3 border border-white/5 shadow-lg">
                     <img src="https://image.api.playstation.com/vulcan/ap/rnd/202010/2016/9ba3a918a38c234a5d4818a7c126d45e053a99e74c8b2586.png" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                      <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center play-btn">
-                        <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all duration-300">
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
+                        <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all duration-300"><i class="fa-solid fa-plus"></i></button>
                     </div>
                 </div>
                 <h3 class="font-bold text-white truncate">Red Dead Redemption 2</h3>
-                <p class="text-xs text-gray-500">Open World • Rockstar</p>
+                <p class="text-xs text-gray-500">PC / Console • Adventure</p>
                 <div class="text-blue-400 font-bold mt-1">₹1,999</div>
             </div>
+
+            <div class="game-card snap-start shrink-0 w-[260px] md:w-[280px] group cursor-pointer" data-title="cyberpunk 2077" data-category="pc ps5 rpg action">
+                <div class="relative aspect-[2/3] rounded-2xl overflow-hidden mb-3 border border-white/5 shadow-lg">
+                    <img src="https://image.api.playstation.com/vulcan/ap/rnd/202302/2015/e8784d169d5185960098f99e4f16b248a39d8995a9d6e4b9.png" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center play-btn">
+                        <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all duration-300"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                </div>
+                <h3 class="font-bold text-white truncate">Cyberpunk 2077</h3>
+                <p class="text-xs text-gray-500">PC / PS5 • RPG</p>
+                <div class="text-blue-400 font-bold mt-1">₹2,499</div>
+            </div>
+
+            <div class="game-card snap-start shrink-0 w-[260px] md:w-[280px] group cursor-pointer" data-title="god of war ragnarok" data-category="ps5 action adventure">
+                <div class="relative aspect-[2/3] rounded-2xl overflow-hidden mb-3 border border-white/5 shadow-lg">
+                    <img src="https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center play-btn">
+                        <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all duration-300"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                </div>
+                <h3 class="font-bold text-white truncate">God of War Ragnarök</h3>
+                <p class="text-xs text-gray-500">PS5 • Adventure</p>
+                <div class="text-blue-400 font-bold mt-1">₹3,999</div>
+            </div>
+
+            <div class="game-card snap-start shrink-0 w-[260px] md:w-[280px] group cursor-pointer" data-title="minecraft" data-category="pc switch ps5 adventure">
+                <div class="relative aspect-[2/3] rounded-2xl overflow-hidden mb-3 border border-white/5 shadow-lg">
+                    <img src="https://image.api.playstation.com/vulcan/img/rnd/202111/1715/C20G8k92d9A2Fj2Z5s4D1j4u.png" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center play-btn">
+                        <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all duration-300"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                </div>
+                <h3 class="font-bold text-white truncate">Minecraft</h3>
+                <p class="text-xs text-gray-500">All Platforms • Survival</p>
+                <div class="text-blue-400 font-bold mt-1">₹1,999</div>
+            </div>
+
         </div>
 
         <div id="ott" class="mt-16">
@@ -367,54 +431,39 @@
 
     <div id="authModal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4">
         <div onclick="toggleAuthModal()" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
-        
         <div class="relative w-full max-w-md glass-panel rounded-2xl p-8 shadow-2xl transform transition-all animate-slide-up">
-            <button onclick="toggleAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-xl"></i>
-            </button>
-
+            <button onclick="toggleAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
             <div class="flex justify-center mb-6">
                 <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-2xl shadow-lg">P</div>
             </div>
-
             <div class="flex border-b border-white/10 mb-6">
                 <button id="tabLogin" onclick="switchTab('login')" class="flex-1 pb-3 text-center text-white border-b-2 border-blue-500 font-medium transition-colors">Log In</button>
                 <button id="tabRegister" onclick="switchTab('register')" class="flex-1 pb-3 text-center text-gray-400 hover:text-white transition-colors">Sign Up</button>
             </div>
-
             <form id="authForm" onsubmit="handleAuth(event)" class="space-y-4">
                 <div class="space-y-1">
                     <label class="text-xs text-gray-400 font-semibold uppercase">Email</label>
                     <div class="relative">
                         <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-gray-500"></i>
-                        <input type="email" id="email" required placeholder="name@example.com" 
-                            class="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
+                        <input type="email" id="email" required placeholder="name@example.com" class="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
                     </div>
                 </div>
-
                 <div class="space-y-1">
                     <label class="text-xs text-gray-400 font-semibold uppercase">Password</label>
                     <div class="relative">
                         <i class="fa-solid fa-lock absolute left-4 top-3.5 text-gray-500"></i>
-                        <input type="password" id="password" required placeholder="••••••••" 
-                            class="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
+                        <input type="password" id="password" required placeholder="••••••••" class="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
                     </div>
                 </div>
-
                 <div id="registerNameGroup" class="hidden space-y-1">
                     <label class="text-xs text-gray-400 font-semibold uppercase">Full Name</label>
                     <div class="relative">
                         <i class="fa-solid fa-user absolute left-4 top-3.5 text-gray-500"></i>
-                        <input type="text" id="fullName" placeholder="John Doe" 
-                            class="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
+                        <input type="text" id="fullName" placeholder="John Doe" class="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
                     </div>
                 </div>
-
-                <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-lg shadow-lg shadow-blue-600/20 transition-all transform hover:-translate-y-0.5 mt-2">
-                    Log In
-                </button>
+                <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-lg shadow-lg shadow-blue-600/20 transition-all transform hover:-translate-y-0.5 mt-2">Log In</button>
             </form>
-
             <p id="authError" class="text-red-400 text-xs text-center mt-4 hidden"></p>
         </div>
     </div>
@@ -432,81 +481,49 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // --- FIREBASE CONFIG ---
-        const firebaseConfig = {
-          apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
-          authDomain: "playwithease.firebaseapp.com",
-          projectId: "playwithease",
-          storageBucket: "playwithease.appspot.com",
-          messagingSenderId: "189729941006",
-          appId: "1:189729941006:web:362653774b92416c357e5f",
-          measurementId: "G-1C3B31KQ7C"
-        };
-
+        const firebaseConfig = { apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs", authDomain: "playwithease.firebaseapp.com", projectId: "playwithease", storageBucket: "playwithease.appspot.com", messagingSenderId: "189729941006", appId: "1:189729941006:web:362653774b92416c357e5f", measurementId: "G-1C3B31KQ7C" };
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // --- UI ELEMENTS ---
+        // UI Refs
         const loginBtn = document.getElementById('loginBtn');
         const userProfile = document.getElementById('userProfile');
         const userName = document.getElementById('userName');
         const userAvatar = document.getElementById('userAvatar');
-        const logoutBtn = document.getElementById('logoutBtn');
         const authError = document.getElementById('authError');
 
-        // --- AUTH STATE OBSERVER ---
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // Logged In
                 document.getElementById('authContainer').querySelector('#loginBtn').classList.add('hidden');
                 userProfile.classList.remove('hidden');
-                
                 const displayName = user.displayName ? user.displayName.split(' ')[0] : 'User';
                 userName.textContent = displayName;
-                
-                // Avatar Fallback
                 userAvatar.src = user.photoURL || `https://ui-avatars.com/api/?name=${displayName}&background=3b82f6&color=fff&bold=true`;
-                
-                // Close modal if open
                 document.getElementById('authModal').classList.add('hidden');
             } else {
-                // Logged Out
                 document.getElementById('authContainer').querySelector('#loginBtn').classList.remove('hidden');
                 userProfile.classList.add('hidden');
             }
         });
 
-        // --- AUTH FORM LOGIC ---
         window.isLoginMode = true;
-
-        window.toggleAuthModal = () => {
-            const modal = document.getElementById('authModal');
-            modal.classList.toggle('hidden');
-            authError.classList.add('hidden');
-        };
-
+        window.toggleAuthModal = () => { document.getElementById('authModal').classList.toggle('hidden'); authError.classList.add('hidden'); };
         window.switchTab = (mode) => {
-            const tabLogin = document.getElementById('tabLogin');
-            const tabRegister = document.getElementById('tabRegister');
-            const registerNameGroup = document.getElementById('registerNameGroup');
-            const submitBtn = document.getElementById('submitBtn');
             const form = document.getElementById('authForm');
-            
             form.reset();
             authError.classList.add('hidden');
-
             if (mode === 'login') {
                 window.isLoginMode = true;
-                tabLogin.className = "flex-1 pb-3 text-center text-white border-b-2 border-blue-500 font-medium transition-colors";
-                tabRegister.className = "flex-1 pb-3 text-center text-gray-400 hover:text-white transition-colors";
-                registerNameGroup.classList.add('hidden');
-                submitBtn.textContent = "Log In";
+                document.getElementById('tabLogin').classList.add('border-blue-500', 'text-white');
+                document.getElementById('tabRegister').classList.remove('border-blue-500', 'text-white');
+                document.getElementById('registerNameGroup').classList.add('hidden');
+                document.getElementById('submitBtn').textContent = "Log In";
             } else {
                 window.isLoginMode = false;
-                tabRegister.className = "flex-1 pb-3 text-center text-white border-b-2 border-blue-500 font-medium transition-colors";
-                tabLogin.className = "flex-1 pb-3 text-center text-gray-400 hover:text-white transition-colors";
-                registerNameGroup.classList.remove('hidden');
-                submitBtn.textContent = "Create Account";
+                document.getElementById('tabRegister').classList.add('border-blue-500', 'text-white');
+                document.getElementById('tabLogin').classList.remove('border-blue-500', 'text-white');
+                document.getElementById('registerNameGroup').classList.remove('hidden');
+                document.getElementById('submitBtn').textContent = "Create Account";
             }
         };
 
@@ -516,19 +533,16 @@
             const password = document.getElementById('password').value;
             const fullName = document.getElementById('fullName').value;
             const submitBtn = document.getElementById('submitBtn');
-            
             authError.classList.add('hidden');
             submitBtn.disabled = true;
             submitBtn.textContent = "Processing...";
-
             try {
                 if (window.isLoginMode) {
                     await signInWithEmailAndPassword(auth, email, password);
                 } else {
                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                     await updateProfile(userCredential.user, { displayName: fullName });
-                    // Reload to update UI with new name
-                    window.location.reload(); 
+                    window.location.reload();
                 }
             } catch (error) {
                 authError.textContent = error.message.replace('Firebase: ', '');
@@ -537,28 +551,58 @@
                 submitBtn.textContent = window.isLoginMode ? "Log In" : "Create Account";
             }
         };
-
         document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
     </script>
 
     <script>
-        // --- MOBILE MENU LOGIC ---
-        const menuBtn = document.getElementById('mobileMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        let isMenuOpen = false;
+        // --- SEARCH ENGINE LOGIC ---
+        const searchInput = document.getElementById('searchInput');
+        const mobileSearchInput = document.getElementById('mobileSearchInput');
+        const gameCards = document.querySelectorAll('.game-card');
+        const resultCount = document.getElementById('resultCount');
 
-        menuBtn.addEventListener('click', () => {
-            isMenuOpen = !isMenuOpen;
-            if (isMenuOpen) {
-                mobileMenu.classList.remove('translate-x-full');
-                menuBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-            } else {
-                mobileMenu.classList.add('translate-x-full');
-                menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
-            }
-        });
+        function performSearch(query) {
+            const lowerQuery = query.toLowerCase();
+            let count = 0;
+            
+            gameCards.forEach(card => {
+                const title = card.getAttribute('data-title');
+                if (title.includes(lowerQuery)) {
+                    card.classList.remove('hidden');
+                    count++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+            
+            resultCount.textContent = query === '' ? 'Showing all games' : `Found ${count} game(s)`;
+        }
 
-        // --- CAROUSEL LOGIC WITH TOUCH SWIPE ---
+        searchInput.addEventListener('input', (e) => performSearch(e.target.value));
+        mobileSearchInput.addEventListener('input', (e) => performSearch(e.target.value));
+
+        // --- CATEGORY FILTER LOGIC ---
+        const catBtns = document.querySelectorAll('.cat-btn');
+
+        window.filterGames = (category) => {
+            // Update Active State
+            catBtns.forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            let count = 0;
+            gameCards.forEach(card => {
+                const categories = card.getAttribute('data-category');
+                if (category === 'all' || categories.includes(category)) {
+                    card.classList.remove('hidden');
+                    count++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+            resultCount.textContent = category === 'all' ? 'Showing all games' : `Showing ${count} ${category} games`;
+        };
+
+        // --- CAROUSEL LOGIC ---
         const slides = document.querySelectorAll('.slide');
         const slideIndicator = document.getElementById('slideIndicator');
         const heroContainer = document.getElementById('heroCarousel');
@@ -568,66 +612,37 @@
         function showSlide(index) {
             slides.forEach(slide => slide.classList.remove('active'));
             slides[index].classList.add('active');
-            
-            // Move Indicator
             if(index === 0) slideIndicator.style.transform = 'translateY(0)';
             else slideIndicator.style.transform = 'translateY(100%)';
         }
 
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
-        }
-
-        function prevSlide() {
-            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-            showSlide(currentSlide);
-        }
-
-        // Auto Slide
+        function nextSlide() { currentSlide = (currentSlide + 1) % slides.length; showSlide(currentSlide); }
+        function prevSlide() { currentSlide = (currentSlide - 1 + slides.length) % slides.length; showSlide(currentSlide); }
+        
         slideInterval = setInterval(nextSlide, 6000);
 
         // --- SWIPE GESTURES ---
         let touchStartX = 0;
         let touchEndX = 0;
+        heroContainer.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; clearInterval(slideInterval); }, {passive: true});
+        heroContainer.addEventListener('touchend', e => { touchEndX = e.changedTouches[0].screenX; handleSwipe(); slideInterval = setInterval(nextSlide, 6000); }, {passive: true});
+        function handleSwipe() { if (touchEndX < touchStartX - 50) nextSlide(); if (touchEndX > touchStartX + 50) prevSlide(); }
 
-        heroContainer.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-            clearInterval(slideInterval); // Stop auto-slide on interaction
-        }, {passive: true});
+        // --- MOBILE MENU ---
+        const menuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        let isMenuOpen = false;
+        menuBtn.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) { mobileMenu.classList.remove('translate-x-full'); menuBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>'; }
+            else { mobileMenu.classList.add('translate-x-full'); menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>'; }
+        });
 
-        heroContainer.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-            slideInterval = setInterval(nextSlide, 6000); // Restart auto-slide
-        }, {passive: true});
-
-        function handleSwipe() {
-            if (touchEndX < touchStartX - 50) nextSlide(); // Swipe Left
-            if (touchEndX > touchStartX + 50) prevSlide(); // Swipe Right
-        }
-
-        // --- TRAILER MODAL LOGIC ---
+        // --- TRAILER MODAL ---
         const modal = document.getElementById('trailerModal');
         const frame = document.getElementById('youtubeFrame');
-
-        window.playTrailer = (videoId) => {
-            modal.classList.remove('hidden');
-            setTimeout(() => modal.classList.remove('opacity-0'), 10);
-            frame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&modestbranding=1&rel=0`;
-        };
-
-        window.closeTrailer = () => {
-            modal.classList.add('opacity-0');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                frame.src = ''; 
-            }, 300);
-        };
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') window.closeTrailer();
-        });
+        window.playTrailer = (videoId) => { modal.classList.remove('hidden'); setTimeout(() => modal.classList.remove('opacity-0'), 10); frame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&modestbranding=1&rel=0`; };
+        window.closeTrailer = () => { modal.classList.add('opacity-0'); setTimeout(() => { modal.classList.add('hidden'); frame.src = ''; }, 300); };
     </script>
 </body>
 </html>
