@@ -3,24 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PlayWithEase | Premium Store</title>
+    <title>PlayWithEase | The Ultimate Digital Store</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
-                    colors: { bg: '#050505', surface: '#121212', primary: '#3b82f6', accent: '#8b5cf6', success: '#10b981', danger: '#ef4444' },
-                    animation: { 'fade-in': 'fadeIn 0.5s ease-out forwards', 'shimmer': 'shimmer 1.5s infinite linear' },
-                    keyframes: { 
-                        fadeIn: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
-                        shimmer: { '0%': { backgroundPosition: '-1000px 0' }, '100%': { backgroundPosition: '1000px 0' } }
+                    fontFamily: { 
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body: ['"Inter"', 'sans-serif']
                     },
-                    screens: { 'xs': '375px' }
+                    colors: { 
+                        bg: '#030303', 
+                        surface: '#0f0f0f', 
+                        primary: '#2563eb', 
+                        accent: '#7c3aed',
+                        border: 'rgba(255,255,255,0.08)'
+                    },
+                    animation: { 
+                        'fade-in': 'fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards', 
+                        'shimmer': 'shimmer 2s infinite linear',
+                        'slow-zoom': 'slowZoom 20s infinite alternate'
+                    },
+                    keyframes: { 
+                        fadeIn: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+                        shimmer: { '0%': { backgroundPosition: '-1000px 0' }, '100%': { backgroundPosition: '1000px 0' } },
+                        slowZoom: { '0%': { transform: 'scale(1)' }, '100%': { transform: 'scale(1.1)' } }
+                    },
+                    boxShadow: {
+                        'glow': '0 0 40px -10px rgba(59, 130, 246, 0.3)',
+                        'glow-hover': '0 0 60px -15px rgba(59, 130, 246, 0.5)'
+                    }
                 }
             }
         }
@@ -28,255 +45,364 @@
 
     <style>
         /* CORE UI */
-        body { background-color: #050505; color: #ffffff; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
-        .glass { background: rgba(5, 5, 5, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
-        .glass-panel { background: rgba(30, 30, 30, 0.8); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        body { background-color: #030303; color: #e5e5e5; -webkit-font-smoothing: antialiased; }
         
+        /* Glassmorphism Premium */
+        .glass { 
+            background: rgba(3, 3, 3, 0.7); 
+            backdrop-filter: blur(24px); 
+            -webkit-backdrop-filter: blur(24px); 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06); 
+        }
+        
+        .card-glass {
+            background: linear-gradient(180deg, rgba(20,20,20,0.6) 0%, rgba(10,10,10,0.8) 100%);
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+        }
+
         /* UTILS */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
         /* ANIMATIONS */
-        .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease-in-out; z-index: 0; background-size: cover; background-position: center; }
+        .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease-in-out; z-index: 0; }
         .slide.active { opacity: 1; z-index: 1; }
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
-        #cartDrawer { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .cat-btn.active { background: white; color: black; border-color: white; }
-        .skeleton { background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%); background-size: 1000px 100%; animation: shimmer 2s infinite; }
         
-        /* GLOW EFFECTS */
-        .glow-red:hover { box-shadow: 0 0 30px rgba(220, 38, 38, 0.5); }
-        .glow-blue:hover { box-shadow: 0 0 30px rgba(59, 130, 246, 0.5); }
-        .glow-green:hover { box-shadow: 0 0 30px rgba(34, 197, 94, 0.5); }
-        .glow-purple:hover { box-shadow: 0 0 30px rgba(147, 51, 234, 0.5); }
-        .glow-yellow:hover { box-shadow: 0 0 30px rgba(234, 179, 8, 0.5); }
+        /* Drawer Transition */
+        #cartDrawer, #wishlistDrawer { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         
-        /* GTA 6 Special Gradient */
-        .bg-gta { background: linear-gradient(135deg, #2e0228, #0a0a0a, #03182b); }
+        /* Category Pill */
+        .cat-btn { transition: all 0.3s ease; }
+        .cat-btn.active { background: #ffffff; color: #000000; border-color: #ffffff; box-shadow: 0 4px 20px rgba(255,255,255,0.2); }
+        
+        /* Shimmer Skeleton */
+        .skeleton { background: linear-gradient(90deg, #121212 25%, #1a1a1a 50%, #121212 75%); background-size: 1000px 100%; animation: shimmer 2s infinite; }
+        
+        /* Hover Shine Effect */
+        .btn-shine { position: relative; overflow: hidden; }
+        .btn-shine::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: 0.5s; }
+        .btn-shine:hover::after { left: 100%; }
+
+        /* Mobile Search */
+        #mobileSearchBar { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); max-height: 0; overflow: hidden; opacity: 0; }
+        #mobileSearchBar.active { max-height: 60px; opacity: 1; margin-bottom: 10px; }
     </style>
 </head>
-<body class="antialiased flex flex-col min-h-screen">
+<body class="antialiased flex flex-col min-h-screen selection:bg-primary selection:text-white">
 
     <div id="toastContainer" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-[100] pointer-events-none w-full max-w-sm px-4 flex flex-col gap-2 items-center"></div>
 
     <nav class="fixed top-0 w-full z-50 glass transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16 md:h-20 gap-2">
-                <div class="flex items-center gap-3 md:gap-4">
-                    <button id="mobileMenuBtn" class="md:hidden text-xl text-white p-1"><i class="fa-solid fa-bars"></i></button>
-                    <a href="#" class="flex items-center gap-2 z-50">
-                        <div class="relative w-8 h-8 md:w-10 md:h-10 flex items-center justify-center">
-                            <svg viewBox="0 0 40 40" fill="none" class="w-full h-full drop-shadow-lg"><rect width="40" height="40" rx="12" fill="url(#paint0_linear)"/><path d="M20 12C15.5817 12 12 15.5817 12 20C12 24.4183 15.5817 28 20 28H24C26.2091 28 28 26.2091 28 24V20C28 15.5817 24.4183 12 20 12Z" fill="white" fill-opacity="0.2"/><path d="M22 18H18V26H22C24.2091 26 26 24.2091 26 22C26 19.7909 24.2091 18 22 18Z" fill="white"/><defs><linearGradient id="paint0_linear" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#3B82F6"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs></svg>
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20 gap-6">
+                
+                <div class="flex items-center gap-4">
+                    <button id="mobileMenuBtn" class="md:hidden text-2xl text-gray-300 hover:text-white transition-colors"><i class="fa-solid fa-bars-staggered"></i></button>
+                    <a href="#" class="flex items-center gap-3 group">
+                        <div class="relative w-10 h-10 flex items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl shadow-lg group-hover:shadow-blue-600/40 transition-all duration-300">
+                            <i class="fa-solid fa-gamepad text-white text-lg"></i>
                         </div>
-                        <span class="text-lg md:text-xl font-bold tracking-tight hidden xs:block">PlayWithEase</span>
+                        <div class="flex flex-col">
+                            <span class="text-xl font-bold tracking-tight leading-none text-white">PlayWithEase</span>
+                            <span class="text-[10px] text-gray-400 font-semibold tracking-widest uppercase mt-0.5">Official Store</span>
+                        </div>
                     </a>
                 </div>
-                <div class="hidden md:flex flex-1 max-w-md mx-8 relative group">
-                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-500 group-focus-within:text-blue-500 transition-colors"></i>
-                    <input type="text" id="searchInput" placeholder="Search games, subscriptions..." class="w-full bg-[#1a1a1a] border border-white/10 rounded-full py-2.5 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-blue-500 focus:bg-black transition-all placeholder-gray-500">
+
+                <div class="hidden md:flex flex-1 max-w-lg relative group">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass text-gray-500 group-focus-within:text-primary transition-colors"></i>
+                    </div>
+                    <input type="text" id="searchInput" placeholder="Search for games, subscriptions, or gift cards..." 
+                        class="w-full bg-[#121212] border border-[#2a2a2a] rounded-full py-3 pl-11 pr-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all shadow-inner">
+                    <div class="absolute inset-y-0 right-3 flex items-center">
+                        <span class="text-[10px] bg-[#222] text-gray-400 px-2 py-1 rounded border border-[#333]">CTRL+K</span>
+                    </div>
                 </div>
-                <div class="flex items-center gap-3 md:gap-5">
-                    <button id="mobileSearchToggle" class="md:hidden text-white p-2"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    <button onclick="toggleWishlistDrawer()" class="relative text-gray-400 hover:text-white transition-colors">
-                        <i class="fa-regular fa-heart text-xl"></i>
-                        <span id="wishlistCount" class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full text-[8px] flex items-center justify-center font-bold hidden">0</span>
+
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <button id="mobileSearchToggle" class="md:hidden p-2 text-gray-300"><i class="fa-solid fa-magnifying-glass text-lg"></i></button>
+                    
+                    <button onclick="toggleWishlistDrawer()" class="relative p-2.5 text-gray-400 hover:text-white hover:bg-white/5 rounded-full transition-all group">
+                        <i class="fa-regular fa-heart text-xl group-hover:scale-110 transition-transform"></i>
+                        <span id="wishlistCount" class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-[#050505] hidden"></span>
                     </button>
+
                     <div id="authContainer">
-                        <button onclick="toggleAuthModal()" id="loginBtn" class="bg-white text-black px-4 py-1.5 md:px-5 md:py-2 rounded-full font-bold text-xs md:text-sm hover:bg-gray-200 transition-all flex items-center gap-2">Log In</button>
+                        <button onclick="toggleAuthModal()" id="loginBtn" class="bg-white text-black px-5 py-2.5 rounded-full font-bold text-sm hover:bg-gray-200 transition-all btn-shine">Log In</button>
                         <div id="userProfile" class="hidden relative group">
-                            <button class="flex items-center gap-2 pl-1 pr-1 py-1 rounded-full border border-white/10 hover:bg-white/5 transition-all"><img id="userAvatar" src="" class="w-8 h-8 rounded-full border border-white/20 object-cover"></button>
-                            <div class="absolute right-0 mt-2 w-48 bg-[#1a1a1a] border border-white/10 rounded-xl shadow-2xl overflow-hidden hidden group-hover:block animate-fade-in z-[60]"><a href="#" class="block px-4 py-3 text-sm hover:bg-white/5 text-gray-300">My Profile</a><a href="#" class="block px-4 py-3 text-sm hover:bg-white/5 text-gray-300">Orders</a><div class="h-px bg-white/10"></div><button id="logoutBtn" class="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-white/5">Sign Out</button></div>
+                            <button class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full border border-white/10 hover:bg-white/5 transition-all">
+                                <img id="userAvatar" src="" class="w-8 h-8 rounded-full border border-white/20 object-cover">
+                                <span class="text-xs font-semibold hidden sm:block">Account</span>
+                            </button>
+                            <div class="absolute right-0 mt-2 w-56 bg-[#121212] border border-white/10 rounded-xl shadow-2xl overflow-hidden hidden group-hover:block animate-fade-in z-[60]">
+                                <div class="px-4 py-3 border-b border-white/5">
+                                    <p class="text-sm font-bold text-white">Signed in</p>
+                                </div>
+                                <a href="#" class="block px-4 py-3 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors"><i class="fa-regular fa-user mr-2"></i> My Profile</a>
+                                <a href="#" class="block px-4 py-3 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors"><i class="fa-solid fa-box-open mr-2"></i> Orders</a>
+                                <div class="h-px bg-white/5 mx-2 my-1"></div>
+                                <button id="logoutBtn" class="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 transition-colors"><i class="fa-solid fa-arrow-right-from-bracket mr-2"></i> Sign Out</button>
+                            </div>
                         </div>
                     </div>
-                    <div onclick="toggleCart()" class="relative cursor-pointer w-9 h-9 md:w-10 md:h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">
-                        <i class="fa-solid fa-bag-shopping text-gray-300 text-sm md:text-base"></i>
-                        <span id="cartCount" class="absolute top-0 right-0 w-3.5 h-3.5 md:w-4 md:h-4 bg-blue-600 text-[9px] md:text-[10px] font-bold flex items-center justify-center rounded-full border border-black shadow-sm hidden">0</span>
-                    </div>
+
+                    <button onclick="toggleCart()" class="relative p-2.5 text-gray-400 hover:text-white hover:bg-white/5 rounded-full transition-all group">
+                        <i class="fa-solid fa-bag-shopping text-xl group-hover:scale-110 transition-transform"></i>
+                        <span id="cartCount" class="absolute -top-0 -right-0 w-4 h-4 bg-primary text-[10px] font-bold text-white flex items-center justify-center rounded-full border border-[#050505] hidden">0</span>
+                    </button>
                 </div>
             </div>
-            <div id="mobileSearchBar" class="hidden md:hidden pb-3 pt-1 animate-fade-in">
-                <div class="relative">
-                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-3 text-gray-500"></i>
-                    <input type="text" id="mobileSearchInput" placeholder="Search store..." class="w-full bg-[#1a1a1a] border border-white/10 rounded-xl py-2 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-blue-500">
-                </div>
+            
+            <div id="mobileSearchBar">
+                <input type="text" id="mobileSearchInput" placeholder="Search store..." class="w-full bg-[#121212] border border-[#2a2a2a] rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-primary">
             </div>
         </div>
     </nav>
 
-    <div id="mobileMenu" class="fixed inset-0 z-40 bg-black transform translate-x-full pt-20 px-6 md:hidden transition-transform duration-300">
-        <div class="flex flex-col gap-6 text-xl font-medium">
-            <a href="#" class="border-b border-white/10 pb-4 text-gray-200">Home</a>
-            <a href="#store" class="border-b border-white/10 pb-4 text-gray-200">Store</a>
-            <a href="#gift" class="border-b border-white/10 pb-4 text-gray-200">Gift Cards</a>
-            <a href="#ott" class="border-b border-white/10 pb-4 text-gray-200">Subscriptions</a>
-            <a href="#" class="text-gray-400">Support</a>
+    <div id="mobileMenu" class="fixed inset-0 z-40 bg-black/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 pt-24 px-6 md:hidden">
+        <div class="flex flex-col gap-6 text-xl font-semibold tracking-tight">
+            <a href="#" class="border-b border-white/10 pb-4 text-white">Home</a>
+            <a href="#store" class="border-b border-white/10 pb-4 text-gray-400 hover:text-white">Store</a>
+            <a href="#gift" class="border-b border-white/10 pb-4 text-gray-400 hover:text-white">Gift Cards</a>
+            <a href="#ott" class="border-b border-white/10 pb-4 text-gray-400 hover:text-white">Subscriptions</a>
+            <a href="#" class="text-gray-400 hover:text-white">Support</a>
         </div>
     </div>
 
-    <header id="heroCarousel" class="relative w-full h-[65vh] md:h-[85vh] min-h-[450px] overflow-hidden bg-black touch-pan-y mt-16 md:mt-0">
-        <div class="slide active" style="background-image: url('https://www.rockstargames.com/VI/_next/image?url=%2FVI%2F_next%2Fstatic%2Fmedia%2FJason_and_Lucia_02_With_Logos_landscape.93ab5523.jpg&w=1366&q=75');">
-            <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-black/20 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 w-full p-6 md:p-12 pb-16 md:pb-24 max-w-7xl mx-auto z-10">
-                <span class="inline-block px-3 py-1 bg-purple-600/90 backdrop-blur text-[10px] md:text-xs font-bold uppercase tracking-wider rounded mb-3 border border-purple-400/30">World Premiere</span>
-                <div class="h-0 md:h-10 mb-2"></div> 
-                <p class="text-gray-200 max-w-xl text-sm md:text-lg mb-6 drop-shadow-md font-medium leading-relaxed">Welcome to Leonida. Grand Theft Auto VI heads to the state of Leonida, home to the neon-soaked streets of Vice City.</p>
-                <div class="flex gap-3 md:gap-4">
-                    <button onclick="playTrailer('QdBZY2fkU-0')" class="px-5 py-2.5 md:px-8 md:py-3 bg-white text-black rounded-full font-bold text-xs md:text-base hover:scale-105 transition-transform flex items-center gap-2 shadow-xl"><i class="fa-solid fa-play"></i> Trailer</button>
-                    <button onclick="addToCart('gta6')" class="px-5 py-2.5 md:px-8 md:py-3 bg-white/10 backdrop-blur border border-white/20 rounded-full font-bold text-xs md:text-base hover:bg-white/20 transition-all">Pre-Order</button>
+    <header id="heroCarousel" class="relative w-full h-[70vh] md:h-[85vh] min-h-[500px] overflow-hidden bg-black touch-pan-y mt-20">
+        <div class="slide active">
+            <div class="absolute inset-0 bg-[url('https://www.rockstargames.com/VI/_next/image?url=%2FVI%2F_next%2Fstatic%2Fmedia%2FJason_and_Lucia_02_With_Logos_landscape.93ab5523.jpg&w=1366&q=75')] bg-cover bg-center animate-slow-zoom"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 w-full p-6 md:p-16 pb-20 md:pb-32 max-w-[1400px] mx-auto z-10">
+                <div class="flex items-center gap-3 mb-4 animate-fade-in" style="animation-delay: 0.1s;">
+                    <span class="px-3 py-1 bg-purple-600/90 backdrop-blur text-[10px] md:text-xs font-bold uppercase tracking-wider rounded border border-purple-400/30">World Premiere</span>
+                    <span class="px-3 py-1 bg-white/10 backdrop-blur text-[10px] md:text-xs font-bold uppercase tracking-wider rounded text-gray-300">Open World</span>
+                </div>
+                <div class="h-0 md:h-16 mb-4"></div> <p class="text-gray-200 max-w-xl text-sm md:text-lg mb-8 drop-shadow-lg font-medium leading-relaxed animate-fade-in" style="animation-delay: 0.2s;">
+                    Experience the next evolution of the open-world experience. Welcome to Leonida, home to the neon-soaked streets of Vice City and beyond.
+                </p>
+                <div class="flex gap-4 animate-fade-in" style="animation-delay: 0.3s;">
+                    <button onclick="playTrailer('QdBZY2fkU-0')" class="px-6 py-3.5 bg-white text-black rounded-full font-bold text-sm hover:scale-105 transition-transform flex items-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.3)] btn-shine"><i class="fa-solid fa-play"></i> Watch Trailer</button>
+                    <button onclick="addToCart('gta6')" class="px-6 py-3.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full font-bold text-sm hover:bg-white/20 transition-all flex items-center gap-2">Pre-Order <span class="opacity-60 text-xs font-normal ml-1">₹5,499</span></button>
                 </div>
             </div>
         </div>
-        <div class="slide" style="background-image: url('https://cdn.forza.net/strapi-uploads/assets/xlarge_hero_fh6_f55db4cd81_53e6ca38f4.webp');">
-            <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-black/20 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 w-full p-6 md:p-12 pb-16 md:pb-24 max-w-7xl mx-auto z-10">
-                <span class="inline-block px-3 py-1 bg-blue-600/90 backdrop-blur text-[10px] md:text-xs font-bold uppercase tracking-wider rounded mb-3">Coming Soon</span>
-                <img src="https://cdn.forza.net/strapi-uploads/assets/logo_black_fh6_700993660b.svg" class="h-14 md:h-32 mb-4 object-contain filter invert drop-shadow-lg" alt="Forza Horizon 6">
-                <p class="text-gray-200 max-w-xl text-sm md:text-lg mb-6 drop-shadow-md font-medium">Explore the most beautiful and comprehensive racing world ever created.</p>
-                <div class="flex gap-3 md:gap-4">
-                    <button onclick="playTrailer('XG1Ll2CVhug')" class="px-5 py-2.5 md:px-8 md:py-3 bg-white text-black rounded-full font-bold text-xs md:text-base hover:scale-105 transition-transform flex items-center gap-2 shadow-xl"><i class="fa-solid fa-play"></i> Trailer</button>
-                    <button onclick="addToCart('fh6')" class="px-5 py-2.5 md:px-8 md:py-3 bg-white/10 backdrop-blur border border-white/20 rounded-full font-bold text-xs md:text-base hover:bg-white/20 transition-all">Pre-Order</button>
+        <div class="slide">
+            <div class="absolute inset-0 bg-[url('https://cdn.forza.net/strapi-uploads/assets/xlarge_hero_fh6_f55db4cd81_53e6ca38f4.webp')] bg-cover bg-center animate-slow-zoom"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 w-full p-6 md:p-16 pb-20 md:pb-32 max-w-[1400px] mx-auto z-10">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="px-3 py-1 bg-blue-600/90 backdrop-blur text-[10px] md:text-xs font-bold uppercase tracking-wider rounded shadow-[0_0_15px_rgba(37,99,235,0.5)]">Coming Soon</span>
+                </div>
+                <img src="https://cdn.forza.net/strapi-uploads/assets/logo_black_fh6_700993660b.svg" class="h-16 md:h-32 mb-6 object-contain filter invert drop-shadow-xl" alt="Forza Horizon 6">
+                <p class="text-gray-200 max-w-xl text-sm md:text-lg mb-8 drop-shadow-lg font-medium leading-relaxed">
+                    Explore the most beautiful and comprehensive racing world ever created. Drive hundreds of the world's greatest cars.
+                </p>
+                <div class="flex gap-4">
+                    <button onclick="playTrailer('XG1Ll2CVhug')" class="px-6 py-3.5 bg-white text-black rounded-full font-bold text-sm hover:scale-105 transition-transform flex items-center gap-2 shadow-xl btn-shine"><i class="fa-solid fa-play"></i> Watch Trailer</button>
+                    <button onclick="addToCart('fh6')" class="px-6 py-3.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full font-bold text-sm hover:bg-white/20 transition-all">Pre-Order</button>
                 </div>
             </div>
         </div>
-        <div class="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-20">
-            <div class="w-1 h-10 md:h-12 bg-white/20 rounded-full overflow-hidden"><div id="slideIndicator" class="w-full h-1/2 bg-white rounded-full transition-all duration-500"></div></div>
+        
+        <div class="absolute right-6 md:right-12 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-20">
+            <div class="w-1 h-12 bg-white/10 rounded-full overflow-hidden backdrop-blur-sm"><div id="slideIndicator" class="w-full h-1/2 bg-white rounded-full transition-all duration-700 ease-out shadow-[0_0_10px_white]"></div></div>
         </div>
     </header>
 
-    <div class="border-b border-white/5 bg-[#050505] sticky top-16 md:top-20 z-30 backdrop-blur-md bg-opacity-95 shadow-xl">
-        <div class="max-w-7xl mx-auto px-4 py-3 md:py-4">
-            <div class="flex gap-2.5 md:gap-3 overflow-x-auto no-scrollbar" id="categoryContainer">
-                <button onclick="filterGames('all')" class="cat-btn active px-4 py-1.5 md:px-6 md:py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-xs md:text-sm whitespace-nowrap hover:bg-white/10 transition-all">🔥 All</button>
-                <button onclick="filterGames('ps5')" class="cat-btn px-4 py-1.5 md:px-6 md:py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-xs md:text-sm whitespace-nowrap hover:bg-white/10 transition-all">🎮 PS5</button>
-                <button onclick="filterGames('pc')" class="cat-btn px-4 py-1.5 md:px-6 md:py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-xs md:text-sm whitespace-nowrap hover:bg-white/10 transition-all">🕹️ PC</button>
-                <button onclick="filterGames('gift')" class="cat-btn px-4 py-1.5 md:px-6 md:py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-xs md:text-sm whitespace-nowrap hover:bg-white/10 transition-all">🎁 Gift Cards</button>
-                <button onclick="filterGames('action')" class="cat-btn px-4 py-1.5 md:px-6 md:py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-xs md:text-sm whitespace-nowrap hover:bg-white/10 transition-all">⚔️ Action</button>
+    <div class="border-b border-white/5 bg-[#050505]/80 sticky top-20 z-40 backdrop-blur-xl">
+        <div class="max-w-[1400px] mx-auto px-4 py-4">
+            <div class="flex gap-3 overflow-x-auto no-scrollbar" id="categoryContainer">
+                <button onclick="filterGames('all')" class="cat-btn active px-5 py-2 rounded-full border border-white/10 text-gray-300 font-semibold text-sm whitespace-nowrap hover:bg-white/10">🔥 Trending</button>
+                <button onclick="filterGames('ps5')" class="cat-btn px-5 py-2 rounded-full border border-white/10 text-gray-300 font-semibold text-sm whitespace-nowrap hover:bg-white/10">🎮 PlayStation 5</button>
+                <button onclick="filterGames('pc')" class="cat-btn px-5 py-2 rounded-full border border-white/10 text-gray-300 font-semibold text-sm whitespace-nowrap hover:bg-white/10">🕹️ PC Games</button>
+                <button onclick="filterGames('gift')" class="cat-btn px-5 py-2 rounded-full border border-white/10 text-gray-300 font-semibold text-sm whitespace-nowrap hover:bg-white/10">🎁 Gift Cards</button>
+                <button onclick="filterGames('ott')" class="cat-btn px-5 py-2 rounded-full border border-white/10 text-gray-300 font-semibold text-sm whitespace-nowrap hover:bg-white/10">📺 Subscriptions</button>
             </div>
         </div>
     </div>
 
-    <main class="max-w-7xl mx-auto px-4 py-8 md:py-12 flex-grow" id="store">
-        <div class="flex items-end justify-between mb-6 reveal">
-            <h2 class="text-xl md:text-2xl font-bold">Trending Now</h2>
-            <span id="resultCount" class="text-xs md:text-sm text-gray-400">All games</span>
-        </div>
-        <div id="gameGrid" class="flex gap-4 md:gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-10 reveal">
-            <div class="shrink-0 w-[160px] md:w-[260px] aspect-[2/3] rounded-xl skeleton"></div>
-            <div class="shrink-0 w-[160px] md:w-[260px] aspect-[2/3] rounded-xl skeleton"></div>
-            <div class="shrink-0 w-[160px] md:w-[260px] aspect-[2/3] rounded-xl skeleton"></div>
-            <div class="shrink-0 w-[160px] md:w-[260px] aspect-[2/3] rounded-xl skeleton"></div>
-        </div>
-
-        <div id="gift" class="mt-8 md:mt-12 reveal">
-            <h2 class="text-xl md:text-2xl font-bold mb-6">Digital Gift Cards</h2>
-            <div id="giftGrid" class="flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6 pb-10 md:pb-0">
-                <div class="shrink-0 w-[165px] h-40 rounded-xl skeleton"></div>
-                <div class="shrink-0 w-[165px] h-40 rounded-xl skeleton"></div>
+    <main class="max-w-[1400px] mx-auto px-4 py-12 flex-grow space-y-20" id="store">
+        
+        <section>
+            <div class="flex items-end justify-between mb-8 reveal">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-bold tracking-tight mb-1">Top Sellers</h2>
+                    <p class="text-sm text-gray-400" id="resultCount">Best-selling titles this week</p>
+                </div>
+                <a href="#" class="text-sm font-semibold text-primary hover:text-white transition-colors">View All <i class="fa-solid fa-arrow-right ml-1"></i></a>
             </div>
-        </div>
-
-        <div id="ott" class="mt-8 md:mt-12 reveal">
-            <h2 class="text-xl md:text-2xl font-bold mb-6">Subscriptions</h2>
-            <div id="ottGrid" class="flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6 pb-10 md:pb-0">
-                <div class="shrink-0 w-[165px] h-40 rounded-xl skeleton"></div>
-                <div class="shrink-0 w-[165px] h-40 rounded-xl skeleton"></div>
+            
+            <div id="gameGrid" class="flex gap-5 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-8 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-4 lg:grid-cols-5 md:overflow-visible reveal">
+                <div class="shrink-0 w-[180px] md:w-auto aspect-[2/3] rounded-2xl skeleton"></div>
+                <div class="shrink-0 w-[180px] md:w-auto aspect-[2/3] rounded-2xl skeleton"></div>
+                <div class="shrink-0 w-[180px] md:w-auto aspect-[2/3] rounded-2xl skeleton"></div>
+                <div class="shrink-0 w-[180px] md:w-auto aspect-[2/3] rounded-2xl skeleton"></div>
+                <div class="shrink-0 w-[180px] md:w-auto aspect-[2/3] rounded-2xl skeleton hidden lg:block"></div>
             </div>
-        </div>
+        </section>
+
+        <section id="gift" class="reveal">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-1 h-8 bg-yellow-500 rounded-full"></div>
+                <h2 class="text-2xl md:text-3xl font-bold tracking-tight">Digital Gift Cards</h2>
+            </div>
+            <div id="giftGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                </div>
+        </section>
+
+        <section id="ott" class="reveal">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-1 h-8 bg-purple-500 rounded-full"></div>
+                <h2 class="text-2xl md:text-3xl font-bold tracking-tight">Premium Subscriptions</h2>
+            </div>
+            <div id="ottGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                </div>
+        </section>
+
     </main>
 
-    <footer class="border-t border-white/5 bg-black py-12 mt-auto relative z-10">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 mb-12">
-                <div class="col-span-1 md:col-span-2">
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold">P</div>
-                        <span class="text-xl font-bold">PlayWithEase</span>
+    <footer class="border-t border-white/5 bg-[#080808] pt-20 pb-12 mt-auto relative z-10">
+        <div class="max-w-[1400px] mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
+                <div class="md:col-span-4 space-y-6">
+                    <a href="#" class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg">P</div>
+                        <span class="text-2xl font-bold text-white tracking-tight">PlayWithEase</span>
+                    </a>
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-sm">The world's leading digital marketplace for gamers. Instant delivery, secure payments, and 24/7 support for over 10 million customers.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-white hover:text-black transition-all"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-white hover:text-black transition-all"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-white hover:text-black transition-all"><i class="fa-brands fa-discord"></i></a>
                     </div>
-                    <p class="text-gray-400 text-sm max-w-sm mb-6">Your #1 destination for digital gaming keys, subscriptions, and services. Instant delivery via WhatsApp and Email.</p>
                 </div>
-                <div>
-                    <h4 class="font-bold text-white mb-4">Support</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="#" class="hover:text-white">Help Center</a></li>
-                        <li><a href="#" class="hover:text-white">Refund Policy</a></li>
+
+                <div class="md:col-span-2 space-y-4">
+                    <h4 class="font-bold text-white mb-2">Shop</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-primary transition-colors">PC Games</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">PlayStation</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Gift Cards</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">New Arrivals</a></li>
                     </ul>
                 </div>
-                <div>
-                    <h4 class="font-bold text-white mb-4">Contact</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="#" class="hover:text-white">Email Us</a></li>
-                        <li><a href="#" class="hover:text-white">WhatsApp Support</a></li>
+                <div class="md:col-span-2 space-y-4">
+                    <h4 class="font-bold text-white mb-2">Support</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-primary transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Redeem Code</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Refund Policy</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Contact Us</a></li>
                     </ul>
+                </div>
+
+                <div class="md:col-span-4 bg-[#121212] rounded-2xl p-6 border border-white/5">
+                    <h4 class="font-bold text-white mb-2">Stay in the loop</h4>
+                    <p class="text-xs text-gray-400 mb-4">Get exclusive deals and game drops directly to your inbox.</p>
+                    <div class="flex gap-2">
+                        <input type="email" placeholder="Your email address" class="bg-[#050505] border border-white/10 rounded-lg px-4 py-2.5 text-sm w-full focus:border-primary focus:ring-1 focus:ring-primary/50 outline-none transition-all">
+                        <button class="bg-white text-black px-4 py-2.5 rounded-lg font-bold text-sm hover:bg-gray-200 transition-colors">Join</button>
+                    </div>
                 </div>
             </div>
-            <div class="border-t border-white/5 pt-8 text-center text-xs text-gray-600">
-                &copy; 2024 PlayWithEase. All rights reserved.
+
+            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-gray-500">&copy; 2024 PlayWithEase. All rights reserved.</p>
+                <div class="flex items-center gap-4 opacity-50 grayscale hover:grayscale-0 transition-all duration-300">
+                    <i class="fa-brands fa-cc-visa text-2xl"></i>
+                    <i class="fa-brands fa-cc-mastercard text-2xl"></i>
+                    <i class="fa-brands fa-google-pay text-2xl"></i>
+                    <i class="fa-brands fa-apple-pay text-2xl"></i>
+                </div>
             </div>
         </div>
     </footer>
 
-    <div id="cartOverlay" onclick="closeDrawers()" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] hidden transition-opacity"></div>
+    <div id="cartOverlay" onclick="closeDrawers()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] hidden transition-all duration-300 opacity-0"></div>
     
-    <div id="cartDrawer" class="fixed top-0 right-0 w-full max-w-[400px] h-full bg-[#121212] z-[70] transform translate-x-full flex flex-col border-l border-white/10 shadow-2xl drawer">
-        <div class="p-6 border-b border-white/10 flex justify-between items-center bg-[#0a0a0a]">
-            <h2 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-bag-shopping text-blue-500"></i> Cart</h2>
-            <button onclick="closeDrawers()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+    <div id="cartDrawer" class="fixed top-0 right-0 w-full max-w-[420px] h-full bg-[#0a0a0a] z-[70] transform translate-x-full border-l border-white/10 shadow-2xl flex flex-col">
+        <div class="p-6 border-b border-white/5 flex justify-between items-center bg-[#0a0a0a]">
+            <h2 class="text-xl font-bold flex items-center gap-3"><i class="fa-solid fa-bag-shopping text-primary"></i> Shopping Cart</h2>
+            <button onclick="closeDrawers()" class="w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-all"><i class="fa-solid fa-xmark text-lg"></i></button>
         </div>
         <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
-        <div class="p-6 border-t border-white/10 bg-[#0a0a0a] space-y-4">
-            <div class="flex gap-2">
-                <input type="text" id="promoInput" placeholder="Promo Code (GAMER10)" class="w-full bg-[#1a1a1a] border border-white/10 rounded-lg px-3 text-sm focus:outline-none uppercase">
-                <button onclick="applyPromo()" class="bg-white/10 hover:bg-white/20 px-4 rounded-lg font-bold text-xs uppercase transition-colors">Apply</button>
+        <div class="p-6 border-t border-white/10 bg-[#080808] space-y-4">
+            <div class="relative">
+                <input type="text" id="promoInput" placeholder="Discount Code" class="w-full bg-[#121212] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-primary outline-none uppercase tracking-wide">
+                <button onclick="applyPromo()" class="absolute right-2 top-2 bottom-2 px-4 bg-white/10 hover:bg-white/20 rounded-lg text-xs font-bold uppercase transition-colors">Apply</button>
             </div>
-            <div id="promoMessage" class="text-xs text-green-400 hidden text-center">Discount Applied!</div>
-            <div class="flex justify-between items-center text-sm text-gray-400"><span>Subtotal</span><span id="cartSubtotal">₹0</span></div>
-            <div class="flex justify-between items-center text-sm text-green-400 hidden" id="discountRow"><span>Discount</span><span id="cartDiscount">-₹0</span></div>
-            <div class="flex justify-between items-center mb-4"><span class="text-white font-bold">Total</span><span id="cartTotal" class="text-2xl font-bold text-white">₹0</span></div>
-            <button onclick="openCheckoutPage()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-600/20 transition-all">Proceed to Checkout</button>
+            <div id="promoMessage" class="text-xs text-green-400 font-semibold hidden text-center"><i class="fa-solid fa-check-circle mr-1"></i> Code Applied Successfully!</div>
+            
+            <div class="space-y-2 pt-2">
+                <div class="flex justify-between items-center text-sm text-gray-400"><span>Subtotal</span><span id="cartSubtotal">₹0</span></div>
+                <div class="flex justify-between items-center text-sm text-green-400 hidden" id="discountRow"><span>Savings</span><span id="cartDiscount">-₹0</span></div>
+            </div>
+            <div class="flex justify-between items-end pb-2">
+                <span class="text-gray-300 font-medium">Total</span>
+                <span id="cartTotal" class="text-3xl font-bold text-white tracking-tight">₹0</span>
+            </div>
+            <button onclick="openCheckoutPage()" class="w-full bg-primary hover:bg-blue-600 text-white font-bold py-4 rounded-xl shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] transition-all flex items-center justify-center gap-2 group">
+                Proceed to Checkout <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+            </button>
         </div>
     </div>
 
-    <div id="wishlistDrawer" class="fixed top-0 right-0 w-full max-w-[400px] h-full bg-[#121212] z-[70] transform translate-x-full flex flex-col border-l border-white/10 shadow-2xl drawer">
-        <div class="p-6 border-b border-white/10 flex justify-between items-center bg-[#0a0a0a]">
-            <h2 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-heart text-red-500"></i> Wishlist</h2>
-            <button onclick="closeDrawers()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+    <div id="wishlistDrawer" class="fixed top-0 right-0 w-full max-w-[420px] h-full bg-[#0a0a0a] z-[70] transform translate-x-full border-l border-white/10 shadow-2xl flex flex-col">
+        <div class="p-6 border-b border-white/5 flex justify-between items-center bg-[#0a0a0a]">
+            <h2 class="text-xl font-bold flex items-center gap-3"><i class="fa-solid fa-heart text-red-500"></i> Wishlist</h2>
+            <button onclick="closeDrawers()" class="w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-all"><i class="fa-solid fa-xmark text-lg"></i></button>
         </div>
         <div id="wishlistContainer" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
     </div>
 
-    <div id="authModal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4">
-        <div onclick="toggleAuthModal()" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
-        <div class="relative w-full max-w-md glass-panel rounded-2xl p-6 md:p-8 shadow-2xl transform transition-all animate-slide-up">
+    <div id="authModal" class="hidden fixed inset-0 z-[80] flex items-center justify-center p-4">
+        <div onclick="toggleAuthModal()" class="absolute inset-0 bg-black/80 backdrop-blur-md"></div>
+        <div class="relative w-full max-w-md card-glass rounded-2xl p-8 shadow-2xl transform transition-all animate-fade-in scale-100">
             <button onclick="toggleAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            <div class="flex justify-center mb-6"><div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-2xl shadow-lg">P</div></div>
+            <div class="flex justify-center mb-8">
+                <div class="w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-lg">P</div>
+            </div>
             <div class="flex border-b border-white/10 mb-6">
-                <button id="tabLogin" onclick="switchTab('login')" class="flex-1 pb-3 text-center text-white border-b-2 border-blue-500 font-medium transition-colors">Log In</button>
-                <button id="tabRegister" onclick="switchTab('register')" class="flex-1 pb-3 text-center text-gray-400 hover:text-white transition-colors">Sign Up</button>
+                <button id="tabLogin" onclick="switchTab('login')" class="flex-1 pb-4 text-center text-white border-b-2 border-primary font-medium transition-colors">Log In</button>
+                <button id="tabRegister" onclick="switchTab('register')" class="flex-1 pb-4 text-center text-gray-500 hover:text-white transition-colors">Sign Up</button>
             </div>
             <form id="authForm" onsubmit="handleAuth(event)" class="space-y-4">
-                <input type="email" id="email" required placeholder="Email" class="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-3 px-4 text-white focus:outline-none focus:border-blue-500">
-                <input type="password" id="password" required placeholder="Password" class="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-3 px-4 text-white focus:outline-none focus:border-blue-500">
-                <input type="text" id="fullName" placeholder="Full Name" class="hidden w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-3 px-4 text-white focus:outline-none focus:border-blue-500">
-                <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-lg">Log In</button>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Email Address</label>
+                    <input type="email" id="email" required class="w-full bg-[#050505] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary focus:ring-1 focus:ring-primary/50 outline-none transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Password</label>
+                    <input type="password" id="password" required class="w-full bg-[#050505] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary focus:ring-1 focus:ring-primary/50 outline-none transition-all">
+                </div>
+                <div id="registerNameGroup" class="hidden">
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Full Name</label>
+                    <input type="text" id="fullName" class="w-full bg-[#050505] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary focus:ring-1 focus:ring-primary/50 outline-none transition-all">
+                </div>
+                <button type="submit" id="submitBtn" class="w-full bg-white text-black font-bold py-3.5 rounded-xl hover:bg-gray-200 transition-colors mt-2">Log In</button>
             </form>
-            <p id="authError" class="text-red-400 text-xs text-center mt-4 hidden"></p>
+            <p id="authError" class="text-red-400 text-sm text-center mt-4 hidden bg-red-500/10 py-2 rounded-lg border border-red-500/20"></p>
         </div>
     </div>
 
-    <div id="trailerModal" class="hidden fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-        <div class="relative w-full max-w-5xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/10">
-            <button onclick="closeTrailer()" class="absolute top-4 right-4 z-20 w-10 h-10 bg-black/50 backdrop-blur rounded-full text-white hover:bg-white hover:text-black flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
+    <div id="trailerModal" class="hidden fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="relative w-full max-w-6xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
+            <button onclick="closeTrailer()" class="absolute top-4 right-4 z-20 w-12 h-12 bg-black/50 backdrop-blur rounded-full text-white hover:bg-white hover:text-black flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"><i class="fa-solid fa-xmark text-xl"></i></button>
             <iframe id="youtubeFrame" class="w-full h-full" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
     </div>
 
     <script>
-        // 1. FIXED IMAGE DATABASE
+        // 1. DATA LAYER
         const db = {
-            gta6: { title: "Grand Theft Auto VI", price: 5499, oldPrice: 6999, img: "https://static.wikia.nocookie.net/gtawiki/images/a/a5/Artwork-Trailer2Thumbnail2-GTAVI.jpg/revision/latest/scale-to-width-down/1000?cb=20250506170600", cat: "ps5 action", rating: 5.0, platform: "PS5", stock: 50 },
-            fh6: { title: "Forza Horizon 6", price: 4999, oldPrice: 5999, img: "https://static.wikia.nocookie.net/forzamotorsport/images/3/33/FH6_Boxart.jpg/revision/latest/scale-to-width-down/1000?cb=20260123050250", cat: "pc sports", rating: 4.8, platform: "PC", stock: 12 },
-            sp2: { title: "Marvel's Spider-Man 2", price: 4499, oldPrice: 4999, img: "https://static.wikia.nocookie.net/spidermanps4/images/d/d4/Marvel%27s_Spider-Man_2_front_cover_%28US%29.png/revision/latest/scale-to-width-down/1000?cb=20230608203237", cat: "ps5 action", rating: 4.9, platform: "PS5", stock: 5 },
+            gta6: { title: "Grand Theft Auto VI", price: 5499, oldPrice: 6999, img: "https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_VI.png", cat: "ps5 action", rating: 5.0, platform: "PS5", stock: 50 },
+            fh6: { title: "Forza Horizon 6", price: 4999, oldPrice: 5999, img: "https://static.wikia.nocookie.net/forzamotorsport/images/3/33/FH6_Boxart.jpg/revision/latest/scale-to-width-down/1000", cat: "pc sports", rating: 4.8, platform: "PC", stock: 12 },
+            sp2: { title: "Marvel's Spider-Man 2", price: 4499, oldPrice: 4999, img: "https://static.wikia.nocookie.net/spidermanps4/images/d/d4/Marvel%27s_Spider-Man_2_front_cover_%28US%29.png/revision/latest/scale-to-width-down/1000", cat: "ps5 action", rating: 4.9, platform: "PS5", stock: 5 },
             elden: { title: "Elden Ring", price: 2999, oldPrice: 3999, img: "https://upload.wikimedia.org/wikipedia/en/b/b9/Elden_Ring_Box_art.jpg", cat: "pc ps5 action", rating: 5.0, platform: "PC", stock: 100 },
             fc24: { title: "EA Sports FC 24", price: 3499, oldPrice: 4499, img: "https://thumbnails.pcgamingwiki.com/2/27/EA_Sports_FC_24_cover.jpg/300px-EA_Sports_FC_24_cover.jpg", cat: "ps5 sports pc", rating: 4.2, platform: "PS5", stock: 20 },
             mw3: { title: "Call of Duty: MW3", price: 5499, oldPrice: 6499, img: "https://upload.wikimedia.org/wikipedia/en/f/f6/MWIII_Cover_Art.png", cat: "pc ps5 action", rating: 4.5, platform: "PC", stock: 15 },
@@ -295,21 +421,21 @@
             hs_sup: { title: "Hotstar Super", price: 899, img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/800px-Disney%2B_logo.svg.png", type: "ott", tag: "Super" },
             hs_prem: { title: "Disney+ Premium", price: 299, img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/800px-Disney%2B_logo.svg.png", type: "ott", tag: "Monthly" },
 
-            // GIFT CARDS (High-Res Wiki/Amazon Logos)
-            bms_500: { title: "BookMyShow ₹500", price: 500, img: "https://upload.wikimedia.org/wikipedia/en/a/a2/BookMyShow_logo.png", type: "gift", tag: "Cinema" },
-            amz_1000: { title: "Amazon ₹1000", price: 1000, img: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg", type: "gift", tag: "Shopping" },
-            psn_1000: { title: "PSN ₹1000", price: 1000, img: "https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_logo.svg", type: "gift", tag: "Gaming" },
-            steam_500: { title: "Steam ₹500", price: 500, img: "https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg", type: "gift", tag: "Gaming" },
-            gplay_100: { title: "Google Play ₹100", price: 100, img: "https://upload.wikimedia.org/wikipedia/commons/d/d0/Google_Play_Arrow_logo.svg", type: "gift", tag: "Apps" },
-            apple_1000: { title: "Apple ₹1000", price: 1000, img: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg", type: "gift", tag: "Apps" },
-            flipkart_500: { title: "Flipkart ₹500", price: 500, img: "https://upload.wikimedia.org/wikipedia/en/2/29/Flipkart_logo.png", type: "gift", tag: "Shopping" },
-            zomato_500: { title: "Zomato Gold", price: 500, img: "https://upload.wikimedia.org/wikipedia/commons/b/bd/Zomato_Logo.svg", type: "gift", tag: "Food" }
+            // GIFTS
+            bms_500: { title: "BookMyShow ₹500", price: 500, img: "https://upload.wikimedia.org/wikipedia/en/a/a2/BookMyShow_logo.png", type: "gift", tag: "Cinema", bg: "bg-[#e50914]" },
+            amz_1000: { title: "Amazon ₹1000", price: 1000, img: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg", type: "gift", tag: "Shopping", bg: "bg-white" },
+            psn_1000: { title: "PSN ₹1000", price: 1000, img: "https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_logo.svg", type: "gift", tag: "Gaming", bg: "bg-[#003791]" },
+            steam_500: { title: "Steam ₹500", price: 500, img: "https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg", type: "gift", tag: "Gaming", bg: "bg-[#171a21]" },
+            gplay_100: { title: "Google Play ₹100", price: 100, img: "https://upload.wikimedia.org/wikipedia/commons/d/d0/Google_Play_Arrow_logo.svg", type: "gift", tag: "Apps", bg: "bg-white" },
+            apple_1000: { title: "Apple ₹1000", price: 1000, img: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg", type: "gift", tag: "Apps", bg: "bg-white" },
+            flipkart_500: { title: "Flipkart ₹500", price: 500, img: "https://upload.wikimedia.org/wikipedia/en/2/29/Flipkart_logo.png", type: "gift", tag: "Shopping", bg: "bg-[#2874f0]" },
+            zomato_500: { title: "Zomato Gold", price: 500, img: "https://upload.wikimedia.org/wikipedia/commons/b/bd/Zomato_Logo.svg", type: "gift", tag: "Food", bg: "bg-white" }
         };
 
         let wishlist = JSON.parse(localStorage.getItem('pwe_wishlist')) || [];
         let discountMultiplier = 1;
 
-        // 2. RENDERER
+        // 2. RENDER SYSTEM
         function renderContent() {
             setTimeout(() => {
                 const gameGrid = document.getElementById('gameGrid');
@@ -321,77 +447,75 @@
                     const fallback = "this.src='https://placehold.co/600x900/1a1a1a/FFF?text=No+Image'";
                     
                     if(item.type === 'ott') {
-                        let glow = item.title.includes('Netflix') ? 'glow-red' : item.title.includes('Prime') ? 'glow-blue' : item.title.includes('Spotify') ? 'glow-green' : 'glow-purple';
-                        let btn = item.title.includes('Netflix') ? 'bg-red-600' : item.title.includes('Prime') ? 'bg-blue-500' : item.title.includes('Spotify') ? 'bg-green-500' : 'bg-indigo-600';
+                        let glow = item.title.includes('Netflix') ? 'shadow-red-900/40 hover:shadow-red-600/60' : item.title.includes('Prime') ? 'shadow-blue-900/40 hover:shadow-blue-600/60' : 'shadow-indigo-900/40 hover:shadow-indigo-600/60';
                         ottGrid.innerHTML += `
-                        <div class="relative snap-start shrink-0 w-[165px] md:w-auto p-4 md:p-6 rounded-xl md:rounded-2xl bg-[#141414] border border-white/10 overflow-hidden group cursor-pointer transition-colors ${glow}">
-                            <img src="${item.img}" onerror="${fallback}" class="h-8 md:h-10 mb-4 md:mb-8 object-contain object-left">
-                            <div class="mt-auto"><p class="text-gray-400 text-[10px] md:text-xs uppercase">${item.tag}</p>
-                            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mt-2 gap-2">
-                                <span class="text-lg md:text-2xl font-bold">₹${item.price}</span>
-                                <button onclick="addToCart('${id}')" class="${btn} text-white px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-xs font-bold w-full md:w-auto shadow-lg hover:opacity-80">Add</button>
-                            </div></div>
+                        <div class="relative w-full aspect-[4/3] rounded-2xl bg-[#141414] border border-white/5 overflow-hidden group cursor-pointer transition-all duration-300 hover:scale-[1.02] shadow-lg ${glow}">
+                            <div class="absolute inset-0 flex items-center justify-center p-6"><img src="${item.img}" onerror="${fallback}" class="w-2/3 object-contain drop-shadow-xl"></div>
+                            <div class="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/90 to-transparent">
+                                <div class="flex justify-between items-end">
+                                    <div><p class="text-xs text-gray-400 font-medium uppercase tracking-wider">${item.tag}</p><p class="text-lg font-bold text-white">₹${item.price}</p></div>
+                                    <button onclick="addToCart('${id}')" class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:bg-gray-200 transition-colors"><i class="fa-solid fa-plus"></i></button>
+                                </div>
+                            </div>
                         </div>`;
                     } 
                     else if (item.type === 'gift') {
+                        // Gift cards use special BG colors from DB for realism
                         giftGrid.innerHTML += `
-                        <div class="relative snap-start shrink-0 w-[165px] md:w-auto p-4 md:p-6 rounded-xl md:rounded-2xl bg-[#141414] border border-white/10 overflow-hidden group cursor-pointer transition-colors hover:shadow-[0_0_25px_rgba(234,179,8,0.3)]">
-                            <div class="h-16 mb-4 flex items-center justify-center bg-white/5 rounded-lg"><img src="${item.img}" onerror="${fallback}" class="h-8 object-contain"></div>
-                            <div class="mt-auto"><p class="text-yellow-500 text-[10px] md:text-xs uppercase font-bold">${item.tag}</p>
-                            <h4 class="text-white font-bold text-sm mb-2 truncate">${item.title}</h4>
-                            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mt-2 gap-2">
-                                <span class="text-lg font-bold">₹${item.price}</span>
-                                <button onclick="addToCart('${id}')" class="bg-yellow-600 text-black px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-xs font-bold w-full md:w-auto shadow-lg hover:bg-yellow-500">Buy</button>
-                            </div></div>
+                        <div class="relative w-full aspect-[1.6/1] rounded-xl overflow-hidden group cursor-pointer shadow-lg hover:shadow-yellow-500/20 transition-all duration-300 hover:-translate-y-1">
+                            <div class="absolute inset-0 ${item.bg} flex items-center justify-center p-6">
+                                <img src="${item.img}" onerror="${fallback}" class="h-10 md:h-12 object-contain drop-shadow-md">
+                            </div>
+                            <div class="absolute bottom-0 inset-x-0 p-3 bg-black/80 backdrop-blur-sm flex justify-between items-center border-t border-white/10">
+                                <span class="text-white font-bold">₹${item.price}</span>
+                                <button onclick="addToCart('${id}')" class="text-xs bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg text-white font-semibold transition-colors">Add</button>
+                            </div>
                         </div>`;
                     }
                     else {
-                        const isWishlisted = wishlist.includes(id) ? 'active text-red-500' : 'text-white';
-                        const icon = item.platform === 'PS5' ? 'fa-playstation' : 'fa-windows';
+                        // Game Cards
+                        const isWishlisted = wishlist.includes(id) ? 'active text-red-500' : 'text-white/60';
                         const discount = Math.round(((item.oldPrice - item.price) / item.oldPrice) * 100);
-                        const stockTag = item.stock < 10 ? `<span class="absolute top-2 right-12 px-2 py-1 bg-red-600 text-white text-[9px] font-bold rounded animate-pulse">Only ${item.stock} left!</span>` : '';
                         
-                        // GTA 6 Special Styling
-                        let imgClass = "w-full h-full object-cover transition-transform duration-500 group-hover:scale-110";
+                        let imgClass = "w-full h-full object-cover transition-transform duration-700 group-hover:scale-110";
                         let bgClass = "bg-[#1a1a1a]";
                         let imgTag = `<img src="${item.img}" onerror="${fallback}" class="${imgClass}">`;
                         
                         if(id === 'gta6') {
-                            bgClass = "bg-gta"; 
+                            bgClass = "bg-[#2e0228]"; // Vice City Purple
                             imgTag = `<div class="w-full h-full flex items-center justify-center p-4 bg-gradient-to-br from-purple-900 via-black to-pink-900"><img src="${item.img}" class="w-full object-contain"></div>`;
                         }
 
                         gameGrid.innerHTML += `
-                        <div class="game-card snap-start shrink-0 w-[160px] md:w-[260px] lg:w-[280px] group cursor-pointer" data-title="${item.title.toLowerCase()}" data-category="${item.cat}">
-                            <div class="relative aspect-[2/3] rounded-xl md:rounded-2xl overflow-hidden mb-2 md:mb-3 border border-white/5 shadow-lg ${bgClass}">
+                        <div class="relative group cursor-pointer snap-start shrink-0" data-title="${item.title.toLowerCase()}" data-category="${item.cat}">
+                            <div class="w-[170px] md:w-[220px] aspect-[2/3] rounded-2xl overflow-hidden border border-white/5 shadow-2xl relative ${bgClass}">
                                 ${imgTag}
-                                <div class="absolute top-2 right-2 flex gap-1">
-                                    <span class="px-2 py-1 bg-green-500 text-black text-[10px] font-bold rounded">-${discount}%</span>
-                                    <button onclick="toggleWishlist('${id}')" class="heart-btn ${isWishlisted} w-6 h-6 bg-black/50 backdrop-blur rounded flex items-center justify-center hover:bg-white/20 transition-all z-20"><i class="fa-regular fa-heart text-xs"></i></button>
+                                <div class="absolute top-2 right-2 z-20 flex gap-1">
+                                    <span class="px-1.5 py-0.5 bg-black/60 backdrop-blur text-white text-[10px] font-bold rounded border border-white/10">-${discount}%</span>
                                 </div>
-                                ${stockTag}
-                                <div class="absolute top-2 left-2 px-2 py-1 bg-black/60 backdrop-blur rounded text-[10px] font-bold flex items-center gap-1"><i class="fa-brands ${icon}"></i> ${item.platform}</div>
-                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center play-btn">
-                                    <button onclick="addToCart('${id}')" class="w-10 h-10 md:w-12 md:h-12 bg-white rounded-full flex items-center justify-center text-black shadow-lg transform scale-50 group-hover:scale-100 transition-all"><i class="fa-solid fa-plus"></i></button>
+                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                    <button onclick="addToCart('${id}')" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black shadow-xl transform scale-50 group-hover:scale-100 transition-all duration-300 hover:bg-gray-100"><i class="fa-solid fa-plus text-lg"></i></button>
                                 </div>
                             </div>
-                            <div class="flex justify-between items-start">
-                                <h3 class="font-bold text-white truncate text-sm md:text-base max-w-[80%]">${item.title}</h3>
-                                <div class="flex items-center gap-1 text-[10px] text-yellow-400"><i class="fa-solid fa-star"></i> ${item.rating}</div>
-                            </div>
-                            <div class="flex items-center gap-2 mt-1">
-                                <span class="text-blue-400 font-bold text-sm md:text-base">₹${item.price.toLocaleString()}</span>
-                                <span class="text-gray-500 text-xs line-through">₹${item.oldPrice.toLocaleString()}</span>
+                            <div class="mt-3">
+                                <div class="flex justify-between items-start mb-1">
+                                    <h3 class="font-bold text-white text-sm md:text-base leading-tight line-clamp-1">${item.title}</h3>
+                                    <button onclick="toggleWishlist('${id}')" class="${isWishlisted} hover:text-red-500 transition-colors"><i class="fa-solid fa-heart text-sm"></i></button>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-blue-400 font-bold text-sm">₹${item.price.toLocaleString()}</span>
+                                    <span class="text-gray-600 text-xs line-through">₹${item.oldPrice.toLocaleString()}</span>
+                                </div>
                             </div>
                         </div>`;
                     }
                 });
                 updateWishlistCount();
                 initScrollReveal();
-            }, 800);
+            }, 600); // Simulated Loading
         }
         
-        // 3. SCROLL REVEAL
+        // 3. UI HELPERS
         function initScrollReveal() {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('active'); });
@@ -399,7 +523,6 @@
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         }
 
-        // 4. WISHLIST
         window.toggleWishlist = (id) => {
             if(wishlist.includes(id)) wishlist = wishlist.filter(i => i !== id);
             else wishlist.push(id);
@@ -418,17 +541,17 @@
 
         function renderWishlistDrawer() {
             const container = document.getElementById('wishlistContainer');
-            if(wishlist.length === 0) { container.innerHTML = '<p class="text-center text-gray-500 mt-10">No favorites yet.</p>'; return; }
+            if(wishlist.length === 0) { container.innerHTML = '<div class="flex flex-col items-center justify-center h-64 text-gray-500"><i class="fa-regular fa-heart text-4xl mb-4 opacity-20"></i><p>Your wishlist is empty</p></div>'; return; }
             container.innerHTML = wishlist.map(id => {
                 const item = db[id];
-                return `<div class="flex gap-4 bg-[#1a1a1a] p-3 rounded-xl border border-white/5 items-center">
-                    <img src="${item.img}" class="w-12 h-16 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <h4 class="font-bold text-sm line-clamp-1">${item.title}</h4>
+                return `<div class="flex gap-4 bg-[#121212] p-3 rounded-xl border border-white/5 items-center group hover:bg-[#1a1a1a] transition-colors">
+                    <img src="${item.img}" class="w-12 h-16 object-cover rounded-lg shadow-sm">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-bold text-sm text-white truncate">${item.title}</h4>
                         <p class="text-blue-400 text-xs font-bold">₹${item.price}</p>
                     </div>
-                    <button onclick="addToCart('${id}')" class="text-sm bg-blue-600 px-3 py-1 rounded hover:bg-blue-700">Add</button>
-                    <button onclick="toggleWishlist('${id}')" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
+                    <button onclick="addToCart('${id}')" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-all"><i class="fa-solid fa-plus text-xs"></i></button>
+                    <button onclick="toggleWishlist('${id}')" class="text-gray-500 hover:text-red-500 transition-colors"><i class="fa-solid fa-trash text-sm"></i></button>
                 </div>`;
             }).join('');
         }
@@ -438,17 +561,27 @@
             const drawer = document.getElementById('wishlistDrawer');
             const overlay = document.getElementById('cartOverlay');
             const isOpen = !drawer.classList.contains('translate-x-full');
+            
+            // Close other drawers
+            document.getElementById('cartDrawer').classList.add('translate-x-full');
+            document.getElementById('mobileMenu').classList.add('translate-x-full');
+            
             drawer.classList.toggle('translate-x-full', isOpen);
             overlay.classList.toggle('hidden', isOpen);
+            if(!isOpen) setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            else overlay.classList.add('opacity-0');
         };
 
         window.closeDrawers = () => {
             document.getElementById('cartDrawer').classList.add('translate-x-full');
             document.getElementById('wishlistDrawer').classList.add('translate-x-full');
-            document.getElementById('cartOverlay').classList.add('hidden');
+            document.getElementById('mobileMenu').classList.add('translate-x-full');
+            const overlay = document.getElementById('cartOverlay');
+            overlay.classList.add('opacity-0');
+            setTimeout(() => overlay.classList.add('hidden'), 300);
         };
 
-        // 5. CART & PROMO
+        // 4. CART SYSTEM
         let cart = JSON.parse(localStorage.getItem('pwe_cart')) || [];
 
         window.applyPromo = () => {
@@ -458,7 +591,7 @@
                 document.getElementById('promoMessage').classList.remove('hidden');
                 document.getElementById('discountRow').classList.remove('hidden');
                 updateCartUI();
-                showToast('Coupon Applied!');
+                showToast('Coupon Applied: 10% OFF');
             } else {
                 alert('Invalid Code');
             }
@@ -470,9 +603,11 @@
             if(existing) existing.qty++;
             else cart.push({ id, title: product.title, price: product.price, img: product.img, qty: 1 });
             updateCartUI();
-            showToast(`Added ${product.title}`);
-            document.getElementById('cartDrawer').classList.remove('translate-x-full');
-            document.getElementById('cartOverlay').classList.remove('hidden');
+            showToast(`Added to Cart`);
+            
+            // Auto open cart
+            const drawer = document.getElementById('cartDrawer');
+            if(drawer.classList.contains('translate-x-full')) toggleCart();
         };
 
         window.updateQty = (id, change) => {
@@ -490,137 +625,175 @@
             const total = Math.round(subtotal * discountMultiplier);
             const discount = subtotal - total;
             
-            document.getElementById('cartCount').textContent = cart.reduce((a,b) => a + b.qty, 0);
-            document.getElementById('cartCount').classList.toggle('hidden', cart.length === 0);
+            const badge = document.getElementById('cartCount');
+            badge.textContent = cart.reduce((a,b) => a + b.qty, 0);
+            badge.classList.toggle('hidden', cart.length === 0);
             
             document.getElementById('cartSubtotal').textContent = `₹${subtotal.toLocaleString()}`;
             document.getElementById('cartTotal').textContent = `₹${total.toLocaleString()}`;
             if(discount > 0) document.getElementById('cartDiscount').textContent = `-₹${discount.toLocaleString()}`;
 
             const container = document.getElementById('cartItemsContainer');
-            container.innerHTML = cart.map(item => `
-                <div class="flex gap-4 bg-[#1a1a1a] p-3 rounded-xl border border-white/5">
-                    <img src="${item.img}" class="w-16 h-16 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <h4 class="font-bold text-sm line-clamp-1">${item.title}</h4>
-                        <p class="text-blue-400 text-sm font-bold mt-1">₹${item.price.toLocaleString()}</p>
-                        <div class="flex items-center gap-3 mt-2">
-                            <button onclick="updateQty('${item.id}', -1)" class="w-6 h-6 bg-white/10 rounded">-</button>
-                            <span class="text-sm">${item.qty}</span>
-                            <button onclick="updateQty('${item.id}', 1)" class="w-6 h-6 bg-white/10 rounded">+</button>
+            if(cart.length === 0) {
+                container.innerHTML = '<div class="flex flex-col items-center justify-center h-64 text-gray-500"><i class="fa-solid fa-basket-shopping text-4xl mb-4 opacity-20"></i><p>Your cart is empty</p></div>';
+            } else {
+                container.innerHTML = cart.map(item => `
+                    <div class="flex gap-4 bg-[#121212] p-3 rounded-xl border border-white/5 group hover:bg-[#1a1a1a] transition-colors">
+                        <img src="${item.img}" class="w-16 h-16 object-cover rounded-lg shadow-sm">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-bold text-sm text-white truncate">${item.title}</h4>
+                            <p class="text-blue-400 text-sm font-bold mt-0.5">₹${item.price.toLocaleString()}</p>
+                            <div class="flex items-center gap-3 mt-2">
+                                <button onclick="updateQty('${item.id}', -1)" class="w-6 h-6 bg-white/5 rounded hover:bg-white/20 transition-colors flex items-center justify-center text-xs"><i class="fa-solid fa-minus"></i></button>
+                                <span class="text-sm font-mono text-gray-300 w-4 text-center">${item.qty}</span>
+                                <button onclick="updateQty('${item.id}', 1)" class="w-6 h-6 bg-white/5 rounded hover:bg-white/20 transition-colors flex items-center justify-center text-xs"><i class="fa-solid fa-plus"></i></button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join('') || '<p class="text-center text-gray-500 mt-10">Cart is empty</p>';
+                `).join('');
+            }
         }
 
         window.toggleCart = () => {
             const drawer = document.getElementById('cartDrawer');
             const overlay = document.getElementById('cartOverlay');
             const isOpen = !drawer.classList.contains('translate-x-full');
+            
+            // Close other drawers
+            document.getElementById('wishlistDrawer').classList.add('translate-x-full');
+            document.getElementById('mobileMenu').classList.add('translate-x-full');
+
             drawer.classList.toggle('translate-x-full', isOpen);
             overlay.classList.toggle('hidden', isOpen);
+            if(!isOpen) setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            else overlay.classList.add('opacity-0');
         };
 
         window.openCheckoutPage = () => {
-            if(cart.length === 0) return alert("Cart is empty!");
+            if(cart.length === 0) return showToast("Your cart is empty!");
             localStorage.setItem('pwe_cart', JSON.stringify(cart));
             window.location.href = 'checkout.html';
         };
 
         function showToast(msg) {
             const toast = document.createElement('div');
-            toast.className = 'bg-blue-600 text-white px-6 py-3 rounded-full shadow-2xl mb-4 animate-[toast_3s_ease-in-out_forwards] font-bold text-sm flex items-center gap-2';
-            toast.innerHTML = `<i class="fa-solid fa-check-circle"></i> ${msg}`;
+            toast.className = 'bg-[#1a1a1a] border border-white/10 text-white px-6 py-3 rounded-full shadow-2xl mb-3 animate-[toast_3s_ease-in-out_forwards] font-medium text-sm flex items-center gap-3';
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-green-500"></i> ${msg}`;
             document.getElementById('toastContainer').appendChild(toast);
             setTimeout(() => toast.remove(), 3000);
         }
 
+        // Init
         renderContent();
         updateCartUI();
 
-        // 6. SEARCH & FILTER
+        // 5. SEARCH & FILTER
         const performSearch = (q) => {
             const term = q.toLowerCase();
             let count = 0;
+            const sections = ['gameGrid', 'giftGrid', 'ottGrid'];
             
-            // Special handling for Gift Cards category
-            const gameGrid = document.getElementById('gameGrid');
-            const giftGrid = document.getElementById('gift');
-            const ottSection = document.getElementById('ott');
-            
-            // If searching, show all containers that might have matches
-            // (Simplified logic: Show all during search, filter individual cards)
-            gameGrid.classList.remove('hidden');
-            ottSection.classList.remove('hidden');
-            giftGrid.classList.remove('hidden');
+            // Reset visibility
+            if(!q) {
+                renderContent(); // Re-render default state
+                return;
+            }
 
             document.querySelectorAll('.game-card, .relative.snap-start').forEach(card => {
                 const title = card.querySelector('h3, h4')?.textContent.toLowerCase() || '';
                 if(title.includes(term)) { 
-                    card.classList.remove('hidden'); 
+                    card.style.display = 'block';
                     count++; 
                 } else { 
-                    card.classList.add('hidden'); 
+                    card.style.display = 'none';
                 }
             });
-            document.getElementById('resultCount').textContent = q ? `Found ${count} items` : 'All items';
+            document.getElementById('resultCount').textContent = q ? `Found ${count} items` : 'Best-selling titles this week';
         };
+        
         document.getElementById('searchInput').addEventListener('input', e => performSearch(e.target.value));
         document.getElementById('mobileSearchInput').addEventListener('input', e => performSearch(e.target.value));
-        document.getElementById('mobileSearchToggle').addEventListener('click', () => document.getElementById('mobileSearchBar').classList.toggle('hidden'));
+        document.getElementById('mobileSearchToggle').addEventListener('click', () => {
+            const bar = document.getElementById('mobileSearchBar');
+            bar.classList.toggle('active');
+            bar.classList.toggle('hidden'); // Helper to remove display:none delay
+        });
 
         window.filterGames = (cat) => {
             document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
             event.currentTarget.classList.add('active');
-            let count = 0;
             
-            // Handle specific category logic
-            const gameGrid = document.getElementById('gameGrid');
-            const giftGrid = document.getElementById('gift');
+            const gameGrid = document.getElementById('gameGrid').parentElement;
+            const giftSection = document.getElementById('gift');
             const ottSection = document.getElementById('ott');
 
             if(cat === 'gift') {
                 gameGrid.classList.add('hidden');
                 ottSection.classList.add('hidden');
-                giftGrid.classList.remove('hidden');
-                return;
+                giftSection.classList.remove('hidden');
+                giftSection.scrollIntoView({behavior: 'smooth'});
+            } else if (cat === 'ott') {
+                gameGrid.classList.add('hidden');
+                giftSection.classList.add('hidden');
+                ottSection.classList.remove('hidden');
+                ottSection.scrollIntoView({behavior: 'smooth'});
             } else {
                 gameGrid.classList.remove('hidden');
+                giftSection.classList.remove('hidden');
                 ottSection.classList.remove('hidden');
-                // Gift grid usually hidden unless 'All' or 'Gift'
-                if(cat === 'all') giftGrid.classList.remove('hidden');
-                else giftGrid.classList.add('hidden');
+                
+                // Filter individual game cards
+                let count = 0;
+                document.querySelectorAll('.game-card').forEach(card => {
+                    const c = card.getAttribute('data-category');
+                    if(cat === 'all' || c.includes(cat)) { 
+                        card.style.display = 'block'; 
+                        count++; 
+                    } else { 
+                        card.style.display = 'none'; 
+                    }
+                });
+                document.getElementById('resultCount').textContent = cat === 'all' ? 'All games' : `Showing ${count} games`;
             }
-
-            document.querySelectorAll('.game-card').forEach(card => {
-                const c = card.getAttribute('data-category');
-                if(cat === 'all' || c.includes(cat)) { card.classList.remove('hidden'); count++; }
-                else card.classList.add('hidden');
-            });
-            document.getElementById('resultCount').textContent = cat === 'all' ? 'All games' : `Showing ${count} games`;
         };
 
-        // 7. CAROUSEL & TRAILER
+        // 6. CAROUSEL & TRAILER
         const slides = document.querySelectorAll('.slide');
+        const indicator = document.getElementById('slideIndicator');
         let currentSlide = 0;
+        
+        function showSlide(index) {
+            slides.forEach(s => s.classList.remove('active'));
+            slides[index].classList.add('active');
+            // Animate Indicator
+            if(indicator) indicator.style.transform = `translateY(${index * 100}%)`;
+        }
+
         setInterval(() => {
-            slides[currentSlide].classList.remove('active');
             currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }, 5000);
+            showSlide(currentSlide);
+        }, 8000); // Slower 8s interval
 
         const modal = document.getElementById('trailerModal');
         const frame = document.getElementById('youtubeFrame');
-        window.playTrailer = (id) => { modal.classList.remove('hidden'); setTimeout(() => modal.classList.remove('opacity-0'), 10); frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&modestbranding=1&rel=0`; };
-        window.closeTrailer = () => { modal.classList.add('opacity-0'); setTimeout(() => { modal.classList.add('hidden'); frame.src = ''; }, 300); };
+        window.playTrailer = (id) => {
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+            frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&modestbranding=1&rel=0`;
+        };
+        window.closeTrailer = () => {
+            modal.classList.add('opacity-0');
+            setTimeout(() => { modal.classList.add('hidden'); frame.src = ''; }, 300);
+        };
         
         // Mobile Menu
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
         mobileMenuBtn.addEventListener('click', () => {
-            if(mobileMenu.classList.contains('translate-x-full')) { mobileMenu.classList.remove('translate-x-full'); mobileMenuBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>'; }
-            else { mobileMenu.classList.add('translate-x-full'); mobileMenuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>'; }
+            const isOpen = !mobileMenu.classList.contains('translate-x-full');
+            mobileMenu.classList.toggle('translate-x-full', isOpen);
+            if(!isOpen) mobileMenuBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+            else mobileMenuBtn.innerHTML = '<i class="fa-solid fa-bars-staggered"></i>';
         });
     </script>
 
@@ -630,40 +803,52 @@
         const firebaseConfig = { apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs", authDomain: "playwithease.firebaseapp.com", projectId: "playwithease", storageBucket: "playwithease.appspot.com", messagingSenderId: "189729941006", appId: "1:189729941006:web:362653774b92416c357e5f", measurementId: "G-1C3B31KQ7C" };
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const userProfile = document.getElementById('userProfile');
-        const loginBtn = document.getElementById('loginBtn');
-        const userAvatar = document.getElementById('userAvatar');
         
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 document.getElementById('authContainer').querySelector('#loginBtn').classList.add('hidden');
-                userProfile.classList.remove('hidden');
-                userAvatar.src = `https://ui-avatars.com/api/?name=${user.displayName || 'User'}&background=3b82f6&color=fff&bold=true`;
+                document.getElementById('userProfile').classList.remove('hidden');
+                const avatar = document.getElementById('userAvatar');
+                if(avatar) avatar.src = `https://ui-avatars.com/api/?name=${user.displayName || 'User'}&background=2563eb&color=fff&bold=true`;
                 document.getElementById('authModal').classList.add('hidden');
             } else {
                 document.getElementById('authContainer').querySelector('#loginBtn').classList.remove('hidden');
-                userProfile.classList.add('hidden');
+                document.getElementById('userProfile').classList.add('hidden');
             }
         });
 
-        window.toggleAuthModal = () => document.getElementById('authModal').classList.toggle('hidden');
+        window.toggleAuthModal = () => {
+            const modal = document.getElementById('authModal');
+            modal.classList.toggle('hidden');
+            if(!modal.classList.contains('hidden')) {
+                // Add blur backdrop animation if needed
+            }
+        };
+        
         window.switchTab = (mode) => {
             const isLogin = mode === 'login';
             window.isLoginMode = isLogin;
-            document.getElementById('tabLogin').className = isLogin ? "flex-1 pb-3 text-center text-white border-b-2 border-blue-500 font-medium transition-colors" : "flex-1 pb-3 text-center text-gray-400 hover:text-white transition-colors";
-            document.getElementById('tabRegister').className = !isLogin ? "flex-1 pb-3 text-center text-white border-b-2 border-blue-500 font-medium transition-colors" : "flex-1 pb-3 text-center text-gray-400 hover:text-white transition-colors";
-            document.getElementById('authForm').querySelector('input[type="text"]').classList.toggle('hidden', isLogin);
+            const tabLogin = document.getElementById('tabLogin');
+            const tabRegister = document.getElementById('tabRegister');
+            
+            tabLogin.className = isLogin ? "flex-1 pb-4 text-center text-white border-b-2 border-primary font-medium transition-colors" : "flex-1 pb-4 text-center text-gray-500 hover:text-white transition-colors";
+            tabRegister.className = !isLogin ? "flex-1 pb-4 text-center text-white border-b-2 border-primary font-medium transition-colors" : "flex-1 pb-4 text-center text-gray-500 hover:text-white transition-colors";
+            
+            document.getElementById('registerNameGroup').classList.toggle('hidden', isLogin);
             document.getElementById('submitBtn').textContent = isLogin ? "Log In" : "Create Account";
         };
+        
         window.isLoginMode = true;
         window.handleAuth = async (e) => {
             e.preventDefault();
-            const email = e.target.querySelector('input[type="email"]').value;
-            const password = e.target.querySelector('input[type="password"]').value;
-            const name = e.target.querySelector('input[type="text"]').value;
+            const email = e.target.querySelector('#email').value;
+            const password = e.target.querySelector('#password').value;
+            const name = e.target.querySelector('#fullName')?.value;
             const err = document.getElementById('authError');
             const btn = document.getElementById('submitBtn');
+            
             btn.disabled = true; btn.textContent = "Processing..."; err.classList.add('hidden');
+            
             try {
                 if(window.isLoginMode) await signInWithEmailAndPassword(auth, email, password);
                 else {
@@ -678,6 +863,7 @@
                 btn.textContent = window.isLoginMode ? "Log In" : "Create Account";
             }
         };
+        
         document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
     </script>
 </body>
