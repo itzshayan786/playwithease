@@ -1,11 +1,11 @@
 /* ============================================================
-PLAYWITHEASE TITAN FRAMEWORK - ENTERPRISE CORE v2.0
+PLAYWITHEASE TITAN FRAMEWORK v3.0 - ENTERPRISE EDITION
 ============================================================
 */
 
 :root {
     --primary: #2563eb;
-    --primary-glow: rgba(37, 99, 235, 0.3);
+    --primary-glow: rgba(37, 99, 235, 0.4);
     --accent: #7c3aed;
     --bg: #020202;
     --surface: #0d0d0d;
@@ -13,10 +13,11 @@ PLAYWITHEASE TITAN FRAMEWORK - ENTERPRISE CORE v2.0
     --border: rgba(255, 255, 255, 0.08);
     --text-main: #f8fafc;
     --text-dim: #94a3b8;
-    --health-green: #10b981;
+    --gold: #fbbf24;
+    --health: #10b981;
 }
 
-/* 1. CORE RESET & BOUNDARY LOCK 
+/* 1. CORE RESET & VIEWPORT LOCK 
    ------------------------------------------------------------ */
 html, body {
     overflow-x: hidden !important;
@@ -36,56 +37,59 @@ html, body {
     box-sizing: border-box;
 }
 
-/* 2. Z-INDEX ARCHITECTURE (LAYER CONTROL)
+/* 2. Z-INDEX HIERARCHY 
    ------------------------------------------------------------ */
 .z-base { z-index: 1; }
-.z-cat { z-index: 40; }
-.z-nav { z-index: 50; }
-.z-overlay { z-index: 100; }
-.z-drawer { z-index: 200; }
-.z-ai { z-index: 300; }
-.z-modal { z-index: 1000 !important; } /* High priority for Trailers */
+.z-cat { z-index: 400; }
+.z-nav { z-index: 500; }
+.z-overlay { z-index: 1000; }
+.z-drawer { z-index: 1100; }
+.z-ai { z-index: 1200; }
+.z-modal { z-index: 9999 !important; } /* Highest priority for Cinema Mode */
 
-/* 3. NAVIGATION & GLASSMORPHISM
+/* 3. DESKTOP PRECISION LAYOUT (Min-Width 1024px)
    ------------------------------------------------------------ */
-.glass-nav {
-    background: rgba(2, 2, 2, 0.8);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border-bottom: 1px solid var(--border);
-}
-
-.bottom-nav {
-    background: rgba(10, 10, 10, 0.98);
-    backdrop-filter: blur(20px);
-    border-top: 1px solid var(--border);
-    height: 75px;
-    padding-bottom: env(safe-area-inset-bottom);
-}
-
-/* 4. COMPACT MOBILE LAYOUT (APP-LIKE)
-   ------------------------------------------------------------ */
-@media (max-width: 1023px) {
-    /* Main Content Padding for Mobile */
+@media (min-width: 1024px) {
     main {
-        padding-top: 1rem;
-        padding-bottom: 100px; /* Room for Bottom Nav */
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 4rem 4rem;
     }
 
-    /* Force 2-column grid for products on mobile */
+    /* Professional 5-Column Desktop Grid */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 2.5rem;
+    }
+
+    .hero-height { height: 85vh; }
+    
+    .nav-height { height: 96px; }
+}
+
+/* 4. MOBILE APP LAYOUT (Max-Width 1023px)
+   ------------------------------------------------------------ */
+@media (max-width: 1023px) {
+    main {
+        padding: 1.5rem 1rem;
+        padding-bottom: 120px; /* Space for Bottom Nav */
+    }
+
+    /* Compact 2-Column Grid for Mobile */
     .product-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 0.75rem;
+        gap: 1rem;
     }
 
-    /* Horizontal Snap Scroll for featured sections */
-    .snap-scroll-mobile {
+    /* Custom Mobile Scrolling Row for Featured */
+    .snap-scroll {
         display: flex;
         overflow-x: auto;
         gap: 1rem;
         scroll-snap-type: x mandatory;
-        padding-bottom: 1.5rem;
+        padding-bottom: 1rem;
     }
 
     .snap-card {
@@ -93,71 +97,80 @@ html, body {
         width: 180px;
         scroll-snap-align: start;
     }
-}
 
-/* 5. PROFESSIONAL DESKTOP GRID
-   ------------------------------------------------------------ */
-@media (min-width: 1024px) {
-    .product-grid {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 2rem;
-    }
+    .hero-height { height: 55vh; }
 
-    main {
-        max-width: 1550px;
-        margin: 0 auto;
-        padding: 4rem 2rem;
+    .bottom-nav {
+        background: rgba(8, 8, 8, 0.98);
+        backdrop-filter: blur(20px);
+        height: 75px;
+        padding-bottom: env(safe-area-inset-bottom);
     }
 }
 
-/* 6. COMPONENT STYLING (THE CARDS)
+/* 5. PROFESSIONAL COMPONENT STYLES
    ------------------------------------------------------------ */
+.glass-nav {
+    background: rgba(2, 2, 2, 0.85);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-bottom: 1px solid var(--border);
+}
+
 .card-pro {
     background: var(--card-bg);
     border: 1px solid var(--border);
-    border-radius: 1.5rem;
+    border-radius: 2rem;
     overflow: hidden;
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
 }
 
 .card-pro:hover {
-    transform: translateY(-12px);
+    transform: translateY(-15px) scale(1.03);
     border-color: var(--primary);
-    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.8), 
-                0 0 20px var(--primary-glow);
+    box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.9), 
+                0 0 25px var(--primary-glow);
 }
 
-/* Special Case: Pharmacy Cards */
-.card-pharmacy {
-    border-bottom: 4px solid var(--health-green);
+/* Special Case: Pharmacy Branding */
+.card-med {
+    border-top: 4px solid var(--health);
 }
-
-.card-pharmacy:hover {
-    border-color: var(--health-green);
+.card-med:hover {
+    border-color: var(--health);
     box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);
 }
 
-/* 7. CINEMATIC ELEMENTS
-   ------------------------------------------------------------ */
-.ken-burns {
-    animation: kenBurnsEffect 25s infinite alternate ease-in-out;
+/* Special Case: Gift Card Branding */
+.card-gift {
+    border-top: 4px solid var(--gold);
+}
+.card-gift:hover {
+    border-color: var(--gold);
+    box-shadow: 0 20px 40px rgba(251, 191, 36, 0.2);
 }
 
-@keyframes kenBurnsEffect {
+/* 6. ANIMATIONS & FX
+   ------------------------------------------------------------ */
+.ken-burns {
+    animation: kenBurnsAnim 30s infinite alternate ease-in-out;
+}
+
+@keyframes kenBurnsAnim {
     from { transform: scale(1); }
-    to { transform: scale(1.15); }
+    to { transform: scale(1.2); }
 }
 
 .btn-titan {
-    background: linear-gradient(90deg, var(--primary), var(--accent));
+    background: linear-gradient(135deg, var(--primary), var(--accent));
     color: white;
-    font-weight: 800;
+    font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     position: relative;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
 }
 
 .btn-titan::after {
@@ -165,35 +178,16 @@ html, body {
     position: absolute;
     top: 0; left: -100%;
     width: 100%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
     transition: 0.6s;
-}
-
-.btn-titan:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 30px var(--primary-glow);
 }
 
 .btn-titan:hover::after { left: 100%; }
 
-/* 8. AI BUBBLE & INTERFACE
-   ------------------------------------------------------------ */
-.ai-pulse {
-    animation: aiPulse 2.5s infinite;
-}
-
-@keyframes aiPulse {
-    0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
-    70% { box-shadow: 0 0 0 20px rgba(37, 99, 235, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
-}
-
-/* 9. REVEAL SYSTEM
-   ------------------------------------------------------------ */
 .reveal {
     opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(40px);
+    transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal.active {
@@ -201,14 +195,22 @@ html, body {
     transform: translateY(0);
 }
 
-/* 10. SCROLLBARS FOR DESKTOP GRID */
-.custom-scroll::-webkit-scrollbar {
-    width: 6px;
-}
-.custom-scroll::-webkit-scrollbar-track {
+/* 7. DRAWER SYSTEMS
+   ------------------------------------------------------------ */
+.drawer-right {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    max-width: 480px;
     background: var(--bg);
+    transform: translateX(100%);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: -20px 0 60px rgba(0,0,0,0.8);
+    border-left: 1px solid var(--border);
 }
-.custom-scroll::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 10px;
+
+.drawer-right.active {
+    transform: translateX(0);
 }
