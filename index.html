@@ -3,367 +3,423 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayWithEase | World Premiere Event</title>
+    <title>PlayWithEase | PS5 Experience</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
     <style>
-        /* --- 1. PREMIUM VARIABLES --- */
         :root {
-            --bg-deep: #050505;
-            --bg-card: #141414;
-            --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.1);
-            
-            /* GTA Theme Colors */
-            --gta-accent: #ff9f43;
-            --gta-grad: linear-gradient(135deg, #ff9f43, #ee5253);
-            
-            /* Forza Theme Colors */
-            --forza-accent: #00d2d3;
-            --forza-grad: linear-gradient(135deg, #00d2d3, #5f27cd);
-
-            --text-main: #ffffff;
-            --text-muted: #8395a7;
+            --bg: #000000;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-hover: rgba(255, 255, 255, 0.2);
+            --sony-blue: #0070d1;
+            --accent: #ffffff;
+            --text-grey: #b3b3b3;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-deep); color: var(--text-main); overflow-x: hidden; }
-        h1, h2, h3 { font-family: 'Montserrat', sans-serif; }
-        button { cursor: pointer; border: none; outline: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Saira', sans-serif; }
+        body { background-color: var(--bg); color: white; overflow-x: hidden; }
+        
+        /* --- BACKGROUND AMBIENCE --- */
+        .ambient-glow {
+            position: fixed; top: -20%; right: -10%; width: 50vw; height: 50vw;
+            background: radial-gradient(circle, var(--sony-blue) 0%, transparent 70%);
+            opacity: 0.2; z-index: -1; pointer-events: none;
+        }
 
-        /* --- 2. GLASS NAVBAR --- */
+        /* --- HEADER --- */
         header {
             position: fixed; top: 0; width: 100%; z-index: 1000;
-            background: rgba(5, 5, 5, 0.7);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            height: 80px; display: flex; align-items: center;
+            padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
         }
-        .nav-container {
-            width: 90%; max-width: 1400px; margin: 0 auto;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .logo { font-size: 26px; font-weight: 900; letter-spacing: -1px; display: flex; align-items: center; gap: 10px; }
-        .logo span { background: var(--gta-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        /* Search */
-        .search-wrapper { flex: 1; max-width: 500px; position: relative; margin: 0 40px; }
-        .search-input {
-            width: 100%; background: var(--glass); border: 1px solid var(--border);
-            padding: 14px 25px; padding-right: 50px; border-radius: 50px; color: white;
-            font-size: 14px; transition: 0.3s;
-        }
-        .search-input:focus { background: rgba(255,255,255,0.1); border-color: var(--gta-accent); }
-
-        /* Nav Items */
-        .nav-right { display: flex; align-items: center; gap: 25px; }
-        .nav-item { color: var(--text-muted); font-weight: 600; font-size: 14px; transition: 0.3s; cursor: pointer; }
-        .nav-item:hover { color: white; }
-        .btn-login {
-            padding: 10px 24px; border-radius: 30px; font-weight: 700; font-size: 14px;
-            background: white; color: black; transition: 0.3s;
-        }
-        .btn-login:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,255,255,0.3); }
-
-        /* --- 3. DYNAMIC HERO SLIDER --- */
-        .hero-wrapper {
-            height: 100vh; position: relative; overflow: hidden;
-            display: flex; align-items: center;
+        .nav-left { display: flex; gap: 30px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-item { opacity: 0.6; cursor: pointer; transition: 0.3s; position: relative; }
+        .nav-item.active, .nav-item:hover { opacity: 1; text-shadow: 0 0 10px white; }
+        .nav-item.active::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 2px; background: var(--sony-blue);
         }
 
-        /* Background Layers */
-        .hero-bg {
+        .offline-btn {
+            background: rgba(255, 50, 50, 0.2); border: 1px solid rgba(255, 50, 50, 0.5);
+            padding: 8px 16px; border-radius: 20px; font-size: 11px; font-weight: 700;
+            display: flex; align-items: center; gap: 8px; cursor: pointer; transition: 0.3s;
+        }
+        .offline-btn:hover { background: rgba(255, 50, 50, 0.8); box-shadow: 0 0 20px red; }
+
+        .auth-btn {
+            background: white; color: black; padding: 8px 24px; border-radius: 20px;
+            font-weight: 700; font-size: 13px; cursor: pointer; border: none;
+        }
+
+        /* --- HERO SECTION (DYNAMIC) --- */
+        .hero {
+            height: 85vh; position: relative; display: flex; align-items: flex-end; padding-bottom: 80px;
+            transition: background 0.5s; overflow: hidden;
+        }
+        
+        .hero-bg-img {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-size: cover; background-position: center; transition: opacity 0.8s ease-in-out;
-            z-index: 1;
-        }
-        .bg-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2;
-            background: linear-gradient(to right, #050505 10%, rgba(5,5,5,0.8) 40%, transparent);
+            object-fit: cover; z-index: -1; mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+            transition: opacity 0.8s ease;
         }
 
         .hero-content {
-            position: relative; z-index: 10; width: 90%; max-width: 1400px; margin: 0 auto;
-            opacity: 0; transform: translateY(30px); transition: 0.5s;
+            padding-left: 60px; width: 50%; z-index: 10;
+            transform: translateY(20px); opacity: 0; transition: 0.5s ease-out;
         }
-        .hero-content.active { opacity: 1; transform: translateY(0); }
+        .hero-content.visible { transform: translateY(0); opacity: 1; }
 
-        /* Hero Typography */
-        .premiere-tag {
-            display: inline-block; padding: 8px 16px; border-radius: 4px;
-            background: rgba(255,255,255,0.1); backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.2);
-            font-size: 12px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
-            margin-bottom: 20px; color: white;
+        .game-logo-text {
+            font-size: 60px; font-weight: 900; line-height: 1; text-transform: uppercase;
+            margin-bottom: 15px; text-shadow: 0 0 30px rgba(0,0,0,0.8);
         }
-        .hero-title { font-size: 80px; line-height: 0.95; font-weight: 900; margin-bottom: 20px; text-transform: uppercase; }
-        .hero-desc { max-width: 600px; color: #dcdde1; font-size: 18px; margin-bottom: 40px; line-height: 1.6; }
-
-        /* Buttons */
-        .cta-row { display: flex; gap: 20px; }
-        .btn-hero-primary {
-            padding: 16px 40px; border-radius: 4px; font-weight: 800; text-transform: uppercase;
-            font-size: 16px; color: white; border: none; clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
-            transition: 0.3s;
-        }
-        .btn-hero-secondary {
-            padding: 16px 30px; border-radius: 4px; font-weight: 700; text-transform: uppercase;
-            font-size: 14px; color: white; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px); display: flex; align-items: center; gap: 10px; transition: 0.3s;
-        }
-        .btn-hero-secondary:hover { background: white; color: black; }
-
-        /* Slider Controls */
-        .slider-controls {
-            position: absolute; bottom: 40px; right: 5%; z-index: 20;
-            display: flex; gap: 10px;
-        }
-        .slide-dot {
-            width: 60px; height: 5px; background: rgba(255,255,255,0.2); cursor: pointer; transition: 0.3s;
-        }
-        .slide-dot.active { background: white; width: 100px; }
-
-        /* --- 4. PRODUCT STORE --- */
-        .store-section { padding: 80px 0; background: #050505; position: relative; z-index: 10; }
-        .container { width: 90%; max-width: 1400px; margin: 0 auto; }
         
-        .section-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
-        .section-title { font-size: 32px; font-weight: 800; }
-        .section-title span { color: var(--gta-accent); }
+        .meta-tags { display: flex; gap: 15px; font-size: 12px; color: var(--text-grey); margin-bottom: 20px; font-weight: 600; }
+        .tag-box { border: 1px solid white; padding: 2px 6px; border-radius: 3px; color: white; }
 
-        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px; }
+        .hero-desc { font-size: 16px; color: #e0e0e0; margin-bottom: 30px; max-width: 500px; text-shadow: 1px 1px 2px black; }
 
-        .card {
-            background: var(--bg-card); border-radius: 16px; overflow: hidden;
-            border: 1px solid var(--border); transition: 0.4s ease; position: relative; group;
+        .price-tag { font-size: 24px; font-weight: 300; margin-bottom: 20px; }
+        .price-tag span { font-weight: 700; font-size: 32px; }
+
+        .action-row { display: flex; gap: 20px; }
+        .btn-primary {
+            background: var(--sony-blue); color: white; border: none; padding: 12px 30px;
+            border-radius: 30px; font-weight: 700; font-size: 16px; cursor: pointer;
+            transition: 0.3s; display: flex; align-items: center; gap: 10px;
         }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.3); }
+        .btn-primary:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--sony-blue); }
 
-        .card-img-wrap { position: relative; width: 100%; aspect-ratio: 3/4; overflow: hidden; }
-        .card-img { width: 100%; height: 100%; object-fit: cover; transition: 0.4s; }
-        .card:hover .card-img { transform: scale(1.1); }
+        .btn-glass {
+            background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: white; border: none;
+            padding: 12px 20px; border-radius: 30px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 10px;
+        }
+        .btn-glass:hover { background: white; color: black; }
+
+        /* --- HERO SWITCHER (THE FIX) --- */
+        .hero-switch {
+            position: absolute; bottom: 40px; right: 60px; display: flex; gap: 20px; z-index: 20;
+        }
+        .switch-card {
+            width: 160px; height: 90px; border-radius: 12px; overflow: hidden; cursor: pointer;
+            border: 2px solid transparent; transition: 0.3s; position: relative;
+        }
+        .switch-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
+        .switch-card:hover, .switch-card.active { border-color: white; transform: scale(1.1); box-shadow: 0 10px 30px black; }
+        .switch-card.active img { opacity: 1; }
+        .switch-label {
+            position: absolute; bottom: 5px; left: 10px; font-size: 10px; font-weight: 700; text-shadow: 0 0 5px black;
+        }
+
+        /* --- HORIZONTAL RAILS (PS STORE STYLE) --- */
+        .shelf { padding: 40px 0 40px 60px; }
+        .shelf-title { font-size: 22px; margin-bottom: 20px; font-weight: 300; }
+        .shelf-title b { font-weight: 700; }
+
+        .rail {
+            display: flex; gap: 25px; overflow-x: auto; padding-bottom: 30px; padding-right: 60px;
+            scrollbar-width: none; /* Hide scrollbar */
+        }
+        .rail::-webkit-scrollbar { display: none; }
+
+        .game-card {
+            min-width: 200px; width: 200px; cursor: pointer; transition: 0.3s; position: relative;
+        }
+        .game-card:hover { transform: translateY(-10px) scale(1.02); z-index: 5; }
         
-        .card-info { padding: 20px; }
-        .card-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
-        .card-price { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
-        .price-val { font-size: 18px; font-weight: 700; color: white; }
-        .add-btn {
-            width: 35px; height: 35px; border-radius: 50%; background: white; color: black;
-            display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.8); transition: 0.3s;
+        .card-art {
+            width: 100%; aspect-ratio: 2/3; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5); position: relative;
         }
-        .card:hover .add-btn { opacity: 1; transform: scale(1); }
-
-        /* --- 5. MODALS (Login & Video) --- */
-        .modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 3000;
-            background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
-            display: none; justify-content: center; align-items: center;
-        }
-        .modal.active { display: flex; animation: fadeIn 0.3s; }
+        .card-art img { width: 100%; height: 100%; object-fit: cover; }
         
-        /* Video Modal */
-        .video-box { width: 80%; max-width: 1000px; aspect-ratio: 16/9; position: relative; }
-        iframe { width: 100%; height: 100%; border: none; border-radius: 10px; box-shadow: 0 0 50px rgba(255,255,255,0.1); }
-        .close-modal { position: absolute; top: -40px; right: 0; color: white; font-size: 30px; cursor: pointer; }
+        .game-card:hover .card-art { box-shadow: 0 0 0 3px white; } /* PS Focus State */
 
-        /* Login Modal */
-        .login-card {
-            background: #141414; width: 400px; padding: 40px; border-radius: 20px;
-            border: 1px solid var(--border); text-align: center;
-        }
-        .login-input {
-            width: 100%; padding: 15px; background: #0a0a0a; border: 1px solid var(--border);
-            color: white; border-radius: 8px; margin-bottom: 15px;
-        }
-        .btn-submit { width: 100%; padding: 15px; background: white; color: black; font-weight: 800; border-radius: 8px; }
+        .card-meta { margin-top: 15px; opacity: 0.7; transition: 0.3s; }
+        .game-card:hover .card-meta { opacity: 1; }
+        .card-title { font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-price { font-size: 13px; color: var(--text-grey); margin-top: 4px; }
 
-        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
-
-        /* User Profile */
-        .user-pill {
-            display: flex; align-items: center; gap: 10px;
-            background: var(--glass); padding: 5px 15px; border-radius: 30px; border: 1px solid var(--border);
+        /* --- OFFLINE GAME MODAL --- */
+        .game-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111; z-index: 5000;
+            display: none; flex-direction: column; justify-content: center; align-items: center;
         }
-        .avatar { width: 30px; height: 30px; background: linear-gradient(to right, #ff9f43, #ee5253); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        canvas { background: #000; border: 2px solid #333; box-shadow: 0 0 50px rgba(0, 112, 209, 0.2); }
+        .game-ui { text-align: center; margin-bottom: 20px; }
+        .game-ui h2 { font-size: 40px; color: var(--sony-blue); text-transform: uppercase; letter-spacing: 5px; }
+
+        /* --- VIDEO MODAL --- */
+        .video-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 4000;
+            display: none; align-items: center; justify-content: center;
+        }
+        .close-video { position: absolute; top: 30px; right: 30px; font-size: 40px; cursor: pointer; z-index: 4001; }
 
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="nav-container">
-            <a href="#" class="logo">
-                <i class="fas fa-gamepad" style="color:white;"></i> 
-                PlayWith<span>Ease</span>
-            </a>
-            
-            <div class="search-wrapper">
-                <input type="text" class="search-input" placeholder="Search store...">
-            </div>
+    <div class="ambient-glow"></div>
 
-            <div class="nav-right">
-                <div class="nav-item">Store</div>
-                <div class="nav-item">Library</div>
-                <div class="nav-item"><i class="fas fa-shopping-cart"></i></div>
-                
-                <div id="auth-container">
-                    <button class="btn-login" onclick="toggleLogin()">Log In</button>
-                </div>
+    <header>
+        <div class="nav-left">
+            <div class="nav-item active">Games</div>
+            <div class="nav-item">Hardware</div>
+            <div class="nav-item">Services</div>
+            <div class="nav-item">News</div>
+        </div>
+
+        <div style="display: flex; gap: 20px; align-items: center;">
+            <div class="offline-btn" onclick="startOfflineGame()">
+                <i class="fas fa-wifi" style="text-decoration: line-through;"></i>
+                NO INTERNET? PLAY THIS
             </div>
+            <div class="nav-item"><i class="fas fa-search"></i></div>
+            <div class="nav-item"><i class="fas fa-shopping-bag"></i></div>
+            <button class="auth-btn" id="loginBtn" onclick="handleLogin()">Sign In</button>
         </div>
     </header>
 
-    <div class="hero-wrapper">
-        <div class="hero-bg active" id="bg-gta" style="background-image: url('https://images.hdqwalls.com/wallpapers/gta-vi-4k-logo-fo.jpg'); opacity: 1;"></div>
+    <section class="hero" id="hero-section">
+        <img id="hero-bg" src="https://images.hdqwalls.com/wallpapers/gta-vi-4k-logo-fo.jpg" class="hero-bg-img">
         
-        <div class="hero-bg" id="bg-forza" style="background-image: url('https://images.hdqwalls.com/wallpapers/forza-horizon-5-4k-game-3r.jpg'); opacity: 0;"></div>
-        
-        <div class="bg-overlay"></div>
-
-        <div class="hero-content active" id="content-gta">
-            <div class="premiere-tag" style="color: var(--gta-accent); border-color: var(--gta-accent);">Global Premiere</div>
-            <h1 class="hero-title">Grand Theft<br><span style="color: transparent; background: var(--gta-grad); -webkit-background-clip: text;">Auto VI</span></h1>
-            <p class="hero-desc">Return to Vice City in the most immersive open-world experience ever created. Pre-order the Premium Deluxe Edition for exclusive content.</p>
-            <div class="cta-row">
-                <button class="btn-hero-primary" style="background: var(--gta-grad);">Pre-Order $69.99</button>
-                <button class="btn-hero-secondary" onclick="openVideo('QdBZY2fkU-0')"><i class="fas fa-play"></i> Watch Trailer 1</button>
+        <div class="hero-content visible" id="hero-text">
+            <div class="meta-tags">
+                <span class="tag-box">PS5</span>
+                <span>EXCLUSIVE PREMIERE</span>
+            </div>
+            <div class="game-logo-text" id="hero-title">Grand Theft Auto VI</div>
+            <p class="hero-desc" id="hero-desc">
+                Welcome to Leonida. Experience the next evolution of the open world with Jason and Lucia in the most immersive Vice City ever created.
+            </p>
+            <div class="price-tag">Pre-Order <span>$69.99</span></div>
+            <div class="action-row">
+                <button class="btn-primary">Pre-Order Now</button>
+                <button class="btn-glass" onclick="playTrailer()"><i class="fas fa-play"></i> Watch Trailer</button>
             </div>
         </div>
 
-        <div class="hero-content" id="content-forza" style="position: absolute; top: 50%; transform: translateY(-50%); display: none;">
-            <div class="premiere-tag" style="color: var(--forza-accent); border-color: var(--forza-accent);">World Reveal</div>
-            <h1 class="hero-title">Forza<br><span style="color: transparent; background: var(--forza-grad); -webkit-background-clip: text;">Horizon 6</span></h1>
-            <p class="hero-desc">Explore the neon-soaked streets of Tokyo. Next-gen physics, dynamic weather, and the largest car roster in history.</p>
-            <div class="cta-row">
-                <button class="btn-hero-primary" style="background: var(--forza-grad);">Pre-Order $59.99</button>
-                <button class="btn-hero-secondary" onclick="openVideo('FYH9n37B7Yw')"><i class="fas fa-play"></i> Watch Gameplay</button>
+        <div class="hero-switch">
+            <div class="switch-card active" onclick="switchGame('gta')">
+                <img src="https://images.hdqwalls.com/wallpapers/gta-vi-4k-logo-fo.jpg" alt="GTA VI">
+                <div class="switch-label">GTA VI</div>
             </div>
-        </div>
-
-        <div class="slider-controls">
-            <div class="slide-dot active" onclick="setSlide(0)"></div>
-            <div class="slide-dot" onclick="setSlide(1)"></div>
-        </div>
-    </div>
-
-    <section class="store-section">
-        <div class="container">
-            <div class="section-head">
-                <h2 class="section-title">Trending <span>This Week</span></h2>
-                <div style="color: #8395a7; cursor: pointer;">View All <i class="fas fa-arrow-right"></i></div>
+            <div class="switch-card" onclick="switchGame('forza')">
+                <img src="https://images.hdqwalls.com/wallpapers/forza-horizon-5-4k-game-3r.jpg" alt="Forza">
+                <div class="switch-label">FORZA 6</div>
             </div>
-
-            <div class="game-grid" id="game-grid">
-                </div>
         </div>
     </section>
 
-    <div class="modal" id="videoModal">
-        <div class="video-box">
-            <div class="close-modal" onclick="closeVideo()">&times;</div>
-            <iframe id="youtube-frame" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        </div>
+    <div class="shelf">
+        <div class="shelf-title">Top 10 <b>in Your Region</b></div>
+        <div class="rail" id="trending-rail">
+            </div>
     </div>
 
-    <div class="modal" id="loginModal">
-        <div class="login-card">
-            <div class="close-modal" style="position:relative; top:0; right:0; text-align:right; margin-bottom:20px;" onclick="toggleLogin()">&times;</div>
-            <h2 style="margin-bottom: 30px;">Welcome Back</h2>
-            <input type="email" id="email" class="login-input" placeholder="Email Address">
-            <input type="password" id="pass" class="login-input" placeholder="Password">
-            <button class="btn-submit" onclick="login()">Sign In</button>
-            <div style="margin-top: 15px; font-size: 12px; color: grey;">Or sign in with Google</div>
+    <div class="shelf">
+        <div class="shelf-title">Coming <b>Soon</b></div>
+        <div class="rail" id="soon-rail">
+            </div>
+    </div>
+
+    <div class="game-modal" id="offlineGame">
+        <div class="game-ui">
+            <h2>Neon Runner</h2>
+            <p>Press SPACE or TAP to Jump. Avoid Red Blocks.</p>
+            <p id="score">Score: 0</p>
+            <button class="btn-glass" onclick="closeGame()" style="margin: 20px auto;">Exit Game</button>
         </div>
+        <canvas id="gameCanvas" width="800" height="400"></canvas>
+    </div>
+
+    <div class="video-overlay" id="videoOverlay">
+        <div class="close-video" onclick="closeTrailer()">&times;</div>
+        <iframe id="youtube-embed" width="80%" height="80%" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
 
     <script>
-        // --- 1. HERO SLIDER LOGIC ---
-        let currentSlide = 0;
-        const slides = [
-            { bg: 'bg-gta', content: 'content-gta' },
-            { bg: 'bg-forza', content: 'content-forza' }
-        ];
+        // --- 1. HERO LOGIC (The Switcher) ---
+        const games = {
+            gta: {
+                title: "Grand Theft Auto VI",
+                desc: "Welcome to Leonida. Experience the next evolution of the open world with Jason and Lucia in the most immersive Vice City ever created.",
+                bg: "https://images.hdqwalls.com/wallpapers/gta-vi-4k-logo-fo.jpg",
+                trailer: "QdBZY2fkU-0",
+                price: "$69.99",
+                color: "#ff0055" // Vice City Pink
+            },
+            forza: {
+                title: "Forza Horizon 6",
+                desc: "The Horizon Festival moves to Japan. Drift through neon-lit Tokyo streets and race down Mount Fuji in the most visually stunning racer ever made.",
+                bg: "https://images.hdqwalls.com/wallpapers/forza-horizon-5-4k-game-3r.jpg",
+                trailer: "FYH9n37B7Yw",
+                price: "$59.99",
+                color: "#00d2d3" // Horizon Blue
+            }
+        };
 
-        function setSlide(index) {
-            // Hide all
-            document.querySelectorAll('.hero-bg').forEach(el => el.style.opacity = '0');
-            document.querySelectorAll('.hero-content').forEach(el => {
-                el.classList.remove('active');
-                setTimeout(() => el.style.display = 'none', 500);
-            });
-            document.querySelectorAll('.slide-dot').forEach(el => el.classList.remove('active'));
+        let activeGame = 'gta';
 
-            // Show selected
-            document.getElementById(slides[index].bg).style.opacity = '1';
+        function switchGame(gameKey) {
+            if(activeGame === gameKey) return;
+            activeGame = gameKey;
+            const data = games[gameKey];
+
+            // Update Active Card UI
+            document.querySelectorAll('.switch-card').forEach(el => el.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            // Fade Out Content
+            const bg = document.getElementById('hero-bg');
+            const text = document.getElementById('hero-text');
             
-            const content = document.getElementById(slides[index].content);
-            content.style.display = 'block';
-            // Slight delay to allow display:block to render before opacity transition
-            setTimeout(() => content.classList.add('active'), 50);
+            text.classList.remove('visible');
+            bg.style.opacity = 0;
 
-            document.querySelectorAll('.slide-dot')[index].classList.add('active');
-            currentSlide = index;
+            setTimeout(() => {
+                // Update Data
+                bg.src = data.bg;
+                document.getElementById('hero-title').innerText = data.title;
+                document.getElementById('hero-desc').innerText = data.desc;
+                
+                // Fade In
+                bg.style.opacity = 1;
+                text.classList.add('visible');
+            }, 500);
         }
 
-        // Auto slide every 7 seconds
-        setInterval(() => {
-            let next = currentSlide === 0 ? 1 : 0;
-            setSlide(next);
-        }, 7000);
+        function playTrailer() {
+            const id = games[activeGame].trailer;
+            document.getElementById('videoOverlay').style.display = 'flex';
+            document.getElementById('youtube-embed').src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+        }
 
-        // --- 2. GAME GRID DATA ---
-        const games = [
-            { title: "Elden Ring: Shadow of the Erdtree", price: 39.99, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co848v.jpg" },
-            { title: "Black Myth: Wukong", price: 59.99, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co8ush.jpg" },
-            { title: "Cyberpunk 2077: Phantom Liberty", price: 29.99, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co5j8h.jpg" },
-            { title: "Call of Duty: Modern Warfare III", price: 69.99, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co6w0w.jpg" },
-            { title: "Starfield", price: 49.99, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co6497.jpg" },
-            { title: "Tekken 8", price: 69.99, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co6y3n.jpg" },
-            { title: "Resident Evil 4 Remake", price: 39.99, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co628e.jpg" },
-            { title: "Spider-Man 2", price: 69.99, img: "https://images.igdb.com/igdb/image/upload/t_cover_big/co660r.jpg" }
+        function closeTrailer() {
+            document.getElementById('videoOverlay').style.display = 'none';
+            document.getElementById('youtube-embed').src = "";
+        }
+
+        // --- 2. GAME RAILS POPULATION ---
+        const railData = [
+            { t: "Elden Ring", p: "$39.99", i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co848v.jpg" },
+            { t: "Black Myth: Wukong", p: "$59.99", i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co8ush.jpg" },
+            { t: "Spider-Man 2", p: "$69.99", i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co660r.jpg" },
+            { t: "God of War Ragnarök", p: "$49.99", i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co5s5v.jpg" },
+            { t: "Cyberpunk 2077", p: "$29.99", i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mjs.jpg" },
+            { t: "Resident Evil 4", p: "$39.99", i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co628e.jpg" },
         ];
 
-        const grid = document.getElementById('game-grid');
-        games.forEach(g => {
-            grid.innerHTML += `
-                <div class="card">
-                    <div class="card-img-wrap">
-                        <img src="${g.img}" class="card-img">
+        const rail = document.getElementById('trending-rail');
+        // Duplicate for demo
+        [...railData, ...railData].forEach(g => {
+            rail.innerHTML += `
+                <div class="game-card">
+                    <div class="card-art">
+                        <img src="${g.i}" loading="lazy">
                     </div>
-                    <div class="card-info">
-                        <div class="card-title">${g.title}</div>
-                        <div class="card-price">
-                            <span class="price-val">$${g.price}</span>
-                            <div class="add-btn"><i class="fas fa-plus"></i></div>
-                        </div>
+                    <div class="card-meta">
+                        <div class="card-title">${g.t}</div>
+                        <div class="card-price">${g.p}</div>
                     </div>
                 </div>
             `;
         });
+        document.getElementById('soon-rail').innerHTML = rail.innerHTML; // Copy for demo
 
-        // --- 3. MODAL LOGIC ---
-        function openVideo(id) {
-            document.getElementById('videoModal').classList.add('active');
-            document.getElementById('youtube-frame').src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+        // --- 3. OFFLINE MINI-GAME (NEON RUNNER) ---
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        let gameLoop;
+        let player = { x: 50, y: 350, w: 30, h: 30, dy: 0, jump: -12, grounded: true };
+        let obstacles = [];
+        let frame = 0;
+        let score = 0;
+        let gameActive = false;
+
+        function startOfflineGame() {
+            document.getElementById('offlineGame').style.display = 'flex';
+            gameActive = true;
+            resetGame();
+            requestAnimationFrame(updateGame);
+            
+            // Input
+            window.addEventListener('keydown', e => { if(e.code === 'Space') jump(); });
+            canvas.addEventListener('click', jump);
         }
-        function closeVideo() {
-            document.getElementById('videoModal').classList.remove('active');
-            document.getElementById('youtube-frame').src = "";
+
+        function closeGame() {
+            document.getElementById('offlineGame').style.display = 'none';
+            gameActive = false;
         }
-        function toggleLogin() {
-            const modal = document.getElementById('loginModal');
-            modal.classList.toggle('active');
+
+        function jump() {
+            if(player.grounded) {
+                player.dy = player.jump;
+                player.grounded = false;
+            }
+        }
+
+        function resetGame() {
+            player.y = 350; player.dy = 0;
+            obstacles = []; frame = 0; score = 0;
+        }
+
+        function updateGame() {
+            if(!gameActive) return;
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+
+            // Physics
+            player.dy += 0.6; // Gravity
+            player.y += player.dy;
+            if(player.y > 350) { player.y = 350; player.dy = 0; player.grounded = true; }
+
+            // Draw Player
+            ctx.fillStyle = '#0070d1'; // PS Blue
+            ctx.shadowBlur = 20; ctx.shadowColor = '#0070d1';
+            ctx.fillRect(player.x, player.y, player.w, player.h);
+
+            // Obstacles
+            if(frame % 100 === 0) {
+                obstacles.push({ x: canvas.width, y: 340, w: 20, h: 40 });
+            }
+            
+            obstacles.forEach((obs, index) => {
+                obs.x -= 5;
+                ctx.fillStyle = '#ff3333';
+                ctx.shadowBlur = 10; ctx.shadowColor = 'red';
+                ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+
+                // Collision
+                if(player.x < obs.x + obs.w && player.x + player.w > obs.x &&
+                   player.y < obs.y + obs.h && player.y + player.h > obs.y) {
+                    resetGame(); // Simple restart on die
+                }
+
+                // Score
+                if(obs.x + obs.w < 0) { obstacles.splice(index, 1); score++; }
+            });
+
+            // HUD
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = 'white';
+            ctx.font = "20px Saira";
+            ctx.fillText("Score: " + score, 700, 30);
+            document.getElementById('score').innerText = "Score: " + score;
+
+            frame++;
+            requestAnimationFrame(updateGame);
         }
 
         // --- 4. FIREBASE AUTH ---
-        // USER PROVIDED CONFIGURATION
         const firebaseConfig = {
             apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
             authDomain: "playwithease.firebaseapp.com",
@@ -373,35 +429,30 @@
             appId: "1:189729941006:web:362653774b92416c357e5f",
             measurementId: "G-1C3B31KQ7C"
         };
-
+        
         try {
             firebase.initializeApp(firebaseConfig);
             const auth = firebase.auth();
+            const provider = new firebase.auth.GoogleAuthProvider();
+
+            window.handleLogin = () => {
+                auth.signInWithPopup(provider).then(res => {
+                    console.log("Logged in");
+                }).catch(e => alert(e.message));
+            };
 
             auth.onAuthStateChanged(user => {
-                const container = document.getElementById('auth-container');
-                if (user) {
-                    container.innerHTML = `
-                        <div class="user-pill" onclick="auth.signOut()">
-                            <div class="avatar">${user.email[0].toUpperCase()}</div>
-                            <span style="font-size:14px; font-weight:600;">$0.00</span>
-                        </div>
-                    `;
-                    document.getElementById('loginModal').classList.remove('active');
+                const btn = document.getElementById('loginBtn');
+                if(user) {
+                    btn.innerHTML = `<i class="fas fa-user-circle"></i> ${user.email.split('@')[0]}`;
+                    btn.onclick = () => auth.signOut();
                 } else {
-                    container.innerHTML = `<button class="btn-login" onclick="toggleLogin()">Log In</button>`;
+                    btn.innerText = "Sign In";
+                    btn.onclick = handleLogin;
                 }
             });
 
-            window.login = () => {
-                const e = document.getElementById('email').value;
-                const p = document.getElementById('pass').value;
-                auth.signInWithEmailAndPassword(e, p).catch(err => alert(err.message));
-            }
-
-        } catch (error) {
-            console.error("Firebase Error", error);
-        }
+        } catch(e) { console.log("Firebase config error"); }
 
     </script>
 </body>
