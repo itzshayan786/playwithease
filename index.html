@@ -116,10 +116,8 @@
     </div>
 
     <header id="heroCarousel" class="relative w-full h-[65vh] md:h-[85vh] min-h-[450px] overflow-hidden bg-black touch-pan-y mt-16 md:mt-0">
-        <div class="slide active" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_VI.png'); background-color: #000; background-size: contain; background-repeat: no-repeat;">
+        <div class="slide active" style="background-image: url('https://media-rockstargames-com.akamaized.net/tina-uploads/posts/175ae86c3e0c7b3131537429/4b3223f26c04f955562775073043007530666061.jpg');">
             <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-black/20 to-transparent"></div>
-            <div class="absolute inset-0 z-[-1] opacity-50 bg-[url('https://upload.wikimedia.org/wikipedia/commons/5/59/Grand_Theft_Auto_VI.png')] bg-cover blur-3xl"></div>
-            
             <div class="absolute bottom-0 left-0 w-full p-6 md:p-12 pb-16 md:pb-24 max-w-7xl mx-auto z-10">
                 <span class="inline-block px-3 py-1 bg-purple-600/90 backdrop-blur text-[10px] md:text-xs font-bold uppercase tracking-wider rounded mb-3 border border-purple-400/30">World Premiere</span>
                 <div class="h-0 md:h-10 mb-2"></div> 
@@ -134,7 +132,7 @@
             <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-black/20 to-transparent"></div>
             <div class="absolute bottom-0 left-0 w-full p-6 md:p-12 pb-16 md:pb-24 max-w-7xl mx-auto z-10">
                 <span class="inline-block px-3 py-1 bg-blue-600/90 backdrop-blur text-[10px] md:text-xs font-bold uppercase tracking-wider rounded mb-3">Coming Soon</span>
-                <h1 class="text-4xl md:text-6xl font-black italic mb-4">FORZA <span class="text-blue-500">HORIZON 6</span></h1>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Forza_Horizon_5_cover_art.jpg/640px-Forza_Horizon_5_cover_art.jpg" class="h-14 md:h-32 mb-4 object-contain filter drop-shadow-lg" alt="Forza Horizon 6">
                 <p class="text-gray-200 max-w-xl text-sm md:text-lg mb-6 drop-shadow-md font-medium">Explore the most beautiful and comprehensive racing world ever created.</p>
                 <div class="flex gap-3 md:gap-4">
                     <button onclick="playTrailer('XG1Ll2CVhug')" class="px-5 py-2.5 md:px-8 md:py-3 bg-white text-black rounded-full font-bold text-xs md:text-base hover:scale-105 transition-transform flex items-center gap-2 shadow-xl"><i class="fa-solid fa-play"></i> Trailer</button>
@@ -279,9 +277,9 @@
     <script>
         // 1. FIXED IMAGE DATABASE (STEAM CDN FOR STABILITY)
         const db = {
-            gta6: { title: "Grand Theft Auto VI", price: 5499, oldPrice: 6999, img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Grand_Theft_Auto_VI.png/800px-Grand_Theft_Auto_VI.png", cat: "ps5 action", rating: 5.0, platform: "PS5", stock: 50 },
-            fh6: { title: "Forza Horizon 6", price: 4999, oldPrice: 5999, img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551360/library_600x900.jpg", cat: "pc sports", rating: 4.8, platform: "PC", stock: 12 },
-            sp2: { title: "Marvel's Spider-Man 2", price: 4499, oldPrice: 4999, img: "https://image.api.playstation.com/vulcan/ap/rnd/202306/1219/60eca379b6d89d9191e366487d29662b775f0f353393998f.png", cat: "ps5 action", rating: 4.9, platform: "PS5", stock: 5 },
+            gta6: { title: "Grand Theft Auto VI", price: 5499, oldPrice: 6999, img: "https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_VI.png", cat: "ps5 action", rating: 5.0, platform: "PS5", stock: 50 },
+            fh6: { title: "Forza Horizon 6", price: 4999, oldPrice: 5999, img: "https://upload.wikimedia.org/wikipedia/en/8/86/Forza_Horizon_5_cover_art.jpg", cat: "pc sports", rating: 4.8, platform: "PC", stock: 12 },
+            sp2: { title: "Marvel's Spider-Man 2", price: 4499, oldPrice: 4999, img: "https://upload.wikimedia.org/wikipedia/en/b/bd/Marvel%27s_Spider-Man_2_cover_art.jpg", cat: "ps5 action", rating: 4.9, platform: "PS5", stock: 5 },
             elden: { title: "Elden Ring", price: 2999, oldPrice: 3999, img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg", cat: "pc ps5 action", rating: 5.0, platform: "PC", stock: 100 },
             fc24: { title: "EA Sports FC 24", price: 3499, oldPrice: 4499, img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2195250/library_600x900.jpg", cat: "ps5 sports pc", rating: 4.2, platform: "PS5", stock: 20 },
             mw3: { title: "Call of Duty: MW3", price: 5499, oldPrice: 6499, img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2344520/library_600x900.jpg", cat: "pc ps5 action", rating: 4.5, platform: "PC", stock: 15 },
@@ -319,7 +317,7 @@
                         let btn = item.title.includes('Netflix') ? 'bg-red-600' : item.title.includes('Prime') ? 'bg-blue-500' : item.title.includes('Spotify') ? 'bg-green-500' : 'bg-indigo-600';
                         ottGrid.innerHTML += `
                         <div class="relative snap-start shrink-0 w-[165px] md:w-auto p-4 md:p-6 rounded-xl md:rounded-2xl bg-[#141414] border border-white/10 overflow-hidden group cursor-pointer transition-colors ${glow}">
-                            <img src="${item.img}" onerror="${fallback}" class="h-8 md:h-10 mb-4 md:mb-8 object-contain object-left">
+                            <img src="${item.img}" class="h-5 md:h-8 mb-4 md:mb-8 object-contain object-left">
                             <div class="mt-auto"><p class="text-gray-400 text-[10px] md:text-xs uppercase">${item.tag}</p>
                             <div class="flex flex-col md:flex-row justify-between items-start md:items-end mt-2 gap-2">
                                 <span class="text-lg md:text-2xl font-bold">₹${item.price}</span>
@@ -520,7 +518,7 @@
         renderContent();
         updateCartUI();
 
-        // 6. SEARCH & FILTER (Kept same)
+        // 6. SEARCH & FILTER
         const performSearch = (q) => {
             const term = q.toLowerCase();
             let count = 0;
@@ -547,7 +545,7 @@
             document.getElementById('resultCount').textContent = cat === 'all' ? 'All games' : `Showing ${count} games`;
         };
 
-        // 7. CAROUSEL & TRAILER (Kept same)
+        // 7. CAROUSEL & TRAILER
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;
         setInterval(() => {
