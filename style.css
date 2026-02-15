@@ -1,104 +1,108 @@
-/* Titan Enterprise Design System */
+/* ============================================================
+   PLAYWITHEASE TITAN FRAMEWORK - ENTERPRISE CORE
+   ============================================================ */
 :root {
     --primary: #2563eb;
     --accent: #7c3aed;
     --bg: #020202;
     --surface: #0d0d0d;
-    --success: #10b981;
-    --danger: #ef4444;
+    --glass: rgba(10, 10, 10, 0.7);
 }
 
 html, body {
     overflow-x: hidden !important;
-    max-width: 100vw;
     width: 100%;
-    margin: 0;
-    padding: 0;
+    max-width: 100vw;
     background-color: var(--bg);
     color: #f8fafc;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    -webkit-tap-highlight-color: transparent;
+    margin: 0; padding: 0;
     box-sizing: border-box;
 }
 
 *, ::before, ::after { box-sizing: border-box; }
 
-/* LAYERING ARCHITECTURE (Z-INDEX) */
+/* 🟢 UI STACKING ORDER */
 .z-nav { z-index: 1000; }
 .z-cat { z-index: 900; }
 .z-drawer { z-index: 2000; }
-.z-modal { z-index: 3000; } /* Trailer modal is top priority */
+.z-modal { z-index: 9999 !important; } /* Fix for Trailer Overlap */
 .z-ai { z-index: 2500; }
 
-/* THE "OUT-OF-BOUNDS" LOCK */
-main { width: 100%; max-width: 1600px; margin: 0 auto; position: relative; }
-
-/* LUXURY UI ELEMENTS */
+/* 💎 LUXURY TEXTURES */
 .glass-nav {
-    background: rgba(2, 2, 2, 0.8);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
+    background: rgba(2, 2, 2, 0.85);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .card-pro {
-    background: linear-gradient(180deg, rgba(40,40,40,0.4) 0%, rgba(10,10,10,0.9) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(180deg, rgba(40,40,40,0.3) 0%, rgba(10,10,10,0.9) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    border-radius: 2rem;
 }
 
 .card-pro:hover {
-    transform: translateY(-12px);
+    transform: translateY(-12px) scale(1.02);
     border-color: var(--primary);
-    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.8), 0 0 20px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 20px rgba(37, 99, 235, 0.2);
 }
 
-/* MOBILE COMPACT ADAPTIVITY */
+/* 📱 MOBILE COMPACT ARCHITECTURE */
 @media (max-width: 768px) {
-    .mobile-compact-grid {
+    .compact-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+    
+    .mobile-scroll {
         display: flex;
         overflow-x: auto;
         gap: 1rem;
-        padding-bottom: 3rem;
+        padding-bottom: 2rem;
         scroll-snap-type: x mandatory;
     }
     
     .mobile-card {
         flex-shrink: 0;
-        width: 170px;
+        width: 175px;
         scroll-snap-align: start;
     }
 
-    .hero-height { height: 55vh; }
-    
     .bottom-nav {
-        background: rgba(10, 10, 10, 0.98);
+        background: rgba(8, 8, 8, 0.98);
         backdrop-filter: blur(20px);
         height: 75px;
         padding-bottom: env(safe-area-inset-bottom);
     }
 }
 
-/* ANIMATIONS */
-.ken-burns { animation: kenBurns 20s infinite alternate ease-in-out; }
-@keyframes kenBurns { from { transform: scale(1); } to { transform: scale(1.1); } }
+/* ✨ ANIMATION SUITE */
+.ken-burns { animation: kenBurns 30s infinite alternate linear; }
+@keyframes kenBurns { from { transform: scale(1); } to { transform: scale(1.2); } }
 
 .btn-titan {
     background: linear-gradient(90deg, var(--primary), var(--accent));
     position: relative;
     overflow: hidden;
-    transition: all 0.3s ease;
 }
+
 .btn-titan::after {
     content: '';
     position: absolute;
     top: 0; left: -100%;
     width: 100%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
     transition: 0.6s;
 }
+
 .btn-titan:hover::after { left: 100%; }
 
-.reveal { opacity: 0; transform: translateY(20px); transition: all 1s ease-out; }
+.reveal { opacity: 0; transform: translateY(30px); transition: all 1s ease-out; }
 .reveal.active { opacity: 1; transform: translateY(0); }
+
+/* 🤖 AI INTERFACE */
+.ai-pulse { animation: aiPulse 2s infinite; }
+@keyframes aiPulse { 0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(37, 99, 235, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); } }
