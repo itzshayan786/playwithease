@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PlayWithEase | Premium Store</title>
+    <title>PlayWithEase | Premium Gaming Store</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -15,8 +15,11 @@
                 extend: {
                     fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
                     colors: { bg: '#050505', surface: '#121212', primary: '#3b82f6', accent: '#8b5cf6' },
-                    animation: { 'fade-in': 'fadeIn 0.3s ease-out' },
-                    keyframes: { fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } } },
+                    animation: { 'fade-in': 'fadeIn 0.3s ease-out', 'pulse-glow': 'pulseGlow 2s infinite' },
+                    keyframes: { 
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+                        pulseGlow: { '0%, 100%': { opacity: '0.6' }, '50%': { opacity: '1' } }
+                    },
                     screens: { 'xs': '375px' }
                 }
             }
@@ -41,6 +44,19 @@
         
         /* SEARCH BAR */
         #mobileSearchBar { transition: max-height 0.3s ease-in-out; }
+
+        /* GLOW EFFECTS */
+        .glow-red { box-shadow: 0 0 20px rgba(220, 38, 38, 0.3); transition: box-shadow 0.3s ease; }
+        .glow-red:hover { box-shadow: 0 0 30px rgba(220, 38, 38, 0.6); }
+        
+        .glow-blue { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); transition: box-shadow 0.3s ease; }
+        .glow-blue:hover { box-shadow: 0 0 30px rgba(59, 130, 246, 0.6); }
+
+        .glow-green { box-shadow: 0 0 20px rgba(34, 197, 94, 0.3); transition: box-shadow 0.3s ease; }
+        .glow-green:hover { box-shadow: 0 0 30px rgba(34, 197, 94, 0.6); }
+
+        .glow-purple { box-shadow: 0 0 20px rgba(147, 51, 234, 0.3); transition: box-shadow 0.3s ease; }
+        .glow-purple:hover { box-shadow: 0 0 30px rgba(147, 51, 234, 0.6); }
     </style>
 </head>
 <body class="antialiased flex flex-col min-h-screen">
@@ -50,7 +66,6 @@
     <nav class="fixed top-0 w-full z-50 glass transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16 md:h-20 gap-2">
-                
                 <div class="flex items-center gap-3 md:gap-4">
                     <button id="mobileMenuBtn" class="md:hidden text-xl text-white p-1"><i class="fa-solid fa-bars"></i></button>
                     <a href="#" class="flex items-center gap-2 z-50">
@@ -60,15 +75,12 @@
                         <span class="text-lg md:text-xl font-bold tracking-tight hidden xs:block">PlayWithEase</span>
                     </a>
                 </div>
-
                 <div class="hidden md:flex flex-1 max-w-md mx-8 relative group">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-500 group-focus-within:text-blue-500 transition-colors"></i>
                     <input type="text" id="searchInput" placeholder="Search games, subscriptions..." class="w-full bg-[#1a1a1a] border border-white/10 rounded-full py-2.5 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-blue-500 focus:bg-black transition-all placeholder-gray-500">
                 </div>
-
                 <div class="flex items-center gap-2 md:gap-4">
                     <button id="mobileSearchToggle" class="md:hidden text-white p-2"><i class="fa-solid fa-magnifying-glass"></i></button>
-
                     <div id="authContainer">
                         <button onclick="toggleAuthModal()" id="loginBtn" class="bg-white text-black px-4 py-1.5 md:px-5 md:py-2 rounded-full font-bold text-xs md:text-sm hover:bg-gray-200 transition-all flex items-center gap-2">Log In</button>
                         <div id="userProfile" class="hidden relative group">
@@ -76,14 +88,12 @@
                             <div class="absolute right-0 mt-2 w-48 bg-[#1a1a1a] border border-white/10 rounded-xl shadow-2xl overflow-hidden hidden group-hover:block animate-fade-in z-[60]"><a href="#" class="block px-4 py-3 text-sm hover:bg-white/5 text-gray-300">My Profile</a><a href="#" class="block px-4 py-3 text-sm hover:bg-white/5 text-gray-300">Orders</a><div class="h-px bg-white/10"></div><button id="logoutBtn" class="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-white/5">Sign Out</button></div>
                         </div>
                     </div>
-
                     <div onclick="toggleCart()" class="relative cursor-pointer w-9 h-9 md:w-10 md:h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">
                         <i class="fa-solid fa-bag-shopping text-gray-300 text-sm md:text-base"></i>
                         <span id="cartCount" class="absolute top-0 right-0 w-3.5 h-3.5 md:w-4 md:h-4 bg-blue-600 text-[9px] md:text-[10px] font-bold flex items-center justify-center rounded-full border border-black shadow-sm hidden">0</span>
                     </div>
                 </div>
             </div>
-
             <div id="mobileSearchBar" class="hidden md:hidden pb-3 pt-1 animate-fade-in">
                 <div class="relative">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-3 text-gray-500"></i>
@@ -284,14 +294,20 @@
                 </div>`;
             });
 
-            // Render OTT
+            // Render OTT with GLOW
             Object.entries(db).forEach(([id, item]) => {
                 if(item.type !== 'ott') return;
-                const borderClass = item.title.includes('Netflix') ? 'hover:border-red-600' : item.title.includes('Prime') ? 'hover:border-blue-400' : item.title.includes('Spotify') ? 'hover:border-green-500' : 'hover:border-indigo-500';
-                const btnClass = item.title.includes('Netflix') ? 'bg-red-600 hover:bg-red-700' : item.title.includes('Prime') ? 'bg-blue-500 hover:bg-blue-400' : item.title.includes('Spotify') ? 'bg-green-500 hover:bg-green-400' : 'bg-indigo-600 hover:bg-indigo-700';
                 
+                // Glow & Color Logic
+                let glowClass = '';
+                let btnClass = '';
+                if(item.title.includes('Netflix')) { glowClass = 'glow-red'; btnClass = 'bg-red-600 hover:bg-red-700'; }
+                else if(item.title.includes('Prime')) { glowClass = 'glow-blue'; btnClass = 'bg-blue-500 hover:bg-blue-400'; }
+                else if(item.title.includes('Spotify')) { glowClass = 'glow-green'; btnClass = 'bg-green-500 hover:bg-green-400'; }
+                else { glowClass = 'glow-purple'; btnClass = 'bg-indigo-600 hover:bg-indigo-700'; }
+
                 ottGrid.innerHTML += `
-                <div class="relative p-4 md:p-6 rounded-xl md:rounded-2xl bg-[#141414] border border-white/10 overflow-hidden group cursor-pointer transition-colors ${borderClass}">
+                <div class="relative p-4 md:p-6 rounded-xl md:rounded-2xl bg-[#141414] border border-white/10 overflow-hidden group cursor-pointer ${glowClass}">
                     <img src="${item.img}" class="h-5 md:h-8 mb-4 md:mb-8 object-contain object-left" alt="${item.title}">
                     <div class="mt-auto">
                         <p class="text-gray-400 text-[10px] md:text-xs uppercase tracking-wider">${item.tag}</p>
