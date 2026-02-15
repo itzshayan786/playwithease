@@ -437,7 +437,14 @@
         let finalAmount = 0;
 
         window.openCheckoutPage = () => {
-            if(cart.length === 0) return alert("Your cart is empty!");
+    if(cart.length === 0) return alert("Your cart is empty!");
+    
+    // Save cart to storage just to be safe
+    localStorage.setItem('pwe_cart', JSON.stringify(cart));
+    
+    // Redirect to the new professional checkout page
+    window.location.href = 'checkout.html';
+};
             
             // Calc Math
             const subtotal = cart.reduce((a,b) => a + (b.price * b.qty), 0);
