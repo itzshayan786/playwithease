@@ -3,238 +3,274 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayWithEase | PS5 Experience</title>
+    <title>PlayWithEase | The Ultimate Game Store</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
     <style>
+        /* =========================================
+           1. CSS VARIABLES & CORE SETUP
+        ========================================= */
         :root {
-            --bg: #000000;
+            --bg: #030303;
             --glass: rgba(255, 255, 255, 0.08);
             --glass-hover: rgba(255, 255, 255, 0.2);
-            --sony-blue: #0070d1;
+            --sony-blue: #00439c;
+            --sony-light-blue: #0070d1;
             --accent: #ffffff;
-            --text-grey: #b3b3b3;
+            --text-grey: #a0a0a0;
             --danger: #ff3333;
+            --success: #00ff88;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Saira', sans-serif; }
         body { background-color: var(--bg); color: white; overflow-x: hidden; user-select: none; }
         
-        /* --- BACKGROUND AMBIENCE --- */
         .ambient-glow {
             position: fixed; top: -20%; right: -10%; width: 50vw; height: 50vw;
             background: radial-gradient(circle, var(--sony-blue) 0%, transparent 70%);
-            opacity: 0.2; z-index: -1; pointer-events: none;
+            opacity: 0.3; z-index: -1; pointer-events: none;
         }
 
-        /* --- HEADER --- */
+        /* =========================================
+           2. HEADER & NAVIGATION
+        ========================================= */
         header {
             position: fixed; top: 0; width: 100%; z-index: 1000;
-            padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+            padding: 20px 50px; display: flex; justify-content: space-between; align-items: center;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.95), rgba(0,0,0,0.5), transparent);
+            backdrop-filter: blur(5px);
         }
         
-        .nav-left { display: flex; gap: 30px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-left { display: flex; gap: 35px; font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; }
         .nav-item { opacity: 0.6; cursor: pointer; transition: 0.3s; position: relative; }
-        .nav-item.active, .nav-item:hover { opacity: 1; text-shadow: 0 0 10px white; }
+        .nav-item.active, .nav-item:hover { opacity: 1; text-shadow: 0 0 15px rgba(255,255,255,0.8); }
         .nav-item.active::after {
-            content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 2px; background: var(--sony-blue);
+            content: ''; position: absolute; bottom: -8px; left: 0; width: 100%; height: 2px; background: var(--sony-light-blue);
+            box-shadow: 0 0 10px var(--sony-light-blue);
         }
 
         .offline-btn {
-            background: rgba(255, 50, 50, 0.2); border: 1px solid rgba(255, 50, 50, 0.5);
-            padding: 8px 16px; border-radius: 20px; font-size: 11px; font-weight: 700;
+            background: rgba(0, 112, 209, 0.1); border: 1px solid rgba(0, 112, 209, 0.5);
+            padding: 8px 18px; border-radius: 20px; font-size: 12px; font-weight: 700;
             display: flex; align-items: center; gap: 8px; cursor: pointer; transition: 0.3s;
         }
-        .offline-btn:hover { background: rgba(255, 50, 50, 0.8); box-shadow: 0 0 20px red; }
+        .offline-btn:hover { background: rgba(0, 112, 209, 0.8); box-shadow: 0 0 20px var(--sony-light-blue); }
 
         .auth-btn {
-            background: white; color: black; padding: 8px 24px; border-radius: 20px;
-            font-weight: 700; font-size: 13px; cursor: pointer; border: none;
+            background: white; color: black; padding: 8px 25px; border-radius: 20px;
+            font-weight: 700; font-size: 14px; cursor: pointer; border: none; transition: 0.3s;
         }
+        .auth-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(255,255,255,0.5); }
 
-        .cart-icon-wrapper { position: relative; cursor: pointer; }
+        .cart-icon-wrapper { position: relative; cursor: pointer; font-size: 20px; margin: 0 15px; }
+        .cart-icon-wrapper:hover { color: var(--sony-light-blue); }
         .cart-badge {
-            position: absolute; top: -5px; right: -8px; background: var(--sony-blue);
-            color: white; font-size: 10px; font-weight: bold; width: 16px; height: 16px;
+            position: absolute; top: -6px; right: -10px; background: var(--sony-light-blue);
+            color: white; font-size: 11px; font-weight: 900; width: 18px; height: 18px;
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 0 10px var(--sony-light-blue); transition: 0.2s;
         }
 
-        /* --- HERO SECTION (DYNAMIC) --- */
+        /* =========================================
+           3. DYNAMIC HERO SECTION
+        ========================================= */
         .hero {
-            height: 85vh; position: relative; display: flex; align-items: flex-end; padding-bottom: 80px;
-            transition: background 0.5s; overflow: hidden;
+            height: 90vh; position: relative; display: flex; align-items: flex-end; padding-bottom: 90px;
+            overflow: hidden;
         }
         
         .hero-bg-img {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: -1; mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-            transition: opacity 0.8s ease;
+            object-fit: cover; z-index: -1; 
+            mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, black 30%, transparent 100%), linear-gradient(to bottom, black 50%, transparent 100%);
+            transition: opacity 0.8s ease-in-out;
         }
 
         .hero-content {
-            padding-left: 60px; width: 50%; z-index: 10;
-            transform: translateY(20px); opacity: 0; transition: 0.5s ease-out;
+            padding-left: 70px; width: 55%; z-index: 10;
+            transform: translateY(30px); opacity: 0; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .hero-content.visible { transform: translateY(0); opacity: 1; }
 
         .game-logo-text {
-            font-size: 60px; font-weight: 900; line-height: 1; text-transform: uppercase;
-            margin-bottom: 15px; text-shadow: 0 0 30px rgba(0,0,0,0.8);
+            font-size: 70px; font-weight: 900; line-height: 0.95; text-transform: uppercase;
+            margin-bottom: 20px; text-shadow: 0 5px 20px rgba(0,0,0,0.9); letter-spacing: -1px;
         }
         
-        .meta-tags { display: flex; gap: 15px; font-size: 12px; color: var(--text-grey); margin-bottom: 20px; font-weight: 600; }
-        .tag-box { border: 1px solid white; padding: 2px 6px; border-radius: 3px; color: white; }
+        .meta-tags { display: flex; gap: 15px; font-size: 13px; color: var(--text-grey); margin-bottom: 25px; font-weight: 600; }
+        .tag-box { border: 1px solid rgba(255,255,255,0.4); padding: 3px 8px; border-radius: 4px; color: white; background: rgba(0,0,0,0.3); }
 
-        .hero-desc { font-size: 16px; color: #e0e0e0; margin-bottom: 30px; max-width: 500px; text-shadow: 1px 1px 2px black; }
+        .hero-desc { font-size: 17px; color: #dcdde1; margin-bottom: 35px; max-width: 550px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); line-height: 1.5; }
 
-        .price-tag { font-size: 24px; font-weight: 300; margin-bottom: 20px; }
-        .price-tag span { font-weight: 700; font-size: 32px; }
+        .price-tag { font-size: 20px; font-weight: 500; margin-bottom: 25px; color: var(--text-grey); }
+        .price-tag span { font-weight: 700; font-size: 36px; color: white; margin-left: 10px; }
 
         .action-row { display: flex; gap: 20px; }
         .btn-primary {
-            background: var(--sony-blue); color: white; border: none; padding: 12px 30px;
+            background: var(--sony-light-blue); color: white; border: none; padding: 15px 40px;
             border-radius: 30px; font-weight: 700; font-size: 16px; cursor: pointer;
-            transition: 0.3s; display: flex; align-items: center; gap: 10px;
+            transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; align-items: center; gap: 10px;
         }
-        .btn-primary:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--sony-blue); }
+        .btn-primary:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 10px 30px rgba(0, 112, 209, 0.6); }
 
         .btn-glass {
-            background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: white; border: none;
-            padding: 12px 20px; border-radius: 30px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(15px); color: white; border: 1px solid rgba(255,255,255,0.2);
+            padding: 15px 30px; border-radius: 30px; font-weight: 600; font-size: 16px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 10px;
         }
-        .btn-glass:hover { background: white; color: black; }
+        .btn-glass:hover { background: white; color: black; border-color: white; transform: scale(1.05); }
 
-        /* --- HERO SWITCHER --- */
+        /* Switcher Cards */
         .hero-switch {
-            position: absolute; bottom: 40px; right: 60px; display: flex; gap: 20px; z-index: 20;
+            position: absolute; bottom: 50px; right: 70px; display: flex; gap: 20px; z-index: 20;
         }
         .switch-card {
-            width: 160px; height: 90px; border-radius: 12px; overflow: hidden; cursor: pointer;
-            border: 2px solid transparent; transition: 0.3s; position: relative;
+            width: 180px; height: 100px; border-radius: 12px; overflow: hidden; cursor: pointer;
+            border: 2px solid rgba(255,255,255,0.1); transition: 0.4s; position: relative; background: #000;
         }
-        .switch-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
-        .switch-card:hover, .switch-card.active { border-color: white; transform: scale(1.1); box-shadow: 0 10px 30px black; }
+        .switch-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.4; transition: 0.4s; }
+        .switch-card:hover { border-color: rgba(255,255,255,0.5); transform: translateY(-5px); }
+        .switch-card.active { border-color: white; transform: scale(1.1); box-shadow: 0 15px 30px rgba(0,0,0,0.8); z-index: 2;}
         .switch-card.active img { opacity: 1; }
         .switch-label {
-            position: absolute; bottom: 5px; left: 10px; font-size: 10px; font-weight: 700; text-shadow: 0 0 5px black;
+            position: absolute; bottom: 8px; left: 12px; font-size: 11px; font-weight: 800; text-shadow: 0 2px 5px black; letter-spacing: 1px;
         }
 
-        /* --- SHELVES --- */
-        .shelf { padding: 40px 0 40px 60px; }
-        .shelf-title { font-size: 22px; margin-bottom: 20px; font-weight: 300; }
+        /* =========================================
+           4. HORIZONTAL GAME SHELVES
+        ========================================= */
+        .shelf { padding: 50px 0 20px 70px; }
+        .shelf-title { font-size: 26px; margin-bottom: 25px; font-weight: 300; letter-spacing: 1px; }
         .shelf-title b { font-weight: 700; }
 
         .rail {
-            display: flex; gap: 25px; overflow-x: auto; padding-bottom: 30px; padding-right: 60px;
+            display: flex; gap: 25px; overflow-x: auto; padding-bottom: 40px; padding-right: 70px;
             scrollbar-width: none;
         }
         .rail::-webkit-scrollbar { display: none; }
 
         .game-card {
-            min-width: 200px; width: 200px; cursor: pointer; transition: 0.3s; position: relative;
+            min-width: 220px; width: 220px; cursor: pointer; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); position: relative;
         }
-        .game-card:hover { transform: translateY(-10px) scale(1.02); z-index: 5; }
+        .game-card:hover { transform: translateY(-12px) scale(1.03); z-index: 5; }
         
         .card-art {
-            width: 100%; aspect-ratio: 2/3; border-radius: 12px; overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5); position: relative;
+            width: 100%; aspect-ratio: 3/4; border-radius: 14px; overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.6); position: relative; transition: 0.3s;
         }
-        .card-art img { width: 100%; height: 100%; object-fit: cover; }
-        .game-card:hover .card-art { box-shadow: 0 0 0 3px white; }
+        .card-art img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .game-card:hover .card-art { box-shadow: 0 0 0 4px white, 0 20px 40px rgba(0,0,0,0.8); }
+        .game-card:hover .card-art img { transform: scale(1.05); }
 
         .add-to-cart-btn {
-            position: absolute; bottom: 10px; right: 10px; width: 35px; height: 35px;
-            background: var(--sony-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            opacity: 0; transform: translateY(10px); transition: 0.3s; color: white;
+            position: absolute; bottom: 12px; right: 12px; width: 40px; height: 40px;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            opacity: 0; transform: translateY(15px); transition: 0.3s; color: white; font-size: 16px;
         }
         .game-card:hover .add-to-cart-btn { opacity: 1; transform: translateY(0); }
-        .add-to-cart-btn:hover { background: white; color: var(--sony-blue); }
+        .add-to-cart-btn:hover { background: var(--sony-light-blue); border-color: var(--sony-light-blue); color: white; transform: scale(1.1) !important; }
 
-        .card-meta { margin-top: 15px; opacity: 0.7; transition: 0.3s; }
-        .game-card:hover .card-meta { opacity: 1; }
-        .card-title { font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .card-price { font-size: 13px; color: var(--text-grey); margin-top: 4px; }
+        .card-meta { margin-top: 15px; opacity: 0.6; transition: 0.3s; transform: translateY(5px); }
+        .game-card:hover .card-meta { opacity: 1; transform: translateY(0); }
+        .card-title { font-size: 16px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-price { font-size: 14px; color: var(--text-grey); margin-top: 4px; font-weight: 500; }
 
-        /* --- CART SIDEBAR --- */
+        /* =========================================
+           5. CART SIDEBAR
+        ========================================= */
         .cart-sidebar {
-            position: fixed; top: 0; right: -400px; width: 350px; height: 100%;
-            background: #111; border-left: 1px solid #333; z-index: 2000;
-            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex; flex-direction: column; box-shadow: -10px 0 50px rgba(0,0,0,0.5);
+            position: fixed; top: 0; right: -420px; width: 400px; height: 100%;
+            background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(20px); border-left: 1px solid rgba(255,255,255,0.1); 
+            z-index: 2000; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex; flex-direction: column; box-shadow: -15px 0 50px rgba(0,0,0,0.8);
         }
         .cart-sidebar.open { right: 0; }
         
         .cart-header {
-            padding: 20px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center;
-            font-size: 18px; font-weight: 700;
+            padding: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;
+            font-size: 22px; font-weight: 800; letter-spacing: 1px;
         }
-        .close-cart { cursor: pointer; color: var(--text-grey); transition: 0.2s; }
-        .close-cart:hover { color: white; }
+        .close-cart { cursor: pointer; color: var(--text-grey); transition: 0.2s; font-size: 28px; line-height: 1; }
+        .close-cart:hover { color: white; transform: rotate(90deg); }
 
-        .cart-items { flex: 1; overflow-y: auto; padding: 20px; }
+        .cart-items { flex: 1; overflow-y: auto; padding: 25px; }
+        .cart-items::-webkit-scrollbar { width: 6px; }
+        .cart-items::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+
         .cart-item {
-            display: flex; gap: 15px; margin-bottom: 20px; background: #1a1a1a; padding: 10px; border-radius: 8px;
-            position: relative; transition: 0.2s;
+            display: flex; gap: 15px; margin-bottom: 20px; background: rgba(255,255,255,0.03); 
+            padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);
+            position: relative; transition: 0.2s; align-items: center;
         }
-        .cart-item:hover { background: #222; }
-        .cart-img { width: 60px; height: 80px; object-fit: cover; border-radius: 4px; }
-        .cart-info { display: flex; flex-direction: column; justify-content: center; }
-        .cart-title { font-size: 13px; font-weight: 600; margin-bottom: 5px; }
-        .cart-price { font-size: 12px; color: var(--sony-blue); font-weight: 700; }
+        .cart-item:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.1); }
+        .cart-img { width: 65px; height: 85px; object-fit: cover; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .cart-info { display: flex; flex-direction: column; justify-content: center; flex: 1; padding-right: 20px;}
+        .cart-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; line-height: 1.3; }
+        .cart-price { font-size: 14px; color: var(--sony-light-blue); font-weight: 800; }
         
         .remove-item {
-            position: absolute; top: 10px; right: 10px; color: #555; cursor: pointer; font-size: 12px;
+            position: absolute; top: 50%; right: 15px; transform: translateY(-50%);
+            color: rgba(255,255,255,0.3); cursor: pointer; font-size: 16px; transition: 0.2s;
         }
         .remove-item:hover { color: var(--danger); }
 
-        .cart-footer { padding: 25px; border-top: 1px solid #222; background: #0a0a0a; }
-        .total-row { display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+        .cart-footer { padding: 30px; border-top: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.5); }
+        .total-row { display: flex; justify-content: space-between; font-size: 20px; font-weight: 500; margin-bottom: 25px; color: var(--text-grey); }
+        .total-row span:last-child { color: white; font-weight: 900; font-size: 26px; }
         .checkout-btn {
-            width: 100%; padding: 15px; background: var(--sony-blue); color: white;
-            border: none; border-radius: 30px; font-weight: 700; cursor: pointer; transition: 0.2s;
+            width: 100%; padding: 18px; background: var(--sony-light-blue); color: white;
+            border: none; border-radius: 30px; font-weight: 800; font-size: 16px; cursor: pointer; transition: 0.3s;
+            text-transform: uppercase; letter-spacing: 1px;
         }
-        .checkout-btn:hover { opacity: 0.9; }
+        .checkout-btn:hover { background: white; color: var(--sony-light-blue); box-shadow: 0 10px 25px rgba(0, 112, 209, 0.4); }
 
-        /* --- SHOOTER GAME MODAL --- */
+        /* =========================================
+           6. SHOOTER GAME MODAL (CYBER DEFENSE)
+        ========================================= */
         .game-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #050505; z-index: 5000;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #020202; z-index: 5000;
             display: none; flex-direction: column; justify-content: center; align-items: center;
         }
-        .game-container { position: relative; width: 800px; height: 600px; box-shadow: 0 0 100px rgba(0, 112, 209, 0.3); border: 2px solid #222; background: #000; border-radius: 8px; overflow: hidden; }
+        .game-container { 
+            position: relative; width: 900px; height: 600px; box-shadow: 0 0 80px rgba(0, 112, 209, 0.2); 
+            border: 1px solid #333; background: #050505; border-radius: 12px; overflow: hidden; 
+        }
         canvas { display: block; width: 100%; height: 100%; cursor: crosshair; }
         
         .game-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);
-            z-index: 2;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 2;
         }
         .game-overlay.hidden { display: none; }
         
-        .game-title-text { font-size: 48px; font-weight: 800; color: white; letter-spacing: 5px; margin-bottom: 20px; text-shadow: 0 0 20px var(--sony-blue); }
-        .game-controls { color: #aaa; margin-bottom: 40px; text-align: center; line-height: 1.6; }
-        .game-controls kbd { border: 1px solid #555; padding: 2px 6px; border-radius: 4px; color: white; background: #222; }
+        .game-title-text { font-size: 55px; font-weight: 900; color: white; letter-spacing: 8px; margin-bottom: 15px; text-shadow: 0 0 30px var(--sony-light-blue); text-transform: uppercase;}
+        .game-controls { color: #ccc; margin-bottom: 40px; text-align: center; line-height: 1.8; font-size: 15px; }
+        .game-controls kbd { border: 1px solid #555; padding: 4px 8px; border-radius: 4px; color: white; background: #222; font-family: monospace; font-weight: bold; margin: 0 4px;}
 
         .hud {
-            position: absolute; top: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between;
-            pointer-events: none; z-index: 1; font-family: 'Courier New', monospace; font-weight: bold;
+            position: absolute; top: 25px; left: 25px; right: 25px; display: flex; justify-content: space-between;
+            pointer-events: none; z-index: 1; font-family: 'Courier New', monospace; font-weight: bold; font-size: 18px;
         }
-        .hp-bar-bg { width: 200px; height: 20px; background: #333; border: 1px solid #555; transform: skewX(-20deg); }
-        .hp-bar-fill { width: 100%; height: 100%; background: #00ff88; transition: width 0.1s; box-shadow: 0 0 10px #00ff88; }
+        .hp-bar-bg { width: 250px; height: 22px; background: rgba(255,255,255,0.1); border: 2px solid #444; transform: skewX(-15deg); overflow: hidden; }
+        .hp-bar-fill { width: 100%; height: 100%; background: var(--success); transition: width 0.15s ease-out; box-shadow: inset 0 0 10px rgba(255,255,255,0.5); }
 
-        /* --- VIDEO MODAL --- */
+        /* =========================================
+           7. VIDEO MODAL
+        ========================================= */
         .video-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 4000;
-            display: none; align-items: center; justify-content: center;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px);
+            z-index: 4000; display: none; align-items: center; justify-content: center;
         }
-        .close-video { position: absolute; top: 30px; right: 30px; font-size: 40px; cursor: pointer; z-index: 4001; }
+        .close-video { position: absolute; top: 40px; right: 50px; font-size: 45px; cursor: pointer; z-index: 4001; transition: 0.2s; opacity: 0.7; }
+        .close-video:hover { opacity: 1; transform: scale(1.1); color: var(--danger); }
+        .video-wrapper { width: 75%; aspect-ratio: 16/9; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1); }
 
     </style>
 </head>
@@ -252,10 +288,10 @@
 
         <div style="display: flex; gap: 20px; align-items: center;">
             <div class="offline-btn" onclick="openShooterGame()">
-                <i class="fas fa-gamepad"></i>
-                PLAY CYBER DEFENSE
+                <i class="fas fa-gamepad"></i> PLAY CYBER DEFENSE
             </div>
-            <div class="nav-item"><i class="fas fa-search"></i></div>
+            
+            <div class="nav-item" style="font-size: 20px; margin-left: 10px;"><i class="fas fa-search"></i></div>
             
             <div class="nav-item cart-icon-wrapper" onclick="toggleCart()">
                 <i class="fas fa-shopping-bag"></i>
@@ -272,14 +308,17 @@
             <span class="close-cart" onclick="toggleCart()">&times;</span>
         </div>
         <div class="cart-items" id="cartItemsContainer">
-            <div style="text-align: center; color: #555; margin-top: 50px;">Your cart is empty.</div>
+            <div style="text-align: center; color: var(--text-grey); margin-top: 80px; font-size: 16px;">
+                <i class="fas fa-ghost" style="font-size: 40px; margin-bottom: 15px; opacity: 0.5;"></i><br>
+                Your cart is empty.
+            </div>
         </div>
         <div class="cart-footer">
             <div class="total-row">
                 <span>Total</span>
                 <span id="cartTotal">$0.00</span>
             </div>
-            <button class="checkout-btn">Checkout</button>
+            <button class="checkout-btn">Proceed to Checkout</button>
         </div>
     </div>
 
@@ -289,15 +328,17 @@
         <div class="hero-content visible" id="hero-text">
             <div class="meta-tags">
                 <span class="tag-box">PS5</span>
-                <span>EXCLUSIVE PREMIERE</span>
+                <span style="letter-spacing: 1px; color: var(--sony-light-blue);">EXCLUSIVE PREMIERE</span>
             </div>
             <div class="game-logo-text" id="hero-title">Grand Theft Auto VI</div>
             <p class="hero-desc" id="hero-desc">
                 Welcome to Leonida. Experience the next evolution of the open world with Jason and Lucia in the most immersive Vice City ever created.
             </p>
-            <div class="price-tag">Pre-Order <span>$69.99</span></div>
+            <div class="price-tag">Pre-Order <span id="hero-price">$69.99</span></div>
             <div class="action-row">
-                <button class="btn-primary" onclick="addToCart('Grand Theft Auto VI', 69.99, 'https://images.hdqwalls.com/wallpapers/gta-vi-4k-logo-fo.jpg')">Pre-Order Now</button>
+                <button class="btn-primary" id="hero-cart-btn" onclick="addToCart('Grand Theft Auto VI', 69.99, 'https://images.hdqwalls.com/wallpapers/gta-vi-4k-logo-fo.jpg')">
+                    <i class="fas fa-plus"></i> Pre-Order Now
+                </button>
                 <button class="btn-glass" onclick="playTrailer()"><i class="fas fa-play"></i> Watch Trailer</button>
             </div>
         </div>
@@ -327,28 +368,29 @@
     </div>
 
     <div class="game-modal" id="shooterModal">
-        <button class="btn-glass" onclick="closeShooterGame()" style="position: absolute; top: 30px; right: 30px;">EXIT TO STORE</button>
+        <button class="btn-glass" onclick="closeShooterGame()" style="position: absolute; top: 40px; right: 50px;">
+            <i class="fas fa-times"></i> EXIT TO STORE
+        </button>
         
         <div class="game-container">
             <div class="hud">
                 <div class="hp-bar-bg"><div class="hp-bar-fill" id="gameHP"></div></div>
-                <div style="color: #00ff88; text-shadow: 0 0 10px #00ff88;">SCORE: <span id="gameScore">0</span></div>
+                <div style="color: var(--success); text-shadow: 0 0 10px var(--success);">SCORE: <span id="gameScore" style="color:white;">0</span></div>
             </div>
             
             <div class="game-overlay" id="startScreen">
                 <div class="game-title-text">CYBER DEFENSE</div>
                 <div class="game-controls">
                     <p><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> Move</p>
-                    <p><kbd>MOUSE</kbd> Aim</p>
-                    <p><kbd>CLICK</kbd> Shoot</p>
+                    <p><kbd>MOUSE</kbd> Aim &nbsp;&nbsp; <kbd>CLICK</kbd> Shoot</p>
                 </div>
-                <button class="btn-primary" onclick="startGame()">START MISSION</button>
+                <button class="btn-primary" onclick="startGame()" style="font-size: 20px; padding: 15px 50px;">INITIALIZE LINK</button>
             </div>
 
             <div class="game-overlay hidden" id="gameOverScreen">
-                <div class="game-title-text" style="color: #ff3333; text-shadow: 0 0 20px red;">MISSION FAILED</div>
-                <div style="font-size: 24px; margin-bottom: 30px;">FINAL SCORE: <span id="finalScore">0</span></div>
-                <button class="btn-primary" onclick="startGame()">RETRY</button>
+                <div class="game-title-text" style="color: var(--danger); text-shadow: 0 0 30px rgba(255,51,51,0.6);">SYSTEM FAILURE</div>
+                <div style="font-size: 28px; margin-bottom: 40px; color: #ccc;">FINAL SCORE: <span id="finalScore" style="color: white; font-weight: bold;">0</span></div>
+                <button class="btn-primary" onclick="startGame()">REBOOT SYSTEM</button>
             </div>
 
             <canvas id="shooterCanvas"></canvas>
@@ -357,19 +399,23 @@
 
     <div class="video-overlay" id="videoOverlay">
         <div class="close-video" onclick="closeTrailer()">&times;</div>
-        <iframe id="youtube-embed" width="80%" height="80%" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <div class="video-wrapper">
+            <iframe id="youtube-embed" width="100%" height="100%" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
     </div>
 
     <script>
-        // --- 1. HERO LOGIC ---
-        const games = {
+        /* =========================================
+           1. HERO LOGIC (Dual Premiere Switcher)
+        ========================================= */
+        const heroGames = {
             gta: {
                 title: "Grand Theft Auto VI",
                 desc: "Welcome to Leonida. Experience the next evolution of the open world with Jason and Lucia in the most immersive Vice City ever created.",
                 bg: "https://images.hdqwalls.com/wallpapers/gta-vi-4k-logo-fo.jpg",
                 trailer: "QdBZY2fkU-0",
                 price: "$69.99",
-                cleanPrice: 69.99
+                numPrice: 69.99
             },
             forza: {
                 title: "Forza Horizon 6",
@@ -377,43 +423,51 @@
                 bg: "https://images.hdqwalls.com/wallpapers/forza-horizon-5-4k-game-3r.jpg",
                 trailer: "FYH9n37B7Yw",
                 price: "$59.99",
-                cleanPrice: 59.99
+                numPrice: 59.99
             }
         };
 
-        let activeGame = 'gta';
+        let activeHeroGame = 'gta';
 
         function switchGame(gameKey) {
-            if(activeGame === gameKey) return;
-            activeGame = gameKey;
-            const data = games[gameKey];
+            if(activeHeroGame === gameKey) return;
+            activeHeroGame = gameKey;
+            const data = heroGames[gameKey];
 
+            // Update UI Active State
             document.querySelectorAll('.switch-card').forEach(el => el.classList.remove('active'));
             event.currentTarget.classList.add('active');
 
             const bg = document.getElementById('hero-bg');
             const text = document.getElementById('hero-text');
             
+            // Fade out
             text.classList.remove('visible');
             bg.style.opacity = 0;
 
+            // Wait for fade out, update content, fade in
             setTimeout(() => {
                 bg.src = data.bg;
                 document.getElementById('hero-title').innerText = data.title;
                 document.getElementById('hero-desc').innerText = data.desc;
-                // Update button action for Add to Cart
-                const btn = document.querySelector('.action-row .btn-primary');
-                btn.onclick = () => addToCart(data.title, data.cleanPrice, data.bg);
+                document.getElementById('hero-price').innerText = data.price;
+                
+                // Update Cart Button logic
+                const cartBtn = document.getElementById('hero-cart-btn');
+                cartBtn.onclick = () => addToCart(data.title, data.numPrice, data.bg);
                 
                 bg.style.opacity = 1;
                 text.classList.add('visible');
-            }, 500);
+            }, 600);
         }
 
+        /* =========================================
+           2. VIDEO TRAILER LOGIC
+        ========================================= */
         function playTrailer() {
-            const id = games[activeGame].trailer;
+            const id = heroGames[activeHeroGame].trailer;
             document.getElementById('videoOverlay').style.display = 'flex';
-            document.getElementById('youtube-embed').src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+            document.getElementById('youtube-embed').src = `https://www.youtube.com/embed/${id}?autoplay=1&vq=hd1080&color=white`;
         }
 
         function closeTrailer() {
@@ -421,49 +475,65 @@
             document.getElementById('youtube-embed').src = "";
         }
 
-        // --- 2. GAME RAILS ---
-        const railData = [
-            { t: "Elden Ring", p: 39.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co848v.jpg" },
+        /* =========================================
+           3. GAME SHELVES (RAILS) POPULATION
+        ========================================= */
+        const dbGames = [
+            { t: "Elden Ring: Shadow of the Erdtree", p: 39.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co848v.jpg" },
             { t: "Black Myth: Wukong", p: 59.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co8ush.jpg" },
-            { t: "Spider-Man 2", p: 69.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co660r.jpg" },
+            { t: "Marvel's Spider-Man 2", p: 69.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co660r.jpg" },
             { t: "God of War Ragnarök", p: 49.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co5s5v.jpg" },
-            { t: "Cyberpunk 2077", p: 29.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mjs.jpg" },
-            { t: "Resident Evil 4", p: 39.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co628e.jpg" },
+            { t: "Cyberpunk 2077: Phantom Liberty", p: 29.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co5j8h.jpg" },
+            { t: "Resident Evil 4 Remake", p: 39.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co628e.jpg" },
+            { t: "Call of Duty: Black Ops 6", p: 69.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co85cg.jpg" }
         ];
 
-        const rail = document.getElementById('trending-rail');
-        [...railData, ...railData].forEach(g => {
-            rail.innerHTML += `
-                <div class="game-card">
-                    <div class="card-art">
-                        <img src="${g.i}" loading="lazy">
-                        <div class="add-to-cart-btn" onclick="addToCart('${g.t}', ${g.p}, '${g.i}')">
-                            <i class="fas fa-plus"></i>
+        function populateRail(railId, dataArray) {
+            const rail = document.getElementById(railId);
+            let html = '';
+            dataArray.forEach(g => {
+                // Escaping strings for onclick function
+                const safeTitle = g.t.replace(/'/g, "\\'");
+                html += `
+                    <div class="game-card">
+                        <div class="card-art">
+                            <img src="${g.i}" loading="lazy" alt="${g.t}">
+                            <div class="add-to-cart-btn" onclick="addToCart('${safeTitle}', ${g.p}, '${g.i}')" title="Add to Cart">
+                                <i class="fas fa-plus"></i>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card-meta"><div class="card-title">${g.t}</div><div class="card-price">$${g.p}</div></div>
-                </div>`;
-        });
-        document.getElementById('soon-rail').innerHTML = rail.innerHTML;
+                        <div class="card-meta">
+                            <div class="card-title">${g.t}</div>
+                            <div class="card-price">$${g.p.toFixed(2)}</div>
+                        </div>
+                    </div>`;
+            });
+            rail.innerHTML = html;
+        }
 
-        // --- 3. CART SYSTEM LOGIC ---
+        // Populate both rails for demonstration
+        populateRail('trending-rail', [...dbGames, ...dbGames.slice(0,3)]); 
+        populateRail('soon-rail', [...dbGames].reverse()); 
+
+        /* =========================================
+           4. SHOPPING CART LOGIC
+        ========================================= */
         let cart = [];
 
         function toggleCart() {
-            const sidebar = document.getElementById('cartSidebar');
-            sidebar.classList.toggle('open');
+            document.getElementById('cartSidebar').classList.toggle('open');
         }
 
         function addToCart(title, price, image) {
             cart.push({ title, price, image });
             updateCartUI();
             
-            // Animation for feedback
+            // UI Feedback: Pop the badge
             const badge = document.getElementById('cartBadge');
             badge.style.transform = "scale(1.5)";
             setTimeout(() => badge.style.transform = "scale(1)", 200);
             
-            // Auto open cart on add
+            // Auto open the cart to show the user it was added
             document.getElementById('cartSidebar').classList.add('open');
         }
 
@@ -480,7 +550,11 @@
             badge.innerText = cart.length;
 
             if (cart.length === 0) {
-                container.innerHTML = '<div style="text-align: center; color: #555; margin-top: 50px;">Your cart is empty.</div>';
+                container.innerHTML = `
+                    <div style="text-align: center; color: var(--text-grey); margin-top: 80px; font-size: 16px;">
+                        <i class="fas fa-ghost" style="font-size: 40px; margin-bottom: 15px; opacity: 0.5;"></i><br>
+                        Your cart is empty.
+                    </div>`;
                 totalEl.innerText = "$0.00";
                 return;
             }
@@ -497,7 +571,9 @@
                             <div class="cart-title">${item.title}</div>
                             <div class="cart-price">$${item.price.toFixed(2)}</div>
                         </div>
-                        <div class="remove-item" onclick="removeFromCart(${index})"><i class="fas fa-trash"></i></div>
+                        <div class="remove-item" onclick="removeFromCart(${index})" title="Remove">
+                            <i class="fas fa-trash"></i>
+                        </div>
                     </div>
                 `;
             });
@@ -506,28 +582,31 @@
             totalEl.innerText = "$" + total.toFixed(2);
         }
 
-        // --- 4. CYBER DEFENSE SHOOTER ENGINE ---
+        /* =========================================
+           5. CYBER DEFENSE (CANVAS SHOOTER ENGINE)
+        ========================================= */
         const canvas = document.getElementById('shooterCanvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = 800; canvas.height = 600;
+        canvas.width = 900; canvas.height = 600;
 
         let gameLoopId;
         let lastTime = 0;
         let score = 0;
         let isGameOver = false;
 
-        // Entities
-        const player = { x: 400, y: 300, radius: 15, speed: 5, hp: 100, maxHp: 100 };
+        // Game Entities
+        const player = { x: 450, y: 300, radius: 15, speed: 4.5, hp: 100, maxHp: 100 };
         let bullets = [];
         let enemies = [];
         let particles = [];
         
-        // Input
+        // Input Tracking
         const keys = { w: false, a: false, s: false, d: false };
-        const mouse = { x: 0, y: 0 };
+        const mouse = { x: 450, y: 300 };
 
         function openShooterGame() {
             document.getElementById('shooterModal').style.display = 'flex';
+            // Bind inputs only when game is open
             window.addEventListener('keydown', handleKey);
             window.addEventListener('keyup', handleKey);
             canvas.addEventListener('mousemove', handleMouse);
@@ -537,164 +616,205 @@
         function closeShooterGame() {
             document.getElementById('shooterModal').style.display = 'none';
             cancelAnimationFrame(gameLoopId);
+            // Unbind inputs
             window.removeEventListener('keydown', handleKey);
             window.removeEventListener('keyup', handleKey);
+            canvas.removeEventListener('mousemove', handleMouse);
+            canvas.removeEventListener('mousedown', shoot);
         }
 
         function startGame() {
             document.getElementById('startScreen').classList.add('hidden');
             document.getElementById('gameOverScreen').classList.add('hidden');
             
-            // Reset Game State
-            player.x = 400; player.y = 300; player.hp = 100;
+            // Reset State
+            player.x = 450; player.y = 300; player.hp = 100;
             bullets = []; enemies = []; particles = []; score = 0;
             isGameOver = false;
             updateHUD();
 
+            // Prevent multiple loops if double clicked
+            cancelAnimationFrame(gameLoopId);
             gameLoopId = requestAnimationFrame(loop);
         }
 
         function loop(timestamp) {
             if(isGameOver) return;
+            // Calculate Delta Time (Optional for smooth movement, but using fixed steps here for simplicity)
             const dt = timestamp - lastTime;
             lastTime = timestamp;
 
             update();
             draw();
             
-            // Enemy Spawner
+            // Difficulty curve: Spawn rate increases with score
             if(Math.random() < 0.02 + (score * 0.0001)) spawnEnemy();
 
             gameLoopId = requestAnimationFrame(loop);
         }
 
         function update() {
-            // Player Movement
-            if(keys.w && player.y > 0) player.y -= player.speed;
-            if(keys.s && player.y < canvas.height) player.y += player.speed;
-            if(keys.a && player.x > 0) player.x -= player.speed;
-            if(keys.d && player.x < canvas.width) player.x += player.speed;
+            // 1. Movement
+            if(keys.w && player.y > player.radius) player.y -= player.speed;
+            if(keys.s && player.y < canvas.height - player.radius) player.y += player.speed;
+            if(keys.a && player.x > player.radius) player.x -= player.speed;
+            if(keys.d && player.x < canvas.width - player.radius) player.x += player.speed;
 
-            // Bullets
-            bullets.forEach((b, i) => {
+            // 2. Update Bullets
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                let b = bullets[i];
                 b.x += b.vx; b.y += b.vy;
-                if(b.x < 0 || b.x > canvas.width || b.y < 0 || b.y > canvas.height) bullets.splice(i, 1);
-            });
+                // Remove if off screen
+                if(b.x < 0 || b.x > canvas.width || b.y < 0 || b.y > canvas.height) {
+                    bullets.splice(i, 1);
+                }
+            }
 
-            // Enemies
-            enemies.forEach((e, i) => {
+            // 3. Update Enemies & Collisions
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                let e = enemies[i];
+                // Move towards player
                 const angle = Math.atan2(player.y - e.y, player.x - e.x);
                 e.x += Math.cos(angle) * e.speed;
                 e.y += Math.sin(angle) * e.speed;
 
-                // Collision with Player
+                // Player <-> Enemy Collision
                 const dist = Math.hypot(player.x - e.x, player.y - e.y);
                 if(dist < player.radius + e.radius) {
-                    player.hp -= 10;
+                    player.hp -= 15;
                     enemies.splice(i, 1);
                     screenShake();
                     updateHUD();
-                    spawnParticles(e.x, e.y, '#ff3333', 5);
-                    if(player.hp <= 0) gameOver();
+                    spawnParticles(e.x, e.y, '#ff3333', 8);
+                    
+                    if(player.hp <= 0) {
+                        gameOver();
+                        return; // Stop processing further
+                    }
+                    continue; // Skip bullet check if enemy died by hitting player
                 }
 
-                // Collision with Bullets
-                bullets.forEach((b, bi) => {
+                // Bullet <-> Enemy Collision
+                for (let bi = bullets.length - 1; bi >= 0; bi--) {
+                    let b = bullets[bi];
                     const bDist = Math.hypot(b.x - e.x, b.y - e.y);
-                    if(bDist < e.radius + 5) {
+                    if(bDist < e.radius + 4) { // 4 is bullet radius approx
                         enemies.splice(i, 1);
                         bullets.splice(bi, 1);
                         score += 100;
                         updateHUD();
                         spawnParticles(e.x, e.y, '#ff3333', 10);
                         spawnParticles(e.x, e.y, '#ffffff', 5);
+                        break; // Move to next enemy
                     }
-                });
-            });
+                }
+            }
 
-            // Particles
-            particles.forEach((p, i) => {
-                p.x += p.vx; p.y += p.vy; p.life -= 0.05;
+            // 4. Update Particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                let p = particles[i];
+                p.x += p.vx; p.y += p.vy; p.life -= 0.04; // Fade out speed
                 if(p.life <= 0) particles.splice(i, 1);
-            });
+            }
         }
 
         function draw() {
-            // Trail Effect
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            // Clear with slight transparency for motion blur trail
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.3)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Draw Player (Triangle pointing to mouse)
+            // Draw Particles
+            particles.forEach(p => {
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = Math.max(0, p.life);
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
+            });
+            ctx.globalAlpha = 1; // Reset alpha
+
+            // Draw Player (Ship shape aiming at mouse)
             ctx.save();
             ctx.translate(player.x, player.y);
             const angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
             ctx.rotate(angle);
+            
             ctx.fillStyle = '#0070d1';
             ctx.shadowBlur = 15; ctx.shadowColor = '#0070d1';
             ctx.beginPath();
-            ctx.moveTo(15, 0); ctx.lineTo(-10, 10); ctx.lineTo(-10, -10);
+            ctx.moveTo(18, 0);       // Nose
+            ctx.lineTo(-12, 12);     // Bottom Wing
+            ctx.lineTo(-8, 0);       // Engine indent
+            ctx.lineTo(-12, -12);    // Top Wing
+            ctx.closePath();
             ctx.fill();
             ctx.restore();
 
             // Draw Bullets
             ctx.fillStyle = '#00ff88';
-            ctx.shadowColor = '#00ff88';
+            ctx.shadowBlur = 10; ctx.shadowColor = '#00ff88';
             bullets.forEach(b => {
-                ctx.beginPath(); ctx.arc(b.x, b.y, 3, 0, Math.PI*2); ctx.fill();
+                ctx.beginPath(); ctx.arc(b.x, b.y, 4, 0, Math.PI*2); ctx.fill();
             });
 
             // Draw Enemies
+            ctx.fillStyle = '#ff3333';
+            ctx.shadowBlur = 15; ctx.shadowColor = 'red';
             enemies.forEach(e => {
-                ctx.fillStyle = '#ff3333';
-                ctx.shadowColor = 'red';
+                ctx.save();
+                ctx.translate(e.x, e.y);
+                // Rotate enemies slowly
+                ctx.rotate(Date.now() / 500);
                 ctx.beginPath();
-                ctx.rect(e.x - e.radius, e.y - e.radius, e.radius*2, e.radius*2);
+                ctx.rect(-e.radius, -e.radius, e.radius*2, e.radius*2);
                 ctx.fill();
+                ctx.restore();
             });
-
-            // Draw Particles
-            particles.forEach(p => {
-                ctx.fillStyle = p.color;
-                ctx.globalAlpha = p.life;
-                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
-                ctx.globalAlpha = 1;
-            });
+            
+            ctx.shadowBlur = 0; // Reset shadow for next frame
         }
 
         function shoot() {
-            if(isGameOver) return;
+            if(isGameOver || document.getElementById('startScreen').classList.contains('hidden') === false) return;
             const angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
-            const velocity = { x: Math.cos(angle) * 12, y: Math.sin(angle) * 12 };
+            // Bullet speed
+            const velocity = { x: Math.cos(angle) * 14, y: Math.sin(angle) * 14 };
             bullets.push({ x: player.x, y: player.y, vx: velocity.x, vy: velocity.y });
         }
 
         function spawnEnemy() {
             const side = Math.floor(Math.random() * 4);
             let x, y;
-            if(side === 0) { x = Math.random()*canvas.width; y = -20; }
-            if(side === 1) { x = canvas.width+20; y = Math.random()*canvas.height; }
-            if(side === 2) { x = Math.random()*canvas.width; y = canvas.height+20; }
-            if(side === 3) { x = -20; y = Math.random()*canvas.height; }
+            const buffer = 30; // Spawn outside screen
+            if(side === 0) { x = Math.random()*canvas.width; y = -buffer; }
+            if(side === 1) { x = canvas.width+buffer; y = Math.random()*canvas.height; }
+            if(side === 2) { x = Math.random()*canvas.width; y = canvas.height+buffer; }
+            if(side === 3) { x = -buffer; y = Math.random()*canvas.height; }
             
-            enemies.push({ x, y, radius: 15, speed: 2 + Math.random() });
+            enemies.push({ x, y, radius: 12 + Math.random()*5, speed: 1.5 + Math.random()*2 });
         }
 
         function spawnParticles(x, y, color, count) {
             for(let i=0; i<count; i++) {
                 particles.push({
                     x, y, color,
-                    vx: (Math.random()-0.5) * 5,
-                    vy: (Math.random()-0.5) * 5,
-                    life: 1, size: Math.random() * 3
+                    vx: (Math.random()-0.5) * 8,
+                    vy: (Math.random()-0.5) * 8,
+                    life: 1, size: Math.random() * 3 + 1
                 });
             }
         }
 
         function updateHUD() {
             document.getElementById('gameScore').innerText = score;
-            document.getElementById('gameHP').style.width = player.hp + '%';
-            if(player.hp < 30) document.getElementById('gameHP').style.background = 'red';
-            else document.getElementById('gameHP').style.background = '#00ff88';
+            const hpFill = document.getElementById('gameHP');
+            hpFill.style.width = Math.max(0, player.hp) + '%';
+            
+            if(player.hp < 35) {
+                hpFill.style.background = 'var(--danger)';
+                hpFill.style.boxShadow = 'inset 0 0 10px rgba(255,51,51,0.5)';
+            } else {
+                hpFill.style.background = 'var(--success)';
+                hpFill.style.boxShadow = 'inset 0 0 10px rgba(255,255,255,0.5)';
+            }
         }
 
         function gameOver() {
@@ -704,31 +824,30 @@
         }
 
         function screenShake() {
-            canvas.style.transform = `translate(${Math.random()*10-5}px, ${Math.random()*10-5}px)`;
+            canvas.style.transform = `translate(${Math.random()*12-6}px, ${Math.random()*12-6}px)`;
             setTimeout(() => canvas.style.transform = 'translate(0,0)', 50);
         }
 
-        // Input Handlers
+        // --- Input Handling ---
         function handleKey(e) {
-            if(e.type === 'keydown') {
-                if(e.key === 'w') keys.w = true;
-                if(e.key === 'a') keys.a = true;
-                if(e.key === 's') keys.s = true;
-                if(e.key === 'd') keys.d = true;
-            } else {
-                if(e.key === 'w') keys.w = false;
-                if(e.key === 'a') keys.a = false;
-                if(e.key === 's') keys.s = false;
-                if(e.key === 'd') keys.d = false;
-            }
+            const isDown = e.type === 'keydown';
+            if(e.key.toLowerCase() === 'w') keys.w = isDown;
+            if(e.key.toLowerCase() === 'a') keys.a = isDown;
+            if(e.key.toLowerCase() === 's') keys.s = isDown;
+            if(e.key.toLowerCase() === 'd') keys.d = isDown;
         }
         function handleMouse(e) {
             const rect = canvas.getBoundingClientRect();
-            mouse.x = e.clientX - rect.left;
-            mouse.y = e.clientY - rect.top;
+            // Scale mouse coordinates in case canvas CSS size differs from internal resolution
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            mouse.x = (e.clientX - rect.left) * scaleX;
+            mouse.y = (e.clientY - rect.top) * scaleY;
         }
 
-        // --- 5. FIREBASE AUTH ---
+        /* =========================================
+           6. FIREBASE AUTHENTICATION
+        ========================================= */
         const firebaseConfig = {
             apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
             authDomain: "playwithease.firebaseapp.com",
@@ -745,20 +864,31 @@
             const provider = new firebase.auth.GoogleAuthProvider();
 
             window.handleLogin = () => {
-                auth.signInWithPopup(provider).catch(e => alert(e.message));
+                auth.signInWithPopup(provider).catch(e => {
+                    console.error("Auth Error:", e.message);
+                    alert("Login Failed: " + e.message);
+                });
             };
 
             auth.onAuthStateChanged(user => {
                 const btn = document.getElementById('loginBtn');
                 if(user) {
-                    btn.innerHTML = `<i class="fas fa-user-circle"></i> ${user.email.split('@')[0]}`;
-                    btn.onclick = () => auth.signOut();
+                    // Logged In State
+                    btn.innerHTML = `<i class="fas fa-user-circle"></i> ${user.displayName || user.email.split('@')[0]}`;
+                    btn.title = "Click to Sign Out";
+                    btn.onclick = () => {
+                        if(confirm("Are you sure you want to sign out?")) auth.signOut();
+                    };
                 } else {
-                    btn.innerText = "Sign In";
+                    // Logged Out State
+                    btn.innerHTML = `Sign In`;
+                    btn.title = "Sign In with Google";
                     btn.onclick = handleLogin;
                 }
             });
-        } catch(e) { console.log("Firebase config error"); }
+        } catch(e) { 
+            console.error("Firebase Initialization Error:", e); 
+        }
 
     </script>
 </body>
