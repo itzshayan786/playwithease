@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlayWithEase | Offline Mode</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #050505; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
+        .neon-text { color: #00f3ff; text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); }
+        .text-center { text-align: center; margin-bottom: 2rem; z-index: 10; }
+        
+        /* Game Container */
+        #gameArea { width: 100%; max-width: 600px; height: 200px; border-bottom: 2px solid #00f3ff; position: relative; overflow: hidden; box-shadow: 0 10px 20px -10px rgba(0, 243, 255, 0.3); }
+        
+        /* Player */
+        #player { width: 40px; height: 40px; background: #00f3ff; box-shadow: 0 0 15px #00f3ff; position: absolute; bottom: 0; left: 50px; border-radius: 4px; }
+        .jump { animation: jumpAnim 0.5s linear; }
+        @keyframes jumpAnim { 0% { bottom: 0; } 40% { bottom: 100px; } 50% { bottom: 110px; } 60% { bottom: 100px; } 100% { bottom: 0; } }
+        
+        /* Obstacle */
+        #obstacle { width: 30px; height: 40px; background: #ff0055; box-shadow: 0 0 15px #ff0055; position: absolute; bottom: 0; right: -30px; border-radius: 4px; animation: moveObstacle 1.5s infinite linear; }
+        @keyframes moveObstacle { 0% { right: -30px; } 100% { right: 100%; } }
+        
+        /* Score UI */
+        #scoreDisplay { position: absolute; top: 10px; right: 20px; font-weight: bold; font-size: 1.2rem; }
+        .btn-neon { background: transparent; color: #00f3ff; border: 1px solid #00f3ff; padding: 0.8rem 1.5rem; margin-top: 2rem; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-weight: bold; }
+    </style>
+</head>
+<body onclick="jump()">
+
+    <div class="text-center">
+        <h2>Connection <span style="color: #ff0055;">Lost</span></h2>
+        <p>No internet to shop? Still we have something.</p>
+        <p style="font-size: 0.8rem; color: #888; margin-top: 10px;">Tap or click anywhere to jump!</p>
+    </div>
+
+    <div id="gameArea">
+        <div id="scoreDisplay">Score: <span id="score">0</span></div>
+        <div id="player"></div>
+        <div id="obstacle"></div>
+    </div>
+
+    <button class="btn-neon" onclick="location.reload()">Try Reconnecting</button>
+
+    <script>
+        const player = document.getElementById("player");
+        const obstacle = document.getElementById("obstacle");
+        const scoreElement = document.getElementById("score");
+        let isJumping = false;
+        let score = 0;
+        let gameSpeed = 1.5;
+
+        // Jump Logic
+        function jump() {
+            if (!isJumping) {
+                isJumping = true;
+                player.classList.add("jump");
+                setTimeout(() => {
+                    player.classList.remove("jump");
+                    isJumping = false;
+                    score += 10;
+                    scoreElement.innerText = score;
+                    
+                    // Increase speed slightly as score goes up
+                    if (score % 50 === 0 && gameSpeed > 0.8) {
+                        gameSpeed -= 0.1;
+                        obstacle.style.animationDuration = gameSpeed + "s";
+                    }
+                }, 500);
+            }
+        }
+
+        // Listen for Spacebar
+        document.addEventListener('keydown', (e) => {
+            if(e.code === 'Space') jump();
+        });
+
+        // Collision Detection Loop
+        setInterval(() => {
+            let playerTop = parseInt(window.getComputedStyle(player).getPropertyValue("bottom"));
+            let obstacleLeft = parseInt(window.getComputedStyle(obstacle).getPropertyValue("left"));
+
+            // If obstacle is under the player and player is not high enough
+            if (obstacleLeft < 90 && obstacleLeft > 50 && playerTop <= 40) {
+                obstacle.style.animation = "none";
+                obstacle.style.display = "none";
+                alert("Game Over! Your Neon Score: " + score);
+                
+                // Reset Game
+                score = 0;
+                scoreElement.innerText = score;
+                obstacle.style.animation = `moveObstacle ${gameSpeed}s infinite linear`;
+                obstacle.style.display = "block";
+                gameSpeed = 1.5;
+            }
+        }, 10);
+    </script>
+</body>
+</html>
