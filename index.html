@@ -24,8 +24,11 @@
         .hide { display: none !important; }
         .cart-slide { transform: translateX(100%); transition: transform 0.3s ease-in-out; }
         .cart-open { transform: translateX(0); }
-        .product-card:hover .product-img { transform: scale(1.05); }
-        .product-img { transition: transform 0.3s ease; }
+        .product-card { transition: box-shadow 0.3s ease, transform 0.2s ease; }
+        .product-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
+        .product-img-wrapper { overflow: hidden; }
+        .product-img { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .product-card:hover .product-img { transform: scale(1.08); }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-200">
@@ -64,7 +67,7 @@
             <div class="bg-gradient-to-r from-primary to-purple-900 rounded-2xl p-8 sm:p-12 mb-10 text-white shadow-lg flex flex-col md:flex-row items-center justify-between">
                 <div>
                     <h1 class="text-4xl md:text-5xl font-bold mb-4">Level Up Your Library</h1>
-                    <p class="text-lg md:text-xl mb-6 opacity-90">Instant digital keys for PC, PlayStation, Xbox, and Nintendo. Trusted by thousands.</p>
+                    <p class="text-lg md:text-xl mb-6 opacity-90">Instant digital keys, localized gift cards, and premium subscriptions.</p>
                     <button class="bg-white text-primary font-bold py-3 px-8 rounded-full shadow hover:bg-gray-100 transition" onclick="document.getElementById('gamesSection').scrollIntoView()">Shop Now</button>
                 </div>
                 <div class="hidden md:block">
@@ -76,10 +79,10 @@
             <div id="gamesGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-12"></div>
 
             <h2 class="text-2xl font-bold mb-6 border-b border-gray-200 dark:border-gray-700 pb-2"><i class="fa-solid fa-gift text-pink-500 mr-2"></i>Gift Cards</h2>
-            <div id="giftCardsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-12"></div>
+            <div id="giftCardsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12"></div>
 
             <h2 class="text-2xl font-bold mb-6 border-b border-gray-200 dark:border-gray-700 pb-2"><i class="fa-solid fa-ticket text-blue-500 mr-2"></i>Subscriptions</h2>
-            <div id="subsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-12"></div>
+            <div id="subsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12"></div>
         </div>
 
         <div id="authView" class="hide max-w-md mx-auto mt-10 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
@@ -161,8 +164,7 @@
             <h2 class="text-xl font-bold"><i class="fa-solid fa-cart-shopping mr-2"></i>Your Cart</h2>
             <button onclick="toggleCart()" class="text-gray-500 hover:text-red-500 text-xl"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div id="cartItems" class="flex-1 overflow-y-auto p-4 space-y-4">
-            </div>
+        <div id="cartItems" class="flex-1 overflow-y-auto p-4 space-y-4"></div>
         <div class="p-6 border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
             <div class="flex justify-between font-bold text-lg mb-4">
                 <span>Total:</span>
@@ -191,20 +193,19 @@
             appId: "1:189729941006:web:362653774b92416c357e5f",
             measurementId: "G-1C3B31KQ7C"
         };
-
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
         // --- GLOBAL STATE ---
         let cart = JSON.parse(localStorage.getItem('playWithEaseCart')) || [];
-        let currency = 'INR'; // 'INR' or 'USD'
+        let currency = 'INR'; 
         let conversionRate = 0.012; 
         let currentUser = null;
         let isLoginMode = true;
 
         // --- DATABASE ---
         const products = [
-            // Games (40+)
+            // FULL 40+ GAMES
             { id: 'g1', type: 'game', title: 'Grand Theft Auto V', platform: 'Steam', price: 999, discount: 50, rating: 4.8, img: 'https://cdn.akamai.steamstatic.com/steam/apps/271590/header.jpg' },
             { id: 'g2', type: 'game', title: 'Red Dead Redemption 2', platform: 'Steam', price: 3199, discount: 60, rating: 4.9, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1174180/header.jpg' },
             { id: 'g3', type: 'game', title: 'EA FC 24', platform: 'EA App', price: 3499, discount: 20, rating: 4.2, img: 'https://cdn.akamai.steamstatic.com/steam/apps/2195250/header.jpg' },
@@ -245,54 +246,65 @@
             { id: 'g38', type: 'game', title: 'The Last of Us Part I', platform: 'Steam', price: 3999, discount: 33, rating: 4.6, img: 'https://placehold.co/460x215/166534/white?text=TLOU+Part+I' },
             { id: 'g39', type: 'game', title: 'Horizon Zero Dawn', platform: 'Steam', price: 3299, discount: 60, rating: 4.8, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1151640/header.jpg' },
             { id: 'g40', type: 'game', title: 'Spider-Man: Miles Morales', platform: 'Steam', price: 3299, discount: 40, rating: 4.7, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1817190/header.jpg' },
-            
-            // Gift Cards
-            { id: 'gc1', type: 'giftcard', title: 'Amazon Shopping', platform: 'Gift Card', price: 1000, discount: 2, img: 'https://placehold.co/300x200/f59e0b/white?text=Amazon+₹1000' },
-            { id: 'gc2', type: 'giftcard', title: 'Flipkart', platform: 'Gift Card', price: 1000, discount: 1, img: 'https://placehold.co/300x200/3b82f6/white?text=Flipkart+₹1000' },
-            { id: 'gc3', type: 'giftcard', title: 'BookMyShow', platform: 'Gift Card', price: 500, discount: 5, img: 'https://placehold.co/300x200/ef4444/white?text=BMS+₹500' },
-            { id: 'gc4', type: 'giftcard', title: 'Ajio', platform: 'Gift Card', price: 2000, discount: 10, img: 'https://placehold.co/300x200/111827/white?text=Ajio+₹2000' },
-            { id: 'gc5', type: 'giftcard', title: 'Myntra', platform: 'Gift Card', price: 1000, discount: 8, img: 'https://placehold.co/300x200/ec4899/white?text=Myntra+₹1000' },
-            { id: 'gc6', type: 'giftcard', title: 'Google Play', platform: 'Wallet', price: 500, discount: 0, img: 'https://placehold.co/300x200/10b981/white?text=Google+Play+₹500' },
-            { id: 'gc7', type: 'giftcard', title: 'Steam Wallet', platform: 'Wallet', price: 1000, discount: 0, img: 'https://placehold.co/300x200/1e3a8a/white?text=Steam+₹1000' },
-            { id: 'gc8', type: 'giftcard', title: 'PSN Wallet', platform: 'Wallet', price: 1000, discount: 0, img: 'https://placehold.co/300x200/2563eb/white?text=PSN+₹1000' },
-            { id: 'gc9', type: 'giftcard', title: 'Xbox Card', platform: 'Wallet', price: 1000, discount: 0, img: 'https://placehold.co/300x200/16a34a/white?text=Xbox+₹1000' },
-            
-            // Subscriptions
-            { id: 's1', type: 'sub', title: 'PlayStation Plus Extra (1 Month)', platform: 'PSN', price: 749, discount: 0, img: 'https://placehold.co/300x200/facc15/black?text=PS+Plus' },
-            { id: 's2', type: 'sub', title: 'Xbox Game Pass Ultimate', platform: 'Xbox', price: 549, discount: 10, img: 'https://placehold.co/300x200/22c55e/white?text=Game+Pass' },
-            { id: 's3', type: 'sub', title: 'EA Play (1 Month)', platform: 'EA', price: 315, discount: 0, img: 'https://placehold.co/300x200/ef4444/white?text=EA+Play' },
-            { id: 's4', type: 'sub', title: 'Netflix Premium (1 Month)', platform: 'OTT', price: 649, discount: 0, img: 'https://placehold.co/300x200/dc2626/white?text=Netflix' },
-            { id: 's5', type: 'sub', title: 'Prime Video (1 Year)', platform: 'OTT', price: 1499, discount: 5, img: 'https://placehold.co/300x200/0ea5e9/white?text=Prime+Video' },
-            { id: 's6', type: 'sub', title: 'Spotify Premium (3 Months)', platform: 'Music', price: 359, discount: 0, img: 'https://placehold.co/300x200/10b981/white?text=Spotify' },
+
+            // FULL GIFT CARDS
+            { id: 'gc1', type: 'giftcard', title: 'Amazon Gift Card', platform: 'Shopping', price: 1000, options: '₹500 - ₹10000', img: 'https://placehold.co/600x400/FF9900/ffffff?text=Amazon\nGift+Card' },
+            { id: 'gc2', type: 'giftcard', title: 'Flipkart E-Voucher', platform: 'Shopping', price: 1000, options: '₹100 - ₹5000', img: 'https://placehold.co/600x400/2874F0/ffffff?text=Flipkart\nGift+Card' },
+            { id: 'gc3', type: 'giftcard', title: 'BookMyShow Card', platform: 'Entertainment', price: 500, options: '₹250 - ₹2000', img: 'https://placehold.co/600x400/F84464/ffffff?text=BookMyShow\nGift+Card' },
+            { id: 'gc4', type: 'giftcard', title: 'Ajio E-Gift Card', platform: 'Fashion', price: 2000, options: '₹500 - ₹5000', img: 'https://placehold.co/600x400/2C4152/ffffff?text=Ajio\nGift+Card' },
+            { id: 'gc5', type: 'giftcard', title: 'Myntra Voucher', platform: 'Fashion', price: 1000, options: '₹500 - ₹3000', img: 'https://placehold.co/600x400/FF3E6C/ffffff?text=Myntra\nGift+Card' },
+            { id: 'gc6', type: 'giftcard', title: 'Google Play Recharge', platform: 'Mobile', price: 500, options: '₹100 - ₹5000', img: 'https://placehold.co/600x400/3BCCFF/ffffff?text=Google+Play\nRecharge' },
+            { id: 'gc7', type: 'giftcard', title: 'Steam Wallet Code', platform: 'Gaming', price: 1000, options: '₹150 - ₹5000', img: 'https://placehold.co/600x400/171A21/ffffff?text=Steam\nWallet' },
+            { id: 'gc8', type: 'giftcard', title: 'PlayStation Store Wallet', platform: 'Gaming', price: 1000, options: '₹500 - ₹4000', img: 'https://placehold.co/600x400/003791/ffffff?text=PlayStation\nWallet' },
+            { id: 'gc9', type: 'giftcard', title: 'Xbox Gift Card', platform: 'Gaming', price: 1000, options: '₹500 - ₹5000', img: 'https://placehold.co/600x400/107C10/ffffff?text=Xbox\nGift+Card' },
+            { id: 'gc10', type: 'giftcard', title: 'Netflix E-Pin', platform: 'Streaming', price: 500, options: '₹149 - ₹649', img: 'https://placehold.co/600x400/E50914/ffffff?text=Netflix\nGift+Card' },
+            { id: 'gc11', type: 'giftcard', title: 'Spotify Premium Card', platform: 'Audio', price: 359, options: '1 - 12 Months', img: 'https://placehold.co/600x400/1DB954/ffffff?text=Spotify\nPremium' },
+            { id: 'gc12', type: 'giftcard', title: 'Disney+ Hotstar', platform: 'Streaming', price: 899, options: 'Super / Premium', img: 'https://placehold.co/600x400/032541/ffffff?text=Disney+\nHotstar' },
+
+            // FULL SUBSCRIPTIONS
+            { id: 's1', type: 'sub', title: 'PlayStation Plus Extra', platform: 'Subscription', price: 749, options: '1 / 3 / 12 Months', img: 'https://placehold.co/600x400/003791/facc15?text=PlayStation\nPlus+Extra' },
+            { id: 's2', type: 'sub', title: 'Xbox Game Pass Ultimate', platform: 'Subscription', price: 549, options: '1 / 3 / 6 Months', img: 'https://placehold.co/600x400/107C10/ffffff?text=Xbox\nGame+Pass' },
+            { id: 's3', type: 'sub', title: 'EA Play Membership', platform: 'Subscription', price: 315, options: '1 Month / 1 Year', img: 'https://placehold.co/600x400/FF4747/ffffff?text=EA\nPlay' },
+            { id: 's4', type: 'sub', title: 'Netflix Premium Plan', platform: 'Subscription', price: 649, options: 'Monthly Auto-Renew', img: 'https://placehold.co/600x400/E50914/ffffff?text=Netflix\nPremium' },
+            { id: 's5', type: 'sub', title: 'Amazon Prime Video', platform: 'Subscription', price: 1499, options: 'Yearly Plan', img: 'https://placehold.co/600x400/00A8E1/ffffff?text=Prime\nVideo' },
+            { id: 's6', type: 'sub', title: 'Spotify Premium Individual', platform: 'Subscription', price: 119, options: 'Monthly Auto-Renew', img: 'https://placehold.co/600x400/1DB954/ffffff?text=Spotify\nPremium' },
         ];
 
         // --- UI RENDERING ---
         function formatPrice(inrPrice) {
-            if (currency === 'USD') return `$${(inrPrice * conversionRate).toFixed(2)}`;
-            return `₹${inrPrice.toLocaleString('en-IN')}`;
+            return currency === 'USD' ? `$${(inrPrice * conversionRate).toFixed(2)}` : `₹${inrPrice.toLocaleString('en-IN')}`;
         }
 
         function generateCard(item) {
-            const currentPrice = item.price * (1 - item.discount / 100);
+            const currentPrice = item.price * (1 - (item.discount || 0) / 100);
+            const isGame = item.type === 'game';
+            
+            // For Giftcards/Subs we use 3/2 aspect ratio to look like physical cards, games use standard cover height
+            const imgClass = isGame ? "h-32 sm:h-40" : "aspect-[3/2]"; 
+
             return `
-                <div class="product-card bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col cursor-pointer transition-shadow hover:shadow-xl">
-                    <div class="relative overflow-hidden h-32 sm:h-40">
-                        <img src="${item.img}" alt="${item.title}" class="product-img w-full h-full object-cover" loading="lazy">
-                        ${item.discount > 0 ? `<div class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">-${item.discount}%</div>` : ''}
+                <div class="product-card bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col cursor-pointer">
+                    <div class="product-img-wrapper relative w-full ${imgClass} bg-gray-200 dark:bg-gray-700">
+                        <img src="${item.img}" alt="${item.title}" class="product-img w-full h-full object-cover" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/600x400/333333/ffffff?text=Image+Unavailable';">
+                        ${item.discount ? `<div class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded shadow-sm">-${item.discount}%</div>` : ''}
                     </div>
                     <div class="p-4 flex flex-col flex-grow">
-                        <div class="text-xs text-gray-500 dark:text-gray-400 mb-1 flex justify-between">
-                            <span><i class="fa-brands fa-${item.platform.toLowerCase()} mr-1"></i>${item.platform}</span>
-                            ${item.rating ? `<span class="text-yellow-500"><i class="fa-solid fa-star text-[10px]"></i> ${item.rating}</span>` : ''}
+                        <div class="text-xs text-gray-500 dark:text-gray-400 mb-1 flex justify-between uppercase tracking-wider font-semibold">
+                            <span><i class="fa-solid ${isGame ? 'fa-gamepad' : (item.type === 'giftcard' ? 'fa-gift' : 'fa-ticket')} mr-1"></i>${item.platform}</span>
+                            ${item.rating ? `<span class="text-yellow-500"><i class="fa-solid fa-star"></i> ${item.rating}</span>` : ''}
                         </div>
-                        <h3 class="font-bold text-sm sm:text-base mb-2 line-clamp-2">${item.title}</h3>
-                        <div class="mt-auto flex items-center justify-between">
+                        <h3 class="font-bold text-base mb-1 line-clamp-2">${item.title}</h3>
+                        
+                        ${item.options ? `<p class="text-xs text-primary dark:text-purple-400 mb-3 bg-purple-50 dark:bg-purple-900/20 inline-block px-2 py-1 rounded border border-purple-100 dark:border-purple-800">Options: ${item.options}</p>` : '<div class="mb-3"></div>'}
+                        
+                        <div class="mt-auto flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-700">
                             <div>
+                                <span class="text-[10px] text-gray-400 block leading-none mb-1">Starts at</span>
                                 <span class="font-bold text-lg">${formatPrice(currentPrice)}</span>
                                 ${item.discount > 0 ? `<span class="text-xs line-through text-gray-400 ml-1">${formatPrice(item.price)}</span>` : ''}
                             </div>
-                            <button onclick="addToCart('${item.id}')" class="bg-primary hover:bg-secondary text-white w-8 h-8 rounded-full flex items-center justify-center transition">
-                                <i class="fa-solid fa-plus"></i>
+                            <button onclick="addToCart('${item.id}')" class="bg-primary hover:bg-secondary text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center shadow hover:shadow-md">
+                                Add <i class="fa-solid fa-plus ml-1 text-xs"></i>
                             </button>
                         </div>
                     </div>
@@ -311,7 +323,7 @@
             const product = products.find(p => p.id === id);
             const existing = cart.find(item => item.id === id);
             if (existing) existing.qty++;
-            else cart.push({ ...product, qty: 1, currentPrice: product.price * (1 - product.discount / 100) });
+            else cart.push({ ...product, qty: 1, currentPrice: product.price * (1 - (product.discount || 0) / 100) });
             saveCart();
             updateCartUI();
         };
@@ -345,7 +357,7 @@
                 total += itemTotal;
                 return `
                     <div class="flex items-center gap-4 bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
-                        <img src="${item.img}" class="w-16 h-12 object-cover rounded">
+                        <img src="${item.img}" class="w-16 h-12 object-cover rounded" onerror="this.onerror=null; this.src='https://placehold.co/100x100/333333/ffffff?text=Img';">
                         <div class="flex-1">
                             <h4 class="text-sm font-bold line-clamp-1">${item.title}</h4>
                             <div class="text-primary font-semibold text-sm">${formatPrice(item.currentPrice)}</div>
@@ -362,7 +374,7 @@
             document.getElementById('cartTotalUI').innerText = formatPrice(total);
         }
 
-        // --- NAVIGATION & VIEWS ---
+        // --- NAVIGATION & CHECKOUT ---
         window.toggleCart = () => {
             document.getElementById('cartDrawer').classList.toggle('cart-open');
             document.getElementById('cartOverlay').classList.toggle('hide');
@@ -473,7 +485,6 @@
         const htmlEl = document.documentElement;
         const themeBtn = document.getElementById('themeToggle');
         
-        // Check system preference on load
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             htmlEl.classList.add('dark');
         }
