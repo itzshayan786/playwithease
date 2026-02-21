@@ -6,96 +6,107 @@
     <title>PlayWithEase | Premium Gaming Store</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="manifest" href="manifest.json">
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="nav-left">
-            <h1 class="logo">PlayWith<span class="accent">Ease</span></h1>
+    <nav class="navbar glass" id="navbar">
+        <div class="logo-container">
+            <h1 class="logo">PlayWith<span class="neon-text">Ease</span></h1>
         </div>
-        <div class="nav-center search-bar">
-            <input type="text" placeholder="Search games, accessories..." id="searchInput">
-            <button><i class="fas fa-search"></i></button>
+        <div class="search-container">
+            <input type="text" placeholder="Search games, gears..." id="searchInput">
+            <button class="icon-btn"><i class="fas fa-search"></i></button>
         </div>
-        <div class="nav-right">
-            <button id="currencyBtn" class="icon-btn">₹ INR</button>
-            <button id="themeToggle" class="icon-btn"><i class="fas fa-moon"></i></button>
-            <div class="auth-dropdown">
-                <button id="authBtn" class="icon-btn"><i class="fas fa-user"></i></button>
-                <div class="dropdown-content" id="userMenu" style="display: none;">
-                    <p id="userNameDisplay">Guest</p>
-                    <a href="#orders">Orders: <span id="orderCount">0</span></a>
-                    <button id="logoutBtn">Logout</button>
-                </div>
-            </div>
-            <button id="cartBtn" class="icon-btn">
+        <div class="nav-icons">
+            <button id="currencyToggle" class="icon-btn neon-hover">₹ INR</button>
+            <button id="soundToggle" class="icon-btn neon-hover"><i class="fas fa-volume-up"></i></button>
+            <button class="icon-btn neon-hover" onclick="toggleAuthModal()"><i class="fas fa-user"></i></button>
+            <button class="icon-btn neon-hover" onclick="toggleCart()">
                 <i class="fas fa-shopping-cart"></i>
-                <span id="cartCount" class="badge">0</span>
+                <span id="cartBadge" class="badge pop">0</span>
             </button>
-            <button class="mobile-menu icon-btn"><i class="fas fa-ellipsis-v"></i></button>
         </div>
     </nav>
 
-    <div id="cartPanel" class="cart-panel">
-        <div class="cart-header">
-            <h2>Your Cart</h2>
-            <button id="closeCart"><i class="fas fa-times"></i></button>
-        </div>
-        <div id="cartItems" class="cart-items">
-            </div>
-        <div class="cart-footer">
-            <div class="total">Total: <span id="cartTotal">₹0</span></div>
-            <div class="upi-info">UPI: shayanff98@okhdfcbank</div>
-            <button id="checkoutBtn" class="btn-primary">Proceed to Checkout</button>
-        </div>
-    </div>
-    <div id="cartOverlay" class="cart-overlay"></div>
-
-    <header class="hero">
-        <div class="hero-content">
+    <header class="hero parallax">
+        <div class="hero-overlay"></div>
+        <div class="hero-content fade-in-up">
+            <div class="live-counter"><span class="pulse-dot"></span> <span id="visitorCount">1,204</span> Gamers Online</div>
             <h2>Grand Theft Auto VI</h2>
             <p>Welcome to Leonida. Pre-order now and get exclusive digital content.</p>
-            <button class="btn-primary"><i class="fas fa-play"></i> Watch Trailer</button>
+            <button class="btn-neon"><i class="fas fa-play"></i> Watch Trailer</button>
         </div>
-        <div class="hero-overlay"></div>
     </header>
 
     <main>
-        <section class="filters">
-            <button class="filter-btn active">Trending</button>
-            <button class="filter-btn">Digital Games</button>
-            <button class="filter-btn">Accessories</button>
-            <button class="filter-btn">Subscriptions</button>
+        <section class="store-section scroll-anim">
+            <div class="section-header">
+                <h2>Trending <span class="neon-text">Gears</span></h2>
+                <div class="filters">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">Accessories</button>
+                    <button class="filter-btn">Digital</button>
+                </div>
+            </div>
+            <div id="productGrid" class="grid-container">
+                </div>
         </section>
 
-        <section id="productGrid" class="product-grid">
-            <div class="skeleton-card"></div>
-            <div class="skeleton-card"></div>
-            <div class="skeleton-card"></div>
-            <div class="skeleton-card"></div>
-        </section>
+        <section class="game-zone scroll-anim">
+            <h2>Live <span class="neon-text">Game Zone</span></h2>
+            <p class="subtitle">Play directly in your browser. No downloads required.</p>
+            
+            <div class="game-grid">
+                <div class="game-card glass hover-lift">
+                    <div class="poster-wrapper">
+                        <img src="assets/shooter-poster.jpg" alt="TPS Demo" loading="lazy" onerror="this.src='https://via.placeholder.com/600x337/111/00f3ff?text=TPS+Shooter+Ready'">
+                        <div class="play-overlay"><i class="fas fa-play-circle"></i></div>
+                        <span class="tag online">Online</span>
+                    </div>
+                    <div class="game-info">
+                        <h3>Neon Protocol (TPS Demo)</h3>
+                        <p>Multiplayer Lobby Active</p>
+                    </div>
+                </div>
 
-        <section class="game-zone">
-            <h2>Game Zone</h2>
-            <p class="offline-text">No Internet To Play? Still we have something.</p>
-            <div id="gameContainer" class="game-container">
-                <div class="game-placeholder">
-                    <i class="fas fa-gamepad fa-3x"></i>
-                    <h3>Browser Demo Ready</h3>
-                    <button class="btn-secondary" onclick="alert('Launch Three.js Canvas here!')">Play Demo</button>
+                <div class="game-card glass hover-lift">
+                    <div class="poster-wrapper">
+                        <img src="assets/dino-poster.jpg" alt="Offline Game" loading="lazy" onerror="this.src='https://via.placeholder.com/600x337/111/00f3ff?text=Offline+Mini-Game'">
+                        <div class="play-overlay"><i class="fas fa-play-circle"></i></div>
+                        <span class="tag offline">Offline Ready</span>
+                    </div>
+                    <div class="game-info">
+                        <h3>Chrome-style Runner</h3>
+                        <p>No Internet To Play, Still we have something.</p>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer>
-        <p>© PlayWithEase — Built by Shayan Akhtar</p>
-    </footer>
+    <div id="cartDrawer" class="cart-drawer glass-heavy">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="icon-btn" onclick="toggleCart()"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="cartItems" class="cart-items"></div>
+        <div class="cart-footer">
+            <div class="total-row">Total: <span id="cartTotal" class="neon-text">₹0</span></div>
+            <button class="btn-neon full-width">Proceed to Checkout</button>
+        </div>
+    </div>
+    <div id="overlay" class="overlay" onclick="closeAllModals()"></div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    
+    <div id="authModal" class="modal glass-heavy">
+        <h2>Initiate <span class="neon-text">Link</span></h2>
+        <input type="email" placeholder="Email Address" class="glass-input">
+        <input type="password" placeholder="Password" class="glass-input">
+        <button class="btn-neon full-width">Login</button>
+        <p class="switch-auth">New player? <span>Register here</span></p>
+    </div>
+
+    <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-modern-technology-select-3124.mp3"></audio>
+
     <script src="app.js"></script>
 </body>
 </html>
