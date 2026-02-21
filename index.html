@@ -1,112 +1,390 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayWithEase | Premium Gaming Store</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-</head>
-<body>
+    <title>PlayWithEase | Digital Marketplace</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb', // Professional Blue
+                        darkbg: '#0f172a',
+                        cardbg: '#1e293b'
+                    }
+                }
+            }
+        }
+    </script>
 
-    <nav class="navbar glass" id="navbar">
-        <div class="logo-container">
-            <h1 class="logo">PlayWith<span class="neon-text">Ease</span></h1>
-        </div>
-        <div class="search-container">
-            <input type="text" placeholder="Search games, gears..." id="searchInput">
-            <button class="icon-btn"><i class="fas fa-search"></i></button>
-        </div>
-        <div class="nav-icons">
-            <button id="currencyToggle" class="icon-btn neon-hover">₹ INR</button>
-            <button id="soundToggle" class="icon-btn neon-hover"><i class="fas fa-volume-up"></i></button>
-            <button class="icon-btn neon-hover" onclick="toggleAuthModal()"><i class="fas fa-user"></i></button>
-            <button class="icon-btn neon-hover" onclick="toggleCart()">
-                <i class="fas fa-shopping-cart"></i>
-                <span id="cartBadge" class="badge pop">0</span>
-            </button>
+    <style>
+        /* Smooth transitions & custom scrollbar */
+        body { transition: background-color 0.3s, color 0.3s; }
+        .cart-sidebar { transition: transform 0.3s ease-in-out; }
+        .cart-open { transform: translateX(0); }
+        .cart-closed { transform: translateX(100%); }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+        .skeleton { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 dark:bg-darkbg dark:text-white font-sans antialiased flex flex-col min-h-screen">
+
+    <nav class="sticky top-0 z-40 bg-white dark:bg-cardbg shadow-sm border-b border-gray-200 dark:border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center cursor-pointer">
+                    <i class="fa-solid fa-gamepad text-primary text-2xl mr-2"></i>
+                    <span class="font-bold text-xl tracking-tight">PlayWithEase</span>
+                </div>
+
+                <div class="hidden md:flex flex-1 max-w-lg mx-8">
+                    <div class="relative w-full">
+                        <input type="text" placeholder="Search for games, gift cards..." class="w-full bg-gray-100 dark:bg-darkbg border border-transparent focus:border-primary dark:focus:border-primary rounded-lg py-2 pl-10 pr-4 text-sm focus:outline-none transition-colors dark:text-white">
+                        <i class="fa-solid fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-4 md:space-x-6">
+                    <select id="currency-selector" class="bg-transparent text-sm font-medium focus:outline-none cursor-pointer dark:text-white" onchange="toggleCurrency()">
+                        <option value="INR" class="text-black">INR (₹)</option>
+                        <option value="USD" class="text-black">USD ($)</option>
+                    </select>
+
+                    <button onclick="toggleTheme()" class="text-gray-500 hover:text-primary transition-colors">
+                        <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
+                    </button>
+
+                    <button onclick="toggleCart()" class="relative text-gray-500 hover:text-primary transition-colors">
+                        <i class="fa-solid fa-shopping-cart text-lg"></i>
+                        <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
+                    </button>
+
+                    <button class="hidden sm:flex items-center text-sm font-medium hover:text-primary transition-colors">
+                        <i class="fa-solid fa-user mr-2"></i> Login
+                    </button>
+                </div>
+            </div>
         </div>
     </nav>
 
-    <header class="hero parallax">
-        <div class="hero-overlay"></div>
-        <div class="hero-content fade-in-up">
-            <div class="live-counter"><span class="pulse-dot"></span> <span id="visitorCount">1,204</span> Gamers Online</div>
-            <h2>Grand Theft Auto VI</h2>
-            <p>Welcome to Leonida. Pre-order now and get exclusive digital content.</p>
-            <button class="btn-neon"><i class="fas fa-play"></i> Watch Trailer</button>
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8">
+        
+        <div class="relative rounded-2xl overflow-hidden bg-primary text-white shadow-lg mb-10">
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-700 to-primary opacity-90"></div>
+            <div class="relative px-8 py-16 md:py-20 lg:px-16 flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-2/3 mb-8 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">Instant Delivery on Top Digital Games & Cards</h1>
+                    <p class="text-lg text-blue-100 mb-6 max-w-xl">Trustworthy, fast, and secure. Get the best deals on subscriptions, keys, and in-game currency today.</p>
+                    <button class="bg-white text-primary font-bold py-3 px-8 rounded-lg shadow hover:bg-gray-100 transition transform hover:-translate-y-0.5">Explore Deals</button>
+                </div>
+                <div class="md:w-1/3 hidden md:flex justify-end">
+                    <i class="fa-solid fa-gift text-9xl text-blue-200 opacity-50 shadow-sm rounded-full"></i>
+                </div>
+            </div>
         </div>
-    </header>
 
-    <main>
-        <section class="store-section scroll-anim">
-            <div class="section-header">
-                <h2>Trending <span class="neon-text">Gears</span></h2>
-                <div class="filters">
-                    <button class="filter-btn active">All</button>
-                    <button class="filter-btn">Accessories</button>
-                    <button class="filter-btn">Digital</button>
-                </div>
+        <div class="mb-12">
+            <h2 class="text-xl font-bold mb-4">Categories</h2>
+            <div class="flex space-x-4 overflow-x-auto pb-2 scrollbar-hide">
+                <button class="flex items-center bg-white dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-full px-6 py-2 whitespace-nowrap hover:border-primary dark:hover:border-primary transition-colors shadow-sm">
+                    <i class="fa-solid fa-key text-primary mr-2"></i> Game Keys
+                </button>
+                <button class="flex items-center bg-white dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-full px-6 py-2 whitespace-nowrap hover:border-primary transition-colors shadow-sm">
+                    <i class="fa-solid fa-wallet text-green-500 mr-2"></i> Gift Cards
+                </button>
+                <button class="flex items-center bg-white dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-full px-6 py-2 whitespace-nowrap hover:border-primary transition-colors shadow-sm">
+                    <i class="fa-solid fa-rotate text-purple-500 mr-2"></i> Subscriptions
+                </button>
+                <button class="flex items-center bg-white dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-full px-6 py-2 whitespace-nowrap hover:border-primary transition-colors shadow-sm">
+                    <i class="fa-solid fa-coins text-yellow-500 mr-2"></i> In-game Currency
+                </button>
             </div>
-            <div id="productGrid" class="grid-container">
-                </div>
-        </section>
+        </div>
 
-        <section class="game-zone scroll-anim">
-            <h2>Live <span class="neon-text">Game Zone</span></h2>
-            <p class="subtitle">Play directly in your browser. No downloads required.</p>
+        <div class="mb-8">
+            <div class="flex justify-between items-end mb-6">
+                <h2 class="text-2xl font-bold flex items-center"><i class="fa-solid fa-fire text-orange-500 mr-2"></i> Trending Deals</h2>
+                <a href="#" class="text-primary text-sm font-medium hover:underline">View All</a>
+            </div>
             
-            <div class="game-grid">
-                <div class="game-card glass hover-lift">
-                    <div class="poster-wrapper">
-                        <img src="assets/shooter-poster.jpg" alt="TPS Demo" loading="lazy" onerror="this.src='https://via.placeholder.com/600x337/111/00f3ff?text=TPS+Shooter+Ready'">
-                        <div class="play-overlay"><i class="fas fa-play-circle"></i></div>
-                        <span class="tag online">Online</span>
-                    </div>
-                    <div class="game-info">
-                        <h3>Neon Protocol (TPS Demo)</h3>
-                        <p>Multiplayer Lobby Active</p>
-                    </div>
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 </div>
+        </div>
 
-                <div class="game-card glass hover-lift">
-                    <div class="poster-wrapper">
-                        <img src="assets/dino-poster.jpg" alt="Offline Game" loading="lazy" onerror="this.src='https://via.placeholder.com/600x337/111/00f3ff?text=Offline+Mini-Game'">
-                        <div class="play-overlay"><i class="fas fa-play-circle"></i></div>
-                        <span class="tag offline">Offline Ready</span>
-                    </div>
-                    <div class="game-info">
-                        <h3>Chrome-style Runner</h3>
-                        <p>No Internet To Play, Still we have something.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
-    <div id="cartDrawer" class="cart-drawer glass-heavy">
-        <div class="cart-header">
-            <h2>Your Cart</h2>
-            <button class="icon-btn" onclick="toggleCart()"><i class="fas fa-times"></i></button>
+    <div id="cart-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden" onclick="toggleCart()"></div>
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-white dark:bg-cardbg z-50 shadow-2xl cart-closed flex flex-col">
+        <div class="flex justify-between items-center p-5 border-b border-gray-200 dark:border-gray-800">
+            <h2 class="text-xl font-bold"><i class="fa-solid fa-shopping-cart mr-2 text-primary"></i> Your Cart</h2>
+            <button onclick="toggleCart()" class="text-gray-500 hover:text-red-500 transition-colors">
+                <i class="fa-solid fa-times text-xl"></i>
+            </button>
         </div>
-        <div id="cartItems" class="cart-items"></div>
-        <div class="cart-footer">
-            <div class="total-row">Total: <span id="cartTotal" class="neon-text">₹0</span></div>
-            <button class="btn-neon full-width">Proceed to Checkout</button>
+        
+        <div id="cart-items" class="flex-grow p-5 overflow-y-auto flex flex-col space-y-4">
+            </div>
+
+        <div class="p-5 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-darkbg">
+            <div class="flex justify-between mb-4 text-lg font-bold">
+                <span>Total:</span>
+                <span id="cart-total" class="text-primary">₹0</span>
+            </div>
+            <button onclick="openCheckoutModal()" class="w-full bg-primary hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors flex justify-center items-center">
+                Secure Checkout <i class="fa-solid fa-lock ml-2 text-sm"></i>
+            </button>
         </div>
     </div>
-    <div id="overlay" class="overlay" onclick="closeAllModals()"></div>
 
-    <div id="authModal" class="modal glass-heavy">
-        <h2>Initiate <span class="neon-text">Link</span></h2>
-        <input type="email" placeholder="Email Address" class="glass-input">
-        <input type="password" placeholder="Password" class="glass-input">
-        <button class="btn-neon full-width">Login</button>
-        <p class="switch-auth">New player? <span>Register here</span></p>
+    <div id="checkout-modal" class="fixed inset-0 bg-black bg-opacity-60 z-[60] hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-cardbg rounded-xl shadow-2xl max-w-md w-full overflow-hidden transform scale-100 transition-transform">
+            <div class="p-6 text-center">
+                <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-check text-2xl text-green-600 dark:text-green-400"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Order Summary</h3>
+                <p class="text-gray-500 dark:text-gray-400 mb-6">Complete your payment using UPI to receive your digital products instantly.</p>
+                
+                <div class="bg-gray-100 dark:bg-darkbg p-4 rounded-lg mb-6 border border-gray-200 dark:border-gray-700">
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Payable Amount</p>
+                    <p id="modal-total" class="text-3xl font-bold text-primary mb-4">₹0</p>
+                    
+                    <div class="border-t border-gray-300 dark:border-gray-600 pt-4">
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Scan or Pay to UPI ID:</p>
+                        <div class="flex items-center justify-center bg-white dark:bg-cardbg p-3 rounded border border-dashed border-gray-400">
+                            <i class="fa-brands fa-google-pay text-2xl mr-2 text-gray-700 dark:text-white"></i>
+                            <span class="font-mono font-bold tracking-wider select-all">shayanff98@okhdfcbank</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex space-x-3">
+                    <button onclick="closeCheckoutModal()" class="flex-1 py-3 px-4 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">Cancel</button>
+                    <button onclick="confirmPayment()" class="flex-1 py-3 px-4 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 transition-colors">I have Paid</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-modern-technology-select-3124.mp3"></audio>
+    <footer class="bg-white dark:bg-cardbg border-t border-gray-200 dark:border-gray-800 mt-auto py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
+            <p>&copy; 2026 PlayWithEase. Digital Marketplace. All rights reserved.</p>
+        </div>
+    </footer>
 
-    <script src="app.js"></script>
+    <script>
+        // --- 1. STATE MANAGEMENT ---
+        const CONVERSION_RATE = 83; // 1 USD = 83 INR
+        let currency = 'INR';
+        let cart = JSON.parse(localStorage.getItem('pwe_cart')) || [];
+        
+        // --- 2. DUMMY PRODUCT DATA ---
+        const products = [
+            { id: 1, title: "Elden Ring - Shadow of the Erdtree", platform: "Steam", icon: "fa-brands fa-steam", price: 3499, discount: 15, rating: 4.9, img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" },
+            { id: 2, title: "PlayStation Store ₹1000 Gift Card", platform: "PSN", icon: "fa-brands fa-playstation", price: 1000, discount: 5, rating: 4.8, img: "https://images.unsplash.com/photo-1606144042871-39eb13d1058f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" },
+            { id: 3, title: "Xbox Game Pass Ultimate - 1 Month", platform: "Xbox", icon: "fa-brands fa-xbox", price: 549, discount: 20, rating: 4.7, img: "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" },
+            { id: 4, title: "Valorant 1000 VP", platform: "PC", icon: "fa-solid fa-desktop", price: 800, discount: 0, rating: 4.9, img: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" }
+        ];
+
+        // --- 3. FORMATTING UTILS ---
+        function formatPrice(priceInINR) {
+            if (currency === 'USD') {
+                return '$' + (priceInINR / CONVERSION_RATE).toFixed(2);
+            }
+            return '₹' + priceInINR.toLocaleString('en-IN');
+        }
+
+        // --- 4. RENDER UI ---
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+
+            products.forEach(p => {
+                const finalPrice = Math.floor(p.price - (p.price * (p.discount / 100)));
+                
+                const card = document.createElement('div');
+                card.className = "bg-white dark:bg-cardbg rounded-xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-800 hover:shadow-lg transition-shadow group flex flex-col";
+                card.innerHTML = `
+                    <div class="relative h-48 overflow-hidden bg-gray-200">
+                        <img src="${p.img}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 lazy">
+                        ${p.discount > 0 ? `<div class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">-${p.discount}%</div>` : ''}
+                        <div class="absolute bottom-2 left-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
+                            <i class="${p.icon} mr-1"></i> ${p.platform}
+                        </div>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="font-bold text-gray-900 dark:text-white mb-1 line-clamp-2" title="${p.title}">${p.title}</h3>
+                        <div class="flex items-center text-yellow-400 text-xs mb-3">
+                            <i class="fa-solid fa-star"></i> <span class="text-gray-500 dark:text-gray-400 ml-1 font-medium">${p.rating}</span>
+                        </div>
+                        <div class="mt-auto flex items-center justify-between">
+                            <div>
+                                <span class="font-extrabold text-lg text-gray-900 dark:text-white">${formatPrice(finalPrice)}</span>
+                                ${p.discount > 0 ? `<span class="text-xs text-gray-400 line-through ml-1">${formatPrice(p.price)}</span>` : ''}
+                            </div>
+                            <button onclick="addToCart(${p.id})" class="bg-gray-100 hover:bg-primary hover:text-white dark:bg-gray-700 dark:hover:bg-primary text-gray-900 dark:text-white w-10 h-10 rounded-full flex justify-center items-center transition-colors shadow-sm">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-items');
+            const totalEl = document.getElementById('cart-total');
+            const countEl = document.getElementById('cart-count');
+            
+            container.innerHTML = '';
+            let total = 0;
+            let count = 0;
+
+            if (cart.length === 0) {
+                container.innerHTML = `<div class="text-center text-gray-500 mt-10"><i class="fa-solid fa-box-open text-4xl mb-3"></i><p>Your cart is empty.</p></div>`;
+            } else {
+                cart.forEach(item => {
+                    const product = products.find(p => p.id === item.id);
+                    const finalPrice = Math.floor(product.price - (product.price * (product.discount / 100)));
+                    total += finalPrice * item.qty;
+                    count += item.qty;
+
+                    container.innerHTML += `
+                        <div class="flex items-center gap-4 border-b border-gray-100 dark:border-gray-800 pb-4">
+                            <img src="${product.img}" class="w-16 h-16 object-cover rounded-md bg-gray-200">
+                            <div class="flex-1">
+                                <h4 class="text-sm font-bold line-clamp-1">${product.title}</h4>
+                                <div class="text-primary font-bold text-sm mt-1">${formatPrice(finalPrice)}</div>
+                                <div class="flex items-center mt-2 bg-gray-100 dark:bg-darkbg w-max rounded-md border border-gray-200 dark:border-gray-700">
+                                    <button onclick="updateQty(${item.id}, -1)" class="px-2 py-0.5 text-gray-500 hover:text-black dark:hover:text-white">-</button>
+                                    <span class="px-2 text-sm font-medium">${item.qty}</span>
+                                    <button onclick="updateQty(${item.id}, 1)" class="px-2 py-0.5 text-gray-500 hover:text-black dark:hover:text-white">+</button>
+                                </div>
+                            </div>
+                            <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-red-500 transition-colors">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+            }
+
+            totalEl.innerText = formatPrice(total);
+            
+            if (count > 0) {
+                countEl.innerText = count;
+                countEl.classList.remove('hidden');
+            } else {
+                countEl.classList.add('hidden');
+            }
+
+            // Sync with local storage
+            localStorage.setItem('pwe_cart', JSON.stringify(cart));
+            document.getElementById('modal-total').innerText = formatPrice(total);
+        }
+
+        // --- 5. CART LOGIC ---
+        function addToCart(id) {
+            const existing = cart.find(item => item.id === id);
+            if (existing) { existing.qty += 1; } 
+            else { cart.push({ id, qty: 1 }); }
+            renderCart();
+            
+            // Visual feedback (open cart temporarily)
+            const cartSidebar = document.getElementById('cart-sidebar');
+            if(cartSidebar.classList.contains('cart-closed')) {
+                toggleCart();
+            }
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            renderCart();
+        }
+
+        function updateQty(id, change) {
+            const item = cart.find(item => item.id === id);
+            if (item) {
+                item.qty += change;
+                if (item.qty <= 0) removeFromCart(id);
+                else renderCart();
+            }
+        }
+
+        // --- 6. UI TOGGLES ---
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+            if (sidebar.classList.contains('cart-closed')) {
+                sidebar.classList.remove('cart-closed');
+                sidebar.classList.add('cart-open');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.remove('cart-open');
+                sidebar.classList.add('cart-closed');
+                overlay.classList.add('hidden');
+            }
+        }
+
+        function toggleCurrency() {
+            currency = document.getElementById('currency-selector').value;
+            renderProducts();
+            renderCart();
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                icon.classList.replace('fa-sun', 'fa-moon');
+            } else {
+                html.classList.add('dark');
+                icon.classList.replace('fa-moon', 'fa-sun');
+            }
+        }
+
+        // --- 7. CHECKOUT MODAL LOGIC ---
+        function openCheckoutModal() {
+            if (cart.length === 0) return alert("Your cart is empty!");
+            toggleCart(); // close sidebar
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        function confirmPayment() {
+            alert("Order placed successfully! Verification in progress.");
+            cart = [];
+            renderCart();
+            closeCheckoutModal();
+        }
+
+        // --- 8. INITIALIZATION ---
+        window.onload = () => {
+            // Check system preference for dark mode initially
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.classList.add('dark');
+                document.getElementById('theme-icon').classList.replace('fa-moon', 'fa-sun');
+            }
+            renderProducts();
+            renderCart();
+        };
+
+    </script>
 </body>
 </html>
