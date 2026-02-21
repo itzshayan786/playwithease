@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayWithEase | The Ultimate Gaming Marketplace</title>
+    <title>PlayWithEase | Next-Gen Gaming Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
                     colors: {
                         brand: {
-                            black: '#050505',
-                            dark: '#0f0f11',
-                            panel: '#1a1a1e',
-                            border: '#2a2a32',
-                            accent: '#ff0055', // Neon Pink/Red for that Vice City vibe
-                            accentHover: '#cc0044'
+                            bg: '#030712',       // Very dark blue/black
+                            panel: '#111827',    // Dark gray/blue for cards
+                            border: '#1f2937',   // Lighter border
+                            accent: '#3b82f6',   // Bright Blue
+                            accentHover: '#2563eb' // Deeper Blue
                         }
                     }
                 }
@@ -27,438 +27,512 @@
         }
     </script>
     <style>
-        body { background-color: #050505; color: #ffffff; overflow-x: hidden; }
-        .glass { background: rgba(15, 15, 17, 0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        body { background-color: #030712; color: #f9fafb; overflow-x: hidden; }
+        .glass { background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
         
-        /* GTA 6 Text Gradient */
-        .gta-text {
-            background: linear-gradient(to right, #ff007f, #ff7f00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        /* Auth Modal Animations */
+        .modal-enter { animation: modalFadeIn 0.3s ease-out forwards; }
+        .modal-exit { animation: modalFadeOut 0.3s ease-in forwards; }
+        @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes modalFadeOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.95); } }
         
-        /* Cinematic Image Fade */
-        .hero-gradient {
-            background: linear-gradient(to top, #050505 0%, rgba(5,5,5,0.4) 50%, rgba(5,5,5,0) 100%);
-        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #030712; }
+        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased flex flex-col min-h-screen">
 
-    <div id="globalOverlay" class="fixed inset-0 bg-black/80 z-40 hidden transition-opacity duration-300 opacity-0" onclick="closeAll()"></div>
+    <div id="globalOverlay" class="fixed inset-0 bg-black/80 z-40 hidden transition-opacity duration-300 backdrop-blur-sm" onclick="closeModals()"></div>
 
-    <div id="trailerModal" class="fixed inset-0 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300 scale-95 pointer-events-none p-4">
-        <div class="bg-brand-dark border border-brand-border rounded-2xl w-full max-w-5xl overflow-hidden shadow-2xl relative pointer-events-auto">
-            <button onclick="toggleTrailer()" class="absolute top-4 right-4 z-10 bg-black/50 hover:bg-brand-accent text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md transition"><i class="fa-solid fa-xmark text-xl"></i></button>
-            <div class="aspect-video bg-black w-full relative">
-                <iframe id="trailerFrame" class="w-full h-full absolute inset-0" src="" title="GTA 6 Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <div class="p-6 flex justify-between items-center bg-brand-panel">
-                <div>
-                    <h2 class="text-2xl font-black uppercase tracking-wide">Grand Theft Auto VI</h2>
-                    <p class="text-gray-400 text-sm">Global Premiere Trailer</p>
+    <div id="authModal" class="fixed inset-0 z-50 flex items-center justify-center hidden opacity-0 p-4">
+        <div class="bg-brand-panel border border-brand-border rounded-2xl w-full max-w-md p-8 relative shadow-[0_0_50px_rgba(59,130,246,0.15)]">
+            <button onclick="closeModals()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+            
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-accent/20 text-brand-accent mb-4">
+                    <i class="fa-solid fa-user-astronaut text-xl"></i>
                 </div>
-                <button onclick="addToCart('gta6', 'Grand Theft Auto VI (Pre-order)', 5999, 'https://images.unsplash.com/photo-1605901309584-818e25960b8f?q=80&w=500'); toggleTrailer();" class="bg-brand-accent hover:bg-brand-accentHover px-6 py-3 rounded-lg font-bold transition flex items-center gap-2">
-                    Pre-Order <span class="text-white">₹5,999</span>
-                </button>
+                <h2 id="authTitle" class="text-2xl font-bold">Welcome Back</h2>
+                <p id="authSubtitle" class="text-sm text-gray-400 mt-1">Sign in to your PlayWithEase account</p>
             </div>
-        </div>
-    </div>
 
-    <div id="cartPanel" class="fixed inset-y-0 right-0 w-full sm:w-[450px] bg-brand-panel border-l border-brand-border transform translate-x-full transition-transform duration-300 z-50 shadow-2xl flex flex-col">
-        <div class="p-6 border-b border-brand-border flex items-center justify-between">
-            <h2 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-bag-shopping text-brand-accent"></i> Your Cart</h2>
-            <button onclick="toggleCart()" class="text-gray-400 hover:text-white transition"><i class="fa-solid fa-xmark text-2xl"></i></button>
-        </div>
-        
-        <div id="cartItemsContainer" class="p-6 flex-1 overflow-y-auto space-y-4">
-            <div class="h-full flex flex-col items-center justify-center text-gray-500 text-center">
-                <i class="fa-solid fa-cart-arrow-down text-6xl mb-4 opacity-50"></i>
-                <p>Your cart is empty.</p>
-                <p class="text-sm mt-2">Looks like you haven't added any games yet.</p>
-            </div>
-        </div>
-        
-        <div class="p-6 border-t border-brand-border bg-brand-dark">
-            <div class="flex justify-between items-center mb-4">
-                <span class="text-gray-400 font-medium">Subtotal</span>
-                <span id="cartTotal" class="text-2xl font-black">₹0</span>
-            </div>
-            <button id="checkoutBtn" class="w-full bg-brand-accent hover:bg-brand-accentHover opacity-50 cursor-not-allowed py-4 rounded-xl font-bold text-lg transition flex justify-center items-center gap-2">
-                Secure Checkout <i class="fa-solid fa-lock text-sm"></i>
-            </button>
-        </div>
-    </div>
-
-    <div id="profileDashboard" class="fixed inset-y-0 right-0 w-full sm:w-[400px] bg-brand-panel border-l border-brand-border transform translate-x-full transition-transform duration-300 z-50 shadow-2xl flex flex-col">
-        <div class="p-6 border-b border-brand-border flex items-center justify-between">
-            <h2 class="text-xl font-bold">Account Dashboard</h2>
-            <button onclick="toggleDashboard()" class="text-gray-400 hover:text-white transition"><i class="fa-solid fa-xmark text-2xl"></i></button>
-        </div>
-        <div class="p-6 overflow-y-auto flex-1">
-            <div class="flex items-center gap-4 mb-8">
-                <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-brand-accent to-purple-600 p-1">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Shayan&backgroundColor=transparent" alt="Avatar" class="w-full h-full rounded-full bg-brand-black">
+            <form id="authForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Email</label>
+                    <input type="email" id="emailInput" required class="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-white focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition outline-none" placeholder="shayan@example.com">
                 </div>
                 <div>
-                    <h3 class="font-black text-xl">Shayan</h3>
-                    <p class="text-sm text-gray-400">Developer / Admin</p>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Password</label>
+                    <input type="password" id="passwordInput" required class="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-white focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition outline-none" placeholder="••••••••">
                 </div>
-            </div>
-            <div class="bg-brand-dark border border-brand-border rounded-2xl p-6 mb-6 relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-brand-accent/10 rounded-full blur-3xl -mr-10 -mt-10"></div>
-                <p class="text-sm text-gray-400 mb-1">PlayWithEase Wallet</p>
-                <h4 class="text-4xl font-black text-white mb-4">₹12,500.00</h4>
-                <div class="flex gap-2">
-                    <button class="flex-1 bg-white text-black py-2 rounded-lg font-bold text-sm hover:bg-gray-200 transition">Add Funds</button>
-                    <button class="flex-1 bg-brand-border text-white py-2 rounded-lg font-bold text-sm hover:bg-gray-700 transition">Withdraw</button>
-                </div>
-            </div>
-            <div class="space-y-2">
-                <button class="w-full flex items-center justify-between p-4 rounded-xl hover:bg-brand-border transition text-left">
-                    <span class="font-semibold flex items-center gap-3"><i class="fa-solid fa-gamepad text-brand-accent w-5"></i> My Games & Keys</span>
-                    <i class="fa-solid fa-chevron-right text-xs text-gray-500"></i>
+                <div id="authError" class="text-red-400 text-sm hidden bg-red-400/10 p-3 rounded-lg border border-red-400/20"></div>
+                <button type="submit" id="authSubmitBtn" class="w-full bg-brand-accent hover:bg-brand-accentHover text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-brand-accent/25 flex items-center justify-center gap-2">
+                    Sign In <i class="fa-solid fa-arrow-right"></i>
                 </button>
-                <button class="w-full flex items-center justify-between p-4 rounded-xl hover:bg-brand-border transition text-left">
-                    <span class="font-semibold flex items-center gap-3"><i class="fa-solid fa-clock-rotate-left text-brand-accent w-5"></i> Order History</span>
-                    <i class="fa-solid fa-chevron-right text-xs text-gray-500"></i>
-                </button>
-                <button class="w-full flex items-center justify-between p-4 rounded-xl hover:bg-brand-border transition text-left">
-                    <span class="font-semibold flex items-center gap-3"><i class="fa-solid fa-gear text-brand-accent w-5"></i> Settings</span>
-                    <i class="fa-solid fa-chevron-right text-xs text-gray-500"></i>
-                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-400">
+                    <span id="authSwitchText">Don't have an account?</span> 
+                    <button onclick="toggleAuthMode()" id="authSwitchBtn" class="text-brand-accent font-bold hover:underline ml-1">Sign Up</button>
+                </p>
             </div>
         </div>
     </div>
 
-    <nav class="glass fixed w-full z-30 border-b border-brand-border/50">
-        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+    <nav class="glass fixed w-full z-30 border-b border-brand-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
-                <div class="flex items-center gap-3 cursor-pointer group">
-                    <div class="bg-brand-accent p-2 rounded-lg transform group-hover:rotate-12 transition duration-300">
-                        <i class="fa-solid fa-bolt text-white text-xl"></i>
+                <div class="flex items-center gap-3 cursor-pointer">
+                    <div class="bg-gradient-to-br from-brand-accent to-blue-800 p-2.5 rounded-xl shadow-lg shadow-brand-accent/30">
+                        <i class="fa-solid fa-gamepad text-white text-xl"></i>
                     </div>
-                    <span class="font-black text-2xl tracking-tight hidden sm:block">PlayWithEase</span>
+                    <span class="font-extrabold text-2xl tracking-tight hidden sm:block">PlayWithEase</span>
                 </div>
 
-                <div class="hidden lg:flex items-center gap-8 bg-brand-panel/50 border border-brand-border px-8 py-3 rounded-full">
-                    <a href="#" class="text-sm font-semibold hover:text-brand-accent transition">Discover</a>
-                    <a href="#" class="text-sm font-semibold hover:text-brand-accent transition">Keys</a>
-                    <a href="#" class="text-sm font-semibold hover:text-brand-accent transition">Accounts</a>
-                    <a href="#" class="text-sm font-semibold hover:text-brand-accent transition">Gift Cards</a>
+                <div class="hidden md:flex items-center gap-6">
+                    <div class="flex items-center gap-2 bg-green-500/10 border border-green-500/20 px-3 py-1.5 rounded-full text-sm font-medium text-green-400">
+                        <span class="relative flex h-2.5 w-2.5">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                        </span>
+                        <span id="visitorCount">1,204</span> Online
+                    </div>
+                    
+                    <div class="relative group">
+                        <button class="flex items-center gap-2 bg-brand-panel border border-brand-border hover:border-brand-accent px-4 py-2 rounded-lg font-semibold transition">
+                            <i class="fa-solid fa-coins text-brand-accent"></i> <span id="currentCurrencyLabel">INR (₹)</span>
+                        </button>
+                        <div class="absolute right-0 mt-2 w-32 bg-brand-panel border border-brand-border rounded-lg shadow-xl hidden group-hover:block overflow-hidden">
+                            <button onclick="switchCurrency('INR')" class="w-full text-left px-4 py-2 hover:bg-brand-accent/20 transition font-medium">INR (₹)</button>
+                            <button onclick="switchCurrency('USD')" class="w-full text-left px-4 py-2 hover:bg-brand-accent/20 transition font-medium">USD ($)</button>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="flex items-center gap-6">
-                    <button class="text-gray-300 hover:text-white hidden sm:block"><i class="fa-solid fa-magnifying-glass text-lg"></i></button>
+                <div class="flex items-center gap-4">
+                    <div id="loggedOutUI" class="flex items-center gap-3">
+                        <button onclick="openAuthModal('login')" class="hidden sm:block text-gray-300 hover:text-white font-semibold px-4 py-2 transition">Log In</button>
+                        <button onclick="openAuthModal('signup')" class="bg-brand-accent hover:bg-brand-accentHover text-white px-5 py-2.5 rounded-xl font-bold transition shadow-lg shadow-brand-accent/20">Sign Up</button>
+                    </div>
                     
-                    <button onclick="toggleCart()" class="text-gray-300 hover:text-white relative group">
-                        <i class="fa-solid fa-cart-shopping text-xl group-hover:text-brand-accent transition"></i>
-                        <span id="cartBadge" class="absolute -top-2 -right-2 bg-brand-accent text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center border-2 border-brand-black shadow-lg shadow-brand-accent/50 hidden">0</span>
-                    </button>
-                    
-                    <button onclick="toggleDashboard()" class="w-10 h-10 rounded-full border-2 border-brand-border hover:border-brand-accent p-0.5 transition overflow-hidden">
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Shayan&backgroundColor=transparent" class="w-full h-full object-cover rounded-full bg-brand-panel">
-                    </button>
+                    <div id="loggedInUI" class="hidden items-center gap-4">
+                        <div class="flex items-center gap-3 bg-brand-panel border border-brand-border px-3 py-1.5 rounded-full">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Shayan&backgroundColor=3b82f6" class="w-8 h-8 rounded-full">
+                            <span id="userEmailDisplay" class="text-sm font-bold max-w-[120px] truncate">User</span>
+                        </div>
+                        <button id="logoutBtn" class="text-gray-400 hover:text-red-400 transition" title="Logout"><i class="fa-solid fa-arrow-right-from-bracket text-xl"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
     </nav>
 
-    <section class="relative h-[85vh] min-h-[600px] flex items-end justify-center pt-20 overflow-hidden">
-        <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1605901309584-818e25960b8f?q=80&w=2000&auto=format&fit=crop" alt="GTA 6 Background" class="w-full h-full object-cover object-center opacity-60">
-            <div class="absolute inset-0 hero-gradient"></div>
-        </div>
-
-        <div class="relative z-10 max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-            <div class="max-w-3xl">
-                <div class="inline-flex items-center gap-2 bg-brand-accent/20 border border-brand-accent/50 text-brand-accent px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-6 backdrop-blur-sm">
-                    <span class="w-2 h-2 rounded-full bg-brand-accent animate-pulse"></span> Global Premiere
-                </div>
-                <h1 class="text-5xl sm:text-7xl md:text-8xl font-black mb-4 tracking-tighter uppercase gta-text leading-none">
-                    Grand Theft <br> Auto VI
-                </h1>
-                <p class="text-lg sm:text-xl text-gray-300 mb-8 max-w-xl font-light">
-                    Welcome to Leonida. The highly anticipated next generation of open-world gaming is finally here. Pre-order now to secure exclusive day-one bonuses.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <button onclick="addToCart('gta6', 'Grand Theft Auto VI (Pre-order)', 5999, 'https://images.unsplash.com/photo-1605901309584-818e25960b8f?q=80&w=500')" class="bg-white hover:bg-gray-200 text-black px-8 py-4 rounded-xl font-black text-lg transition flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(255,255,255,0.3)]">
-                        Pre-Order ₹5,999
-                    </button>
-                    <button onclick="toggleTrailer()" class="bg-brand-panel/80 hover:bg-brand-panel border border-brand-border px-8 py-4 rounded-xl font-bold text-lg transition flex items-center justify-center gap-3 backdrop-blur-md">
-                        <i class="fa-solid fa-circle-play text-brand-accent text-xl"></i> Watch Trailer
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <main class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <main class="flex-1 pt-20">
         
-        <section class="mb-16">
-            <div class="flex gap-4 overflow-x-auto pb-6 hide-scrollbar snap-x">
-                <button class="snap-start flex-shrink-0 bg-white text-black px-8 py-4 rounded-2xl font-bold flex items-center gap-3 text-lg"><i class="fa-solid fa-fire text-brand-accent"></i> Trending</button>
-                <button class="snap-start flex-shrink-0 bg-brand-panel border border-brand-border hover:border-white px-8 py-4 rounded-2xl font-bold transition text-gray-400 hover:text-white flex items-center gap-3"><i class="fa-solid fa-key"></i> Keys</button>
-                <button class="snap-start flex-shrink-0 bg-brand-panel border border-brand-border hover:border-white px-8 py-4 rounded-2xl font-bold transition text-gray-400 hover:text-white flex items-center gap-3"><i class="fa-solid fa-user-ninja"></i> Accounts</button>
-                <button class="snap-start flex-shrink-0 bg-brand-panel border border-brand-border hover:border-white px-8 py-4 rounded-2xl font-bold transition text-gray-400 hover:text-white flex items-center gap-3"><i class="fa-solid fa-gift"></i> Gift Cards</button>
+        <section class="relative bg-brand-bg py-20 border-b border-brand-border overflow-hidden">
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-accent/20 via-brand-bg to-brand-bg z-0"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div class="inline-flex items-center gap-2 bg-brand-accent/10 border border-brand-accent/30 text-brand-accent px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-6">
+                            Trending Now
+                        </div>
+                        <h1 class="text-5xl sm:text-7xl font-black mb-4 leading-tight">
+                            GRAND THEFT <br>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-purple-500">AUTO VI</span>
+                        </h1>
+                        <p class="text-gray-400 text-lg mb-8 max-w-md">
+                            Welcome to Leonida. Pre-order the most anticipated game of the decade and secure exclusive day-one bonuses.
+                        </p>
+                        <div class="flex items-center gap-4">
+                            <button class="bg-white text-black hover:bg-gray-200 px-8 py-4 rounded-xl font-black text-lg transition flex items-center gap-2 shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+                                Pre-Order <span class="price-display" data-inr="5999">₹5,999</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="relative rounded-2xl overflow-hidden border border-brand-border shadow-2xl shadow-brand-accent/20 aspect-video bg-black group">
+                        <iframe class="w-full h-full absolute inset-0" src="https://www.youtube.com/embed/QdBZY2fkU-0?mute=1&loop=1&playlist=QdBZY2fkU-0" title="GTA 6 Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <div class="absolute inset-0 border-4 border-transparent group-hover:border-brand-accent/50 transition duration-300 pointer-events-none rounded-2xl"></div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <div class="flex justify-between items-end mb-8">
-            <h2 class="text-3xl font-black uppercase tracking-tight">Today's Best Drops</h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold mb-10 flex items-center gap-3">
+                <i class="fa-solid fa-bolt text-brand-accent"></i> Latest Drops
+            </h2>
             
-            <div class="bg-brand-panel border border-brand-border rounded-2xl overflow-hidden hover:-translate-y-2 hover:border-brand-accent/50 transition duration-300 group cursor-pointer flex flex-col">
-                <div class="h-52 overflow-hidden relative">
-                    <div class="absolute top-3 left-3 bg-black/60 backdrop-blur-md border border-white/10 text-xs px-3 py-1.5 rounded-full font-bold z-10">Gift Card</div>
-                    <img src="https://images.unsplash.com/photo-1622560026532-c6b22ebffbbf?w=800&q=80" alt="Roblox" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                </div>
-                <div class="p-5 flex-1 flex flex-col">
-                    <h3 class="font-bold text-xl mb-1 text-white">Roblox ₹1000 Digital Code</h3>
-                    <p class="text-sm text-gray-400 mb-6">Instant Email Delivery • India Region</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div class="bg-brand-panel border border-brand-border rounded-2xl p-5 hover:-translate-y-2 hover:border-brand-accent/50 transition duration-300 group flex flex-col">
+                    <img src="https://images.unsplash.com/photo-1622560026532-c6b22ebffbbf?w=500&q=80" alt="Roblox" class="w-full h-40 object-cover rounded-xl mb-4 opacity-80 group-hover:opacity-100 transition">
+                    <h3 class="font-bold text-lg text-white mb-1">Roblox Digital Code</h3>
+                    <p class="text-sm text-gray-400 mb-4">Instant Global Delivery</p>
                     <div class="mt-auto flex items-center justify-between">
-                        <span class="text-2xl font-black text-white">₹950</span>
-                        <button onclick="addToCart('rbx1000', 'Roblox ₹1000 Code', 950, 'https://images.unsplash.com/photo-1622560026532-c6b22ebffbbf?w=500')" class="bg-brand-border hover:bg-brand-accent text-white h-12 w-12 rounded-xl transition flex items-center justify-center"><i class="fa-solid fa-plus text-lg"></i></button>
+                        <span class="text-xl font-black text-brand-accent price-display" data-inr="1000">₹1,000</span>
+                        <button class="bg-brand-bg border border-brand-border hover:bg-brand-accent text-white h-10 w-10 rounded-lg transition"><i class="fa-solid fa-cart-plus"></i></button>
+                    </div>
+                </div>
+
+                <div class="bg-brand-panel border border-brand-border rounded-2xl p-5 hover:-translate-y-2 hover:border-brand-accent/50 transition duration-300 group flex flex-col">
+                    <img src="https://images.unsplash.com/photo-1589241062272-c0a1f436d3fc?w=500&q=80" alt="Fortnite" class="w-full h-40 object-cover rounded-xl mb-4 opacity-80 group-hover:opacity-100 transition">
+                    <h3 class="font-bold text-lg text-white mb-1">Fortnite Stacked Acc</h3>
+                    <p class="text-sm text-gray-400 mb-4">Full Access + Email</p>
+                    <div class="mt-auto flex items-center justify-between">
+                        <span class="text-xl font-black text-brand-accent price-display" data-inr="3500">₹3,500</span>
+                        <button class="bg-brand-bg border border-brand-border hover:bg-brand-accent text-white h-10 w-10 rounded-lg transition"><i class="fa-solid fa-cart-plus"></i></button>
+                    </div>
+                </div>
+
+                <div class="bg-brand-panel border border-brand-border rounded-2xl p-5 hover:-translate-y-2 hover:border-brand-accent/50 transition duration-300 group flex flex-col">
+                    <img src="https://images.unsplash.com/photo-1607853202273-797f1c22a38e?w=500&q=80" alt="Minecraft" class="w-full h-40 object-cover rounded-xl mb-4 opacity-80 group-hover:opacity-100 transition">
+                    <h3 class="font-bold text-lg text-white mb-1">Minecraft Java/Bedrock</h3>
+                    <p class="text-sm text-gray-400 mb-4">PC Global Key</p>
+                    <div class="mt-auto flex items-center justify-between">
+                        <span class="text-xl font-black text-brand-accent price-display" data-inr="1499">₹1,499</span>
+                        <button class="bg-brand-bg border border-brand-border hover:bg-brand-accent text-white h-10 w-10 rounded-lg transition"><i class="fa-solid fa-cart-plus"></i></button>
+                    </div>
+                </div>
+
+                <div class="bg-brand-panel border border-brand-border rounded-2xl p-5 hover:-translate-y-2 hover:border-brand-accent/50 transition duration-300 group flex flex-col">
+                    <img src="https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=500&q=80" alt="Xbox" class="w-full h-40 object-cover rounded-xl mb-4 opacity-80 group-hover:opacity-100 transition">
+                    <h3 class="font-bold text-lg text-white mb-1">Xbox Game Pass Ult.</h3>
+                    <p class="text-sm text-gray-400 mb-4">1 Month Code</p>
+                    <div class="mt-auto flex items-center justify-between">
+                        <span class="text-xl font-black text-brand-accent price-display" data-inr="499">₹499</span>
+                        <button class="bg-brand-bg border border-brand-border hover:bg-brand-accent text-white h-10 w-10 rounded-lg transition"><i class="fa-solid fa-cart-plus"></i></button>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <div class="bg-brand-panel border border-brand-border rounded-2xl overflow-hidden hover:-translate-y-2 hover:border-brand-accent/50 transition duration-300 group cursor-pointer flex flex-col">
-                <div class="h-52 overflow-hidden relative">
-                    <div class="absolute top-3 left-3 bg-blue-500/80 backdrop-blur-md border border-white/10 text-xs px-3 py-1.5 rounded-full font-bold z-10 text-white">Full Access Account</div>
-                    <img src="https://images.unsplash.com/photo-1589241062272-c0a1f436d3fc?w=800&q=80" alt="Fortnite" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                </div>
-                <div class="p-5 flex-1 flex flex-col">
-                    <h3 class="font-bold text-xl mb-1 text-white">Fortnite OG Stacked Account</h3>
-                    <p class="text-sm text-gray-400 mb-6">Renegade Raider • 150+ Skins</p>
-                    <div class="mt-auto flex items-center justify-between">
-                        <span class="text-2xl font-black text-white">₹3,500</span>
-                        <button onclick="addToCart('ftntOG', 'Fortnite OG Account', 3500, 'https://images.unsplash.com/photo-1589241062272-c0a1f436d3fc?w=500')" class="bg-brand-border hover:bg-brand-accent text-white h-12 w-12 rounded-xl transition flex items-center justify-center"><i class="fa-solid fa-plus text-lg"></i></button>
+        <section class="py-20 bg-brand-panel border-t border-brand-border">
+            <div class="max-w-4xl mx-auto px-4 text-center">
+                <i class="fa-solid fa-wifi text-4xl text-gray-600 mb-4 opacity-50"></i>
+                <h2 class="text-3xl font-black mb-2">No Internet To Play?</h2>
+                <p class="text-gray-400 mb-10">Still we have something. Survive the swarm in this offline browser shooter.</p>
+                
+                <div class="relative bg-brand-bg border-2 border-brand-border rounded-xl overflow-hidden shadow-2xl shadow-brand-accent/10 mx-auto" style="width: 100%; max-width: 800px; aspect-ratio: 16/9;">
+                    <canvas id="gameCanvas" class="w-full h-full cursor-crosshair"></canvas>
+                    
+                    <div id="gameOverlay" class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center z-10">
+                        <h3 class="text-3xl font-black text-brand-accent mb-4 uppercase tracking-widest">Neon Survivor</h3>
+                        <p class="text-gray-300 mb-6 text-sm">Use Mouse to Aim & Click to Shoot.</p>
+                        <button onclick="startGame()" class="bg-brand-accent hover:bg-brand-accentHover text-white px-8 py-3 rounded-lg font-bold transition">Play Now</button>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <div class="bg-brand-panel border border-brand-border rounded-2xl overflow-hidden hover:-translate-y-2 hover:border-brand-accent/50 transition duration-300 group cursor-pointer flex flex-col">
-                <div class="h-52 overflow-hidden relative">
-                    <div class="absolute top-3 left-3 bg-black/60 backdrop-blur-md border border-white/10 text-xs px-3 py-1.5 rounded-full font-bold z-10">Game Key</div>
-                    <img src="https://images.unsplash.com/photo-1607853202273-797f1c22a38e?w=800&q=80" alt="Minecraft" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                </div>
-                <div class="p-5 flex-1 flex flex-col">
-                    <h3 class="font-bold text-xl mb-1 text-white">Minecraft Java + Bedrock</h3>
-                    <p class="text-sm text-gray-400 mb-6">Global PC Key • Official License</p>
-                    <div class="mt-auto flex items-center justify-between">
-                        <div>
-                            <span class="text-2xl font-black text-white">₹1,499</span>
-                            <span class="text-sm text-gray-500 line-through ml-2">₹1,999</span>
-                        </div>
-                        <button onclick="addToCart('mcjava', 'Minecraft Java+Bedrock Key', 1499, 'https://images.unsplash.com/photo-1607853202273-797f1c22a38e?w=500')" class="bg-brand-border hover:bg-brand-accent text-white h-12 w-12 rounded-xl transition flex items-center justify-center"><i class="fa-solid fa-plus text-lg"></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-brand-panel border border-brand-border rounded-2xl overflow-hidden hover:-translate-y-2 hover:border-brand-accent/50 transition duration-300 group cursor-pointer flex flex-col">
-                <div class="h-52 overflow-hidden relative">
-                    <div class="absolute top-3 left-3 bg-green-600/80 backdrop-blur-md border border-white/10 text-xs px-3 py-1.5 rounded-full font-bold z-10 text-white">Subscription</div>
-                    <img src="https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=800&q=80" alt="Xbox" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                </div>
-                <div class="p-5 flex-1 flex flex-col">
-                    <h3 class="font-bold text-xl mb-1 text-white">Xbox Game Pass Ultimate</h3>
-                    <p class="text-sm text-gray-400 mb-6">1 Month Subscription • Global code</p>
-                    <div class="mt-auto flex items-center justify-between">
-                        <span class="text-2xl font-black text-white">₹499</span>
-                        <button onclick="addToCart('xboxgpu', 'Xbox Game Pass Ultimate (1M)', 499, 'https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=500')" class="bg-brand-border hover:bg-brand-accent text-white h-12 w-12 rounded-xl transition flex items-center justify-center"><i class="fa-solid fa-plus text-lg"></i></button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
     </main>
 
-    <footer class="border-t border-brand-border bg-brand-dark pt-16 pb-8">
-        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-            <div>
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="bg-brand-accent p-2 rounded-lg"><i class="fa-solid fa-bolt text-white"></i></div>
-                    <span class="font-black text-xl">PlayWithEase</span>
-                </div>
-                <p class="text-gray-400 text-sm leading-relaxed mb-6">The ultimate Indian marketplace for premium digital games, accounts, and gift cards. Created by developers, for gamers.</p>
+    <footer class="bg-brand-bg border-t border-brand-border py-12 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-gamepad text-brand-accent text-xl"></i>
+                <span class="font-extrabold text-xl">PlayWithEase</span>
             </div>
-            <div>
-                <h4 class="font-bold text-white mb-6 uppercase tracking-wider text-sm">Products</h4>
-                <ul class="space-y-3 text-gray-400 text-sm">
-                    <li><a href="#" class="hover:text-brand-accent transition">Game Keys</a></li>
-                    <li><a href="#" class="hover:text-brand-accent transition">Stacked Accounts</a></li>
-                    <li><a href="#" class="hover:text-brand-accent transition">Gift Cards</a></li>
-                </ul>
+            <p class="text-gray-500 text-sm text-center md:text-left">
+                &copy; 2026 PlayWithEase. Built for gamers, by gamers.
+            </p>
+            <div class="flex gap-4">
+                <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i class="fa-brands fa-discord"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i class="fa-brands fa-youtube"></i></a>
             </div>
-            <div>
-                <h4 class="font-bold text-white mb-6 uppercase tracking-wider text-sm">Support</h4>
-                <ul class="space-y-3 text-gray-400 text-sm">
-                    <li><a href="#" class="hover:text-brand-accent transition">24/7 Help Center</a></li>
-                    <li><a href="#" class="hover:text-brand-accent transition">Refund Policy</a></li>
-                    <li><a href="#" class="hover:text-brand-accent transition">Seller Dashboard</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-bold text-white mb-6 uppercase tracking-wider text-sm">Secure Checkout</h4>
-                <div class="flex gap-4 text-3xl text-gray-600">
-                    <i class="fa-brands fa-cc-visa hover:text-white transition"></i>
-                    <i class="fa-brands fa-cc-mastercard hover:text-white transition"></i>
-                    <i class="fa-brands fa-paypal hover:text-white transition"></i>
-                    <i class="fa-brands fa-google-pay hover:text-white transition"></i>
-                </div>
-            </div>
-        </div>
-        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 text-center border-t border-brand-border pt-8 text-gray-500 text-sm">
-            &copy; 2026 PlayWithEase. Built with <i class="fa-solid fa-heart text-brand-accent mx-1"></i> in India.
         </div>
     </footer>
 
     <script>
-        // --- State Management ---
-        let cart = [];
-        const formatINR = (amount) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount);
+        // --- 1. Live Visitor Count Simulation ---
+        let visitors = Math.floor(Math.random() * 500) + 1000;
+        const visitorEl = document.getElementById('visitorCount');
+        setInterval(() => {
+            const change = Math.floor(Math.random() * 5) - 2; // -2 to +2
+            visitors += change;
+            visitorEl.textContent = visitors.toLocaleString();
+        }, 3000);
 
-        // --- DOM Elements ---
-        const overlay = document.getElementById('globalOverlay');
-        const cartPanel = document.getElementById('cartPanel');
-        const profileDashboard = document.getElementById('profileDashboard');
-        const trailerModal = document.getElementById('trailerModal');
-        const iframe = document.getElementById('trailerFrame');
-        
-        // --- Cart Logic ---
-        function addToCart(id, title, price, image) {
-            // Check if item exists, if so just alert (since these are mostly digital singular items)
-            const exists = cart.find(item => item.id === id);
-            if(exists) {
-                alert(`${title} is already in your cart!`);
-                toggleCart();
+        // --- 2. Currency Switcher Logic ---
+        let currentCurrency = 'INR';
+        const usdRate = 0.012; // 1 INR = 0.012 USD approx
+
+        function switchCurrency(currency) {
+            currentCurrency = currency;
+            document.getElementById('currentCurrencyLabel').textContent = currency === 'INR' ? 'INR (₹)' : 'USD ($)';
+            
+            const prices = document.querySelectorAll('.price-display');
+            prices.forEach(el => {
+                const inrValue = parseFloat(el.getAttribute('data-inr'));
+                if (currency === 'INR') {
+                    el.textContent = '₹' + inrValue.toLocaleString('en-IN');
+                } else {
+                    const usdValue = (inrValue * usdRate).toFixed(2);
+                    el.textContent = '$' + usdValue;
+                }
+            });
+        }
+        // Initialize currency display on load
+        switchCurrency('INR');
+
+        // --- 3. Offline Browser Game Logic (Mini Top-Down Shooter) ---
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const overlay = document.getElementById('gameOverlay');
+        let gameLoop, player, bullets, enemies, score, gameActive = false;
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
+
+        canvas.addEventListener('mousedown', () => {
+            if(gameActive) {
+                const angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
+                bullets.push({
+                    x: player.x, y: player.y,
+                    vx: Math.cos(angle) * 10, vy: Math.sin(angle) * 10,
+                    radius: 4, color: '#3b82f6'
+                });
+            }
+        });
+
+        function startGame() {
+            overlay.classList.add('hidden');
+            resizeCanvas();
+            player = { x: canvas.width / 2, y: canvas.height / 2, radius: 15, color: '#ffffff' };
+            bullets = [];
+            enemies = [];
+            score = 0;
+            gameActive = true;
+            
+            if(gameLoop) clearInterval(gameLoop);
+            gameLoop = setInterval(updateGame, 1000/60);
+            setInterval(spawnEnemy, 1000);
+        }
+
+        function spawnEnemy() {
+            if(!gameActive) return;
+            let x, y;
+            if(Math.random() < 0.5) {
+                x = Math.random() < 0.5 ? 0 - 20 : canvas.width + 20;
+                y = Math.random() * canvas.height;
+            } else {
+                x = Math.random() * canvas.width;
+                y = Math.random() < 0.5 ? 0 - 20 : canvas.height + 20;
+            }
+            enemies.push({ x, y, radius: 12 + Math.random() * 10, color: '#ef4444', speed: 1 + Math.random() });
+        }
+
+        function updateGame() {
+            ctx.fillStyle = '#030712'; // clear screen
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Player
+            ctx.beginPath();
+            ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
+            ctx.fillStyle = player.color;
+            ctx.fill();
+
+            // Player cannon (points to mouse)
+            const angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
+            ctx.beginPath();
+            ctx.moveTo(player.x, player.y);
+            ctx.lineTo(player.x + Math.cos(angle) * 25, player.y + Math.sin(angle) * 25);
+            ctx.strokeStyle = '#3b82f6';
+            ctx.lineWidth = 6;
+            ctx.stroke();
+
+            // Bullets
+            bullets.forEach((b, index) => {
+                b.x += b.vx; b.y += b.vy;
+                ctx.beginPath(); ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2); ctx.fillStyle = b.color; ctx.fill();
+                if(b.x < 0 || b.x > canvas.width || b.y < 0 || b.y > canvas.height) bullets.splice(index, 1);
+            });
+
+            // Enemies
+            enemies.forEach((e, eIndex) => {
+                const eAngle = Math.atan2(player.y - e.y, player.x - e.x);
+                e.x += Math.cos(eAngle) * e.speed; e.y += Math.sin(eAngle) * e.speed;
+                
+                ctx.beginPath(); ctx.arc(e.x, e.y, e.radius, 0, Math.PI * 2); ctx.fillStyle = e.color; ctx.fill();
+
+                // Collision with player
+                const dist = Math.hypot(player.x - e.x, player.y - e.y);
+                if(dist - e.radius - player.radius < 1) {
+                    gameActive = false;
+                    clearInterval(gameLoop);
+                    overlay.classList.remove('hidden');
+                    overlay.innerHTML = `<h3 class="text-3xl font-black text-red-500 mb-2">GAME OVER</h3><p class="text-white mb-6 text-xl">Score: ${score}</p><button onclick="startGame()" class="bg-brand-accent hover:bg-brand-accentHover text-white px-8 py-3 rounded-lg font-bold transition">Try Again</button>`;
+                }
+
+                // Collision with bullets
+                bullets.forEach((b, bIndex) => {
+                    const bDist = Math.hypot(b.x - e.x, b.y - e.y);
+                    if(bDist - e.radius - b.radius < 1) {
+                        enemies.splice(eIndex, 1);
+                        bullets.splice(bIndex, 1);
+                        score += 10;
+                    }
+                });
+            });
+
+            // Score
+            ctx.fillStyle = 'white'; ctx.font = '20px Arial'; ctx.fillText(`Score: ${score}`, 20, 30);
+        }
+
+        // --- 4. UI Modals ---
+        let isLoginMode = true;
+        const authModal = document.getElementById('authModal');
+        const overlayBg = document.getElementById('globalOverlay');
+        const authTitle = document.getElementById('authTitle');
+        const authSubtitle = document.getElementById('authSubtitle');
+        const authSubmitBtn = document.getElementById('authSubmitBtn');
+        const authSwitchText = document.getElementById('authSwitchText');
+        const authSwitchBtn = document.getElementById('authSwitchBtn');
+        const authError = document.getElementById('authError');
+
+        function openAuthModal(mode) {
+            isLoginMode = mode === 'login';
+            updateAuthUI();
+            authError.classList.add('hidden');
+            
+            overlayBg.classList.remove('hidden');
+            authModal.classList.remove('hidden', 'modal-exit');
+            authModal.classList.add('modal-enter');
+            
+            setTimeout(() => { overlayBg.classList.remove('opacity-0'); authModal.classList.remove('opacity-0'); }, 10);
+        }
+
+        function closeModals() {
+            overlayBg.classList.add('opacity-0');
+            authModal.classList.add('modal-exit');
+            setTimeout(() => {
+                overlayBg.classList.add('hidden');
+                authModal.classList.add('hidden');
+                authModal.classList.remove('modal-enter', 'modal-exit');
+            }, 300);
+        }
+
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            updateAuthUI();
+            authError.classList.add('hidden');
+        }
+
+        function updateAuthUI() {
+            authTitle.textContent = isLoginMode ? 'Welcome Back' : 'Create Account';
+            authSubtitle.textContent = isLoginMode ? 'Sign in to your PlayWithEase account' : 'Join the ultimate gaming marketplace';
+            authSubmitBtn.innerHTML = isLoginMode ? 'Sign In <i class="fa-solid fa-arrow-right"></i>' : 'Sign Up <i class="fa-solid fa-user-plus"></i>';
+            authSwitchText.textContent = isLoginMode ? "Don't have an account?" : "Already have an account?";
+            authSwitchBtn.textContent = isLoginMode ? 'Sign Up' : 'Log In';
+        }
+
+        function showError(msg) {
+            authError.textContent = msg;
+            authError.classList.remove('hidden');
+        }
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+        // ⚠️ IMPORTANT: Replace this config with your actual Firebase Project config!
+        // Go to Firebase Console -> Project Settings -> General -> Your apps -> SDK setup and configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "your-project.firebaseapp.com",
+            projectId: "your-project-id",
+            storageBucket: "your-project.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef"
+        };
+
+        // Initialize Firebase ONLY if config is changed (prevents console errors on default copy-paste)
+        let auth = null;
+        if(firebaseConfig.apiKey !== "YOUR_API_KEY") {
+            const app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+        } else {
+            console.warn("FIREBASE NOT CONFIGURED: Please replace firebaseConfig with your actual keys to enable login.");
+        }
+
+        // DOM Elements for Auth State
+        const loggedOutUI = document.getElementById('loggedOutUI');
+        const loggedInUI = document.getElementById('loggedInUI');
+        const userEmailDisplay = document.getElementById('userEmailDisplay');
+        const authForm = document.getElementById('authForm');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // Handle Form Submission
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if(!auth) {
+                showError("Firebase is not configured yet. Add your config keys in the code!");
                 return;
             }
 
-            cart.push({ id, title, price, image });
-            updateCartUI();
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            const btn = document.getElementById('authSubmitBtn');
+            const originalBtnText = btn.innerHTML;
             
-            // Open cart to show user
-            if(cartPanel.classList.contains('translate-x-full')){
-                toggleCart();
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+            btn.disabled = true;
+
+            try {
+                if(isLoginMode) {
+                    await signInWithEmailAndPassword(auth, email, password);
+                } else {
+                    await createUserWithEmailAndPassword(auth, email, password);
+                }
+                closeModals();
+                authForm.reset();
+            } catch (error) {
+                showError(error.message.replace('Firebase: ', ''));
+            } finally {
+                btn.innerHTML = originalBtnText;
+                btn.disabled = false;
             }
-        }
+        });
 
-        function removeFromCart(id) {
-            cart = cart.filter(item => item.id !== id);
-            updateCartUI();
-        }
+        // Handle Logout
+        logoutBtn.addEventListener('click', () => {
+            if(auth) signOut(auth);
+        });
 
-        function updateCartUI() {
-            const container = document.getElementById('cartItemsContainer');
-            const totalEl = document.getElementById('cartTotal');
-            const badge = document.getElementById('cartBadge');
-            const checkoutBtn = document.getElementById('checkoutBtn');
-
-            // Update Badge
-            if(cart.length > 0) {
-                badge.textContent = cart.length;
-                badge.classList.remove('hidden');
-                checkoutBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            } else {
-                badge.classList.add('hidden');
-                checkoutBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            }
-
-            // Calculate Total
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
-            totalEl.textContent = formatINR(total);
-
-            // Render Items
-            if(cart.length === 0) {
-                container.innerHTML = `
-                    <div class="h-full flex flex-col items-center justify-center text-gray-500 text-center">
-                        <i class="fa-solid fa-cart-arrow-down text-6xl mb-4 opacity-50"></i>
-                        <p class="font-bold text-white">Your cart is empty.</p>
-                        <p class="text-sm mt-2">Looks like you haven't added any games yet.</p>
-                    </div>`;
-                return;
-            }
-
-            container.innerHTML = cart.map(item => `
-                <div class="bg-brand-dark border border-brand-border p-4 rounded-xl flex gap-4 items-center">
-                    <img src="${item.image}" alt="${item.title}" class="w-16 h-16 rounded-lg object-cover">
-                    <div class="flex-1">
-                        <h4 class="font-bold text-sm text-white line-clamp-1">${item.title}</h4>
-                        <p class="text-brand-accent font-black mt-1">${formatINR(item.price)}</p>
-                    </div>
-                    <button onclick="removeFromCart('${item.id}')" class="text-gray-500 hover:text-brand-accent p-2 transition">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        // --- UI Toggles ---
-        function toggleCart() {
-            closeAll(cartPanel);
-            if (cartPanel.classList.contains('translate-x-full')) {
-                showOverlay();
-                cartPanel.classList.remove('translate-x-full');
-            } else {
-                closeAll();
-            }
-        }
-
-        function toggleDashboard() {
-            closeAll(profileDashboard);
-            if (profileDashboard.classList.contains('translate-x-full')) {
-                showOverlay();
-                profileDashboard.classList.remove('translate-x-full');
-            } else {
-                closeAll();
-            }
-        }
-
-        function toggleTrailer() {
-            closeAll(trailerModal);
-            if (trailerModal.classList.contains('hidden')) {
-                showOverlay();
-                trailerModal.classList.remove('hidden', 'pointer-events-none');
-                setTimeout(() => {
-                    trailerModal.classList.remove('opacity-0', 'scale-95');
-                }, 10);
-                // Load video when opened (GTA 6 Trailer officially ID: QdBZY2fkU-0)
-                iframe.src = "https://www.youtube.com/embed/QdBZY2fkU-0?autoplay=1";
-            } else {
-                closeAll();
-                // Stop video when closed
-                iframe.src = "";
-            }
-        }
-
-        function showOverlay() {
-            overlay.classList.remove('hidden');
-            setTimeout(() => overlay.classList.remove('opacity-0'), 10);
-        }
-
-        function closeAll(except = null) {
-            // Close Cart
-            if(except !== cartPanel) cartPanel.classList.add('translate-x-full');
-            // Close Dashboard
-            if(except !== profileDashboard) profileDashboard.classList.add('translate-x-full');
-            // Close Trailer
-            if(except !== trailerModal) {
-                trailerModal.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
-                setTimeout(() => trailerModal.classList.add('hidden'), 300);
-                iframe.src = ""; // stop audio
-            }
-            
-            // Hide overlay if we are closing everything
-            if(!except) {
-                overlay.classList.add('opacity-0');
-                setTimeout(() => overlay.classList.add('hidden'), 300);
-            }
+        // Listen for Auth State Changes (Persists across refresh)
+        if(auth) {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    // User is signed in
+                    loggedOutUI.classList.add('hidden');
+                    loggedInUI.classList.remove('hidden');
+                    loggedInUI.classList.add('flex');
+                    userEmailDisplay.textContent = user.email.split('@')[0]; // Show username part of email
+                } else {
+                    // User is signed out
+                    loggedInUI.classList.add('hidden');
+                    loggedInUI.classList.remove('flex');
+                    loggedOutUI.classList.remove('hidden');
+                }
+            });
         }
     </script>
 </body>
