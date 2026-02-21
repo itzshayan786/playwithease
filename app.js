@@ -139,8 +139,13 @@ function updateCartUI() {
 // --- Service Worker (Offline Mode) ---
 function registerServiceWorker() {
     if ('serviceWorker' in navigator) {
+        // Registers immediately when the function is called
         navigator.serviceWorker.register('/sw.js')
-        .then(() => console.log('Service Worker Registered - Offline mode active'))
-        .catch(err => console.log('SW Registration failed', err));
+            .then(registration => {
+                console.log('ServiceWorker registered successfully with scope: ', registration.scope);
+            })
+            .catch(err => {
+                console.log('ServiceWorker registration failed: ', err);
+            });
     }
 }
