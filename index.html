@@ -1,390 +1,490 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayWithEase | Digital Marketplace</title>
-    
+    <title>PlayWithEase | Digital Game Keys & Gift Cards</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
-                    colors: {
-                        primary: '#2563eb', // Professional Blue
-                        darkbg: '#0f172a',
-                        cardbg: '#1e293b'
-                    }
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: { primary: '#6d28d9', secondary: '#4c1d95' }
                 }
             }
         }
     </script>
-
     <style>
-        /* Smooth transitions & custom scrollbar */
-        body { transition: background-color 0.3s, color 0.3s; }
-        .cart-sidebar { transition: transform 0.3s ease-in-out; }
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .hide { display: none !important; }
+        .cart-slide { transform: translateX(100%); transition: transform 0.3s ease-in-out; }
         .cart-open { transform: translateX(0); }
-        .cart-closed { transform: translateX(100%); }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .dark ::-webkit-scrollbar-thumb { background: #475569; }
-        .skeleton { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+        .product-card:hover .product-img { transform: scale(1.05); }
+        .product-img { transition: transform 0.3s ease; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900 dark:bg-darkbg dark:text-white font-sans antialiased flex flex-col min-h-screen">
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-200">
 
-    <nav class="sticky top-0 z-40 bg-white dark:bg-cardbg shadow-sm border-b border-gray-200 dark:border-gray-800">
+    <header class="sticky top-0 z-40 w-full bg-white dark:bg-gray-800 shadow-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
-                <div class="flex-shrink-0 flex items-center cursor-pointer">
-                    <i class="fa-solid fa-gamepad text-primary text-2xl mr-2"></i>
-                    <span class="font-bold text-xl tracking-tight">PlayWithEase</span>
+                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="showView('homeView')">
+                    <i class="fa-solid fa-gamepad text-3xl text-primary mr-2"></i>
+                    <span class="font-bold text-2xl tracking-tight">PlayWith<span class="text-primary">Ease</span></span>
                 </div>
-
+                
                 <div class="hidden md:flex flex-1 max-w-lg mx-8">
                     <div class="relative w-full">
-                        <input type="text" placeholder="Search for games, gift cards..." class="w-full bg-gray-100 dark:bg-darkbg border border-transparent focus:border-primary dark:focus:border-primary rounded-lg py-2 pl-10 pr-4 text-sm focus:outline-none transition-colors dark:text-white">
-                        <i class="fa-solid fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                        <input type="text" placeholder="Search games, gift cards..." class="w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full py-2 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-primary">
+                        <button class="absolute right-3 top-2 text-gray-400 hover:text-primary"><i class="fa-solid fa-search"></i></button>
                     </div>
                 </div>
 
-                <div class="flex items-center space-x-4 md:space-x-6">
-                    <select id="currency-selector" class="bg-transparent text-sm font-medium focus:outline-none cursor-pointer dark:text-white" onchange="toggleCurrency()">
-                        <option value="INR" class="text-black">INR (₹)</option>
-                        <option value="USD" class="text-black">USD ($)</option>
-                    </select>
-
-                    <button onclick="toggleTheme()" class="text-gray-500 hover:text-primary transition-colors">
-                        <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
-                    </button>
-
-                    <button onclick="toggleCart()" class="relative text-gray-500 hover:text-primary transition-colors">
-                        <i class="fa-solid fa-shopping-cart text-lg"></i>
-                        <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
-                    </button>
-
-                    <button class="hidden sm:flex items-center text-sm font-medium hover:text-primary transition-colors">
-                        <i class="fa-solid fa-user mr-2"></i> Login
+                <div class="flex items-center space-x-4">
+                    <button id="currencyBtn" class="font-semibold text-sm hover:text-primary">INR ₹</button>
+                    <button id="themeToggle" class="text-xl text-gray-500 hover:text-primary"><i class="fa-solid fa-moon"></i></button>
+                    <button id="authBtn" class="text-xl text-gray-500 hover:text-primary" onclick="handleAuthClick()"><i class="fa-regular fa-user"></i></button>
+                    <button class="relative text-xl text-gray-500 hover:text-primary" onclick="toggleCart()">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
                     </button>
                 </div>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-screen" id="mainContent">
         
-        <div class="relative rounded-2xl overflow-hidden bg-primary text-white shadow-lg mb-10">
-            <div class="absolute inset-0 bg-gradient-to-r from-blue-700 to-primary opacity-90"></div>
-            <div class="relative px-8 py-16 md:py-20 lg:px-16 flex flex-col md:flex-row items-center justify-between">
-                <div class="md:w-2/3 mb-8 md:mb-0">
-                    <h1 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">Instant Delivery on Top Digital Games & Cards</h1>
-                    <p class="text-lg text-blue-100 mb-6 max-w-xl">Trustworthy, fast, and secure. Get the best deals on subscriptions, keys, and in-game currency today.</p>
-                    <button class="bg-white text-primary font-bold py-3 px-8 rounded-lg shadow hover:bg-gray-100 transition transform hover:-translate-y-0.5">Explore Deals</button>
+        <div id="homeView">
+            <div class="bg-gradient-to-r from-primary to-purple-900 rounded-2xl p-8 sm:p-12 mb-10 text-white shadow-lg flex flex-col md:flex-row items-center justify-between">
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">Level Up Your Library</h1>
+                    <p class="text-lg md:text-xl mb-6 opacity-90">Instant digital keys for PC, PlayStation, Xbox, and Nintendo. Trusted by thousands.</p>
+                    <button class="bg-white text-primary font-bold py-3 px-8 rounded-full shadow hover:bg-gray-100 transition" onclick="document.getElementById('gamesSection').scrollIntoView()">Shop Now</button>
                 </div>
-                <div class="md:w-1/3 hidden md:flex justify-end">
-                    <i class="fa-solid fa-gift text-9xl text-blue-200 opacity-50 shadow-sm rounded-full"></i>
+                <div class="hidden md:block">
+                    <i class="fa-solid fa-vr-cardboard text-9xl opacity-80 animate-pulse"></i>
                 </div>
+            </div>
+
+            <h2 id="gamesSection" class="text-2xl font-bold mb-6 border-b border-gray-200 dark:border-gray-700 pb-2"><i class="fa-solid fa-fire text-orange-500 mr-2"></i>Trending Games</h2>
+            <div id="gamesGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-12"></div>
+
+            <h2 class="text-2xl font-bold mb-6 border-b border-gray-200 dark:border-gray-700 pb-2"><i class="fa-solid fa-gift text-pink-500 mr-2"></i>Gift Cards</h2>
+            <div id="giftCardsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-12"></div>
+
+            <h2 class="text-2xl font-bold mb-6 border-b border-gray-200 dark:border-gray-700 pb-2"><i class="fa-solid fa-ticket text-blue-500 mr-2"></i>Subscriptions</h2>
+            <div id="subsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-12"></div>
+        </div>
+
+        <div id="authView" class="hide max-w-md mx-auto mt-10 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
+            <h2 id="authTitle" class="text-2xl font-bold mb-6 text-center">Login to PlayWithEase</h2>
+            <form id="authForm" onsubmit="handleAuthSubmit(event)">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">Email</label>
+                    <input type="email" id="authEmail" required class="w-full border dark:border-gray-600 rounded px-3 py-2 bg-gray-50 dark:bg-gray-700">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-1">Password</label>
+                    <input type="password" id="authPassword" required class="w-full border dark:border-gray-600 rounded px-3 py-2 bg-gray-50 dark:bg-gray-700">
+                </div>
+                <button type="submit" class="w-full bg-primary text-white py-2 rounded font-bold hover:bg-secondary transition">Submit</button>
+            </form>
+            <p class="mt-4 text-center text-sm">
+                <span id="authToggleText">Don't have an account?</span> 
+                <button class="text-primary font-bold" onclick="toggleAuthMode()">Toggle here</button>
+            </p>
+            <div id="authError" class="text-red-500 text-sm text-center mt-3 hide"></div>
+        </div>
+
+        <div id="profileView" class="hide max-w-3xl mx-auto mt-10">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+                <div class="flex items-center border-b dark:border-gray-700 pb-6 mb-6">
+                    <div class="w-24 h-24 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-4xl text-gray-400 mr-6">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-bold" id="profileEmail">user@example.com</h2>
+                        <p class="text-gray-500 dark:text-gray-400">PlayWithEase Member</p>
+                        <button class="mt-2 text-sm bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded hover:bg-gray-300 dark:hover:bg-gray-600"><i class="fa-solid fa-pen mr-1"></i>Edit Profile</button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-8">
+                    <div class="bg-purple-50 dark:bg-gray-700 p-4 rounded-lg text-center">
+                        <span class="block text-3xl font-bold text-primary">0</span>
+                        <span class="text-sm text-gray-500 dark:text-gray-300">Total Orders</span>
+                    </div>
+                    <div class="bg-purple-50 dark:bg-gray-700 p-4 rounded-lg text-center">
+                        <span class="block text-3xl font-bold text-primary">0</span>
+                        <span class="text-sm text-gray-500 dark:text-gray-300">Wishlist Items</span>
+                    </div>
+                </div>
+                <button onclick="logoutUser()" class="w-full bg-red-500 text-white py-3 rounded-lg font-bold hover:bg-red-600 transition"><i class="fa-solid fa-right-from-bracket mr-2"></i>Logout</button>
             </div>
         </div>
 
-        <div class="mb-12">
-            <h2 class="text-xl font-bold mb-4">Categories</h2>
-            <div class="flex space-x-4 overflow-x-auto pb-2 scrollbar-hide">
-                <button class="flex items-center bg-white dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-full px-6 py-2 whitespace-nowrap hover:border-primary dark:hover:border-primary transition-colors shadow-sm">
-                    <i class="fa-solid fa-key text-primary mr-2"></i> Game Keys
-                </button>
-                <button class="flex items-center bg-white dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-full px-6 py-2 whitespace-nowrap hover:border-primary transition-colors shadow-sm">
-                    <i class="fa-solid fa-wallet text-green-500 mr-2"></i> Gift Cards
-                </button>
-                <button class="flex items-center bg-white dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-full px-6 py-2 whitespace-nowrap hover:border-primary transition-colors shadow-sm">
-                    <i class="fa-solid fa-rotate text-purple-500 mr-2"></i> Subscriptions
-                </button>
-                <button class="flex items-center bg-white dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-full px-6 py-2 whitespace-nowrap hover:border-primary transition-colors shadow-sm">
-                    <i class="fa-solid fa-coins text-yellow-500 mr-2"></i> In-game Currency
-                </button>
+        <div id="checkoutView" class="hide max-w-2xl mx-auto mt-10">
+            <h2 class="text-3xl font-bold mb-6">Checkout</h2>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-6 mb-6">
+                <h3 class="text-xl font-semibold mb-4 border-b pb-2">Order Summary</h3>
+                <div id="checkoutItems" class="mb-4 space-y-2"></div>
+                <div class="flex justify-between font-bold text-lg pt-4 border-t">
+                    <span>Total Pay:</span>
+                    <span id="checkoutTotal">₹0</span>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-6 text-center">
+                <h3 class="text-xl font-semibold mb-2">Pay via UPI</h3>
+                <p class="text-gray-500 dark:text-gray-400 mb-4">Scan the QR or use the UPI ID below to complete your payment.</p>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=shayanff98@okhdfcbank&pn=PlayWithEase" alt="UPI QR" class="mx-auto mb-4 border-4 border-white rounded">
+                <p class="text-lg font-mono bg-gray-100 dark:bg-gray-700 py-2 rounded mb-6">shayanff98@okhdfcbank</p>
+                <button onclick="confirmOrder()" class="bg-green-500 text-white w-full py-3 rounded-lg font-bold hover:bg-green-600 transition text-lg">I Have Paid</button>
             </div>
         </div>
 
-        <div class="mb-8">
-            <div class="flex justify-between items-end mb-6">
-                <h2 class="text-2xl font-bold flex items-center"><i class="fa-solid fa-fire text-orange-500 mr-2"></i> Trending Deals</h2>
-                <a href="#" class="text-primary text-sm font-medium hover:underline">View All</a>
-            </div>
-            
-            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                </div>
+        <div id="successView" class="hide max-w-md mx-auto mt-20 text-center">
+            <i class="fa-solid fa-circle-check text-6xl text-green-500 mb-4"></i>
+            <h2 class="text-3xl font-bold mb-2">Payment Received!</h2>
+            <p class="text-gray-500 dark:text-gray-400 mb-6">Your digital keys will be emailed to you shortly.</p>
+            <button onclick="showView('homeView')" class="bg-primary text-white py-2 px-6 rounded-full font-bold hover:bg-secondary">Continue Shopping</button>
         </div>
 
     </main>
 
-    <div id="cart-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden" onclick="toggleCart()"></div>
-    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-white dark:bg-cardbg z-50 shadow-2xl cart-closed flex flex-col">
-        <div class="flex justify-between items-center p-5 border-b border-gray-200 dark:border-gray-800">
-            <h2 class="text-xl font-bold"><i class="fa-solid fa-shopping-cart mr-2 text-primary"></i> Your Cart</h2>
-            <button onclick="toggleCart()" class="text-gray-500 hover:text-red-500 transition-colors">
-                <i class="fa-solid fa-times text-xl"></i>
-            </button>
+    <div id="cartDrawer" class="fixed inset-y-0 right-0 w-full md:w-96 bg-white dark:bg-gray-800 shadow-2xl z-50 cart-slide flex flex-col">
+        <div class="p-4 border-b dark:border-gray-700 flex justify-between items-center">
+            <h2 class="text-xl font-bold"><i class="fa-solid fa-cart-shopping mr-2"></i>Your Cart</h2>
+            <button onclick="toggleCart()" class="text-gray-500 hover:text-red-500 text-xl"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        
-        <div id="cart-items" class="flex-grow p-5 overflow-y-auto flex flex-col space-y-4">
+        <div id="cartItems" class="flex-1 overflow-y-auto p-4 space-y-4">
             </div>
-
-        <div class="p-5 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-darkbg">
-            <div class="flex justify-between mb-4 text-lg font-bold">
+        <div class="p-6 border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+            <div class="flex justify-between font-bold text-lg mb-4">
                 <span>Total:</span>
-                <span id="cart-total" class="text-primary">₹0</span>
+                <span id="cartTotalUI">₹0</span>
             </div>
-            <button onclick="openCheckoutModal()" class="w-full bg-primary hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors flex justify-center items-center">
-                Secure Checkout <i class="fa-solid fa-lock ml-2 text-sm"></i>
-            </button>
+            <button onclick="proceedToCheckout()" class="w-full bg-primary text-white py-3 rounded font-bold hover:bg-secondary transition">Checkout</button>
         </div>
     </div>
+    <div id="cartOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hide" onclick="toggleCart()"></div>
 
-    <div id="checkout-modal" class="fixed inset-0 bg-black bg-opacity-60 z-[60] hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-cardbg rounded-xl shadow-2xl max-w-md w-full overflow-hidden transform scale-100 transition-transform">
-            <div class="p-6 text-center">
-                <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fa-solid fa-check text-2xl text-green-600 dark:text-green-400"></i>
-                </div>
-                <h3 class="text-2xl font-bold mb-2">Order Summary</h3>
-                <p class="text-gray-500 dark:text-gray-400 mb-6">Complete your payment using UPI to receive your digital products instantly.</p>
-                
-                <div class="bg-gray-100 dark:bg-darkbg p-4 rounded-lg mb-6 border border-gray-200 dark:border-gray-700">
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Payable Amount</p>
-                    <p id="modal-total" class="text-3xl font-bold text-primary mb-4">₹0</p>
-                    
-                    <div class="border-t border-gray-300 dark:border-gray-600 pt-4">
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Scan or Pay to UPI ID:</p>
-                        <div class="flex items-center justify-center bg-white dark:bg-cardbg p-3 rounded border border-dashed border-gray-400">
-                            <i class="fa-brands fa-google-pay text-2xl mr-2 text-gray-700 dark:text-white"></i>
-                            <span class="font-mono font-bold tracking-wider select-all">shayanff98@okhdfcbank</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex space-x-3">
-                    <button onclick="closeCheckoutModal()" class="flex-1 py-3 px-4 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">Cancel</button>
-                    <button onclick="confirmPayment()" class="flex-1 py-3 px-4 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 transition-colors">I have Paid</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <footer class="bg-white dark:bg-cardbg border-t border-gray-200 dark:border-gray-800 mt-auto py-8">
-        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
-            <p>&copy; 2026 PlayWithEase. Digital Marketplace. All rights reserved.</p>
-        </div>
+    <footer class="bg-gray-800 text-gray-300 py-8 text-center">
+        <p>&copy; 2026 PlayWithEase. All digital goods delivered instantly.</p>
     </footer>
 
-    <script>
-        // --- 1. STATE MANAGEMENT ---
-        const CONVERSION_RATE = 83; // 1 USD = 83 INR
-        let currency = 'INR';
-        let cart = JSON.parse(localStorage.getItem('pwe_cart')) || [];
-        
-        // --- 2. DUMMY PRODUCT DATA ---
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+            authDomain: "playwithease.firebaseapp.com",
+            projectId: "playwithease",
+            storageBucket: "playwithease.firebasestorage.app",
+            messagingSenderId: "189729941006",
+            appId: "1:189729941006:web:362653774b92416c357e5f",
+            measurementId: "G-1C3B31KQ7C"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // --- GLOBAL STATE ---
+        let cart = JSON.parse(localStorage.getItem('playWithEaseCart')) || [];
+        let currency = 'INR'; // 'INR' or 'USD'
+        let conversionRate = 0.012; 
+        let currentUser = null;
+        let isLoginMode = true;
+
+        // --- DATABASE ---
         const products = [
-            { id: 1, title: "Elden Ring - Shadow of the Erdtree", platform: "Steam", icon: "fa-brands fa-steam", price: 3499, discount: 15, rating: 4.9, img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" },
-            { id: 2, title: "PlayStation Store ₹1000 Gift Card", platform: "PSN", icon: "fa-brands fa-playstation", price: 1000, discount: 5, rating: 4.8, img: "https://images.unsplash.com/photo-1606144042871-39eb13d1058f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" },
-            { id: 3, title: "Xbox Game Pass Ultimate - 1 Month", platform: "Xbox", icon: "fa-brands fa-xbox", price: 549, discount: 20, rating: 4.7, img: "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" },
-            { id: 4, title: "Valorant 1000 VP", platform: "PC", icon: "fa-solid fa-desktop", price: 800, discount: 0, rating: 4.9, img: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" }
+            // Games (40+)
+            { id: 'g1', type: 'game', title: 'Grand Theft Auto V', platform: 'Steam', price: 999, discount: 50, rating: 4.8, img: 'https://cdn.akamai.steamstatic.com/steam/apps/271590/header.jpg' },
+            { id: 'g2', type: 'game', title: 'Red Dead Redemption 2', platform: 'Steam', price: 3199, discount: 60, rating: 4.9, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1174180/header.jpg' },
+            { id: 'g3', type: 'game', title: 'EA FC 24', platform: 'EA App', price: 3499, discount: 20, rating: 4.2, img: 'https://cdn.akamai.steamstatic.com/steam/apps/2195250/header.jpg' },
+            { id: 'g4', type: 'game', title: 'Cyberpunk 2077', platform: 'GOG', price: 2999, discount: 40, rating: 4.5, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg' },
+            { id: 'g5', type: 'game', title: 'Elden Ring', platform: 'Steam', price: 3599, discount: 10, rating: 4.9, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg' },
+            { id: 'g6', type: 'game', title: 'Call of Duty MW3', platform: 'Battle.net', price: 5599, discount: 15, rating: 3.9, img: 'https://cdn.akamai.steamstatic.com/steam/apps/2315580/header.jpg' },
+            { id: 'g7', type: 'game', title: 'Minecraft Java & Bedrock', platform: 'Xbox', price: 1999, discount: 0, rating: 4.9, img: 'https://placehold.co/460x215/22c55e/white?text=Minecraft' },
+            { id: 'g8', type: 'game', title: 'Valorant Points (1000 VP)', platform: 'Riot', price: 800, discount: 5, rating: 4.8, img: 'https://placehold.co/460x215/ef4444/white?text=Valorant+Points' },
+            { id: 'g9', type: 'game', title: 'PUBG 600 UC', platform: 'Mobile', price: 750, discount: 0, rating: 4.5, img: 'https://cdn.akamai.steamstatic.com/steam/apps/578080/header.jpg' },
+            { id: 'g10', type: 'game', title: 'Apex Legends 1000 Coins', platform: 'EA App', price: 799, discount: 0, rating: 4.7, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1172470/header.jpg' },
+            { id: 'g11', type: 'game', title: 'Assassin\'s Creed Mirage', platform: 'Ubisoft', price: 3499, discount: 25, rating: 4.1, img: 'https://placehold.co/460x215/1e3a8a/white?text=AC+Mirage' },
+            { id: 'g12', type: 'game', title: 'Hogwarts Legacy', platform: 'Steam', price: 2999, discount: 30, rating: 4.6, img: 'https://cdn.akamai.steamstatic.com/steam/apps/990080/header.jpg' },
+            { id: 'g13', type: 'game', title: 'Spider-Man Remastered', platform: 'Steam', price: 3999, discount: 40, rating: 4.8, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1817070/header.jpg' },
+            { id: 'g14', type: 'game', title: 'The Witcher 3: Wild Hunt', platform: 'Steam', price: 800, discount: 75, rating: 4.9, img: 'https://cdn.akamai.steamstatic.com/steam/apps/292030/header.jpg' },
+            { id: 'g15', type: 'game', title: 'FIFA 23', platform: 'EA App', price: 999, discount: 80, rating: 4.3, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1811260/header.jpg' },
+            { id: 'g16', type: 'game', title: 'Forza Horizon 5', platform: 'Xbox/PC', price: 3499, discount: 50, rating: 4.7, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1551360/header.jpg' },
+            { id: 'g17', type: 'game', title: 'Resident Evil 4', platform: 'Steam', price: 3599, discount: 35, rating: 4.9, img: 'https://cdn.akamai.steamstatic.com/steam/apps/2050650/header.jpg' },
+            { id: 'g18', type: 'game', title: 'God of War', platform: 'Steam', price: 3299, discount: 50, rating: 4.9, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1593500/header.jpg' },
+            { id: 'g19', type: 'game', title: 'Baldur\'s Gate 3', platform: 'Steam', price: 2999, discount: 10, rating: 5.0, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1086940/header.jpg' },
+            { id: 'g20', type: 'game', title: 'Starfield', platform: 'Steam', price: 4999, discount: 30, rating: 3.8, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1716740/header.jpg' },
+            { id: 'g21', type: 'game', title: 'Helldivers 2', platform: 'Steam', price: 2499, discount: 0, rating: 4.5, img: 'https://cdn.akamai.steamstatic.com/steam/apps/2054970/header.jpg' },
+            { id: 'g22', type: 'game', title: 'Palworld', platform: 'Steam', price: 1300, discount: 10, rating: 4.6, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1623730/header.jpg' },
+            { id: 'g23', type: 'game', title: 'Tekken 8', platform: 'Steam', price: 4299, discount: 15, rating: 4.7, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1778820/header.jpg' },
+            { id: 'g24', type: 'game', title: 'Mortal Kombat 1', platform: 'Steam', price: 4499, discount: 40, rating: 4.2, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1971870/header.jpg' },
+            { id: 'g25', type: 'game', title: 'Street Fighter 6', platform: 'Steam', price: 3999, discount: 34, rating: 4.6, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1364780/header.jpg' },
+            { id: 'g26', type: 'game', title: 'Fallout 4', platform: 'Steam', price: 999, discount: 60, rating: 4.5, img: 'https://cdn.akamai.steamstatic.com/steam/apps/377160/header.jpg' },
+            { id: 'g27', type: 'game', title: 'Skyrim Special Edition', platform: 'Steam', price: 1799, discount: 75, rating: 4.8, img: 'https://cdn.akamai.steamstatic.com/steam/apps/489830/header.jpg' },
+            { id: 'g28', type: 'game', title: 'No Man\'s Sky', platform: 'Steam', price: 1799, discount: 50, rating: 4.4, img: 'https://cdn.akamai.steamstatic.com/steam/apps/275850/header.jpg' },
+            { id: 'g29', type: 'game', title: 'Terraria', platform: 'Steam', price: 369, discount: 50, rating: 4.9, img: 'https://cdn.akamai.steamstatic.com/steam/apps/105600/header.jpg' },
+            { id: 'g30', type: 'game', title: 'Stardew Valley', platform: 'Steam', price: 479, discount: 20, rating: 4.9, img: 'https://cdn.akamai.steamstatic.com/steam/apps/413150/header.jpg' },
+            { id: 'g31', type: 'game', title: 'Rust', platform: 'Steam', price: 1599, discount: 33, rating: 4.5, img: 'https://cdn.akamai.steamstatic.com/steam/apps/252490/header.jpg' },
+            { id: 'g32', type: 'game', title: 'DayZ', platform: 'Steam', price: 2799, discount: 40, rating: 4.2, img: 'https://cdn.akamai.steamstatic.com/steam/apps/221100/header.jpg' },
+            { id: 'g33', type: 'game', title: 'Rainbow Six Siege', platform: 'Ubisoft', price: 999, discount: 60, rating: 4.4, img: 'https://cdn.akamai.steamstatic.com/steam/apps/359550/header.jpg' },
+            { id: 'g34', type: 'game', title: 'Destiny 2: Lightfall', platform: 'Steam', price: 2199, discount: 50, rating: 3.5, img: 'https://placehold.co/460x215/4c1d95/white?text=Destiny+2+Lightfall' },
+            { id: 'g35', type: 'game', title: 'Overwatch 2: 1000 Coins', platform: 'Battle.net', price: 800, discount: 0, rating: 4.0, img: 'https://placehold.co/460x215/f97316/white?text=OW2+Coins' },
+            { id: 'g36', type: 'game', title: 'Genshin Impact 1098 Crystals', platform: 'HoYoverse', price: 1290, discount: 0, rating: 4.7, img: 'https://placehold.co/460x215/0ea5e9/white?text=Genshin+Crystals' },
+            { id: 'g37', type: 'game', title: 'Ghost of Tsushima', platform: 'PSN', price: 3999, discount: 20, rating: 4.9, img: 'https://placehold.co/460x215/1f2937/white?text=Ghost+of+Tsushima' },
+            { id: 'g38', type: 'game', title: 'The Last of Us Part I', platform: 'Steam', price: 3999, discount: 33, rating: 4.6, img: 'https://placehold.co/460x215/166534/white?text=TLOU+Part+I' },
+            { id: 'g39', type: 'game', title: 'Horizon Zero Dawn', platform: 'Steam', price: 3299, discount: 60, rating: 4.8, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1151640/header.jpg' },
+            { id: 'g40', type: 'game', title: 'Spider-Man: Miles Morales', platform: 'Steam', price: 3299, discount: 40, rating: 4.7, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1817190/header.jpg' },
+            
+            // Gift Cards
+            { id: 'gc1', type: 'giftcard', title: 'Amazon Shopping', platform: 'Gift Card', price: 1000, discount: 2, img: 'https://placehold.co/300x200/f59e0b/white?text=Amazon+₹1000' },
+            { id: 'gc2', type: 'giftcard', title: 'Flipkart', platform: 'Gift Card', price: 1000, discount: 1, img: 'https://placehold.co/300x200/3b82f6/white?text=Flipkart+₹1000' },
+            { id: 'gc3', type: 'giftcard', title: 'BookMyShow', platform: 'Gift Card', price: 500, discount: 5, img: 'https://placehold.co/300x200/ef4444/white?text=BMS+₹500' },
+            { id: 'gc4', type: 'giftcard', title: 'Ajio', platform: 'Gift Card', price: 2000, discount: 10, img: 'https://placehold.co/300x200/111827/white?text=Ajio+₹2000' },
+            { id: 'gc5', type: 'giftcard', title: 'Myntra', platform: 'Gift Card', price: 1000, discount: 8, img: 'https://placehold.co/300x200/ec4899/white?text=Myntra+₹1000' },
+            { id: 'gc6', type: 'giftcard', title: 'Google Play', platform: 'Wallet', price: 500, discount: 0, img: 'https://placehold.co/300x200/10b981/white?text=Google+Play+₹500' },
+            { id: 'gc7', type: 'giftcard', title: 'Steam Wallet', platform: 'Wallet', price: 1000, discount: 0, img: 'https://placehold.co/300x200/1e3a8a/white?text=Steam+₹1000' },
+            { id: 'gc8', type: 'giftcard', title: 'PSN Wallet', platform: 'Wallet', price: 1000, discount: 0, img: 'https://placehold.co/300x200/2563eb/white?text=PSN+₹1000' },
+            { id: 'gc9', type: 'giftcard', title: 'Xbox Card', platform: 'Wallet', price: 1000, discount: 0, img: 'https://placehold.co/300x200/16a34a/white?text=Xbox+₹1000' },
+            
+            // Subscriptions
+            { id: 's1', type: 'sub', title: 'PlayStation Plus Extra (1 Month)', platform: 'PSN', price: 749, discount: 0, img: 'https://placehold.co/300x200/facc15/black?text=PS+Plus' },
+            { id: 's2', type: 'sub', title: 'Xbox Game Pass Ultimate', platform: 'Xbox', price: 549, discount: 10, img: 'https://placehold.co/300x200/22c55e/white?text=Game+Pass' },
+            { id: 's3', type: 'sub', title: 'EA Play (1 Month)', platform: 'EA', price: 315, discount: 0, img: 'https://placehold.co/300x200/ef4444/white?text=EA+Play' },
+            { id: 's4', type: 'sub', title: 'Netflix Premium (1 Month)', platform: 'OTT', price: 649, discount: 0, img: 'https://placehold.co/300x200/dc2626/white?text=Netflix' },
+            { id: 's5', type: 'sub', title: 'Prime Video (1 Year)', platform: 'OTT', price: 1499, discount: 5, img: 'https://placehold.co/300x200/0ea5e9/white?text=Prime+Video' },
+            { id: 's6', type: 'sub', title: 'Spotify Premium (3 Months)', platform: 'Music', price: 359, discount: 0, img: 'https://placehold.co/300x200/10b981/white?text=Spotify' },
         ];
 
-        // --- 3. FORMATTING UTILS ---
-        function formatPrice(priceInINR) {
-            if (currency === 'USD') {
-                return '$' + (priceInINR / CONVERSION_RATE).toFixed(2);
-            }
-            return '₹' + priceInINR.toLocaleString('en-IN');
+        // --- UI RENDERING ---
+        function formatPrice(inrPrice) {
+            if (currency === 'USD') return `$${(inrPrice * conversionRate).toFixed(2)}`;
+            return `₹${inrPrice.toLocaleString('en-IN')}`;
         }
 
-        // --- 4. RENDER UI ---
-        function renderProducts() {
-            const grid = document.getElementById('product-grid');
-            grid.innerHTML = '';
-
-            products.forEach(p => {
-                const finalPrice = Math.floor(p.price - (p.price * (p.discount / 100)));
-                
-                const card = document.createElement('div');
-                card.className = "bg-white dark:bg-cardbg rounded-xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-800 hover:shadow-lg transition-shadow group flex flex-col";
-                card.innerHTML = `
-                    <div class="relative h-48 overflow-hidden bg-gray-200">
-                        <img src="${p.img}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 lazy">
-                        ${p.discount > 0 ? `<div class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">-${p.discount}%</div>` : ''}
-                        <div class="absolute bottom-2 left-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
-                            <i class="${p.icon} mr-1"></i> ${p.platform}
-                        </div>
+        function generateCard(item) {
+            const currentPrice = item.price * (1 - item.discount / 100);
+            return `
+                <div class="product-card bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col cursor-pointer transition-shadow hover:shadow-xl">
+                    <div class="relative overflow-hidden h-32 sm:h-40">
+                        <img src="${item.img}" alt="${item.title}" class="product-img w-full h-full object-cover" loading="lazy">
+                        ${item.discount > 0 ? `<div class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">-${item.discount}%</div>` : ''}
                     </div>
                     <div class="p-4 flex flex-col flex-grow">
-                        <h3 class="font-bold text-gray-900 dark:text-white mb-1 line-clamp-2" title="${p.title}">${p.title}</h3>
-                        <div class="flex items-center text-yellow-400 text-xs mb-3">
-                            <i class="fa-solid fa-star"></i> <span class="text-gray-500 dark:text-gray-400 ml-1 font-medium">${p.rating}</span>
+                        <div class="text-xs text-gray-500 dark:text-gray-400 mb-1 flex justify-between">
+                            <span><i class="fa-brands fa-${item.platform.toLowerCase()} mr-1"></i>${item.platform}</span>
+                            ${item.rating ? `<span class="text-yellow-500"><i class="fa-solid fa-star text-[10px]"></i> ${item.rating}</span>` : ''}
                         </div>
+                        <h3 class="font-bold text-sm sm:text-base mb-2 line-clamp-2">${item.title}</h3>
                         <div class="mt-auto flex items-center justify-between">
                             <div>
-                                <span class="font-extrabold text-lg text-gray-900 dark:text-white">${formatPrice(finalPrice)}</span>
-                                ${p.discount > 0 ? `<span class="text-xs text-gray-400 line-through ml-1">${formatPrice(p.price)}</span>` : ''}
+                                <span class="font-bold text-lg">${formatPrice(currentPrice)}</span>
+                                ${item.discount > 0 ? `<span class="text-xs line-through text-gray-400 ml-1">${formatPrice(item.price)}</span>` : ''}
                             </div>
-                            <button onclick="addToCart(${p.id})" class="bg-gray-100 hover:bg-primary hover:text-white dark:bg-gray-700 dark:hover:bg-primary text-gray-900 dark:text-white w-10 h-10 rounded-full flex justify-center items-center transition-colors shadow-sm">
+                            <button onclick="addToCart('${item.id}')" class="bg-primary hover:bg-secondary text-white w-8 h-8 rounded-full flex items-center justify-center transition">
                                 <i class="fa-solid fa-plus"></i>
                             </button>
                         </div>
                     </div>
-                `;
-                grid.appendChild(card);
-            });
+                </div>
+            `;
         }
 
-        function renderCart() {
-            const container = document.getElementById('cart-items');
-            const totalEl = document.getElementById('cart-total');
-            const countEl = document.getElementById('cart-count');
-            
-            container.innerHTML = '';
-            let total = 0;
-            let count = 0;
-
-            if (cart.length === 0) {
-                container.innerHTML = `<div class="text-center text-gray-500 mt-10"><i class="fa-solid fa-box-open text-4xl mb-3"></i><p>Your cart is empty.</p></div>`;
-            } else {
-                cart.forEach(item => {
-                    const product = products.find(p => p.id === item.id);
-                    const finalPrice = Math.floor(product.price - (product.price * (product.discount / 100)));
-                    total += finalPrice * item.qty;
-                    count += item.qty;
-
-                    container.innerHTML += `
-                        <div class="flex items-center gap-4 border-b border-gray-100 dark:border-gray-800 pb-4">
-                            <img src="${product.img}" class="w-16 h-16 object-cover rounded-md bg-gray-200">
-                            <div class="flex-1">
-                                <h4 class="text-sm font-bold line-clamp-1">${product.title}</h4>
-                                <div class="text-primary font-bold text-sm mt-1">${formatPrice(finalPrice)}</div>
-                                <div class="flex items-center mt-2 bg-gray-100 dark:bg-darkbg w-max rounded-md border border-gray-200 dark:border-gray-700">
-                                    <button onclick="updateQty(${item.id}, -1)" class="px-2 py-0.5 text-gray-500 hover:text-black dark:hover:text-white">-</button>
-                                    <span class="px-2 text-sm font-medium">${item.qty}</span>
-                                    <button onclick="updateQty(${item.id}, 1)" class="px-2 py-0.5 text-gray-500 hover:text-black dark:hover:text-white">+</button>
-                                </div>
-                            </div>
-                            <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-red-500 transition-colors">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    `;
-                });
-            }
-
-            totalEl.innerText = formatPrice(total);
-            
-            if (count > 0) {
-                countEl.innerText = count;
-                countEl.classList.remove('hidden');
-            } else {
-                countEl.classList.add('hidden');
-            }
-
-            // Sync with local storage
-            localStorage.setItem('pwe_cart', JSON.stringify(cart));
-            document.getElementById('modal-total').innerText = formatPrice(total);
+        function renderProducts() {
+            document.getElementById('gamesGrid').innerHTML = products.filter(p => p.type === 'game').map(generateCard).join('');
+            document.getElementById('giftCardsGrid').innerHTML = products.filter(p => p.type === 'giftcard').map(generateCard).join('');
+            document.getElementById('subsGrid').innerHTML = products.filter(p => p.type === 'sub').map(generateCard).join('');
         }
 
-        // --- 5. CART LOGIC ---
-        function addToCart(id) {
+        // --- CART LOGIC ---
+        window.addToCart = (id) => {
+            const product = products.find(p => p.id === id);
             const existing = cart.find(item => item.id === id);
-            if (existing) { existing.qty += 1; } 
-            else { cart.push({ id, qty: 1 }); }
-            renderCart();
-            
-            // Visual feedback (open cart temporarily)
-            const cartSidebar = document.getElementById('cart-sidebar');
-            if(cartSidebar.classList.contains('cart-closed')) {
-                toggleCart();
-            }
-        }
-
-        function removeFromCart(id) {
-            cart = cart.filter(item => item.id !== id);
-            renderCart();
-        }
-
-        function updateQty(id, change) {
-            const item = cart.find(item => item.id === id);
-            if (item) {
-                item.qty += change;
-                if (item.qty <= 0) removeFromCart(id);
-                else renderCart();
-            }
-        }
-
-        // --- 6. UI TOGGLES ---
-        function toggleCart() {
-            const sidebar = document.getElementById('cart-sidebar');
-            const overlay = document.getElementById('cart-overlay');
-            if (sidebar.classList.contains('cart-closed')) {
-                sidebar.classList.remove('cart-closed');
-                sidebar.classList.add('cart-open');
-                overlay.classList.remove('hidden');
-            } else {
-                sidebar.classList.remove('cart-open');
-                sidebar.classList.add('cart-closed');
-                overlay.classList.add('hidden');
-            }
-        }
-
-        function toggleCurrency() {
-            currency = document.getElementById('currency-selector').value;
-            renderProducts();
-            renderCart();
-        }
-
-        function toggleTheme() {
-            const html = document.documentElement;
-            const icon = document.getElementById('theme-icon');
-            
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                icon.classList.replace('fa-sun', 'fa-moon');
-            } else {
-                html.classList.add('dark');
-                icon.classList.replace('fa-moon', 'fa-sun');
-            }
-        }
-
-        // --- 7. CHECKOUT MODAL LOGIC ---
-        function openCheckoutModal() {
-            if (cart.length === 0) return alert("Your cart is empty!");
-            toggleCart(); // close sidebar
-            document.getElementById('checkout-modal').classList.remove('hidden');
-        }
-
-        function closeCheckoutModal() {
-            document.getElementById('checkout-modal').classList.add('hidden');
-        }
-
-        function confirmPayment() {
-            alert("Order placed successfully! Verification in progress.");
-            cart = [];
-            renderCart();
-            closeCheckoutModal();
-        }
-
-        // --- 8. INITIALIZATION ---
-        window.onload = () => {
-            // Check system preference for dark mode initially
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                document.documentElement.classList.add('dark');
-                document.getElementById('theme-icon').classList.replace('fa-moon', 'fa-sun');
-            }
-            renderProducts();
-            renderCart();
+            if (existing) existing.qty++;
+            else cart.push({ ...product, qty: 1, currentPrice: product.price * (1 - product.discount / 100) });
+            saveCart();
+            updateCartUI();
         };
 
+        window.updateQty = (id, change) => {
+            const item = cart.find(i => i.id === id);
+            if (!item) return;
+            item.qty += change;
+            if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+            saveCart();
+            updateCartUI();
+        };
+
+        function saveCart() {
+            localStorage.setItem('playWithEaseCart', JSON.stringify(cart));
+        }
+
+        function updateCartUI() {
+            document.getElementById('cartCount').innerText = cart.reduce((sum, item) => sum + item.qty, 0);
+            const cartItemsDiv = document.getElementById('cartItems');
+            
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<div class="text-center text-gray-500 mt-10"><i class="fa-solid fa-box-open text-4xl mb-3"></i><p>Your cart is empty</p></div>';
+                document.getElementById('cartTotalUI').innerText = formatPrice(0);
+                return;
+            }
+
+            let total = 0;
+            cartItemsDiv.innerHTML = cart.map(item => {
+                const itemTotal = item.currentPrice * item.qty;
+                total += itemTotal;
+                return `
+                    <div class="flex items-center gap-4 bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+                        <img src="${item.img}" class="w-16 h-12 object-cover rounded">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-bold line-clamp-1">${item.title}</h4>
+                            <div class="text-primary font-semibold text-sm">${formatPrice(item.currentPrice)}</div>
+                        </div>
+                        <div class="flex items-center space-x-2 bg-white dark:bg-gray-600 rounded px-2 py-1 shadow-sm">
+                            <button onclick="updateQty('${item.id}', -1)" class="text-gray-500 hover:text-red-500"><i class="fa-solid fa-minus text-xs"></i></button>
+                            <span class="text-sm font-bold w-4 text-center">${item.qty}</span>
+                            <button onclick="updateQty('${item.id}', 1)" class="text-gray-500 hover:text-green-500"><i class="fa-solid fa-plus text-xs"></i></button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('cartTotalUI').innerText = formatPrice(total);
+        }
+
+        // --- NAVIGATION & VIEWS ---
+        window.toggleCart = () => {
+            document.getElementById('cartDrawer').classList.toggle('cart-open');
+            document.getElementById('cartOverlay').classList.toggle('hide');
+        };
+
+        window.showView = (viewId) => {
+            ['homeView', 'authView', 'profileView', 'checkoutView', 'successView'].forEach(id => {
+                document.getElementById(id).classList.add('hide');
+            });
+            document.getElementById(viewId).classList.remove('hide');
+            window.scrollTo(0,0);
+        };
+
+        window.proceedToCheckout = () => {
+            if (cart.length === 0) return alert('Cart is empty!');
+            if (!currentUser) {
+                toggleCart();
+                alert('Please login to checkout.');
+                showView('authView');
+                return;
+            }
+            toggleCart();
+            
+            let total = 0;
+            const checkoutItemsDiv = document.getElementById('checkoutItems');
+            checkoutItemsDiv.innerHTML = cart.map(item => {
+                const itemTotal = item.currentPrice * item.qty;
+                total += itemTotal;
+                return `
+                    <div class="flex justify-between items-center text-sm">
+                        <span>${item.qty}x ${item.title}</span>
+                        <span class="font-medium">${formatPrice(itemTotal)}</span>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('checkoutTotal').innerText = formatPrice(total);
+            showView('checkoutView');
+        };
+
+        window.confirmOrder = () => {
+            cart = [];
+            saveCart();
+            updateCartUI();
+            showView('successView');
+        };
+
+        // --- AUTHENTICATION ---
+        window.handleAuthClick = () => {
+            if (currentUser) showView('profileView');
+            else showView('authView');
+        };
+
+        window.toggleAuthMode = () => {
+            isLoginMode = !isLoginMode;
+            document.getElementById('authTitle').innerText = isLoginMode ? 'Login to PlayWithEase' : 'Create an Account';
+            document.getElementById('authToggleText').innerText = isLoginMode ? "Don't have an account?" : "Already have an account?";
+            document.getElementById('authError').classList.add('hide');
+        };
+
+        window.handleAuthSubmit = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+            const errorDiv = document.getElementById('authError');
+            
+            try {
+                if (isLoginMode) {
+                    await signInWithEmailAndPassword(auth, email, password);
+                } else {
+                    await createUserWithEmailAndPassword(auth, email, password);
+                }
+                document.getElementById('authForm').reset();
+                showView('profileView');
+            } catch (error) {
+                errorDiv.innerText = error.message.replace('Firebase: ', '');
+                errorDiv.classList.remove('hide');
+            }
+        };
+
+        window.logoutUser = async () => {
+            await signOut(auth);
+            showView('homeView');
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            const authBtnIcon = document.querySelector('#authBtn i');
+            if (user) {
+                authBtnIcon.classList.remove('fa-regular');
+                authBtnIcon.classList.add('fa-solid');
+                authBtnIcon.classList.add('text-primary');
+                document.getElementById('profileEmail').innerText = user.email;
+            } else {
+                authBtnIcon.classList.add('fa-regular');
+                authBtnIcon.classList.remove('fa-solid');
+                authBtnIcon.classList.remove('text-primary');
+            }
+        });
+
+        // --- MISC UTILS ---
+        document.getElementById('currencyBtn').addEventListener('click', (e) => {
+            currency = currency === 'INR' ? 'USD' : 'INR';
+            e.target.innerText = currency === 'INR' ? 'INR ₹' : 'USD $';
+            renderProducts();
+            updateCartUI();
+        });
+
+        const htmlEl = document.documentElement;
+        const themeBtn = document.getElementById('themeToggle');
+        
+        // Check system preference on load
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            htmlEl.classList.add('dark');
+        }
+
+        themeBtn.addEventListener('click', () => {
+            htmlEl.classList.toggle('dark');
+        });
+
+        // Init
+        renderProducts();
+        updateCartUI();
     </script>
 </body>
 </html>
