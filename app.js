@@ -1,110 +1,146 @@
-// Firebase Config
-const firebaseConfig = {
-    apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
-    authDomain: "playwithease.firebaseapp.com",
-    projectId: "playwithease",
-    storageBucket: "playwithease.appspot.com",
-    messagingSenderId: "189729941006",
-    appId: "1:189729941006:web:362653774b92416c357e5f"
-};
-firebase.initializeApp(firebaseConfig);
+// --- State Management ---
+let cart = JSON.parse(localStorage.getItem('pwe_cart')) || [];
+let isUSD = false;
+const EXCHANGE_RATE = 83.0; // Static rate as requested
 
-// Product Data (Samples - Expands to 80+ in logic)
+// --- Mock Product Data ---
 const products = [
-    { id: 1, name: "GTA VI", price: 4999, cat: "ps5", img: "https://example.com/gtavi.jpg" },
-    { id: 2, name: "Forza Horizon 5", price: 3499, cat: "pc", img: "https://example.com/forza.jpg" },
-    { id: 3, name: "Netflix Premium 1 Month", price: 649, cat: "subscriptions", img: "https://example.com/netflix.jpg" },
-    // ... logic below generates remaining 77+ items for demo
+    { id: 1, name: "PlayStation 5 Controller", priceINR: 5990, img: "https://via.placeholder.com/300?text=PS5+Controller", rating: 4.8, discount: "10% OFF" },
+    { id: 2, name: "Cyberpunk 2077 (Digital)", priceINR: 2999, img: "https://via.placeholder.com/300?text=Cyberpunk+2077", rating: 4.5, discount: null },
+    { id: 3, name: "Xbox Game Pass (3 Months)", priceINR: 1049, img: "https://via.placeholder.com/300?text=Game+Pass", rating: 4.9, discount: null },
+    { id: 4, name: "Gaming Headset Pro", priceINR: 3499, img: "https://via.placeholder.com/300?text=Headset", rating: 4.2, discount: "15% OFF" }
 ];
 
-// Generate 80 items for the "Professional Store" feel
-for(let i=4; i<=85; i++) {
-    products.push({
-        id: i,
-        name: `Premium Title ${i}`,
-        price: Math.floor(Math.random() * (5000 - 500) + 500),
-        cat: i % 2 === 0 ? "ps5" : "pc",
-        img: `https://picsum.photos/seed/${i}/400/500`
-    });
-}
-
-let cart = JSON.parse(localStorage.getItem('pwe_cart')) || [];
-
-function renderProducts(filter = 'all', search = '') {
-    const container = document.getElementById('product-list');
-    if(!container) return;
-    container.innerHTML = '';
-
-    const filtered = products.filter(p => {
-        const matchesCat = filter === 'all' || p.cat === filter;
-        const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
-        return matchesCat && matchesSearch;
-    });
-
-    filtered.forEach(p => {
-        container.innerHTML += `
-            <div class="card">
-                <img src="${p.img}" alt="${p.name}">
-                <div class="card-body">
-                    <div class="card-title">${p.name}</div>
-                    <div class="price">₹${p.price}</div>
-                    <button class="btn btn-primary" style="margin-top:10px" onclick="addToCart(${p.id})">Add to Cart</button>
-                </div>
-            </div>
-        `;
-    });
-}
-
-// Cart Logic
-window.addToCart = (id) => {
-    const product = products.find(p => p.id === id);
-    cart.push(product);
+// --- Initialization ---
+document.addEventListener("DOMContentLoaded", () => {
+    initTheme();
+    renderProducts();
     updateCartUI();
-    toggleCart(true);
-};
-
-function updateCartUI() {
-    localStorage.setItem('pwe_cart', JSON.stringify(cart));
-    const cartItems = document.getElementById('cart-items');
-    const cartCount = document.getElementById('cart-count');
-    const cartTotal = document.getElementById('cart-total');
-    
-    if(cartCount) cartCount.innerText = cart.length;
-    if(cartItems) {
-        cartItems.innerHTML = cart.map((item, index) => `
-            <div style="display:flex; justify-content:space-between; margin-bottom:1rem; align-items:center;">
-                <div>
-                    <div style="font-weight:600">${item.name}</div>
-                    <div style="color:var(--primary)">₹${item.price}</div>
-                </div>
-                <span class="material-icons" style="cursor:pointer; color:red" onclick="removeFromCart(${index})">delete</span>
-            </div>
-        `).join('');
-    }
-    
-    const total = cart.reduce((sum, item) => sum + item.price, 0);
-    if(cartTotal) cartTotal.innerText = `₹${total}`;
-}
-
-window.removeFromCart = (index) => {
-    cart.splice(index, 1);
-    updateCartUI();
-};
-
-window.toggleCart = (forceOpen = false) => {
-    const drawer = document.getElementById('cart-drawer');
-    if(forceOpen) drawer.classList.add('active');
-    else drawer.classList.toggle('active');
-};
-
-// Auth Guard
-firebase.auth().onAuthStateChanged(user => {
-    const path = window.location.pathname;
-    if (path.includes('profile.html') && !user) {
-        window.location.href = 'login.html';
-    }
+    registerServiceWorker(); // For offline functionality
 });
 
-// Initial Render
-renderProducts();
-updateCartUI();
+// --- Theme Toggle ---
+const themeToggle = document.getElementById('themeToggle');
+function initTheme() {
+    const savedTheme = localStorage.getItem('pwe_theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    themeToggle.innerHTML = savedTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+}
+themeToggle.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('pwe_theme', next);
+    initTheme();
+});
+
+// --- Currency Switcher ---
+const currencyBtn = document.getElementById('currencyBtn');
+currencyBtn.addEventListener('click', () => {
+    isUSD = !isUSD;
+    currencyBtn.innerText = isUSD ? "$ USD" : "₹ INR";
+    renderProducts();
+    updateCartUI();
+});
+
+function formatPrice(priceINR) {
+    if (isUSD) return `$${(priceINR / EXCHANGE_RATE).toFixed(2)}`;
+    return `₹${priceINR.toLocaleString('en-IN')}`;
+}
+
+// --- Render Products ---
+function renderProducts() {
+    const grid = document.getElementById('productGrid');
+    grid.innerHTML = ''; // Clear skeletons
+    
+    products.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            ${p.discount ? `<span class="discount-badge">${p.discount}</span>` : ''}
+            <img src="${p.img}" loading="lazy" alt="${p.name}">
+            <h3>${p.name}</h3>
+            <div class="rating"><i class="fas fa-star"></i> ${p.rating}</div>
+            <div class="price">${formatPrice(p.priceINR)}</div>
+            <button class="btn-primary" onclick="addToCart(${p.id})">Add to Cart</button>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+// --- Cart System ---
+const cartPanel = document.getElementById('cartPanel');
+const cartOverlay = document.getElementById('cartOverlay');
+const cartBtn = document.getElementById('cartBtn');
+const closeCart = document.getElementById('closeCart');
+
+cartBtn.addEventListener('click', toggleCart);
+closeCart.addEventListener('click', toggleCart);
+cartOverlay.addEventListener('click', toggleCart);
+
+function toggleCart() {
+    cartPanel.classList.toggle('open');
+    cartOverlay.classList.toggle('active');
+}
+
+window.addToCart = (id) => {
+    const product = products.find(p => p.id === id);
+    const existingItem = cart.find(item => item.id === id);
+    
+    if (existingItem) existingItem.qty += 1;
+    else cart.push({ ...product, qty: 1 });
+    
+    saveCart();
+    updateCartUI();
+    
+    // Smooth interaction: Open cart when item is added
+    if(!cartPanel.classList.contains('open')) toggleCart();
+}
+
+window.removeFromCart = (id) => {
+    cart = cart.filter(item => item.id !== id);
+    saveCart();
+    updateCartUI();
+}
+
+function saveCart() {
+    localStorage.setItem('pwe_cart', JSON.stringify(cart));
+}
+
+function updateCartUI() {
+    const cartItems = document.getElementById('cartItems');
+    const cartCount = document.getElementById('cartCount');
+    const cartTotal = document.getElementById('cartTotal');
+    
+    cartItems.innerHTML = '';
+    let totalINR = 0;
+    let count = 0;
+
+    cart.forEach(item => {
+        totalINR += (item.priceINR * item.qty);
+        count += item.qty;
+        
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+            <div>
+                <h4>${item.name}</h4>
+                <p>${formatPrice(item.priceINR)} x ${item.qty}</p>
+            </div>
+            <button class="icon-btn" onclick="removeFromCart(${item.id})" style="color: #e74c3c;"><i class="fas fa-trash"></i></button>
+        `;
+        cartItems.appendChild(div);
+    });
+
+    cartCount.innerText = count;
+    cartTotal.innerText = formatPrice(totalINR);
+}
+
+// --- Service Worker (Offline Mode) ---
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+        .then(() => console.log('Service Worker Registered - Offline mode active'))
+        .catch(err => console.log('SW Registration failed', err));
+    }
+}
