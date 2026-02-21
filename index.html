@@ -1,544 +1,356 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayWithEase | The Ultimate Game Store</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <title>PlayWithEase | The Ultimate Gaming Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            black: '#050505',
+                            dark: '#0f0f11',
+                            panel: '#1a1a1e',
+                            border: '#2a2a32',
+                            accent: '#ff0055', // Neon Pink/Red for that Vice City vibe
+                            accentHover: '#cc0044'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        /* =========================================
-           1. CSS VARIABLES & CORE SETUP
-        ========================================= */
-        :root {
-            --bg: #030303;
-            --glass: rgba(255, 255, 255, 0.08);
-            --glass-hover: rgba(255, 255, 255, 0.2);
-            --sony-blue: #00439c;
-            --sony-light-blue: #0070d1;
-            --accent: #ffffff;
-            --text-grey: #a0a0a0;
-            --danger: #ff3333;
-            --success: #00ff88;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Saira', sans-serif; }
-        body { background-color: var(--bg); color: white; overflow-x: hidden; user-select: none; }
+        body { background-color: #050505; color: #ffffff; overflow-x: hidden; }
+        .glass { background: rgba(15, 15, 17, 0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        .ambient-glow {
-            position: fixed; top: -20%; right: -10%; width: 50vw; height: 50vw;
-            background: radial-gradient(circle, var(--sony-blue) 0%, transparent 70%);
-            opacity: 0.3; z-index: -1; pointer-events: none;
-        }
-
-        /* =========================================
-           2. HEADER & NAVIGATION
-        ========================================= */
-        header {
-            position: fixed; top: 0; width: 100%; z-index: 1000;
-            padding: 20px 50px; display: flex; justify-content: space-between; align-items: center;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.95), rgba(0,0,0,0.5), transparent);
-            backdrop-filter: blur(5px);
+        /* GTA 6 Text Gradient */
+        .gta-text {
+            background: linear-gradient(to right, #ff007f, #ff7f00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
-        .nav-left { display: flex; gap: 35px; font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; }
-        .nav-item { opacity: 0.6; cursor: pointer; transition: 0.3s; position: relative; }
-        .nav-item.active, .nav-item:hover { opacity: 1; text-shadow: 0 0 15px rgba(255,255,255,0.8); }
-        .nav-item.active::after {
-            content: ''; position: absolute; bottom: -8px; left: 0; width: 100%; height: 2px; background: var(--sony-light-blue);
-            box-shadow: 0 0 10px var(--sony-light-blue);
+        /* Cinematic Image Fade */
+        .hero-gradient {
+            background: linear-gradient(to top, #050505 0%, rgba(5,5,5,0.4) 50%, rgba(5,5,5,0) 100%);
         }
-
-        .offline-btn {
-            background: rgba(0, 112, 209, 0.1); border: 1px solid rgba(0, 112, 209, 0.5);
-            padding: 8px 18px; border-radius: 20px; font-size: 12px; font-weight: 700;
-            display: flex; align-items: center; gap: 8px; cursor: pointer; transition: 0.3s;
-        }
-        .offline-btn:hover { background: rgba(0, 112, 209, 0.8); box-shadow: 0 0 20px var(--sony-light-blue); }
-
-        .auth-btn {
-            background: white; color: black; padding: 8px 25px; border-radius: 20px;
-            font-weight: 700; font-size: 14px; cursor: pointer; border: none; transition: 0.3s;
-        }
-        .auth-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(255,255,255,0.5); }
-
-        .cart-icon-wrapper { position: relative; cursor: pointer; font-size: 20px; margin: 0 15px; }
-        .cart-icon-wrapper:hover { color: var(--sony-light-blue); }
-        .cart-badge {
-            position: absolute; top: -6px; right: -10px; background: var(--sony-light-blue);
-            color: white; font-size: 11px; font-weight: 900; width: 18px; height: 18px;
-            border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 0 10px var(--sony-light-blue); transition: 0.2s;
-        }
-
-        /* =========================================
-           3. DYNAMIC HERO SECTION
-        ========================================= */
-        .hero {
-            height: 90vh; position: relative; display: flex; align-items: flex-end; padding-bottom: 90px;
-            overflow: hidden;
-        }
-        
-        .hero-bg-img {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: -1; 
-            mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to right, black 30%, transparent 100%), linear-gradient(to bottom, black 50%, transparent 100%);
-            transition: opacity 0.8s ease-in-out;
-        }
-
-        .hero-content {
-            padding-left: 70px; width: 55%; z-index: 10;
-            transform: translateY(30px); opacity: 0; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .hero-content.visible { transform: translateY(0); opacity: 1; }
-
-        .game-logo-text {
-            font-size: 70px; font-weight: 900; line-height: 0.95; text-transform: uppercase;
-            margin-bottom: 20px; text-shadow: 0 5px 20px rgba(0,0,0,0.9); letter-spacing: -1px;
-        }
-        
-        .meta-tags { display: flex; gap: 15px; font-size: 13px; color: var(--text-grey); margin-bottom: 25px; font-weight: 600; }
-        .tag-box { border: 1px solid rgba(255,255,255,0.4); padding: 3px 8px; border-radius: 4px; color: white; background: rgba(0,0,0,0.3); }
-
-        .hero-desc { font-size: 17px; color: #dcdde1; margin-bottom: 35px; max-width: 550px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); line-height: 1.5; }
-
-        .price-tag { font-size: 20px; font-weight: 500; margin-bottom: 25px; color: var(--text-grey); }
-        .price-tag span { font-weight: 700; font-size: 36px; color: white; margin-left: 10px; }
-
-        .action-row { display: flex; gap: 20px; }
-        .btn-primary {
-            background: var(--sony-light-blue); color: white; border: none; padding: 15px 40px;
-            border-radius: 30px; font-weight: 700; font-size: 16px; cursor: pointer;
-            transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; align-items: center; gap: 10px;
-        }
-        .btn-primary:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 10px 30px rgba(0, 112, 209, 0.6); }
-
-        .btn-glass {
-            background: rgba(255,255,255,0.1); backdrop-filter: blur(15px); color: white; border: 1px solid rgba(255,255,255,0.2);
-            padding: 15px 30px; border-radius: 30px; font-weight: 600; font-size: 16px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 10px;
-        }
-        .btn-glass:hover { background: white; color: black; border-color: white; transform: scale(1.05); }
-
-        /* Switcher Cards */
-        .hero-switch {
-            position: absolute; bottom: 50px; right: 70px; display: flex; gap: 20px; z-index: 20;
-        }
-        .switch-card {
-            width: 180px; height: 100px; border-radius: 12px; overflow: hidden; cursor: pointer;
-            border: 2px solid rgba(255,255,255,0.1); transition: 0.4s; position: relative; background: #000;
-        }
-        .switch-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.4; transition: 0.4s; }
-        .switch-card:hover { border-color: rgba(255,255,255,0.5); transform: translateY(-5px); }
-        .switch-card.active { border-color: white; transform: scale(1.1); box-shadow: 0 15px 30px rgba(0,0,0,0.8); z-index: 2;}
-        .switch-card.active img { opacity: 1; }
-        .switch-label {
-            position: absolute; bottom: 8px; left: 12px; font-size: 11px; font-weight: 800; text-shadow: 0 2px 5px black; letter-spacing: 1px;
-        }
-
-        /* =========================================
-           4. HORIZONTAL GAME SHELVES
-        ========================================= */
-        .shelf { padding: 50px 0 20px 70px; }
-        .shelf-title { font-size: 26px; margin-bottom: 25px; font-weight: 300; letter-spacing: 1px; }
-        .shelf-title b { font-weight: 700; }
-
-        .rail {
-            display: flex; gap: 25px; overflow-x: auto; padding-bottom: 40px; padding-right: 70px;
-            scrollbar-width: none;
-        }
-        .rail::-webkit-scrollbar { display: none; }
-
-        .game-card {
-            min-width: 220px; width: 220px; cursor: pointer; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); position: relative;
-        }
-        .game-card:hover { transform: translateY(-12px) scale(1.03); z-index: 5; }
-        
-        .card-art {
-            width: 100%; aspect-ratio: 3/4; border-radius: 14px; overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.6); position: relative; transition: 0.3s;
-        }
-        .card-art img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .game-card:hover .card-art { box-shadow: 0 0 0 4px white, 0 20px 40px rgba(0,0,0,0.8); }
-        .game-card:hover .card-art img { transform: scale(1.05); }
-
-        .add-to-cart-btn {
-            position: absolute; bottom: 12px; right: 12px; width: 40px; height: 40px;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            opacity: 0; transform: translateY(15px); transition: 0.3s; color: white; font-size: 16px;
-        }
-        .game-card:hover .add-to-cart-btn { opacity: 1; transform: translateY(0); }
-        .add-to-cart-btn:hover { background: var(--sony-light-blue); border-color: var(--sony-light-blue); color: white; transform: scale(1.1) !important; }
-
-        .card-meta { margin-top: 15px; opacity: 0.6; transition: 0.3s; transform: translateY(5px); }
-        .game-card:hover .card-meta { opacity: 1; transform: translateY(0); }
-        .card-title { font-size: 16px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .card-price { font-size: 14px; color: var(--text-grey); margin-top: 4px; font-weight: 500; }
-
-        /* =========================================
-           5. CART SIDEBAR
-        ========================================= */
-        .cart-sidebar {
-            position: fixed; top: 0; right: -420px; width: 400px; height: 100%;
-            background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(20px); border-left: 1px solid rgba(255,255,255,0.1); 
-            z-index: 2000; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex; flex-direction: column; box-shadow: -15px 0 50px rgba(0,0,0,0.8);
-        }
-        .cart-sidebar.open { right: 0; }
-        
-        .cart-header {
-            padding: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;
-            font-size: 22px; font-weight: 800; letter-spacing: 1px;
-        }
-        .close-cart { cursor: pointer; color: var(--text-grey); transition: 0.2s; font-size: 28px; line-height: 1; }
-        .close-cart:hover { color: white; transform: rotate(90deg); }
-
-        .cart-items { flex: 1; overflow-y: auto; padding: 25px; }
-        .cart-items::-webkit-scrollbar { width: 6px; }
-        .cart-items::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
-
-        .cart-item {
-            display: flex; gap: 15px; margin-bottom: 20px; background: rgba(255,255,255,0.03); 
-            padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);
-            position: relative; transition: 0.2s; align-items: center;
-        }
-        .cart-item:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.1); }
-        .cart-img { width: 65px; height: 85px; object-fit: cover; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        .cart-info { display: flex; flex-direction: column; justify-content: center; flex: 1; padding-right: 20px;}
-        .cart-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; line-height: 1.3; }
-        .cart-price { font-size: 14px; color: var(--sony-light-blue); font-weight: 800; }
-        
-        .remove-item {
-            position: absolute; top: 50%; right: 15px; transform: translateY(-50%);
-            color: rgba(255,255,255,0.3); cursor: pointer; font-size: 16px; transition: 0.2s;
-        }
-        .remove-item:hover { color: var(--danger); }
-
-        .cart-footer { padding: 30px; border-top: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.5); }
-        .total-row { display: flex; justify-content: space-between; font-size: 20px; font-weight: 500; margin-bottom: 25px; color: var(--text-grey); }
-        .total-row span:last-child { color: white; font-weight: 900; font-size: 26px; }
-        .checkout-btn {
-            width: 100%; padding: 18px; background: var(--sony-light-blue); color: white;
-            border: none; border-radius: 30px; font-weight: 800; font-size: 16px; cursor: pointer; transition: 0.3s;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-        .checkout-btn:hover { background: white; color: var(--sony-light-blue); box-shadow: 0 10px 25px rgba(0, 112, 209, 0.4); }
-
-        /* =========================================
-           6. SHOOTER GAME MODAL (CYBER DEFENSE)
-        ========================================= */
-        .game-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #020202; z-index: 5000;
-            display: none; flex-direction: column; justify-content: center; align-items: center;
-        }
-        .game-container { 
-            position: relative; width: 900px; height: 600px; box-shadow: 0 0 80px rgba(0, 112, 209, 0.2); 
-            border: 1px solid #333; background: #050505; border-radius: 12px; overflow: hidden; 
-        }
-        canvas { display: block; width: 100%; height: 100%; cursor: crosshair; }
-        
-        .game-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 2;
-        }
-        .game-overlay.hidden { display: none; }
-        
-        .game-title-text { font-size: 55px; font-weight: 900; color: white; letter-spacing: 8px; margin-bottom: 15px; text-shadow: 0 0 30px var(--sony-light-blue); text-transform: uppercase;}
-        .game-controls { color: #ccc; margin-bottom: 40px; text-align: center; line-height: 1.8; font-size: 15px; }
-        .game-controls kbd { border: 1px solid #555; padding: 4px 8px; border-radius: 4px; color: white; background: #222; font-family: monospace; font-weight: bold; margin: 0 4px;}
-
-        .hud {
-            position: absolute; top: 25px; left: 25px; right: 25px; display: flex; justify-content: space-between;
-            pointer-events: none; z-index: 1; font-family: 'Courier New', monospace; font-weight: bold; font-size: 18px;
-        }
-        .hp-bar-bg { width: 250px; height: 22px; background: rgba(255,255,255,0.1); border: 2px solid #444; transform: skewX(-15deg); overflow: hidden; }
-        .hp-bar-fill { width: 100%; height: 100%; background: var(--success); transition: width 0.15s ease-out; box-shadow: inset 0 0 10px rgba(255,255,255,0.5); }
-
-        /* =========================================
-           7. VIDEO MODAL
-        ========================================= */
-        .video-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px);
-            z-index: 4000; display: none; align-items: center; justify-content: center;
-        }
-        .close-video { position: absolute; top: 40px; right: 50px; font-size: 45px; cursor: pointer; z-index: 4001; transition: 0.2s; opacity: 0.7; }
-        .close-video:hover { opacity: 1; transform: scale(1.1); color: var(--danger); }
-        .video-wrapper { width: 75%; aspect-ratio: 16/9; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1); }
-
     </style>
 </head>
-<body>
+<body class="antialiased">
 
-    <div class="ambient-glow"></div>
+    <div id="globalOverlay" class="fixed inset-0 bg-black/80 z-40 hidden transition-opacity duration-300 opacity-0" onclick="closeAll()"></div>
 
-    <header>
-        <div class="nav-left">
-            <div class="nav-item active">Games</div>
-            <div class="nav-item">Hardware</div>
-            <div class="nav-item">Services</div>
-            <div class="nav-item">News</div>
-        </div>
-
-        <div style="display: flex; gap: 20px; align-items: center;">
-            <div class="offline-btn" onclick="openShooterGame()">
-                <i class="fas fa-gamepad"></i> PLAY CYBER DEFENSE
+    <div id="trailerModal" class="fixed inset-0 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300 scale-95 pointer-events-none p-4">
+        <div class="bg-brand-dark border border-brand-border rounded-2xl w-full max-w-5xl overflow-hidden shadow-2xl relative pointer-events-auto">
+            <button onclick="toggleTrailer()" class="absolute top-4 right-4 z-10 bg-black/50 hover:bg-brand-accent text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <div class="aspect-video bg-black w-full relative">
+                <iframe id="trailerFrame" class="w-full h-full absolute inset-0" src="" title="GTA 6 Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
-            
-            <div class="nav-item" style="font-size: 20px; margin-left: 10px;"><i class="fas fa-search"></i></div>
-            
-            <div class="nav-item cart-icon-wrapper" onclick="toggleCart()">
-                <i class="fas fa-shopping-bag"></i>
-                <div class="cart-badge" id="cartBadge">0</div>
+            <div class="p-6 flex justify-between items-center bg-brand-panel">
+                <div>
+                    <h2 class="text-2xl font-black uppercase tracking-wide">Grand Theft Auto VI</h2>
+                    <p class="text-gray-400 text-sm">Global Premiere Trailer</p>
+                </div>
+                <button onclick="addToCart('gta6', 'Grand Theft Auto VI (Pre-order)', 5999, 'https://images.unsplash.com/photo-1605901309584-818e25960b8f?q=80&w=500'); toggleTrailer();" class="bg-brand-accent hover:bg-brand-accentHover px-6 py-3 rounded-lg font-bold transition flex items-center gap-2">
+                    Pre-Order <span class="text-white">₹5,999</span>
+                </button>
             </div>
-
-            <button class="auth-btn" id="loginBtn" onclick="handleLogin()">Sign In</button>
-        </div>
-    </header>
-
-    <div class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <span>Your Cart</span>
-            <span class="close-cart" onclick="toggleCart()">&times;</span>
-        </div>
-        <div class="cart-items" id="cartItemsContainer">
-            <div style="text-align: center; color: var(--text-grey); margin-top: 80px; font-size: 16px;">
-                <i class="fas fa-ghost" style="font-size: 40px; margin-bottom: 15px; opacity: 0.5;"></i><br>
-                Your cart is empty.
-            </div>
-        </div>
-        <div class="cart-footer">
-            <div class="total-row">
-                <span>Total</span>
-                <span id="cartTotal">$0.00</span>
-            </div>
-            <button class="checkout-btn">Proceed to Checkout</button>
         </div>
     </div>
 
-    <section class="hero" id="hero-section">
-        <img id="hero-bg" src="https://images.hdqwalls.com/wallpapers/gta-vi-4k-logo-fo.jpg" class="hero-bg-img">
+    <div id="cartPanel" class="fixed inset-y-0 right-0 w-full sm:w-[450px] bg-brand-panel border-l border-brand-border transform translate-x-full transition-transform duration-300 z-50 shadow-2xl flex flex-col">
+        <div class="p-6 border-b border-brand-border flex items-center justify-between">
+            <h2 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-bag-shopping text-brand-accent"></i> Your Cart</h2>
+            <button onclick="toggleCart()" class="text-gray-400 hover:text-white transition"><i class="fa-solid fa-xmark text-2xl"></i></button>
+        </div>
         
-        <div class="hero-content visible" id="hero-text">
-            <div class="meta-tags">
-                <span class="tag-box">PS5</span>
-                <span style="letter-spacing: 1px; color: var(--sony-light-blue);">EXCLUSIVE PREMIERE</span>
-            </div>
-            <div class="game-logo-text" id="hero-title">Grand Theft Auto VI</div>
-            <p class="hero-desc" id="hero-desc">
-                Welcome to Leonida. Experience the next evolution of the open world with Jason and Lucia in the most immersive Vice City ever created.
-            </p>
-            <div class="price-tag">Pre-Order <span id="hero-price">$69.99</span></div>
-            <div class="action-row">
-                <button class="btn-primary" id="hero-cart-btn" onclick="addToCart('Grand Theft Auto VI', 69.99, 'https://images.hdqwalls.com/wallpapers/gta-vi-4k-logo-fo.jpg')">
-                    <i class="fas fa-plus"></i> Pre-Order Now
-                </button>
-                <button class="btn-glass" onclick="playTrailer()"><i class="fas fa-play"></i> Watch Trailer</button>
+        <div id="cartItemsContainer" class="p-6 flex-1 overflow-y-auto space-y-4">
+            <div class="h-full flex flex-col items-center justify-center text-gray-500 text-center">
+                <i class="fa-solid fa-cart-arrow-down text-6xl mb-4 opacity-50"></i>
+                <p>Your cart is empty.</p>
+                <p class="text-sm mt-2">Looks like you haven't added any games yet.</p>
             </div>
         </div>
-
-        <div class="hero-switch">
-            <div class="switch-card active" onclick="switchGame('gta')">
-                <img src="https://images.hdqwalls.com/wallpapers/gta-vi-4k-logo-fo.jpg" alt="GTA VI">
-                <div class="switch-label">GTA VI</div>
+        
+        <div class="p-6 border-t border-brand-border bg-brand-dark">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-gray-400 font-medium">Subtotal</span>
+                <span id="cartTotal" class="text-2xl font-black">₹0</span>
             </div>
-            <div class="switch-card" onclick="switchGame('forza')">
-                <img src="https://images.hdqwalls.com/wallpapers/forza-horizon-5-4k-game-3r.jpg" alt="Forza">
-                <div class="switch-label">FORZA 6</div>
+            <button id="checkoutBtn" class="w-full bg-brand-accent hover:bg-brand-accentHover opacity-50 cursor-not-allowed py-4 rounded-xl font-bold text-lg transition flex justify-center items-center gap-2">
+                Secure Checkout <i class="fa-solid fa-lock text-sm"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="profileDashboard" class="fixed inset-y-0 right-0 w-full sm:w-[400px] bg-brand-panel border-l border-brand-border transform translate-x-full transition-transform duration-300 z-50 shadow-2xl flex flex-col">
+        <div class="p-6 border-b border-brand-border flex items-center justify-between">
+            <h2 class="text-xl font-bold">Account Dashboard</h2>
+            <button onclick="toggleDashboard()" class="text-gray-400 hover:text-white transition"><i class="fa-solid fa-xmark text-2xl"></i></button>
+        </div>
+        <div class="p-6 overflow-y-auto flex-1">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-brand-accent to-purple-600 p-1">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Shayan&backgroundColor=transparent" alt="Avatar" class="w-full h-full rounded-full bg-brand-black">
+                </div>
+                <div>
+                    <h3 class="font-black text-xl">Shayan</h3>
+                    <p class="text-sm text-gray-400">Developer / Admin</p>
+                </div>
+            </div>
+            <div class="bg-brand-dark border border-brand-border rounded-2xl p-6 mb-6 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-brand-accent/10 rounded-full blur-3xl -mr-10 -mt-10"></div>
+                <p class="text-sm text-gray-400 mb-1">PlayWithEase Wallet</p>
+                <h4 class="text-4xl font-black text-white mb-4">₹12,500.00</h4>
+                <div class="flex gap-2">
+                    <button class="flex-1 bg-white text-black py-2 rounded-lg font-bold text-sm hover:bg-gray-200 transition">Add Funds</button>
+                    <button class="flex-1 bg-brand-border text-white py-2 rounded-lg font-bold text-sm hover:bg-gray-700 transition">Withdraw</button>
+                </div>
+            </div>
+            <div class="space-y-2">
+                <button class="w-full flex items-center justify-between p-4 rounded-xl hover:bg-brand-border transition text-left">
+                    <span class="font-semibold flex items-center gap-3"><i class="fa-solid fa-gamepad text-brand-accent w-5"></i> My Games & Keys</span>
+                    <i class="fa-solid fa-chevron-right text-xs text-gray-500"></i>
+                </button>
+                <button class="w-full flex items-center justify-between p-4 rounded-xl hover:bg-brand-border transition text-left">
+                    <span class="font-semibold flex items-center gap-3"><i class="fa-solid fa-clock-rotate-left text-brand-accent w-5"></i> Order History</span>
+                    <i class="fa-solid fa-chevron-right text-xs text-gray-500"></i>
+                </button>
+                <button class="w-full flex items-center justify-between p-4 rounded-xl hover:bg-brand-border transition text-left">
+                    <span class="font-semibold flex items-center gap-3"><i class="fa-solid fa-gear text-brand-accent w-5"></i> Settings</span>
+                    <i class="fa-solid fa-chevron-right text-xs text-gray-500"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="glass fixed w-full z-30 border-b border-brand-border/50">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-3 cursor-pointer group">
+                    <div class="bg-brand-accent p-2 rounded-lg transform group-hover:rotate-12 transition duration-300">
+                        <i class="fa-solid fa-bolt text-white text-xl"></i>
+                    </div>
+                    <span class="font-black text-2xl tracking-tight hidden sm:block">PlayWithEase</span>
+                </div>
+
+                <div class="hidden lg:flex items-center gap-8 bg-brand-panel/50 border border-brand-border px-8 py-3 rounded-full">
+                    <a href="#" class="text-sm font-semibold hover:text-brand-accent transition">Discover</a>
+                    <a href="#" class="text-sm font-semibold hover:text-brand-accent transition">Keys</a>
+                    <a href="#" class="text-sm font-semibold hover:text-brand-accent transition">Accounts</a>
+                    <a href="#" class="text-sm font-semibold hover:text-brand-accent transition">Gift Cards</a>
+                </div>
+
+                <div class="flex items-center gap-6">
+                    <button class="text-gray-300 hover:text-white hidden sm:block"><i class="fa-solid fa-magnifying-glass text-lg"></i></button>
+                    
+                    <button onclick="toggleCart()" class="text-gray-300 hover:text-white relative group">
+                        <i class="fa-solid fa-cart-shopping text-xl group-hover:text-brand-accent transition"></i>
+                        <span id="cartBadge" class="absolute -top-2 -right-2 bg-brand-accent text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center border-2 border-brand-black shadow-lg shadow-brand-accent/50 hidden">0</span>
+                    </button>
+                    
+                    <button onclick="toggleDashboard()" class="w-10 h-10 rounded-full border-2 border-brand-border hover:border-brand-accent p-0.5 transition overflow-hidden">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Shayan&backgroundColor=transparent" class="w-full h-full object-cover rounded-full bg-brand-panel">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative h-[85vh] min-h-[600px] flex items-end justify-center pt-20 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1605901309584-818e25960b8f?q=80&w=2000&auto=format&fit=crop" alt="GTA 6 Background" class="w-full h-full object-cover object-center opacity-60">
+            <div class="absolute inset-0 hero-gradient"></div>
+        </div>
+
+        <div class="relative z-10 max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+            <div class="max-w-3xl">
+                <div class="inline-flex items-center gap-2 bg-brand-accent/20 border border-brand-accent/50 text-brand-accent px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-6 backdrop-blur-sm">
+                    <span class="w-2 h-2 rounded-full bg-brand-accent animate-pulse"></span> Global Premiere
+                </div>
+                <h1 class="text-5xl sm:text-7xl md:text-8xl font-black mb-4 tracking-tighter uppercase gta-text leading-none">
+                    Grand Theft <br> Auto VI
+                </h1>
+                <p class="text-lg sm:text-xl text-gray-300 mb-8 max-w-xl font-light">
+                    Welcome to Leonida. The highly anticipated next generation of open-world gaming is finally here. Pre-order now to secure exclusive day-one bonuses.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button onclick="addToCart('gta6', 'Grand Theft Auto VI (Pre-order)', 5999, 'https://images.unsplash.com/photo-1605901309584-818e25960b8f?q=80&w=500')" class="bg-white hover:bg-gray-200 text-black px-8 py-4 rounded-xl font-black text-lg transition flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(255,255,255,0.3)]">
+                        Pre-Order ₹5,999
+                    </button>
+                    <button onclick="toggleTrailer()" class="bg-brand-panel/80 hover:bg-brand-panel border border-brand-border px-8 py-4 rounded-xl font-bold text-lg transition flex items-center justify-center gap-3 backdrop-blur-md">
+                        <i class="fa-solid fa-circle-play text-brand-accent text-xl"></i> Watch Trailer
+                    </button>
+                </div>
             </div>
         </div>
     </section>
 
-    <div class="shelf">
-        <div class="shelf-title">Top 10 <b>in Your Region</b></div>
-        <div class="rail" id="trending-rail">
-            </div>
-    </div>
-
-    <div class="shelf">
-        <div class="shelf-title">Coming <b>Soon</b></div>
-        <div class="rail" id="soon-rail">
-            </div>
-    </div>
-
-    <div class="game-modal" id="shooterModal">
-        <button class="btn-glass" onclick="closeShooterGame()" style="position: absolute; top: 40px; right: 50px;">
-            <i class="fas fa-times"></i> EXIT TO STORE
-        </button>
+    <main class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-20">
         
-        <div class="game-container">
-            <div class="hud">
-                <div class="hp-bar-bg"><div class="hp-bar-fill" id="gameHP"></div></div>
-                <div style="color: var(--success); text-shadow: 0 0 10px var(--success);">SCORE: <span id="gameScore" style="color:white;">0</span></div>
+        <section class="mb-16">
+            <div class="flex gap-4 overflow-x-auto pb-6 hide-scrollbar snap-x">
+                <button class="snap-start flex-shrink-0 bg-white text-black px-8 py-4 rounded-2xl font-bold flex items-center gap-3 text-lg"><i class="fa-solid fa-fire text-brand-accent"></i> Trending</button>
+                <button class="snap-start flex-shrink-0 bg-brand-panel border border-brand-border hover:border-white px-8 py-4 rounded-2xl font-bold transition text-gray-400 hover:text-white flex items-center gap-3"><i class="fa-solid fa-key"></i> Keys</button>
+                <button class="snap-start flex-shrink-0 bg-brand-panel border border-brand-border hover:border-white px-8 py-4 rounded-2xl font-bold transition text-gray-400 hover:text-white flex items-center gap-3"><i class="fa-solid fa-user-ninja"></i> Accounts</button>
+                <button class="snap-start flex-shrink-0 bg-brand-panel border border-brand-border hover:border-white px-8 py-4 rounded-2xl font-bold transition text-gray-400 hover:text-white flex items-center gap-3"><i class="fa-solid fa-gift"></i> Gift Cards</button>
             </div>
+        </section>
+
+        <div class="flex justify-between items-end mb-8">
+            <h2 class="text-3xl font-black uppercase tracking-tight">Today's Best Drops</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             
-            <div class="game-overlay" id="startScreen">
-                <div class="game-title-text">CYBER DEFENSE</div>
-                <div class="game-controls">
-                    <p><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> Move</p>
-                    <p><kbd>MOUSE</kbd> Aim &nbsp;&nbsp; <kbd>CLICK</kbd> Shoot</p>
+            <div class="bg-brand-panel border border-brand-border rounded-2xl overflow-hidden hover:-translate-y-2 hover:border-brand-accent/50 transition duration-300 group cursor-pointer flex flex-col">
+                <div class="h-52 overflow-hidden relative">
+                    <div class="absolute top-3 left-3 bg-black/60 backdrop-blur-md border border-white/10 text-xs px-3 py-1.5 rounded-full font-bold z-10">Gift Card</div>
+                    <img src="https://images.unsplash.com/photo-1622560026532-c6b22ebffbbf?w=800&q=80" alt="Roblox" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
                 </div>
-                <button class="btn-primary" onclick="startGame()" style="font-size: 20px; padding: 15px 50px;">INITIALIZE LINK</button>
+                <div class="p-5 flex-1 flex flex-col">
+                    <h3 class="font-bold text-xl mb-1 text-white">Roblox ₹1000 Digital Code</h3>
+                    <p class="text-sm text-gray-400 mb-6">Instant Email Delivery • India Region</p>
+                    <div class="mt-auto flex items-center justify-between">
+                        <span class="text-2xl font-black text-white">₹950</span>
+                        <button onclick="addToCart('rbx1000', 'Roblox ₹1000 Code', 950, 'https://images.unsplash.com/photo-1622560026532-c6b22ebffbbf?w=500')" class="bg-brand-border hover:bg-brand-accent text-white h-12 w-12 rounded-xl transition flex items-center justify-center"><i class="fa-solid fa-plus text-lg"></i></button>
+                    </div>
+                </div>
             </div>
 
-            <div class="game-overlay hidden" id="gameOverScreen">
-                <div class="game-title-text" style="color: var(--danger); text-shadow: 0 0 30px rgba(255,51,51,0.6);">SYSTEM FAILURE</div>
-                <div style="font-size: 28px; margin-bottom: 40px; color: #ccc;">FINAL SCORE: <span id="finalScore" style="color: white; font-weight: bold;">0</span></div>
-                <button class="btn-primary" onclick="startGame()">REBOOT SYSTEM</button>
+            <div class="bg-brand-panel border border-brand-border rounded-2xl overflow-hidden hover:-translate-y-2 hover:border-brand-accent/50 transition duration-300 group cursor-pointer flex flex-col">
+                <div class="h-52 overflow-hidden relative">
+                    <div class="absolute top-3 left-3 bg-blue-500/80 backdrop-blur-md border border-white/10 text-xs px-3 py-1.5 rounded-full font-bold z-10 text-white">Full Access Account</div>
+                    <img src="https://images.unsplash.com/photo-1589241062272-c0a1f436d3fc?w=800&q=80" alt="Fortnite" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                </div>
+                <div class="p-5 flex-1 flex flex-col">
+                    <h3 class="font-bold text-xl mb-1 text-white">Fortnite OG Stacked Account</h3>
+                    <p class="text-sm text-gray-400 mb-6">Renegade Raider • 150+ Skins</p>
+                    <div class="mt-auto flex items-center justify-between">
+                        <span class="text-2xl font-black text-white">₹3,500</span>
+                        <button onclick="addToCart('ftntOG', 'Fortnite OG Account', 3500, 'https://images.unsplash.com/photo-1589241062272-c0a1f436d3fc?w=500')" class="bg-brand-border hover:bg-brand-accent text-white h-12 w-12 rounded-xl transition flex items-center justify-center"><i class="fa-solid fa-plus text-lg"></i></button>
+                    </div>
+                </div>
             </div>
 
-            <canvas id="shooterCanvas"></canvas>
-        </div>
-    </div>
+            <div class="bg-brand-panel border border-brand-border rounded-2xl overflow-hidden hover:-translate-y-2 hover:border-brand-accent/50 transition duration-300 group cursor-pointer flex flex-col">
+                <div class="h-52 overflow-hidden relative">
+                    <div class="absolute top-3 left-3 bg-black/60 backdrop-blur-md border border-white/10 text-xs px-3 py-1.5 rounded-full font-bold z-10">Game Key</div>
+                    <img src="https://images.unsplash.com/photo-1607853202273-797f1c22a38e?w=800&q=80" alt="Minecraft" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                </div>
+                <div class="p-5 flex-1 flex flex-col">
+                    <h3 class="font-bold text-xl mb-1 text-white">Minecraft Java + Bedrock</h3>
+                    <p class="text-sm text-gray-400 mb-6">Global PC Key • Official License</p>
+                    <div class="mt-auto flex items-center justify-between">
+                        <div>
+                            <span class="text-2xl font-black text-white">₹1,499</span>
+                            <span class="text-sm text-gray-500 line-through ml-2">₹1,999</span>
+                        </div>
+                        <button onclick="addToCart('mcjava', 'Minecraft Java+Bedrock Key', 1499, 'https://images.unsplash.com/photo-1607853202273-797f1c22a38e?w=500')" class="bg-brand-border hover:bg-brand-accent text-white h-12 w-12 rounded-xl transition flex items-center justify-center"><i class="fa-solid fa-plus text-lg"></i></button>
+                    </div>
+                </div>
+            </div>
 
-    <div class="video-overlay" id="videoOverlay">
-        <div class="close-video" onclick="closeTrailer()">&times;</div>
-        <div class="video-wrapper">
-            <iframe id="youtube-embed" width="100%" height="100%" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <div class="bg-brand-panel border border-brand-border rounded-2xl overflow-hidden hover:-translate-y-2 hover:border-brand-accent/50 transition duration-300 group cursor-pointer flex flex-col">
+                <div class="h-52 overflow-hidden relative">
+                    <div class="absolute top-3 left-3 bg-green-600/80 backdrop-blur-md border border-white/10 text-xs px-3 py-1.5 rounded-full font-bold z-10 text-white">Subscription</div>
+                    <img src="https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=800&q=80" alt="Xbox" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                </div>
+                <div class="p-5 flex-1 flex flex-col">
+                    <h3 class="font-bold text-xl mb-1 text-white">Xbox Game Pass Ultimate</h3>
+                    <p class="text-sm text-gray-400 mb-6">1 Month Subscription • Global code</p>
+                    <div class="mt-auto flex items-center justify-between">
+                        <span class="text-2xl font-black text-white">₹499</span>
+                        <button onclick="addToCart('xboxgpu', 'Xbox Game Pass Ultimate (1M)', 499, 'https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=500')" class="bg-brand-border hover:bg-brand-accent text-white h-12 w-12 rounded-xl transition flex items-center justify-center"><i class="fa-solid fa-plus text-lg"></i></button>
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </div>
+    </main>
+
+    <footer class="border-t border-brand-border bg-brand-dark pt-16 pb-8">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+            <div>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-brand-accent p-2 rounded-lg"><i class="fa-solid fa-bolt text-white"></i></div>
+                    <span class="font-black text-xl">PlayWithEase</span>
+                </div>
+                <p class="text-gray-400 text-sm leading-relaxed mb-6">The ultimate Indian marketplace for premium digital games, accounts, and gift cards. Created by developers, for gamers.</p>
+            </div>
+            <div>
+                <h4 class="font-bold text-white mb-6 uppercase tracking-wider text-sm">Products</h4>
+                <ul class="space-y-3 text-gray-400 text-sm">
+                    <li><a href="#" class="hover:text-brand-accent transition">Game Keys</a></li>
+                    <li><a href="#" class="hover:text-brand-accent transition">Stacked Accounts</a></li>
+                    <li><a href="#" class="hover:text-brand-accent transition">Gift Cards</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-white mb-6 uppercase tracking-wider text-sm">Support</h4>
+                <ul class="space-y-3 text-gray-400 text-sm">
+                    <li><a href="#" class="hover:text-brand-accent transition">24/7 Help Center</a></li>
+                    <li><a href="#" class="hover:text-brand-accent transition">Refund Policy</a></li>
+                    <li><a href="#" class="hover:text-brand-accent transition">Seller Dashboard</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-white mb-6 uppercase tracking-wider text-sm">Secure Checkout</h4>
+                <div class="flex gap-4 text-3xl text-gray-600">
+                    <i class="fa-brands fa-cc-visa hover:text-white transition"></i>
+                    <i class="fa-brands fa-cc-mastercard hover:text-white transition"></i>
+                    <i class="fa-brands fa-paypal hover:text-white transition"></i>
+                    <i class="fa-brands fa-google-pay hover:text-white transition"></i>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 text-center border-t border-brand-border pt-8 text-gray-500 text-sm">
+            &copy; 2026 PlayWithEase. Built with <i class="fa-solid fa-heart text-brand-accent mx-1"></i> in India.
+        </div>
+    </footer>
 
     <script>
-        /* =========================================
-           1. HERO LOGIC (Dual Premiere Switcher)
-        ========================================= */
-        const heroGames = {
-            gta: {
-                title: "Grand Theft Auto VI",
-                desc: "Welcome to Leonida. Experience the next evolution of the open world with Jason and Lucia in the most immersive Vice City ever created.",
-                bg: "https://images.hdqwalls.com/wallpapers/gta-vi-4k-logo-fo.jpg",
-                trailer: "QdBZY2fkU-0",
-                price: "$69.99",
-                numPrice: 69.99
-            },
-            forza: {
-                title: "Forza Horizon 6",
-                desc: "The Horizon Festival moves to Japan. Drift through neon-lit Tokyo streets and race down Mount Fuji in the most visually stunning racer ever made.",
-                bg: "https://images.hdqwalls.com/wallpapers/forza-horizon-5-4k-game-3r.jpg",
-                trailer: "FYH9n37B7Yw",
-                price: "$59.99",
-                numPrice: 59.99
-            }
-        };
-
-        let activeHeroGame = 'gta';
-
-        function switchGame(gameKey) {
-            if(activeHeroGame === gameKey) return;
-            activeHeroGame = gameKey;
-            const data = heroGames[gameKey];
-
-            // Update UI Active State
-            document.querySelectorAll('.switch-card').forEach(el => el.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-
-            const bg = document.getElementById('hero-bg');
-            const text = document.getElementById('hero-text');
-            
-            // Fade out
-            text.classList.remove('visible');
-            bg.style.opacity = 0;
-
-            // Wait for fade out, update content, fade in
-            setTimeout(() => {
-                bg.src = data.bg;
-                document.getElementById('hero-title').innerText = data.title;
-                document.getElementById('hero-desc').innerText = data.desc;
-                document.getElementById('hero-price').innerText = data.price;
-                
-                // Update Cart Button logic
-                const cartBtn = document.getElementById('hero-cart-btn');
-                cartBtn.onclick = () => addToCart(data.title, data.numPrice, data.bg);
-                
-                bg.style.opacity = 1;
-                text.classList.add('visible');
-            }, 600);
-        }
-
-        /* =========================================
-           2. VIDEO TRAILER LOGIC
-        ========================================= */
-        function playTrailer() {
-            const id = heroGames[activeHeroGame].trailer;
-            document.getElementById('videoOverlay').style.display = 'flex';
-            document.getElementById('youtube-embed').src = `https://www.youtube.com/embed/${id}?autoplay=1&vq=hd1080&color=white`;
-        }
-
-        function closeTrailer() {
-            document.getElementById('videoOverlay').style.display = 'none';
-            document.getElementById('youtube-embed').src = "";
-        }
-
-        /* =========================================
-           3. GAME SHELVES (RAILS) POPULATION
-        ========================================= */
-        const dbGames = [
-            { t: "Elden Ring: Shadow of the Erdtree", p: 39.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co848v.jpg" },
-            { t: "Black Myth: Wukong", p: 59.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co8ush.jpg" },
-            { t: "Marvel's Spider-Man 2", p: 69.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co660r.jpg" },
-            { t: "God of War Ragnarök", p: 49.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co5s5v.jpg" },
-            { t: "Cyberpunk 2077: Phantom Liberty", p: 29.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co5j8h.jpg" },
-            { t: "Resident Evil 4 Remake", p: 39.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co628e.jpg" },
-            { t: "Call of Duty: Black Ops 6", p: 69.99, i: "https://images.igdb.com/igdb/image/upload/t_cover_big/co85cg.jpg" }
-        ];
-
-        function populateRail(railId, dataArray) {
-            const rail = document.getElementById(railId);
-            let html = '';
-            dataArray.forEach(g => {
-                // Escaping strings for onclick function
-                const safeTitle = g.t.replace(/'/g, "\\'");
-                html += `
-                    <div class="game-card">
-                        <div class="card-art">
-                            <img src="${g.i}" loading="lazy" alt="${g.t}">
-                            <div class="add-to-cart-btn" onclick="addToCart('${safeTitle}', ${g.p}, '${g.i}')" title="Add to Cart">
-                                <i class="fas fa-plus"></i>
-                            </div>
-                        </div>
-                        <div class="card-meta">
-                            <div class="card-title">${g.t}</div>
-                            <div class="card-price">$${g.p.toFixed(2)}</div>
-                        </div>
-                    </div>`;
-            });
-            rail.innerHTML = html;
-        }
-
-        // Populate both rails for demonstration
-        populateRail('trending-rail', [...dbGames, ...dbGames.slice(0,3)]); 
-        populateRail('soon-rail', [...dbGames].reverse()); 
-
-        /* =========================================
-           4. SHOPPING CART LOGIC
-        ========================================= */
+        // --- State Management ---
         let cart = [];
+        const formatINR = (amount) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount);
 
-        function toggleCart() {
-            document.getElementById('cartSidebar').classList.toggle('open');
-        }
+        // --- DOM Elements ---
+        const overlay = document.getElementById('globalOverlay');
+        const cartPanel = document.getElementById('cartPanel');
+        const profileDashboard = document.getElementById('profileDashboard');
+        const trailerModal = document.getElementById('trailerModal');
+        const iframe = document.getElementById('trailerFrame');
+        
+        // --- Cart Logic ---
+        function addToCart(id, title, price, image) {
+            // Check if item exists, if so just alert (since these are mostly digital singular items)
+            const exists = cart.find(item => item.id === id);
+            if(exists) {
+                alert(`${title} is already in your cart!`);
+                toggleCart();
+                return;
+            }
 
-        function addToCart(title, price, image) {
-            cart.push({ title, price, image });
+            cart.push({ id, title, price, image });
             updateCartUI();
             
-            // UI Feedback: Pop the badge
-            const badge = document.getElementById('cartBadge');
-            badge.style.transform = "scale(1.5)";
-            setTimeout(() => badge.style.transform = "scale(1)", 200);
-            
-            // Auto open the cart to show the user it was added
-            document.getElementById('cartSidebar').classList.add('open');
+            // Open cart to show user
+            if(cartPanel.classList.contains('translate-x-full')){
+                toggleCart();
+            }
         }
 
-        function removeFromCart(index) {
-            cart.splice(index, 1);
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
             updateCartUI();
         }
 
@@ -546,350 +358,108 @@
             const container = document.getElementById('cartItemsContainer');
             const totalEl = document.getElementById('cartTotal');
             const badge = document.getElementById('cartBadge');
+            const checkoutBtn = document.getElementById('checkoutBtn');
 
-            badge.innerText = cart.length;
+            // Update Badge
+            if(cart.length > 0) {
+                badge.textContent = cart.length;
+                badge.classList.remove('hidden');
+                checkoutBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                badge.classList.add('hidden');
+                checkoutBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
 
-            if (cart.length === 0) {
+            // Calculate Total
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            totalEl.textContent = formatINR(total);
+
+            // Render Items
+            if(cart.length === 0) {
                 container.innerHTML = `
-                    <div style="text-align: center; color: var(--text-grey); margin-top: 80px; font-size: 16px;">
-                        <i class="fas fa-ghost" style="font-size: 40px; margin-bottom: 15px; opacity: 0.5;"></i><br>
-                        Your cart is empty.
+                    <div class="h-full flex flex-col items-center justify-center text-gray-500 text-center">
+                        <i class="fa-solid fa-cart-arrow-down text-6xl mb-4 opacity-50"></i>
+                        <p class="font-bold text-white">Your cart is empty.</p>
+                        <p class="text-sm mt-2">Looks like you haven't added any games yet.</p>
                     </div>`;
-                totalEl.innerText = "$0.00";
                 return;
             }
 
-            let html = '';
-            let total = 0;
-
-            cart.forEach((item, index) => {
-                total += item.price;
-                html += `
-                    <div class="cart-item">
-                        <img src="${item.image}" class="cart-img">
-                        <div class="cart-info">
-                            <div class="cart-title">${item.title}</div>
-                            <div class="cart-price">$${item.price.toFixed(2)}</div>
-                        </div>
-                        <div class="remove-item" onclick="removeFromCart(${index})" title="Remove">
-                            <i class="fas fa-trash"></i>
-                        </div>
+            container.innerHTML = cart.map(item => `
+                <div class="bg-brand-dark border border-brand-border p-4 rounded-xl flex gap-4 items-center">
+                    <img src="${item.image}" alt="${item.title}" class="w-16 h-16 rounded-lg object-cover">
+                    <div class="flex-1">
+                        <h4 class="font-bold text-sm text-white line-clamp-1">${item.title}</h4>
+                        <p class="text-brand-accent font-black mt-1">${formatINR(item.price)}</p>
                     </div>
-                `;
-            });
-
-            container.innerHTML = html;
-            totalEl.innerText = "$" + total.toFixed(2);
+                    <button onclick="removeFromCart('${item.id}')" class="text-gray-500 hover:text-brand-accent p-2 transition">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
         }
 
-        /* =========================================
-           5. CYBER DEFENSE (CANVAS SHOOTER ENGINE)
-        ========================================= */
-        const canvas = document.getElementById('shooterCanvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = 900; canvas.height = 600;
-
-        let gameLoopId;
-        let lastTime = 0;
-        let score = 0;
-        let isGameOver = false;
-
-        // Game Entities
-        const player = { x: 450, y: 300, radius: 15, speed: 4.5, hp: 100, maxHp: 100 };
-        let bullets = [];
-        let enemies = [];
-        let particles = [];
-        
-        // Input Tracking
-        const keys = { w: false, a: false, s: false, d: false };
-        const mouse = { x: 450, y: 300 };
-
-        function openShooterGame() {
-            document.getElementById('shooterModal').style.display = 'flex';
-            // Bind inputs only when game is open
-            window.addEventListener('keydown', handleKey);
-            window.addEventListener('keyup', handleKey);
-            canvas.addEventListener('mousemove', handleMouse);
-            canvas.addEventListener('mousedown', shoot);
-        }
-
-        function closeShooterGame() {
-            document.getElementById('shooterModal').style.display = 'none';
-            cancelAnimationFrame(gameLoopId);
-            // Unbind inputs
-            window.removeEventListener('keydown', handleKey);
-            window.removeEventListener('keyup', handleKey);
-            canvas.removeEventListener('mousemove', handleMouse);
-            canvas.removeEventListener('mousedown', shoot);
-        }
-
-        function startGame() {
-            document.getElementById('startScreen').classList.add('hidden');
-            document.getElementById('gameOverScreen').classList.add('hidden');
-            
-            // Reset State
-            player.x = 450; player.y = 300; player.hp = 100;
-            bullets = []; enemies = []; particles = []; score = 0;
-            isGameOver = false;
-            updateHUD();
-
-            // Prevent multiple loops if double clicked
-            cancelAnimationFrame(gameLoopId);
-            gameLoopId = requestAnimationFrame(loop);
-        }
-
-        function loop(timestamp) {
-            if(isGameOver) return;
-            // Calculate Delta Time (Optional for smooth movement, but using fixed steps here for simplicity)
-            const dt = timestamp - lastTime;
-            lastTime = timestamp;
-
-            update();
-            draw();
-            
-            // Difficulty curve: Spawn rate increases with score
-            if(Math.random() < 0.02 + (score * 0.0001)) spawnEnemy();
-
-            gameLoopId = requestAnimationFrame(loop);
-        }
-
-        function update() {
-            // 1. Movement
-            if(keys.w && player.y > player.radius) player.y -= player.speed;
-            if(keys.s && player.y < canvas.height - player.radius) player.y += player.speed;
-            if(keys.a && player.x > player.radius) player.x -= player.speed;
-            if(keys.d && player.x < canvas.width - player.radius) player.x += player.speed;
-
-            // 2. Update Bullets
-            for (let i = bullets.length - 1; i >= 0; i--) {
-                let b = bullets[i];
-                b.x += b.vx; b.y += b.vy;
-                // Remove if off screen
-                if(b.x < 0 || b.x > canvas.width || b.y < 0 || b.y > canvas.height) {
-                    bullets.splice(i, 1);
-                }
-            }
-
-            // 3. Update Enemies & Collisions
-            for (let i = enemies.length - 1; i >= 0; i--) {
-                let e = enemies[i];
-                // Move towards player
-                const angle = Math.atan2(player.y - e.y, player.x - e.x);
-                e.x += Math.cos(angle) * e.speed;
-                e.y += Math.sin(angle) * e.speed;
-
-                // Player <-> Enemy Collision
-                const dist = Math.hypot(player.x - e.x, player.y - e.y);
-                if(dist < player.radius + e.radius) {
-                    player.hp -= 15;
-                    enemies.splice(i, 1);
-                    screenShake();
-                    updateHUD();
-                    spawnParticles(e.x, e.y, '#ff3333', 8);
-                    
-                    if(player.hp <= 0) {
-                        gameOver();
-                        return; // Stop processing further
-                    }
-                    continue; // Skip bullet check if enemy died by hitting player
-                }
-
-                // Bullet <-> Enemy Collision
-                for (let bi = bullets.length - 1; bi >= 0; bi--) {
-                    let b = bullets[bi];
-                    const bDist = Math.hypot(b.x - e.x, b.y - e.y);
-                    if(bDist < e.radius + 4) { // 4 is bullet radius approx
-                        enemies.splice(i, 1);
-                        bullets.splice(bi, 1);
-                        score += 100;
-                        updateHUD();
-                        spawnParticles(e.x, e.y, '#ff3333', 10);
-                        spawnParticles(e.x, e.y, '#ffffff', 5);
-                        break; // Move to next enemy
-                    }
-                }
-            }
-
-            // 4. Update Particles
-            for (let i = particles.length - 1; i >= 0; i--) {
-                let p = particles[i];
-                p.x += p.vx; p.y += p.vy; p.life -= 0.04; // Fade out speed
-                if(p.life <= 0) particles.splice(i, 1);
-            }
-        }
-
-        function draw() {
-            // Clear with slight transparency for motion blur trail
-            ctx.fillStyle = 'rgba(5, 5, 5, 0.3)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Draw Particles
-            particles.forEach(p => {
-                ctx.fillStyle = p.color;
-                ctx.globalAlpha = Math.max(0, p.life);
-                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
-            });
-            ctx.globalAlpha = 1; // Reset alpha
-
-            // Draw Player (Ship shape aiming at mouse)
-            ctx.save();
-            ctx.translate(player.x, player.y);
-            const angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
-            ctx.rotate(angle);
-            
-            ctx.fillStyle = '#0070d1';
-            ctx.shadowBlur = 15; ctx.shadowColor = '#0070d1';
-            ctx.beginPath();
-            ctx.moveTo(18, 0);       // Nose
-            ctx.lineTo(-12, 12);     // Bottom Wing
-            ctx.lineTo(-8, 0);       // Engine indent
-            ctx.lineTo(-12, -12);    // Top Wing
-            ctx.closePath();
-            ctx.fill();
-            ctx.restore();
-
-            // Draw Bullets
-            ctx.fillStyle = '#00ff88';
-            ctx.shadowBlur = 10; ctx.shadowColor = '#00ff88';
-            bullets.forEach(b => {
-                ctx.beginPath(); ctx.arc(b.x, b.y, 4, 0, Math.PI*2); ctx.fill();
-            });
-
-            // Draw Enemies
-            ctx.fillStyle = '#ff3333';
-            ctx.shadowBlur = 15; ctx.shadowColor = 'red';
-            enemies.forEach(e => {
-                ctx.save();
-                ctx.translate(e.x, e.y);
-                // Rotate enemies slowly
-                ctx.rotate(Date.now() / 500);
-                ctx.beginPath();
-                ctx.rect(-e.radius, -e.radius, e.radius*2, e.radius*2);
-                ctx.fill();
-                ctx.restore();
-            });
-            
-            ctx.shadowBlur = 0; // Reset shadow for next frame
-        }
-
-        function shoot() {
-            if(isGameOver || document.getElementById('startScreen').classList.contains('hidden') === false) return;
-            const angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
-            // Bullet speed
-            const velocity = { x: Math.cos(angle) * 14, y: Math.sin(angle) * 14 };
-            bullets.push({ x: player.x, y: player.y, vx: velocity.x, vy: velocity.y });
-        }
-
-        function spawnEnemy() {
-            const side = Math.floor(Math.random() * 4);
-            let x, y;
-            const buffer = 30; // Spawn outside screen
-            if(side === 0) { x = Math.random()*canvas.width; y = -buffer; }
-            if(side === 1) { x = canvas.width+buffer; y = Math.random()*canvas.height; }
-            if(side === 2) { x = Math.random()*canvas.width; y = canvas.height+buffer; }
-            if(side === 3) { x = -buffer; y = Math.random()*canvas.height; }
-            
-            enemies.push({ x, y, radius: 12 + Math.random()*5, speed: 1.5 + Math.random()*2 });
-        }
-
-        function spawnParticles(x, y, color, count) {
-            for(let i=0; i<count; i++) {
-                particles.push({
-                    x, y, color,
-                    vx: (Math.random()-0.5) * 8,
-                    vy: (Math.random()-0.5) * 8,
-                    life: 1, size: Math.random() * 3 + 1
-                });
-            }
-        }
-
-        function updateHUD() {
-            document.getElementById('gameScore').innerText = score;
-            const hpFill = document.getElementById('gameHP');
-            hpFill.style.width = Math.max(0, player.hp) + '%';
-            
-            if(player.hp < 35) {
-                hpFill.style.background = 'var(--danger)';
-                hpFill.style.boxShadow = 'inset 0 0 10px rgba(255,51,51,0.5)';
+        // --- UI Toggles ---
+        function toggleCart() {
+            closeAll(cartPanel);
+            if (cartPanel.classList.contains('translate-x-full')) {
+                showOverlay();
+                cartPanel.classList.remove('translate-x-full');
             } else {
-                hpFill.style.background = 'var(--success)';
-                hpFill.style.boxShadow = 'inset 0 0 10px rgba(255,255,255,0.5)';
+                closeAll();
             }
         }
 
-        function gameOver() {
-            isGameOver = true;
-            document.getElementById('finalScore').innerText = score;
-            document.getElementById('gameOverScreen').classList.remove('hidden');
+        function toggleDashboard() {
+            closeAll(profileDashboard);
+            if (profileDashboard.classList.contains('translate-x-full')) {
+                showOverlay();
+                profileDashboard.classList.remove('translate-x-full');
+            } else {
+                closeAll();
+            }
         }
 
-        function screenShake() {
-            canvas.style.transform = `translate(${Math.random()*12-6}px, ${Math.random()*12-6}px)`;
-            setTimeout(() => canvas.style.transform = 'translate(0,0)', 50);
+        function toggleTrailer() {
+            closeAll(trailerModal);
+            if (trailerModal.classList.contains('hidden')) {
+                showOverlay();
+                trailerModal.classList.remove('hidden', 'pointer-events-none');
+                setTimeout(() => {
+                    trailerModal.classList.remove('opacity-0', 'scale-95');
+                }, 10);
+                // Load video when opened (GTA 6 Trailer officially ID: QdBZY2fkU-0)
+                iframe.src = "https://www.youtube.com/embed/QdBZY2fkU-0?autoplay=1";
+            } else {
+                closeAll();
+                // Stop video when closed
+                iframe.src = "";
+            }
         }
 
-        // --- Input Handling ---
-        function handleKey(e) {
-            const isDown = e.type === 'keydown';
-            if(e.key.toLowerCase() === 'w') keys.w = isDown;
-            if(e.key.toLowerCase() === 'a') keys.a = isDown;
-            if(e.key.toLowerCase() === 's') keys.s = isDown;
-            if(e.key.toLowerCase() === 'd') keys.d = isDown;
-        }
-        function handleMouse(e) {
-            const rect = canvas.getBoundingClientRect();
-            // Scale mouse coordinates in case canvas CSS size differs from internal resolution
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-            mouse.x = (e.clientX - rect.left) * scaleX;
-            mouse.y = (e.clientY - rect.top) * scaleY;
+        function showOverlay() {
+            overlay.classList.remove('hidden');
+            setTimeout(() => overlay.classList.remove('opacity-0'), 10);
         }
 
-        /* =========================================
-           6. FIREBASE AUTHENTICATION
-        ========================================= */
-        const firebaseConfig = {
-            apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
-            authDomain: "playwithease.firebaseapp.com",
-            projectId: "playwithease",
-            storageBucket: "playwithease.firebasestorage.app",
-            messagingSenderId: "189729941006",
-            appId: "1:189729941006:web:362653774b92416c357e5f",
-            measurementId: "G-1C3B31KQ7C"
-        };
-        
-        try {
-            firebase.initializeApp(firebaseConfig);
-            const auth = firebase.auth();
-            const provider = new firebase.auth.GoogleAuthProvider();
-
-            window.handleLogin = () => {
-                auth.signInWithPopup(provider).catch(e => {
-                    console.error("Auth Error:", e.message);
-                    alert("Login Failed: " + e.message);
-                });
-            };
-
-            auth.onAuthStateChanged(user => {
-                const btn = document.getElementById('loginBtn');
-                if(user) {
-                    // Logged In State
-                    btn.innerHTML = `<i class="fas fa-user-circle"></i> ${user.displayName || user.email.split('@')[0]}`;
-                    btn.title = "Click to Sign Out";
-                    btn.onclick = () => {
-                        if(confirm("Are you sure you want to sign out?")) auth.signOut();
-                    };
-                } else {
-                    // Logged Out State
-                    btn.innerHTML = `Sign In`;
-                    btn.title = "Sign In with Google";
-                    btn.onclick = handleLogin;
-                }
-            });
-        } catch(e) { 
-            console.error("Firebase Initialization Error:", e); 
+        function closeAll(except = null) {
+            // Close Cart
+            if(except !== cartPanel) cartPanel.classList.add('translate-x-full');
+            // Close Dashboard
+            if(except !== profileDashboard) profileDashboard.classList.add('translate-x-full');
+            // Close Trailer
+            if(except !== trailerModal) {
+                trailerModal.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+                setTimeout(() => trailerModal.classList.add('hidden'), 300);
+                iframe.src = ""; // stop audio
+            }
+            
+            // Hide overlay if we are closing everything
+            if(!except) {
+                overlay.classList.add('opacity-0');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            }
         }
-
     </script>
 </body>
 </html>
