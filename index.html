@@ -2,624 +2,100 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#050505">
-    <title>PlayWithEase | High-Performance Gaming</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="preconnect" href="https://images.unsplash.com">
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-    
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-    <style>
-        /* CSS Variables for Instant Theme Switching */
-        :root {
-            --bg: #050505;
-            --surface: #121212;
-            --text: #ffffff;
-            --text-muted: #888888;
-            --primary: #00f3ff;
-            --primary-glow: rgba(0, 243, 255, 0.2);
-            --danger: #ff4757;
-            --border: #222222;
-            --skeleton-base: #1a1a1a;
-            --skeleton-shine: #2a2a2a;
-        }
-
-        .light-mode {
-            --bg: #f5f7fa;
-            --surface: #ffffff;
-            --text: #111111;
-            --text-muted: #666666;
-            --primary: #00a8ff;
-            --primary-glow: rgba(0, 168, 255, 0.2);
-            --border: #e0e0e0;
-            --skeleton-base: #e0e0e0;
-            --skeleton-shine: #f0f0f0;
-        }
-
-        /* Base Reset - Optimized */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: var(--bg); 
-            color: var(--text); 
-            overflow-x: hidden; 
-            -webkit-font-smoothing: antialiased;
-        }
-        
-        h1, h2, h3, .brand { font-family: 'Orbitron', sans-serif; }
-        button, input { font-family: inherit; outline: none; border: none; }
-        img { max-width: 100%; height: auto; display: block; }
-
-        /* Hardware Accelerated Animations */
-        .fade-in { animation: fadeIn 0.3s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Skeletons */
-        .skeleton {
-            background: linear-gradient(90deg, var(--skeleton-base) 25%, var(--skeleton-shine) 50%, var(--skeleton-base) 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite linear;
-            border-radius: 8px;
-        }
-        @keyframes shimmer { to { background-position: -200% 0; } }
-        
-        #app-content { display: none; } /* Hidden until loaded */
-
-        /* App-like Navbar */
-        nav { 
-            position: fixed; top: 0; width: 100%; height: 60px; 
-            background: var(--surface); border-bottom: 1px solid var(--border);
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 0 5%; z-index: 1000;
-        }
-        .nav-controls { display: flex; gap: 15px; align-items: center; }
-        .icon-btn { 
-            background: none; color: var(--text); font-size: 1.2rem; cursor: pointer; 
-            transition: transform 0.2s; position: relative;
-        }
-        .icon-btn:active { transform: scale(0.9); }
-        .search-bar {
-            background: var(--bg); border: 1px solid var(--border); border-radius: 20px;
-            padding: 6px 15px; color: var(--text); font-size: 0.9rem; width: 150px;
-            transition: width 0.3s;
-        }
-        .search-bar:focus { width: 200px; border-color: var(--primary); }
-
-        /* Primary Button */
-        .btn {
-            background: transparent; border: 1px solid var(--primary); color: var(--primary);
-            padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer;
-            text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.5px;
-            transition: background 0.2s, color 0.2s;
-        }
-        .btn:hover { background: var(--primary); color: var(--bg); }
-        .btn.solid { background: var(--primary); color: var(--bg); }
-
-        /* Hero */
-        #hero {
-            margin-top: 60px; height: 50vh; min-height: 400px;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; position: relative;
-            border-bottom: 1px solid var(--border);
-        }
-        #hero::before {
-            content: ''; position: absolute; inset: 0;
-            background: radial-gradient(circle at center, var(--primary-glow) 0%, transparent 70%);
-            z-index: -1; pointer-events: none;
-        }
-        .hero-title { font-size: clamp(2rem, 5vw, 4rem); margin-bottom: 10px; }
-        
-        /* Grid Layout */
-        section { padding: 40px 5%; }
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-        
-        /* Fast Cards */
-        .card {
-            background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
-            padding: 12px; display: flex; flex-direction: column; gap: 12px;
-            transition: transform 0.2s, border-color 0.2s;
-        }
-        .card:hover { transform: translateY(-3px); border-color: var(--primary); }
-        .card-img { width: 100%; height: 140px; border-radius: 8px; object-fit: cover; background: var(--border); }
-        .tags { display: flex; gap: 10px; font-size: 0.75rem; font-weight: 800; }
-        
-        /* 3D Container */
-        #webgl-container { 
-            width: 100%; height: 250px; background: #000; 
-            border-radius: 12px; overflow: hidden; margin-bottom: 20px;
-            border: 1px solid var(--border);
-        }
-
-        /* Offline App-like UI */
-        #offline-banner {
-            display: none; background: rgba(255, 71, 87, 0.1); 
-            border: 1px solid var(--danger); border-radius: 12px; 
-            padding: 20px; text-align: center; margin: 20px 5%;
-        }
-        #offline-canvas { background: #111; border-radius: 8px; width: 100%; max-width: 500px; height: 250px; margin-top: 15px; touch-action: none; }
-
-        /* Cart Sidebar (Optimized sliding) */
-        #cart {
-            position: fixed; top: 0; right: 0; width: 100%; max-width: 350px; height: 100vh;
-            background: var(--surface); border-left: 1px solid var(--border);
-            z-index: 2000; padding: 20px; display: flex; flex-direction: column;
-            transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: transform;
-        }
-        #cart.open { transform: translateX(0); }
-        
-        /* Modals */
-        .modal {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-            z-index: 3000; justify-content: center; align-items: center;
-        }
-        .modal-content {
-            background: var(--surface); padding: 25px; border-radius: 12px;
-            width: 90%; max-width: 400px; border: 1px solid var(--border);
-            position: relative;
-        }
-        .close-btn { position: absolute; top: 15px; right: 15px; cursor: pointer; color: var(--text-muted); }
-        .input-field {
-            width: 100%; padding: 10px; margin-bottom: 12px; border-radius: 6px;
-            background: var(--bg); border: 1px solid var(--border); color: var(--text);
-        }
-
-        /* Mobile Adjustments */
-        @media (max-width: 768px) {
-            .search-bar { display: none; } /* Hide search on small mobile to save nav space */
-            .search-bar.mobile-visible { display: block; position: absolute; top: 60px; left: 0; width: 100%; border-radius: 0; border-left: none; border-right: none; }
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlayWithEase | Premium Gaming Store</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
 
-    <div id="skeleton-ui" style="padding-top: 60px; padding: 20px 5%;">
-        <div class="skeleton" style="height: 60px; width: 100%; position: fixed; top: 0; left: 0; z-index: 999; border-radius: 0;"></div>
-        <div class="skeleton" style="height: 300px; width: 100%; margin-top: 80px; border-radius: 12px;"></div>
-        <div class="skeleton" style="height: 40px; width: 200px; margin: 40px 0 20px 0;"></div>
-        <div class="grid">
-            <div class="skeleton" style="height: 250px;"></div>
-            <div class="skeleton" style="height: 250px;"></div>
-            <div class="skeleton" style="height: 250px;"></div>
+    <nav class="navbar">
+        <div class="nav-left">
+            <h1 class="logo">PlayWith<span class="accent">Ease</span></h1>
+        </div>
+        <div class="nav-center search-bar">
+            <input type="text" placeholder="Search games, accessories..." id="searchInput">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+        <div class="nav-right">
+            <button id="currencyBtn" class="icon-btn">₹ INR</button>
+            <button id="themeToggle" class="icon-btn"><i class="fas fa-moon"></i></button>
+            <div class="auth-dropdown">
+                <button id="authBtn" class="icon-btn"><i class="fas fa-user"></i></button>
+                <div class="dropdown-content" id="userMenu" style="display: none;">
+                    <p id="userNameDisplay">Guest</p>
+                    <a href="#orders">Orders: <span id="orderCount">0</span></a>
+                    <button id="logoutBtn">Logout</button>
+                </div>
+            </div>
+            <button id="cartBtn" class="icon-btn">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cartCount" class="badge">0</span>
+            </button>
+            <button class="mobile-menu icon-btn"><i class="fas fa-ellipsis-v"></i></button>
+        </div>
+    </nav>
+
+    <div id="cartPanel" class="cart-panel">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button id="closeCart"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="cartItems" class="cart-items">
+            </div>
+        <div class="cart-footer">
+            <div class="total">Total: <span id="cartTotal">₹0</span></div>
+            <div class="upi-info">UPI: shayanff98@okhdfcbank</div>
+            <button id="checkoutBtn" class="btn-primary">Proceed to Checkout</button>
         </div>
     </div>
+    <div id="cartOverlay" class="cart-overlay"></div>
 
-    <div id="app-content">
-        
-        <nav>
-            <h2 class="brand">PlayWithEase</h2>
-            <div class="nav-controls">
-                <input type="text" id="searchInput" class="search-bar" placeholder="Search games...">
-                <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme"><i class="fa-solid fa-moon" id="themeIcon"></i></button>
-                <button class="icon-btn" onclick="toggleSound()" title="Sound toggle"><i class="fa-solid fa-volume-xmark" id="soundIcon"></i></button>
-                <button class="icon-btn" onclick="toggleCart()">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span id="cartBadge" style="position: absolute; top: -8px; right: -10px; background: var(--primary); color: var(--bg); font-size: 10px; padding: 2px 6px; border-radius: 10px; font-weight: bold; font-family: 'Inter';">0</span>
-                </button>
-                <button id="authBtn" class="btn" onclick="openModal('authModal')">Login</button>
-            </div>
-        </nav>
-
-        <section id="hero">
-            <h1 class="hero-title">High-Octane Gaming</h1>
-            <p style="color: var(--text-muted); margin-bottom: 25px;">Zero Lag. Pure Performance.</p>
-            <button class="btn solid" onclick="openTrailer()"><i class="fa-solid fa-play"></i> Watch GTA VI Trailer</button>
-            <p style="margin-top: 30px; font-size: 0.85rem; color: var(--text-muted);">
-                <span style="color: #2ed573;">●</span> Live Players: <strong id="liveCounter" style="color: var(--text);">1,420</strong>
-            </p>
-        </section>
-
-        <div id="offline-banner">
-            <h3 style="color: var(--danger);"><i class="fa-solid fa-wifi" style="text-decoration: line-through;"></i> Connection Lost</h3>
-            <p style="font-size: 0.9rem; margin-top: 5px;">No Internet To Play, Still we have something.</p>
-            <canvas id="offline-canvas"></canvas>
-            <p style="margin-top: 10px; font-weight: bold;">Score: <span id="offlineScore" style="color: var(--primary);">0</span></p>
+    <header class="hero">
+        <div class="hero-content">
+            <h2>Grand Theft Auto VI</h2>
+            <p>Welcome to Leonida. Pre-order now and get exclusive digital content.</p>
+            <button class="btn-primary"><i class="fas fa-play"></i> Watch Trailer</button>
         </div>
+        <div class="hero-overlay"></div>
+    </header>
 
-        <section id="games" class="searchable-section">
-            <div class="section-header">
-                <h2>Game Zone</h2>
-                <div style="font-size: 0.8rem; color: var(--text-muted);">WebGL Engine Active</div>
-            </div>
-
-            <div id="webgl-container"></div>
-
-            <div class="grid" id="gameGrid">
-                <div class="card fade-in" data-title="cyber strike shooter">
-                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=400&auto=format&fit=crop" loading="lazy" class="card-img" alt="Cyber Strike">
-                    <h3>Cyber Strike</h3>
-                    <div class="tags"><span style="color: #2ed573;">● Online</span> <span style="color: var(--text-muted);">Shooter</span></div>
-                    <button class="btn" onclick="triggerSound(); alert('Launching...')">Play Now</button>
-                </div>
-                <div class="card fade-in" data-title="neon drift racing">
-                    <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=400&auto=format&fit=crop" loading="lazy" class="card-img" alt="Neon Drift">
-                    <h3>Neon Drift</h3>
-                    <div class="tags"><span style="color: var(--danger);">○ Offline</span> <span style="color: var(--text-muted);">Racing</span></div>
-                    <button class="btn" onclick="triggerSound()">Play Demo</button>
-                </div>
-            </div>
+    <main>
+        <section class="filters">
+            <button class="filter-btn active">Trending</button>
+            <button class="filter-btn">Digital Games</button>
+            <button class="filter-btn">Accessories</button>
+            <button class="filter-btn">Subscriptions</button>
         </section>
 
-        <section id="store" class="searchable-section">
-            <div class="section-header">
-                <h2>Store</h2>
-                <div>
-                    <button id="currINR" class="btn solid" style="padding: 4px 10px;" onclick="setCurrency('INR')">₹</button>
-                    <button id="currUSD" class="btn" style="padding: 4px 10px;" onclick="setCurrency('USD')">$</button>
-                </div>
-            </div>
-            <div class="grid" id="storeGrid">
-                <div class="card fade-in" data-title="pro controller hardware">
-                    <img src="https://images.unsplash.com/photo-1605901309584-818e25960b8f?q=80&w=400&auto=format&fit=crop" loading="lazy" class="card-img" alt="Controller">
-                    <h3>Pro Controller</h3>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
-                        <strong class="price" data-inr="4999" data-usd="59.99">₹4,999</strong>
-                        <button class="icon-btn" style="color: var(--primary);" onclick="addToCart('Pro Controller', 4999, 59.99)"><i class="fa-solid fa-plus"></i></button>
-                    </div>
-                </div>
-                <div class="card fade-in" data-title="vip battle pass digital">
-                    <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=400&auto=format&fit=crop" loading="lazy" class="card-img" alt="Pass">
-                    <h3>VIP Battle Pass</h3>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
-                        <strong class="price" data-inr="999" data-usd="12.99">₹999</strong>
-                        <button class="icon-btn" style="color: var(--primary);" onclick="addToCart('VIP Battle Pass', 999, 12.99)"><i class="fa-solid fa-plus"></i></button>
-                    </div>
+        <section id="productGrid" class="product-grid">
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+        </section>
+
+        <section class="game-zone">
+            <h2>Game Zone</h2>
+            <p class="offline-text">No Internet To Play? Still we have something.</p>
+            <div id="gameContainer" class="game-container">
+                <div class="game-placeholder">
+                    <i class="fas fa-gamepad fa-3x"></i>
+                    <h3>Browser Demo Ready</h3>
+                    <button class="btn-secondary" onclick="alert('Launch Three.js Canvas here!')">Play Demo</button>
                 </div>
             </div>
         </section>
+    </main>
 
-    </div> <div id="cart">
-        <i class="fa-solid fa-times close-btn" style="font-size: 1.5rem;" onclick="toggleCart()"></i>
-        <h2 style="margin-bottom: 20px;">Your Cart</h2>
-        <div id="cartItems" style="flex-grow: 1; overflow-y: auto;"></div>
-        <div style="border-top: 1px solid var(--border); padding-top: 15px;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                <span>Total:</span>
-                <strong id="cartTotal" style="color: var(--primary); font-size: 1.2rem;">₹0</strong>
-            </div>
-            <button class="btn solid" style="width: 100%; padding: 12px;" onclick="checkout()">Checkout with UPI</button>
-        </div>
-    </div>
+    <footer>
+        <p>© PlayWithEase — Built by Shayan Akhtar</p>
+    </footer>
 
-    <div id="authModal" class="modal">
-        <div class="modal-content fade-in">
-            <i class="fa-solid fa-times close-btn" onclick="closeModal('authModal')"></i>
-            <h2 style="margin-bottom: 20px;">Welcome Back</h2>
-            <form id="authForm" onsubmit="handleAuth(event)">
-                <input type="email" id="emailInput" class="input-field" placeholder="Email" required>
-                <input type="password" id="passInput" class="input-field" placeholder="Password" required>
-                <button type="submit" class="btn solid" style="width: 100%; margin-top: 10px;">Login securely</button>
-            </form>
-        </div>
-    </div>
-
-    <div id="checkoutModal" class="modal">
-        <div class="modal-content fade-in" style="text-align: center;">
-            <i class="fa-solid fa-times close-btn" onclick="closeModal('checkoutModal')"></i>
-            <h2>Secure UPI Payment</h2>
-            <p style="color: var(--text-muted); margin: 15px 0; font-size: 0.9rem;">Fast checkout for PlayWithEase.</p>
-            <div style="background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                <i class="fa-brands fa-google-pay" style="color: #333; font-size: 2.5rem;"></i>
-                <p style="color: #111; font-weight: 800; margin-top: 10px; font-family: 'Inter';">shayanff98@okhdfcbank</p>
-            </div>
-            <button class="btn solid" style="width: 100%;" onclick="confirmPayment()">I have paid</button>
-        </div>
-    </div>
-
-    <div id="trailerModal" class="modal">
-        <div class="modal-content" style="max-width: 800px; padding: 0; background: #000; border: none;">
-            <i class="fa-solid fa-times close-btn" onclick="closeTrailer()" style="top: -30px; right: 0; color: #fff;"></i>
-            <div id="videoContainer" style="aspect-ratio: 16/9; width: 100%;"></div>
-        </div>
-    </div>
-
-    <script type="module">
-        // ----------------------------------------------------
-        // 1. FIREBASE AUTHENTICATION (Modular & Lightweight)
-        // ----------------------------------------------------
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-        const firebaseConfig = { /* Add your config here */ };
-        
-        let auth;
-        try {
-            const app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-            onAuthStateChanged(auth, (user) => {
-                const btn = document.getElementById('authBtn');
-                if (user) {
-                    btn.innerText = "Logout";
-                    btn.onclick = () => signOut(auth);
-                } else {
-                    btn.innerText = "Login";
-                    btn.onclick = () => openModal('authModal');
-                }
-            });
-        } catch(e) {
-            // Mock Auth Fallback for instant UI demonstration
-            const savedUser = localStorage.getItem('pwe_user');
-            const btn = document.getElementById('authBtn');
-            if(savedUser) {
-                btn.innerText = "Logout";
-                btn.onclick = () => { localStorage.removeItem('pwe_user'); location.reload(); }
-            }
-        }
-
-        window.handleAuth = (e) => {
-            e.preventDefault();
-            localStorage.setItem('pwe_user', 'true');
-            location.reload();
-        };
-
-    </script>
-
-    <script>
-        // ----------------------------------------------------
-        // 2. CORE SYSTEM (State, UI, Audio)
-        // ----------------------------------------------------
-        let isSoundEnabled = false;
-        let currentCurrency = 'INR';
-        let cart = JSON.parse(localStorage.getItem('pwe_cart')) || [];
-
-        // App Initialization (Hide Skeleton)
-        window.addEventListener('load', () => {
-            document.getElementById('skeleton-ui').style.display = 'none';
-            const appContent = document.getElementById('app-content');
-            appContent.style.display = 'block';
-            appContent.classList.add('fade-in');
-            updateCartUI();
-            
-            // Wait for Three.js to be available before initializing
-            if(window.THREE) initOptimizedWebGL();
-            else document.querySelector('script[src*="three.min.js"]').addEventListener('load', initOptimizedWebGL);
-        });
-
-        // Fast Audio API
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        let audioCtx;
-        function triggerSound() {
-            if(!isSoundEnabled) return;
-            if(!audioCtx) audioCtx = new AudioContext();
-            if(audioCtx.state === 'suspended') audioCtx.resume();
-            
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 0.05);
-            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.05);
-        }
-
-        window.toggleSound = () => {
-            isSoundEnabled = !isSoundEnabled;
-            const icon = document.getElementById('soundIcon');
-            icon.className = isSoundEnabled ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark';
-            icon.style.color = isSoundEnabled ? 'var(--primary)' : 'inherit';
-            triggerSound();
-        };
-
-        window.toggleTheme = () => {
-            document.body.classList.toggle('light-mode');
-            const icon = document.getElementById('themeIcon');
-            icon.className = document.body.classList.contains('light-mode') ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
-            triggerSound();
-        };
-
-        // Live Counter (Optimized requestAnimationFrame approach instead of setInterval)
-        let lastUpdate = 0;
-        let players = 1420;
-        function updateCounter(time) {
-            if (time - lastUpdate > 3000) {
-                players += Math.floor(Math.random() * 7) - 3;
-                document.getElementById('liveCounter').innerText = players.toLocaleString();
-                lastUpdate = time;
-            }
-            requestAnimationFrame(updateCounter);
-        }
-        requestAnimationFrame(updateCounter);
-
-        // Instant Search
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            document.querySelectorAll('.card').forEach(card => {
-                card.style.display = card.dataset.title.includes(term) ? 'flex' : 'none';
-            });
-        });
-
-        // ----------------------------------------------------
-        // 3. E-COMMERCE & CART (O(1) LocalStorage)
-        // ----------------------------------------------------
-        window.setCurrency = (cur) => {
-            currentCurrency = cur;
-            document.getElementById('currINR').className = cur === 'INR' ? 'btn solid' : 'btn';
-            document.getElementById('currUSD').className = cur === 'USD' ? 'btn solid' : 'btn';
-            
-            document.querySelectorAll('.price').forEach(el => {
-                el.innerText = cur === 'INR' ? `₹${el.dataset.inr}` : `$${el.dataset.usd}`;
-            });
-            updateCartUI();
-            triggerSound();
-        };
-
-        window.addToCart = (name, priceINR, priceUSD) => {
-            cart.push({name, priceINR, priceUSD});
-            localStorage.setItem('pwe_cart', JSON.stringify(cart));
-            updateCartUI();
-            triggerSound();
-            
-            // Lightweight badge animation
-            const badge = document.getElementById('cartBadge');
-            badge.style.transform = 'scale(1.5)';
-            setTimeout(() => badge.style.transform = 'scale(1)', 150);
-        };
-
-        function updateCartUI() {
-            document.getElementById('cartBadge').innerText = cart.length;
-            const container = document.getElementById('cartItems');
-            container.innerHTML = '';
-            let totalInr = 0, totalUsd = 0;
-
-            cart.forEach((item, i) => {
-                totalInr += parseFloat(item.priceINR);
-                totalUsd += parseFloat(item.priceUSD);
-                const price = currentCurrency === 'INR' ? `₹${item.priceINR}` : `$${item.priceUSD}`;
-                
-                container.innerHTML += `
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border);">
-                        <div><div style="font-weight: 600; font-size: 0.9rem;">${item.name}</div><div style="color: var(--primary); font-size: 0.85rem;">${price}</div></div>
-                        <i class="fa-solid fa-trash" style="color: var(--danger); cursor: pointer; font-size: 0.9rem;" onclick="removeFromCart(${i})"></i>
-                    </div>`;
-            });
-            const total = currentCurrency === 'INR' ? `₹${totalInr.toLocaleString()}` : `$${totalUsd.toFixed(2)}`;
-            document.getElementById('cartTotal').innerText = total;
-        }
-
-        window.removeFromCart = (i) => { cart.splice(i, 1); localStorage.setItem('pwe_cart', JSON.stringify(cart)); updateCartUI(); triggerSound(); };
-        window.toggleCart = () => { document.getElementById('cart').classList.toggle('open'); triggerSound(); };
-        window.checkout = () => { if(cart.length === 0) return; toggleCart(); openModal('checkoutModal'); };
-        window.confirmPayment = () => { cart = []; localStorage.removeItem('pwe_cart'); updateCartUI(); closeModal('checkoutModal'); alert('Payment Confirmed!'); };
-
-        // ----------------------------------------------------
-        // 4. MODALS & TRAILER (Lazy DOM execution)
-        // ----------------------------------------------------
-        window.openModal = (id) => { document.getElementById(id).style.display = 'flex'; triggerSound(); };
-        window.closeModal = (id) => { document.getElementById(id).style.display = 'none'; };
-        
-        window.openTrailer = () => {
-            openModal('trailerModal');
-            document.getElementById('videoContainer').innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/QdBZY2fkU-0?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="border-radius: 8px;"></iframe>`;
-        };
-        window.closeTrailer = () => {
-            closeModal('trailerModal');
-            document.getElementById('videoContainer').innerHTML = ''; // Destroy iframe to save memory
-        };
-
-        // ----------------------------------------------------
-        // 5. HIGH-PERFORMANCE WEBGL (Intersection Observer)
-        // ----------------------------------------------------
-        function initOptimizedWebGL() {
-            const container = document.getElementById('webgl-container');
-            const scene = new THREE.Scene();
-            // Lower FOV and near/far planes for slight performance bump
-            const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 50);
-            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false }); // Antialias off for speed
-            
-            // Limit pixel ratio for mobile performance
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            renderer.setSize(container.clientWidth, container.clientHeight);
-            container.appendChild(renderer.domElement);
-
-            // Simple geometry (low poly)
-            const geometry = new THREE.TorusKnotGeometry(1.5, 0.4, 64, 8);
-            const material = new THREE.MeshBasicMaterial({ color: 0x00f3ff, wireframe: true, transparent: true, opacity: 0.5 });
-            const mesh = new THREE.Mesh(geometry, material);
-            scene.add(mesh);
-            camera.position.z = 5;
-
-            let animationId;
-            let isVisible = false;
-
-            function animate() {
-                if (!isVisible) return; // Halt GPU processing when off-screen
-                animationId = requestAnimationFrame(animate);
-                mesh.rotation.x += 0.005;
-                mesh.rotation.y += 0.01;
-                renderer.render(scene, camera);
-            }
-
-            // Intersection Observer to Pause/Play WebGL
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    isVisible = entry.isIntersecting;
-                    if (isVisible) animate();
-                    else cancelAnimationFrame(animationId);
-                });
-            }, { threshold: 0.1 });
-            observer.observe(container);
-
-            window.addEventListener('resize', () => {
-                camera.aspect = container.clientWidth / container.clientHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(container.clientWidth, container.clientHeight);
-            });
-        }
-
-        // ----------------------------------------------------
-        // 6. OFFLINE ENGINE (Service Worker + Canvas Game)
-        // ----------------------------------------------------
-        let offlineLoop;
-        function handleNetworkChange() {
-            const online = navigator.onLine;
-            document.getElementById('offline-banner').style.display = online ? 'none' : 'block';
-            document.querySelectorAll('.searchable-section').forEach(el => el.style.display = online ? 'block' : 'none');
-            
-            if(!online) startOfflineGame();
-            else cancelAnimationFrame(offlineLoop);
-        }
-        window.addEventListener('online', handleNetworkChange);
-        window.addEventListener('offline', handleNetworkChange);
-
-        function startOfflineGame() {
-            const canvas = document.getElementById('offline-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = canvas.clientWidth; canvas.height = canvas.clientHeight;
-            
-            let playerX = canvas.width / 2;
-            let target = { x: Math.random() * canvas.width, y: 0, speed: 2 };
-            let score = 0;
-
-            canvas.addEventListener('touchmove', e => { playerX = e.touches[0].clientX - canvas.getBoundingClientRect().left; }, {passive: true});
-            canvas.addEventListener('mousemove', e => { playerX = e.clientX - canvas.getBoundingClientRect().left; });
-
-            function gameLoop() {
-                ctx.fillStyle = '#111'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                // Player
-                ctx.fillStyle = '#00f3ff'; ctx.fillRect(playerX - 25, canvas.height - 20, 50, 10);
-                
-                // Target (falling block)
-                ctx.fillStyle = '#ff4757'; ctx.fillRect(target.x, target.y, 15, 15);
-                target.y += target.speed;
-
-                // Collision
-                if(target.y > canvas.height - 20 && target.x > playerX - 25 && target.x < playerX + 25) {
-                    score++; document.getElementById('offlineScore').innerText = score;
-                    target.y = 0; target.x = Math.random() * canvas.width; target.speed += 0.2;
-                } else if (target.y > canvas.height) {
-                    target.y = 0; target.x = Math.random() * canvas.width; score = 0; // reset
-                    document.getElementById('offlineScore').innerText = score;
-                }
-
-                offlineLoop = requestAnimationFrame(gameLoop);
-            }
-            gameLoop();
-        }
-
-        // Inline PWA Service Worker Registration
-        const swBlob = new Blob([`
-            self.addEventListener('install', e => self.skipWaiting());
-            self.addEventListener('fetch', e => {
-                e.respondWith(fetch(e.request).catch(() => new Response('Offline mode fallback.')));
-            });
-        `], {type: 'application/javascript'});
-        
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
-        }
-        
-        // Initial check
-        if(!navigator.onLine) handleNetworkChange();
-
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    
+    <script src="app.js"></script>
 </body>
 </html>
