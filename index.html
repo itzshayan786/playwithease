@@ -1,537 +1,670 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayWithEase | Next-Gen Gaming Store</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PlayWithEase | Next-Gen Gaming Platform</title>
     
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
-                    colors: {
-                        brand: {
-                            bg: '#030712',       // Very dark blue/black
-                            panel: '#111827',    // Dark gray/blue for cards
-                            border: '#1f2937',   // Lighter border
-                            accent: '#3b82f6',   // Bright Blue
-                            accentHover: '#2563eb' // Deeper Blue
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
     <style>
-        body { background-color: #030712; color: #f9fafb; overflow-x: hidden; }
-        .glass { background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        :root {
+            --bg-dark: #050505;
+            --bg-light: #f0f0f0;
+            --text-dark: #ffffff;
+            --text-light: #111111;
+            --neon-blue: #00f3ff;
+            --neon-purple: #bc13fe;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Base Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-dark); overflow-x: hidden; transition: var(--transition); }
+        body.light-mode { background-color: var(--bg-light); color: var(--text-light); }
+        body.light-mode { --glass-bg: rgba(0, 0, 0, 0.05); --glass-border: rgba(0, 0, 0, 0.1); }
         
-        /* Auth Modal Animations */
-        .modal-enter { animation: modalFadeIn 0.3s ease-out forwards; }
-        .modal-exit { animation: modalFadeOut 0.3s ease-in forwards; }
-        @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        @keyframes modalFadeOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.95); } }
+        h1, h2, h3, .brand { font-family: 'Orbitron', sans-serif; }
+        button { cursor: pointer; border: none; outline: none; background: none; color: inherit; font-family: inherit; }
+        a { text-decoration: none; color: inherit; }
+
+        /* Glassmorphism & Neon */
+        .glass { background: var(--glass-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 12px; }
+        .neon-text { text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); color: var(--neon-blue); }
+        .btn-neon { background: transparent; border: 2px solid var(--neon-blue); color: var(--neon-blue); padding: 10px 24px; border-radius: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition); position: relative; overflow: hidden; }
+        .btn-neon:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 15px var(--neon-blue); transform: translateY(-2px); }
+
+        /* Loader */
+        #loader { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s; }
+        .spinner { width: 50px; height: 50px; border: 3px solid transparent; border-top-color: var(--neon-blue); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Navbar */
+        nav { position: fixed; top: 0; width: 100%; padding: 15px 5%; z-index: 1000; display: flex; justify-content: space-between; align-items: center; transition: var(--transition); }
+        nav.scrolled { background: rgba(5, 5, 5, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--glass-border); }
+        .nav-links { display: flex; gap: 20px; align-items: center; }
+        .nav-icon { font-size: 1.2rem; cursor: pointer; transition: var(--transition); }
+        .nav-icon:hover { color: var(--neon-blue); transform: scale(1.1); }
         
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #030712; }
-        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+        /* Hero Section */
+        #hero { height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+        .hero-bg { position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop') center/cover; opacity: 0.4; z-index: -1; }
+        .hero-content { z-index: 1; padding: 20px; }
+        .hero-content h1 { font-size: 4rem; margin-bottom: 10px; text-transform: uppercase; }
+        .visitor-counter { margin-top: 20px; font-size: 0.9rem; color: #aaa; }
+
+        /* Modals */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-content { background: var(--bg-dark); padding: 30px; border-radius: 16px; border: 1px solid var(--neon-blue); width: 90%; max-width: 500px; position: relative; }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; }
+        .video-container { width: 100%; max-width: 900px; aspect-ratio: 16/9; }
+        .video-container iframe { width: 100%; height: 100%; border: none; border-radius: 12px; }
+
+        /* Sections */
+        section { padding: 80px 5%; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        
+        /* Game Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .card { padding: 15px; display: flex; flex-direction: column; gap: 15px; transition: var(--transition); cursor: pointer; }
+        .card:hover { transform: translateY(-5px); border-color: var(--neon-blue); box-shadow: 0 5px 15px rgba(0, 243, 255, 0.1); }
+        .card-img { width: 100%; height: 160px; border-radius: 8px; object-fit: cover; background: #222; }
+        .card-tags { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; }
+        .tag-offline { color: #ff4757; }
+        .tag-online { color: #2ed573; }
+
+        /* Store & Cart */
+        .store-controls { display: flex; gap: 10px; }
+        .price { font-size: 1.2rem; font-weight: bold; color: var(--neon-purple); }
+        #cartSidebar { position: fixed; top: 0; right: -400px; width: 350px; height: 100vh; background: rgba(10,10,10,0.95); backdrop-filter: blur(15px); border-left: 1px solid var(--glass-border); z-index: 1500; transition: var(--transition); padding: 20px; display: flex; flex-direction: column; }
+        #cartSidebar.active { right: 0; }
+        .cart-items { flex-grow: 1; overflow-y: auto; margin: 20px 0; }
+        .cart-item { display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #333; }
+
+        /* WebGL & Offline Canvas */
+        #webgl-container { width: 100%; height: 300px; border-radius: 12px; overflow: hidden; position: relative; background: #000; border: 1px solid var(--glass-border); margin-bottom: 20px;}
+        #offline-section { display: none; text-align: center; background: rgba(255, 71, 87, 0.1); border: 1px solid #ff4757; border-radius: 12px; padding: 40px; margin: 40px 5%; }
+        #offline-canvas { background: #111; border-radius: 8px; cursor: crosshair; margin-top: 20px; max-width: 100%; }
+
+        /* Forms */
+        input { width: 100%; padding: 12px; margin-bottom: 15px; background: rgba(255,255,255,0.05); border: 1px solid #444; color: white; border-radius: 6px; outline: none; }
+        input:focus { border-color: var(--neon-blue); }
+
+        /* Footer */
+        footer { padding: 40px 5%; text-align: center; border-top: 1px solid var(--glass-border); margin-top: 40px; }
+
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            nav { padding: 15px 20px; }
+            #cartSidebar { width: 100%; right: -100%; }
+        }
     </style>
 </head>
-<body class="antialiased flex flex-col min-h-screen">
+<body>
 
-    <div id="globalOverlay" class="fixed inset-0 bg-black/80 z-40 hidden transition-opacity duration-300 backdrop-blur-sm" onclick="closeModals()"></div>
+    <div id="loader">
+        <div class="spinner"></div>
+        <h2 class="neon-text" style="margin-top: 20px;">PlayWithEase</h2>
+        <p>Initializing Environment...</p>
+    </div>
 
-    <div id="authModal" class="fixed inset-0 z-50 flex items-center justify-center hidden opacity-0 p-4">
-        <div class="bg-brand-panel border border-brand-border rounded-2xl w-full max-w-md p-8 relative shadow-[0_0_50px_rgba(59,130,246,0.15)]">
-            <button onclick="closeModals()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition"><i class="fa-solid fa-xmark text-xl"></i></button>
-            
-            <div class="text-center mb-8">
-                <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-accent/20 text-brand-accent mb-4">
-                    <i class="fa-solid fa-user-astronaut text-xl"></i>
-                </div>
-                <h2 id="authTitle" class="text-2xl font-bold">Welcome Back</h2>
-                <p id="authSubtitle" class="text-sm text-gray-400 mt-1">Sign in to your PlayWithEase account</p>
+    <nav id="navbar" class="glass">
+        <h2 class="brand neon-text">PlayWithEase</h2>
+        <div class="nav-links">
+            <i class="fa-solid fa-search nav-icon" title="Search"></i>
+            <i class="fa-solid fa-moon nav-icon" id="themeToggle" title="Toggle Theme"></i>
+            <i class="fa-solid fa-volume-mute nav-icon" id="audioToggle" title="Toggle BGM"></i>
+            <i class="fa-solid fa-shopping-cart nav-icon" id="cartBtn" title="Cart">
+                <span id="cartCount" style="font-size: 10px; background: var(--neon-blue); color: black; border-radius: 50%; padding: 2px 5px; vertical-align: top;">0</span>
+            </i>
+            <button class="btn-neon" id="authBtn" style="padding: 5px 15px; font-size: 0.8rem;">Login</button>
+            <div id="userProfile" style="display: none; font-weight: bold; color: var(--neon-blue);"></div>
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content glass">
+            <h1>Next-Gen Gaming Hub</h1>
+            <p style="margin-bottom: 30px; font-size: 1.2rem;">Play, Connect, and Conquer.</p>
+            <button class="btn-neon" onclick="openTrailer()">
+                <i class="fa-solid fa-play"></i> Watch GTA VI Trailer
+            </button>
+            <div class="visitor-counter">Live Players Online: <span id="liveCounter" class="neon-text">1,024</span></div>
+        </div>
+    </section>
+
+    <section id="offline-section">
+        <h2 style="color: #ff4757;"><i class="fa-solid fa-wifi" style="text-decoration: line-through;"></i> Connection Lost</h2>
+        <p>No Internet To Play, Still we have something.</p>
+        <p style="font-size: 0.9rem; margin-top: 10px;">Click the moving neon targets to score points!</p>
+        <canvas id="offline-canvas" width="600" height="300"></canvas>
+        <div style="margin-top: 10px; font-size: 1.5rem; font-weight: bold;">Score: <span id="offlineScore" class="neon-text">0</span></div>
+    </section>
+
+    <section id="games">
+        <div class="section-header">
+            <h2><i class="fa-solid fa-gamepad"></i> Game Zone</h2>
+            <div class="filters">
+                <button class="btn-neon" style="padding: 5px 15px; font-size: 0.8rem;">All</button>
+                <button class="btn-neon" style="padding: 5px 15px; font-size: 0.8rem; border-color: #555; color: #aaa;">Multiplayer</button>
             </div>
+        </div>
 
-            <form id="authForm" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Email</label>
-                    <input type="email" id="emailInput" required class="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-white focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition outline-none" placeholder="shayan@example.com">
+        <h3 style="margin-bottom: 15px;">Interactive 3D Demo (Three.js WebGL)</h3>
+        <div id="webgl-container"></div>
+
+        <div class="grid">
+            <div class="card glass">
+                <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=600&auto=format&fit=crop" class="card-img" alt="Cyber Strike">
+                <h3>Cyber Strike</h3>
+                <div class="card-tags">
+                    <span>Shooter</span>
+                    <span class="tag-online">● Online</span>
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Password</label>
-                    <input type="password" id="passwordInput" required class="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-white focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition outline-none" placeholder="••••••••">
+                <button class="btn-neon" onclick="playSound(); alert('Launching Game Environment...')">Play Now</button>
+            </div>
+            <div class="card glass">
+                <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop" class="card-img" alt="Neon Racers">
+                <h3>Neon Racers</h3>
+                <div class="card-tags">
+                    <span>Racing</span>
+                    <span class="tag-offline">○ Offline Support</span>
                 </div>
-                <div id="authError" class="text-red-400 text-sm hidden bg-red-400/10 p-3 rounded-lg border border-red-400/20"></div>
-                <button type="submit" id="authSubmitBtn" class="w-full bg-brand-accent hover:bg-brand-accentHover text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-brand-accent/25 flex items-center justify-center gap-2">
-                    Sign In <i class="fa-solid fa-arrow-right"></i>
-                </button>
+                <button class="btn-neon" onclick="playSound()">Play Demo</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="store">
+        <div class="section-header">
+            <h2><i class="fa-solid fa-shop"></i> Premium Store</h2>
+            <div class="store-controls glass" style="padding: 5px; border-radius: 8px;">
+                <button id="btnINR" class="btn-neon" style="padding: 5px 10px; font-size: 0.8rem;" onclick="setCurrency('INR')">₹ INR</button>
+                <button id="btnUSD" class="btn-neon" style="padding: 5px 10px; font-size: 0.8rem; border-color: transparent; color: #888;" onclick="setCurrency('USD')">$ USD</button>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="card glass">
+                <div class="card-img" style="background: url('https://images.unsplash.com/photo-1605901309584-818e25960b8f?q=80&w=600&auto=format&fit=crop') center/cover;"></div>
+                <h3>Pro Controller Pack</h3>
+                <p style="font-size: 0.9rem; color: #aaa;">Enhance your aim and movement.</p>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="price" data-inr="4999" data-usd="59.99">₹4,999</span>
+                    <button class="btn-neon" onclick="addToCart('Pro Controller Pack', 4999, 59.99)" style="padding: 5px 15px; font-size: 0.8rem;"><i class="fa-solid fa-plus"></i> Cart</button>
+                </div>
+            </div>
+            <div class="card glass">
+                <div class="card-img" style="background: url('https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=600&auto=format&fit=crop') center/cover;"></div>
+                <h3>VIP Battle Pass</h3>
+                <p style="font-size: 0.9rem; color: #aaa;">Exclusive skins and multipliers.</p>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="price" data-inr="999" data-usd="12.99">₹999</span>
+                    <button class="btn-neon" onclick="addToCart('VIP Battle Pass', 999, 12.99)" style="padding: 5px 15px; font-size: 0.8rem;"><i class="fa-solid fa-plus"></i> Cart</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="dashboard" class="glass" style="margin: 0 5%; padding: 30px; text-align: center; border-color: var(--neon-purple);">
+        <h2 style="color: var(--neon-purple);"><i class="fa-solid fa-trophy"></i> Global Leaderboard</h2>
+        <div style="margin-top: 20px; display: inline-block; text-align: left;">
+            <p>1. <span class="neon-text">GhostRider</span> - 9,450 XP</p>
+            <p>2. <span class="neon-text">NeonNinja</span> - 8,200 XP</p>
+            <p>3. <span style="color: #aaa;">You (Guest)</span> - 150 XP</p>
+        </div>
+    </section>
+
+    <footer>
+        <h2 class="brand">PlayWithEase</h2>
+        <p style="color: #666; margin-top: 10px;">© 2026 PlayWithEase Platform. All rights reserved.</p>
+    </footer>
+
+    <div id="cartSidebar">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px;">
+            <h2><i class="fa-solid fa-shopping-cart"></i> Your Cart</h2>
+            <i class="fa-solid fa-times close-modal" onclick="toggleCart()" style="position: static;"></i>
+        </div>
+        <div class="cart-items" id="cartItemsList">
+            </div>
+        <div class="cart-footer">
+            <h3 style="margin-bottom: 15px; text-align: right;">Total: <span id="cartTotal" class="neon-text">₹0</span></h3>
+            <button class="btn-neon" style="width: 100%; background: var(--neon-blue); color: #000;" onclick="checkout()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <div id="paymentModal" class="modal">
+        <div class="modal-content glass">
+            <i class="fa-solid fa-times close-modal" onclick="closeModal('paymentModal')"></i>
+            <h2>Secure Checkout</h2>
+            <p style="margin: 15px 0; color: #aaa;">Scan with any UPI app to pay.</p>
+            <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 20px;">
+                <i class="fa-brands fa-google-pay" style="font-size: 3rem; color: #333;"></i>
+                <p style="color: #333; font-weight: bold; margin-top: 10px;">UPI ID: shayanff98@okhdfcbank</p>
+            </div>
+            <button class="btn-neon" style="width: 100%;" onclick="confirmPayment()">I have made the payment</button>
+        </div>
+    </div>
+
+    <div id="authModal" class="modal">
+        <div class="modal-content glass">
+            <i class="fa-solid fa-times close-modal" onclick="closeModal('authModal')"></i>
+            <h2 id="authTitle">Login to PlayWithEase</h2>
+            <form id="authForm" style="margin-top: 20px;" onsubmit="handleAuth(event)">
+                <input type="email" id="email" placeholder="Email Address" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit" class="btn-neon" style="width: 100%; margin-top: 10px;">Continue</button>
             </form>
+            <p style="text-align: center; margin-top: 15px; font-size: 0.9rem;">
+                Powered by Firebase Auth. (Demo Mode)
+            </p>
+        </div>
+    </div>
 
-            <div class="mt-6 text-center">
-                <p class="text-sm text-gray-400">
-                    <span id="authSwitchText">Don't have an account?</span> 
-                    <button onclick="toggleAuthMode()" id="authSwitchBtn" class="text-brand-accent font-bold hover:underline ml-1">Sign Up</button>
-                </p>
+    <div id="trailerModal" class="modal">
+        <div class="modal-content glass" style="max-width: 900px; padding: 10px;">
+            <i class="fa-solid fa-times close-modal" onclick="closeModal('trailerModal')" style="z-index: 2001; right: -30px; top: -30px;"></i>
+            <div class="video-container">
+                <iframe id="youtubePlayer" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </div>
     </div>
 
-    <nav class="glass fixed w-full z-30 border-b border-brand-border">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex items-center gap-3 cursor-pointer">
-                    <div class="bg-gradient-to-br from-brand-accent to-blue-800 p-2.5 rounded-xl shadow-lg shadow-brand-accent/30">
-                        <i class="fa-solid fa-gamepad text-white text-xl"></i>
-                    </div>
-                    <span class="font-extrabold text-2xl tracking-tight hidden sm:block">PlayWithEase</span>
-                </div>
-
-                <div class="hidden md:flex items-center gap-6">
-                    <div class="flex items-center gap-2 bg-green-500/10 border border-green-500/20 px-3 py-1.5 rounded-full text-sm font-medium text-green-400">
-                        <span class="relative flex h-2.5 w-2.5">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
-                        </span>
-                        <span id="visitorCount">1,204</span> Online
-                    </div>
-                    
-                    <div class="relative group">
-                        <button class="flex items-center gap-2 bg-brand-panel border border-brand-border hover:border-brand-accent px-4 py-2 rounded-lg font-semibold transition">
-                            <i class="fa-solid fa-coins text-brand-accent"></i> <span id="currentCurrencyLabel">INR (₹)</span>
-                        </button>
-                        <div class="absolute right-0 mt-2 w-32 bg-brand-panel border border-brand-border rounded-lg shadow-xl hidden group-hover:block overflow-hidden">
-                            <button onclick="switchCurrency('INR')" class="w-full text-left px-4 py-2 hover:bg-brand-accent/20 transition font-medium">INR (₹)</button>
-                            <button onclick="switchCurrency('USD')" class="w-full text-left px-4 py-2 hover:bg-brand-accent/20 transition font-medium">USD ($)</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-4">
-                    <div id="loggedOutUI" class="flex items-center gap-3">
-                        <button onclick="openAuthModal('login')" class="hidden sm:block text-gray-300 hover:text-white font-semibold px-4 py-2 transition">Log In</button>
-                        <button onclick="openAuthModal('signup')" class="bg-brand-accent hover:bg-brand-accentHover text-white px-5 py-2.5 rounded-xl font-bold transition shadow-lg shadow-brand-accent/20">Sign Up</button>
-                    </div>
-                    
-                    <div id="loggedInUI" class="hidden items-center gap-4">
-                        <div class="flex items-center gap-3 bg-brand-panel border border-brand-border px-3 py-1.5 rounded-full">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Shayan&backgroundColor=3b82f6" class="w-8 h-8 rounded-full">
-                            <span id="userEmailDisplay" class="text-sm font-bold max-w-[120px] truncate">User</span>
-                        </div>
-                        <button id="logoutBtn" class="text-gray-400 hover:text-red-400 transition" title="Logout"><i class="fa-solid fa-arrow-right-from-bracket text-xl"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <main class="flex-1 pt-20">
-        
-        <section class="relative bg-brand-bg py-20 border-b border-brand-border overflow-hidden">
-            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-accent/20 via-brand-bg to-brand-bg z-0"></div>
-            
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <div class="inline-flex items-center gap-2 bg-brand-accent/10 border border-brand-accent/30 text-brand-accent px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-6">
-                            Trending Now
-                        </div>
-                        <h1 class="text-5xl sm:text-7xl font-black mb-4 leading-tight">
-                            GRAND THEFT <br>
-                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-purple-500">AUTO VI</span>
-                        </h1>
-                        <p class="text-gray-400 text-lg mb-8 max-w-md">
-                            Welcome to Leonida. Pre-order the most anticipated game of the decade and secure exclusive day-one bonuses.
-                        </p>
-                        <div class="flex items-center gap-4">
-                            <button class="bg-white text-black hover:bg-gray-200 px-8 py-4 rounded-xl font-black text-lg transition flex items-center gap-2 shadow-[0_0_30px_rgba(255,255,255,0.2)]">
-                                Pre-Order <span class="price-display" data-inr="5999">₹5,999</span>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="relative rounded-2xl overflow-hidden border border-brand-border shadow-2xl shadow-brand-accent/20 aspect-video bg-black group">
-                        <iframe class="w-full h-full absolute inset-0" src="https://www.youtube.com/embed/QdBZY2fkU-0?mute=1&loop=1&playlist=QdBZY2fkU-0" title="GTA 6 Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        <div class="absolute inset-0 border-4 border-transparent group-hover:border-brand-accent/50 transition duration-300 pointer-events-none rounded-2xl"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold mb-10 flex items-center gap-3">
-                <i class="fa-solid fa-bolt text-brand-accent"></i> Latest Drops
-            </h2>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <div class="bg-brand-panel border border-brand-border rounded-2xl p-5 hover:-translate-y-2 hover:border-brand-accent/50 transition duration-300 group flex flex-col">
-                    <img src="https://images.unsplash.com/photo-1622560026532-c6b22ebffbbf?w=500&q=80" alt="Roblox" class="w-full h-40 object-cover rounded-xl mb-4 opacity-80 group-hover:opacity-100 transition">
-                    <h3 class="font-bold text-lg text-white mb-1">Roblox Digital Code</h3>
-                    <p class="text-sm text-gray-400 mb-4">Instant Global Delivery</p>
-                    <div class="mt-auto flex items-center justify-between">
-                        <span class="text-xl font-black text-brand-accent price-display" data-inr="1000">₹1,000</span>
-                        <button class="bg-brand-bg border border-brand-border hover:bg-brand-accent text-white h-10 w-10 rounded-lg transition"><i class="fa-solid fa-cart-plus"></i></button>
-                    </div>
-                </div>
-
-                <div class="bg-brand-panel border border-brand-border rounded-2xl p-5 hover:-translate-y-2 hover:border-brand-accent/50 transition duration-300 group flex flex-col">
-                    <img src="https://images.unsplash.com/photo-1589241062272-c0a1f436d3fc?w=500&q=80" alt="Fortnite" class="w-full h-40 object-cover rounded-xl mb-4 opacity-80 group-hover:opacity-100 transition">
-                    <h3 class="font-bold text-lg text-white mb-1">Fortnite Stacked Acc</h3>
-                    <p class="text-sm text-gray-400 mb-4">Full Access + Email</p>
-                    <div class="mt-auto flex items-center justify-between">
-                        <span class="text-xl font-black text-brand-accent price-display" data-inr="3500">₹3,500</span>
-                        <button class="bg-brand-bg border border-brand-border hover:bg-brand-accent text-white h-10 w-10 rounded-lg transition"><i class="fa-solid fa-cart-plus"></i></button>
-                    </div>
-                </div>
-
-                <div class="bg-brand-panel border border-brand-border rounded-2xl p-5 hover:-translate-y-2 hover:border-brand-accent/50 transition duration-300 group flex flex-col">
-                    <img src="https://images.unsplash.com/photo-1607853202273-797f1c22a38e?w=500&q=80" alt="Minecraft" class="w-full h-40 object-cover rounded-xl mb-4 opacity-80 group-hover:opacity-100 transition">
-                    <h3 class="font-bold text-lg text-white mb-1">Minecraft Java/Bedrock</h3>
-                    <p class="text-sm text-gray-400 mb-4">PC Global Key</p>
-                    <div class="mt-auto flex items-center justify-between">
-                        <span class="text-xl font-black text-brand-accent price-display" data-inr="1499">₹1,499</span>
-                        <button class="bg-brand-bg border border-brand-border hover:bg-brand-accent text-white h-10 w-10 rounded-lg transition"><i class="fa-solid fa-cart-plus"></i></button>
-                    </div>
-                </div>
-
-                <div class="bg-brand-panel border border-brand-border rounded-2xl p-5 hover:-translate-y-2 hover:border-brand-accent/50 transition duration-300 group flex flex-col">
-                    <img src="https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=500&q=80" alt="Xbox" class="w-full h-40 object-cover rounded-xl mb-4 opacity-80 group-hover:opacity-100 transition">
-                    <h3 class="font-bold text-lg text-white mb-1">Xbox Game Pass Ult.</h3>
-                    <p class="text-sm text-gray-400 mb-4">1 Month Code</p>
-                    <div class="mt-auto flex items-center justify-between">
-                        <span class="text-xl font-black text-brand-accent price-display" data-inr="499">₹499</span>
-                        <button class="bg-brand-bg border border-brand-border hover:bg-brand-accent text-white h-10 w-10 rounded-lg transition"><i class="fa-solid fa-cart-plus"></i></button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="py-20 bg-brand-panel border-t border-brand-border">
-            <div class="max-w-4xl mx-auto px-4 text-center">
-                <i class="fa-solid fa-wifi text-4xl text-gray-600 mb-4 opacity-50"></i>
-                <h2 class="text-3xl font-black mb-2">No Internet To Play?</h2>
-                <p class="text-gray-400 mb-10">Still we have something. Survive the swarm in this offline browser shooter.</p>
-                
-                <div class="relative bg-brand-bg border-2 border-brand-border rounded-xl overflow-hidden shadow-2xl shadow-brand-accent/10 mx-auto" style="width: 100%; max-width: 800px; aspect-ratio: 16/9;">
-                    <canvas id="gameCanvas" class="w-full h-full cursor-crosshair"></canvas>
-                    
-                    <div id="gameOverlay" class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center z-10">
-                        <h3 class="text-3xl font-black text-brand-accent mb-4 uppercase tracking-widest">Neon Survivor</h3>
-                        <p class="text-gray-300 mb-6 text-sm">Use Mouse to Aim & Click to Shoot.</p>
-                        <button onclick="startGame()" class="bg-brand-accent hover:bg-brand-accentHover text-white px-8 py-3 rounded-lg font-bold transition">Play Now</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="bg-brand-bg border-t border-brand-border py-12 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="flex items-center gap-2">
-                <i class="fa-solid fa-gamepad text-brand-accent text-xl"></i>
-                <span class="font-extrabold text-xl">PlayWithEase</span>
-            </div>
-            <p class="text-gray-500 text-sm text-center md:text-left">
-                &copy; 2026 PlayWithEase. Built for gamers, by gamers.
-            </p>
-            <div class="flex gap-4">
-                <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i class="fa-brands fa-discord"></i></a>
-                <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i class="fa-brands fa-twitter"></i></a>
-                <a href="#" class="text-gray-400 hover:text-white transition text-xl"><i class="fa-brands fa-youtube"></i></a>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // --- 1. Live Visitor Count Simulation ---
-        let visitors = Math.floor(Math.random() * 500) + 1000;
-        const visitorEl = document.getElementById('visitorCount');
-        setInterval(() => {
-            const change = Math.floor(Math.random() * 5) - 2; // -2 to +2
-            visitors += change;
-            visitorEl.textContent = visitors.toLocaleString();
-        }, 3000);
-
-        // --- 2. Currency Switcher Logic ---
-        let currentCurrency = 'INR';
-        const usdRate = 0.012; // 1 INR = 0.012 USD approx
-
-        function switchCurrency(currency) {
-            currentCurrency = currency;
-            document.getElementById('currentCurrencyLabel').textContent = currency === 'INR' ? 'INR (₹)' : 'USD ($)';
-            
-            const prices = document.querySelectorAll('.price-display');
-            prices.forEach(el => {
-                const inrValue = parseFloat(el.getAttribute('data-inr'));
-                if (currency === 'INR') {
-                    el.textContent = '₹' + inrValue.toLocaleString('en-IN');
-                } else {
-                    const usdValue = (inrValue * usdRate).toFixed(2);
-                    el.textContent = '$' + usdValue;
-                }
-            });
-        }
-        // Initialize currency display on load
-        switchCurrency('INR');
-
-        // --- 3. Offline Browser Game Logic (Mini Top-Down Shooter) ---
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const overlay = document.getElementById('gameOverlay');
-        let gameLoop, player, bullets, enemies, score, gameActive = false;
-
-        function resizeCanvas() {
-            canvas.width = canvas.parentElement.clientWidth;
-            canvas.height = canvas.parentElement.clientHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        const mouse = { x: canvas.width / 2, y: canvas.height / 2 };
-        canvas.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            mouse.x = e.clientX - rect.left;
-            mouse.y = e.clientY - rect.top;
-        });
-
-        canvas.addEventListener('mousedown', () => {
-            if(gameActive) {
-                const angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
-                bullets.push({
-                    x: player.x, y: player.y,
-                    vx: Math.cos(angle) * 10, vy: Math.sin(angle) * 10,
-                    radius: 4, color: '#3b82f6'
-                });
-            }
-        });
-
-        function startGame() {
-            overlay.classList.add('hidden');
-            resizeCanvas();
-            player = { x: canvas.width / 2, y: canvas.height / 2, radius: 15, color: '#ffffff' };
-            bullets = [];
-            enemies = [];
-            score = 0;
-            gameActive = true;
-            
-            if(gameLoop) clearInterval(gameLoop);
-            gameLoop = setInterval(updateGame, 1000/60);
-            setInterval(spawnEnemy, 1000);
-        }
-
-        function spawnEnemy() {
-            if(!gameActive) return;
-            let x, y;
-            if(Math.random() < 0.5) {
-                x = Math.random() < 0.5 ? 0 - 20 : canvas.width + 20;
-                y = Math.random() * canvas.height;
-            } else {
-                x = Math.random() * canvas.width;
-                y = Math.random() < 0.5 ? 0 - 20 : canvas.height + 20;
-            }
-            enemies.push({ x, y, radius: 12 + Math.random() * 10, color: '#ef4444', speed: 1 + Math.random() });
-        }
-
-        function updateGame() {
-            ctx.fillStyle = '#030712'; // clear screen
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Draw Player
-            ctx.beginPath();
-            ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
-            ctx.fillStyle = player.color;
-            ctx.fill();
-
-            // Player cannon (points to mouse)
-            const angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
-            ctx.beginPath();
-            ctx.moveTo(player.x, player.y);
-            ctx.lineTo(player.x + Math.cos(angle) * 25, player.y + Math.sin(angle) * 25);
-            ctx.strokeStyle = '#3b82f6';
-            ctx.lineWidth = 6;
-            ctx.stroke();
-
-            // Bullets
-            bullets.forEach((b, index) => {
-                b.x += b.vx; b.y += b.vy;
-                ctx.beginPath(); ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2); ctx.fillStyle = b.color; ctx.fill();
-                if(b.x < 0 || b.x > canvas.width || b.y < 0 || b.y > canvas.height) bullets.splice(index, 1);
-            });
-
-            // Enemies
-            enemies.forEach((e, eIndex) => {
-                const eAngle = Math.atan2(player.y - e.y, player.x - e.x);
-                e.x += Math.cos(eAngle) * e.speed; e.y += Math.sin(eAngle) * e.speed;
-                
-                ctx.beginPath(); ctx.arc(e.x, e.y, e.radius, 0, Math.PI * 2); ctx.fillStyle = e.color; ctx.fill();
-
-                // Collision with player
-                const dist = Math.hypot(player.x - e.x, player.y - e.y);
-                if(dist - e.radius - player.radius < 1) {
-                    gameActive = false;
-                    clearInterval(gameLoop);
-                    overlay.classList.remove('hidden');
-                    overlay.innerHTML = `<h3 class="text-3xl font-black text-red-500 mb-2">GAME OVER</h3><p class="text-white mb-6 text-xl">Score: ${score}</p><button onclick="startGame()" class="bg-brand-accent hover:bg-brand-accentHover text-white px-8 py-3 rounded-lg font-bold transition">Try Again</button>`;
-                }
-
-                // Collision with bullets
-                bullets.forEach((b, bIndex) => {
-                    const bDist = Math.hypot(b.x - e.x, b.y - e.y);
-                    if(bDist - e.radius - b.radius < 1) {
-                        enemies.splice(eIndex, 1);
-                        bullets.splice(bIndex, 1);
-                        score += 10;
-                    }
-                });
-            });
-
-            // Score
-            ctx.fillStyle = 'white'; ctx.font = '20px Arial'; ctx.fillText(`Score: ${score}`, 20, 30);
-        }
-
-        // --- 4. UI Modals ---
-        let isLoginMode = true;
-        const authModal = document.getElementById('authModal');
-        const overlayBg = document.getElementById('globalOverlay');
-        const authTitle = document.getElementById('authTitle');
-        const authSubtitle = document.getElementById('authSubtitle');
-        const authSubmitBtn = document.getElementById('authSubmitBtn');
-        const authSwitchText = document.getElementById('authSwitchText');
-        const authSwitchBtn = document.getElementById('authSwitchBtn');
-        const authError = document.getElementById('authError');
-
-        function openAuthModal(mode) {
-            isLoginMode = mode === 'login';
-            updateAuthUI();
-            authError.classList.add('hidden');
-            
-            overlayBg.classList.remove('hidden');
-            authModal.classList.remove('hidden', 'modal-exit');
-            authModal.classList.add('modal-enter');
-            
-            setTimeout(() => { overlayBg.classList.remove('opacity-0'); authModal.classList.remove('opacity-0'); }, 10);
-        }
-
-        function closeModals() {
-            overlayBg.classList.add('opacity-0');
-            authModal.classList.add('modal-exit');
-            setTimeout(() => {
-                overlayBg.classList.add('hidden');
-                authModal.classList.add('hidden');
-                authModal.classList.remove('modal-enter', 'modal-exit');
-            }, 300);
-        }
-
-        function toggleAuthMode() {
-            isLoginMode = !isLoginMode;
-            updateAuthUI();
-            authError.classList.add('hidden');
-        }
-
-        function updateAuthUI() {
-            authTitle.textContent = isLoginMode ? 'Welcome Back' : 'Create Account';
-            authSubtitle.textContent = isLoginMode ? 'Sign in to your PlayWithEase account' : 'Join the ultimate gaming marketplace';
-            authSubmitBtn.innerHTML = isLoginMode ? 'Sign In <i class="fa-solid fa-arrow-right"></i>' : 'Sign Up <i class="fa-solid fa-user-plus"></i>';
-            authSwitchText.textContent = isLoginMode ? "Don't have an account?" : "Already have an account?";
-            authSwitchBtn.textContent = isLoginMode ? 'Sign Up' : 'Log In';
-        }
-
-        function showError(msg) {
-            authError.textContent = msg;
-            authError.classList.remove('hidden');
-        }
-    </script>
-
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // ⚠️ IMPORTANT: Replace this config with your actual Firebase Project config!
-        // Go to Firebase Console -> Project Settings -> General -> Your apps -> SDK setup and configuration
+        // Dummy config - replace with actual Firebase config
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
-            authDomain: "your-project.firebaseapp.com",
-            projectId: "your-project-id",
-            storageBucket: "your-project.appspot.com",
+            authDomain: "playwithease.firebaseapp.com",
+            projectId: "playwithease",
+            storageBucket: "playwithease.appspot.com",
             messagingSenderId: "123456789",
             appId: "1:123456789:web:abcdef"
         };
 
-        // Initialize Firebase ONLY if config is changed (prevents console errors on default copy-paste)
-        let auth = null;
-        if(firebaseConfig.apiKey !== "YOUR_API_KEY") {
+        // Initialize Firebase safely inside try-catch so app doesn't break if keys are invalid
+        let auth;
+        try {
             const app = initializeApp(firebaseConfig);
             auth = getAuth(app);
-        } else {
-            console.warn("FIREBASE NOT CONFIGURED: Please replace firebaseConfig with your actual keys to enable login.");
+            
+            // Listen for auth state
+            onAuthStateChanged(auth, (user) => {
+                const authBtn = document.getElementById('authBtn');
+                const userProfile = document.getElementById('userProfile');
+                
+                if (user) {
+                    authBtn.innerText = "Logout";
+                    authBtn.onclick = () => signOut(auth);
+                    userProfile.style.display = "block";
+                    userProfile.innerText = user.email.split('@')[0];
+                } else {
+                    authBtn.innerText = "Login";
+                    authBtn.onclick = () => document.getElementById('authModal').style.display = 'flex';
+                    userProfile.style.display = "none";
+                }
+            });
+        } catch(e) {
+            console.warn("Firebase config missing. Using local storage for mock auth.");
+            // Mock Auth for demo purposes
+            const authBtn = document.getElementById('authBtn');
+            const userProfile = document.getElementById('userProfile');
+            const savedUser = localStorage.getItem('mockUser');
+            
+            if(savedUser) {
+                authBtn.innerText = "Logout";
+                userProfile.style.display = "block";
+                userProfile.innerText = savedUser;
+                authBtn.onclick = () => { localStorage.removeItem('mockUser'); location.reload(); };
+            } else {
+                authBtn.onclick = () => document.getElementById('authModal').style.display = 'flex';
+            }
+
+            window.handleAuth = (e) => {
+                e.preventDefault();
+                playSound();
+                const email = document.getElementById('email').value;
+                localStorage.setItem('mockUser', email.split('@')[0]);
+                closeModal('authModal');
+                location.reload();
+            };
+        }
+    </script>
+
+    <script>
+        // --- System Init ---
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
+            }, 1000);
+            initWebGL();
+            updateCartUI();
+        });
+
+        // --- Audio System (Web Audio API) ---
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioContext();
+        let bgmOscillator = null;
+        let isBgmPlaying = false;
+
+        function playSound() {
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.1);
         }
 
-        // DOM Elements for Auth State
-        const loggedOutUI = document.getElementById('loggedOutUI');
-        const loggedInUI = document.getElementById('loggedInUI');
-        const userEmailDisplay = document.getElementById('userEmailDisplay');
-        const authForm = document.getElementById('authForm');
-        const logoutBtn = document.getElementById('logoutBtn');
-
-        // Handle Form Submission
-        authForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if(!auth) {
-                showError("Firebase is not configured yet. Add your config keys in the code!");
-                return;
+        document.getElementById('audioToggle').addEventListener('click', function() {
+            playSound();
+            if (isBgmPlaying) {
+                bgmOscillator.stop();
+                this.classList.replace('fa-volume-up', 'fa-volume-mute');
+                this.style.color = '';
+                isBgmPlaying = false;
+            } else {
+                if(audioCtx.state === 'suspended') audioCtx.resume();
+                bgmOscillator = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                bgmOscillator.type = 'triangle';
+                bgmOscillator.frequency.value = 110; // Low hum
+                gain.gain.value = 0.02;
+                bgmOscillator.connect(gain);
+                gain.connect(audioCtx.destination);
+                bgmOscillator.start();
+                this.classList.replace('fa-volume-mute', 'fa-volume-up');
+                this.style.color = 'var(--neon-blue)';
+                isBgmPlaying = true;
             }
+        });
 
-            const email = document.getElementById('emailInput').value;
-            const password = document.getElementById('passwordInput').value;
-            const btn = document.getElementById('authSubmitBtn');
-            const originalBtnText = btn.innerHTML;
+        // --- UI Interactions ---
+        // Navbar Scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+        });
+
+        // Theme Toggle
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            playSound();
+            document.body.classList.toggle('light-mode');
+            this.classList.toggle('fa-moon');
+            this.classList.toggle('fa-sun');
+        });
+
+        // Modals
+        function openTrailer() {
+            playSound();
+            document.getElementById('trailerModal').style.display = 'flex';
+            document.getElementById('youtubePlayer').src = "https://www.youtube.com/embed/QdBZY2fkU-0?autoplay=1";
+        }
+
+        function closeModal(id) {
+            playSound();
+            document.getElementById(id).style.display = 'none';
+            if(id === 'trailerModal') document.getElementById('youtubePlayer').src = "";
+        }
+
+        // Live Counter Simulator
+        setInterval(() => {
+            const counter = document.getElementById('liveCounter');
+            let current = parseInt(counter.innerText.replace(',', ''));
+            current += Math.floor(Math.random() * 5) - 2; // fluctuate
+            counter.innerText = current.toLocaleString();
+        }, 3000);
+
+        // --- Store & Cart System (LocalStorage) ---
+        let currentCurrency = 'INR';
+        let cart = JSON.parse(localStorage.getItem('playWithEase_cart')) || [];
+
+        function setCurrency(currency) {
+            playSound();
+            currentCurrency = currency;
+            document.getElementById('btnINR').style.borderColor = currency === 'INR' ? 'var(--neon-blue)' : 'transparent';
+            document.getElementById('btnINR').style.color = currency === 'INR' ? 'var(--neon-blue)' : '#888';
+            document.getElementById('btnUSD').style.borderColor = currency === 'USD' ? 'var(--neon-blue)' : 'transparent';
+            document.getElementById('btnUSD').style.color = currency === 'USD' ? 'var(--neon-blue)' : '#888';
+
+            document.querySelectorAll('.price').forEach(el => {
+                el.innerText = currency === 'INR' ? `₹${el.dataset.inr}` : `$${el.dataset.usd}`;
+            });
+            updateCartUI();
+        }
+
+        function addToCart(name, priceINR, priceUSD) {
+            playSound();
+            cart.push({ name, priceINR, priceUSD });
+            localStorage.setItem('playWithEase_cart', JSON.stringify(cart));
+            updateCartUI();
             
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
-            btn.disabled = true;
+            // Pop effect on cart icon
+            const cartIcon = document.getElementById('cartBtn');
+            cartIcon.style.transform = 'scale(1.5)';
+            setTimeout(() => cartIcon.style.transform = 'scale(1)', 200);
+        }
 
-            try {
-                if(isLoginMode) {
-                    await signInWithEmailAndPassword(auth, email, password);
-                } else {
-                    await createUserWithEmailAndPassword(auth, email, password);
-                }
-                closeModals();
-                authForm.reset();
-            } catch (error) {
-                showError(error.message.replace('Firebase: ', ''));
-            } finally {
-                btn.innerHTML = originalBtnText;
-                btn.disabled = false;
+        function updateCartUI() {
+            document.getElementById('cartCount').innerText = cart.length;
+            const list = document.getElementById('cartItemsList');
+            list.innerHTML = '';
+            let totalINR = 0;
+            let totalUSD = 0;
+
+            cart.forEach((item, index) => {
+                totalINR += parseFloat(item.priceINR);
+                totalUSD += parseFloat(item.priceUSD);
+                const priceStr = currentCurrency === 'INR' ? `₹${item.priceINR}` : `$${item.priceUSD}`;
+                
+                list.innerHTML += `
+                    <div class="cart-item">
+                        <div>
+                            <h4>${item.name}</h4>
+                            <span class="neon-text">${priceStr}</span>
+                        </div>
+                        <button onclick="removeFromCart(${index})" style="color: #ff4757;"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+            });
+
+            const totalStr = currentCurrency === 'INR' ? `₹${totalINR.toLocaleString()}` : `$${totalUSD.toFixed(2)}`;
+            document.getElementById('cartTotal').innerText = totalStr;
+        }
+
+        function removeFromCart(index) {
+            playSound();
+            cart.splice(index, 1);
+            localStorage.setItem('playWithEase_cart', JSON.stringify(cart));
+            updateCartUI();
+        }
+
+        function toggleCart() {
+            playSound();
+            document.getElementById('cartSidebar').classList.toggle('active');
+        }
+        document.getElementById('cartBtn').addEventListener('click', toggleCart);
+
+        function checkout() {
+            playSound();
+            if(cart.length === 0) return alert("Cart is empty!");
+            toggleCart();
+            document.getElementById('paymentModal').style.display = 'flex';
+        }
+
+        function confirmPayment() {
+            playSound();
+            alert("Verifying payment... Thank you for your purchase!");
+            cart = [];
+            localStorage.removeItem('playWithEase_cart');
+            updateCartUI();
+            closeModal('paymentModal');
+        }
+
+        // --- Offline Mode & Fallback Game ---
+        window.addEventListener('online', updateNetworkStatus);
+        window.addEventListener('offline', updateNetworkStatus);
+
+        function updateNetworkStatus() {
+            const offlineSection = document.getElementById('offline-section');
+            const gamesSection = document.getElementById('games');
+            if(navigator.onLine) {
+                offlineSection.style.display = 'none';
+                gamesSection.style.display = 'block';
+            } else {
+                offlineSection.style.display = 'block';
+                gamesSection.style.display = 'none';
+                initOfflineGame();
             }
-        });
+        }
 
-        // Handle Logout
-        logoutBtn.addEventListener('click', () => {
-            if(auth) signOut(auth);
-        });
+        // Simple HTML5 Canvas "Click the Target" Game
+        let offlineGameRunning = false;
+        function initOfflineGame() {
+            if(offlineGameRunning) return;
+            offlineGameRunning = true;
+            const canvas = document.getElementById('offline-canvas');
+            const ctx = canvas.getContext('2d');
+            let score = 0;
+            let target = { x: 300, y: 150, radius: 20 };
 
-        // Listen for Auth State Changes (Persists across refresh)
-        if(auth) {
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    // User is signed in
-                    loggedOutUI.classList.add('hidden');
-                    loggedInUI.classList.remove('hidden');
-                    loggedInUI.classList.add('flex');
-                    userEmailDisplay.textContent = user.email.split('@')[0]; // Show username part of email
-                } else {
-                    // User is signed out
-                    loggedInUI.classList.add('hidden');
-                    loggedInUI.classList.remove('flex');
-                    loggedOutUI.classList.remove('hidden');
+            function draw() {
+                ctx.fillStyle = '#111';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.beginPath();
+                ctx.arc(target.x, target.y, target.radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#00f3ff';
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#00f3ff';
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+
+            canvas.addEventListener('mousedown', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+                
+                const dist = Math.hypot(target.x - mouseX, target.y - mouseY);
+                if(dist < target.radius) {
+                    score += 10;
+                    document.getElementById('offlineScore').innerText = score;
+                    target.x = Math.random() * (canvas.width - 40) + 20;
+                    target.y = Math.random() * (canvas.height - 40) + 20;
+                    target.radius = Math.max(10, 20 - (score/100)); // Gets harder
+                    playSound();
                 }
+            });
+
+            setInterval(draw, 1000/60);
+        }
+
+        // --- Three.js WebGL Interactive Demo ---
+        function initWebGL() {
+            const container = document.getElementById('webgl-container');
+            const scene = new THREE.Scene();
+            
+            const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
+
+            // Create a futuristic wireframe object
+            const geometry = new THREE.IcosahedronGeometry(2, 1);
+            const material = new THREE.MeshBasicMaterial({ 
+                color: 0x00f3ff, 
+                wireframe: true,
+                transparent: true,
+                opacity: 0.8
+            });
+            const mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+            // Add particles
+            const particlesGeom = new THREE.BufferGeometry();
+            const particlesCount = 500;
+            const posArray = new Float32Array(particlesCount * 3);
+            for(let i=0; i < particlesCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 15;
+            }
+            particlesGeom.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const particlesMat = new THREE.PointsMaterial({ size: 0.05, color: 0xbc13fe });
+            const particlesMesh = new THREE.Points(particlesGeom, particlesMat);
+            scene.add(particlesMesh);
+
+            camera.position.z = 5;
+
+            // Mouse interaction
+            let mouseX = 0;
+            let mouseY = 0;
+            container.addEventListener('mousemove', (e) => {
+                const rect = container.getBoundingClientRect();
+                mouseX = ((e.clientX - rect.left) / container.clientWidth) * 2 - 1;
+                mouseY = -((e.clientY - rect.top) / container.clientHeight) * 2 + 1;
+            });
+
+            // Animation Loop
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                mesh.rotation.x += 0.005;
+                mesh.rotation.y += 0.01;
+                
+                // Move object towards mouse
+                mesh.position.x += (mouseX * 2 - mesh.position.x) * 0.05;
+                mesh.position.y += (mouseY * 2 - mesh.position.y) * 0.05;
+
+                particlesMesh.rotation.y -= 0.002;
+
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // Handle Resize
+            window.addEventListener('resize', () => {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+        }
+
+        // --- PWA Service Worker (Inline Blob for Single File) ---
+        const swCode = `
+            const CACHE_NAME = 'playwithease-v1';
+            self.addEventListener('install', e => {
+                self.skipWaiting();
+            });
+            self.addEventListener('fetch', e => {
+                e.respondWith(
+                    fetch(e.request).catch(() => new Response('Offline mode fallback active.'))
+                );
+            });
+        `;
+        const blob = new Blob([swCode], {type: 'application/javascript'});
+        const swUrl = URL.createObjectURL(blob);
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register(swUrl)
+                    .then(reg => console.log('PWA Service Worker registered for offline capability.'))
+                    .catch(err => console.log('SW Registration failed: ', err));
             });
         }
     </script>
