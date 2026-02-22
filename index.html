@@ -3,26 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayWithEase | Premium Gaming Accounts</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>PlayWithEase | Premium Game Accounts</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- CORE VARIABLES & RESET --- */
+        /* --- CORE STYLES --- */
         :root {
-            --bg-color: #050505;
-            --surface-color: #111111;
-            --text-main: #f5f5f5;
-            --gold: #D4AF37;
-            --gold-hover: #f3c93f;
-            --font-brand: 'Cinzel', serif;
-            --font-ui: 'Montserrat', sans-serif;
+            --bg-base: #0a0a0c;
+            --bg-surface: #151518;
+            --bg-card: #1e1e24;
+            --accent-gold: #d4af37;
+            --accent-glow: rgba(212, 175, 55, 0.4);
+            --text-main: #ffffff;
+            --text-muted: #888891;
+            --font-brand: 'Orbitron', sans-serif;
+            --font-ui: 'Inter', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-base);
             color: var(--text-main);
             font-family: var(--font-ui);
             overflow-x: hidden;
@@ -30,223 +32,245 @@
 
         /* --- NAVIGATION --- */
         nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 2rem 5%;
-            background: rgba(5, 5, 5, 0.95);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-            backdrop-filter: blur(10px);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 4%; background: rgba(10, 10, 12, 0.9);
+            position: fixed; width: 100%; top: 0; z-index: 100;
+            backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-
         .brand {
-            font-family: var(--font-brand);
-            font-size: 2rem;
-            color: var(--gold);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            cursor: pointer;
+            font-family: var(--font-brand); font-size: 1.8rem;
+            color: var(--text-main); text-transform: uppercase; letter-spacing: 2px;
         }
+        .brand span { color: var(--accent-gold); }
+        
+        .nav-center { display: flex; gap: 2rem; }
+        .nav-center a { 
+            color: var(--text-muted); text-decoration: none; font-weight: 600; 
+            text-transform: uppercase; font-size: 0.85rem; transition: color 0.3s;
+        }
+        .nav-center a:hover, .nav-center a.active { color: var(--accent-gold); }
 
-        .nav-links { display: flex; gap: 2rem; align-items: center; }
-        .nav-links button {
+        .nav-actions { display: flex; gap: 1.5rem; align-items: center; }
+        .nav-actions button {
             background: none; border: none; color: var(--text-main);
-            font-family: var(--font-ui); font-size: 0.9rem;
-            text-transform: uppercase; letter-spacing: 1px;
-            cursor: pointer; transition: color 0.3s ease;
+            font-size: 1.2rem; cursor: pointer; transition: color 0.3s;
         }
-        .nav-links button:hover { color: var(--gold); }
-        .cart-icon { position: relative; font-size: 1.2rem; }
+        .nav-actions button:hover { color: var(--accent-gold); }
+        .cart-icon { position: relative; }
         .cart-count {
-            position: absolute; top: -10px; right: -15px;
-            background: var(--gold); color: #000;
-            font-size: 0.7rem; font-weight: bold;
+            position: absolute; top: -8px; right: -12px;
+            background: var(--accent-gold); color: #000;
+            font-size: 0.7rem; font-weight: bold; font-family: var(--font-ui);
             padding: 2px 6px; border-radius: 50%;
         }
 
-        /* --- HERO SECTION --- */
+        /* --- IMMERSIVE HERO SECTION --- */
+        /* Using Cyberpunk 2077 art as a premium placeholder */
         .hero {
-            height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
-            margin-top: 80px;
+            height: 85vh; margin-top: 70px; position: relative;
+            background: url('https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/capsule_616x353.jpg') center/cover no-repeat;
+            display: flex; align-items: flex-end; padding: 4rem 5%;
         }
-        .hero h1 {
-            font-family: var(--font-brand);
-            font-size: 4rem; margin-bottom: 1rem;
-            color: var(--text-main);
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, var(--bg-base) 0%, rgba(10,10,12,0.3) 50%, rgba(10,10,12,0.8) 100%);
         }
-        .hero p {
-            font-size: 1.2rem; font-weight: 300; letter-spacing: 2px;
-            margin-bottom: 3rem; color: #888;
+        .hero-content { position: relative; z-index: 10; max-width: 600px; }
+        .hero-tag { 
+            display: inline-block; background: var(--accent-gold); color: #000; 
+            padding: 0.3rem 0.8rem; font-weight: bold; font-size: 0.8rem; 
+            text-transform: uppercase; margin-bottom: 1rem; border-radius: 3px;
+        }
+        .hero h1 { font-family: var(--font-brand); font-size: 3.5rem; margin-bottom: 0.5rem; line-height: 1.1; }
+        .hero p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 2rem; }
+        .hero-btn {
+            background: var(--text-main); color: #000; padding: 1rem 2.5rem;
+            font-size: 1rem; font-weight: bold; text-transform: uppercase;
+            border: none; border-radius: 4px; cursor: pointer; transition: all 0.3s;
+        }
+        .hero-btn:hover { background: var(--accent-gold); box-shadow: 0 0 20px var(--accent-glow); }
+
+        /* --- STORE CATALOG --- */
+        .store-section { padding: 4rem 4%; }
+        .section-header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-bottom: 2.5rem; border-bottom: 1px solid #222; padding-bottom: 1rem;
+        }
+        .section-header h2 { font-family: var(--font-brand); font-size: 1.8rem; }
+        
+        /* Filters */
+        .filters { display: flex; gap: 1rem; }
+        .filter-btn {
+            background: var(--bg-surface); border: 1px solid #333; color: var(--text-muted);
+            padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .filter-btn:hover, .filter-btn.active { 
+            background: rgba(212, 175, 55, 0.1); border-color: var(--accent-gold); color: var(--accent-gold); 
         }
 
-        /* --- LAUNCHER BADGES --- */
-        .launchers { display: flex; gap: 3rem; margin-bottom: 2rem; opacity: 0.7;}
-        .launchers i { font-size: 2.5rem; transition: all 0.3s; cursor: pointer; }
-        .launchers i:hover { color: var(--gold); transform: scale(1.1); }
-
-        /* --- CATALOG (40+ GAMES) --- */
-        .catalog-container { padding: 5rem 5%; }
-        .section-title {
-            font-family: var(--font-brand); font-size: 2.5rem;
-            text-align: center; margin-bottom: 4rem; color: var(--gold);
-        }
-
+        /* --- GAME GRID & CARDS --- */
         .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem;
         }
-
         .game-card {
-            background: var(--surface-color);
-            border: 1px solid #222;
-            transition: transform 0.4s ease, border-color 0.4s ease;
-            cursor: pointer;
-            overflow: hidden;
-            position: relative;
+            background: var(--bg-card); border-radius: 8px; overflow: hidden;
+            position: relative; transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer; border: 1px solid #2a2a32;
         }
-        .game-card:hover { transform: translateY(-10px); border-color: var(--gold); }
-        .game-card img { width: 100%; height: auto; display: block; }
-        .game-info { padding: 1.5rem; text-align: center; }
-        .game-title {
-            font-family: var(--font-brand); font-size: 1.1rem;
-            margin-bottom: 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        .game-card:hover { 
+            transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); 
+            border-color: rgba(212, 175, 55, 0.5);
         }
-        .game-price { color: var(--gold); font-size: 1.2rem; margin-bottom: 1rem; }
-        .add-to-cart-btn {
-            width: 100%; padding: 0.8rem;
-            background: transparent; border: 1px solid var(--gold);
-            color: var(--gold); font-family: var(--font-ui);
-            text-transform: uppercase; letter-spacing: 1px;
-            cursor: pointer; transition: all 0.3s ease;
+        
+        .game-image-wrapper { position: relative; padding-top: 46.7%; /* Steam header ratio */ }
+        .game-image-wrapper img {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; transition: opacity 0.3s;
         }
-        .add-to-cart-btn:hover { background: var(--gold); color: #000; }
+        
+        /* Badges overlaid on image */
+        .platform-badges {
+            position: absolute; top: 10px; right: 10px;
+            display: flex; gap: 5px; z-index: 2;
+        }
+        .badge {
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+            color: #fff; width: 28px; height: 28px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; font-size: 0.8rem;
+        }
 
-        /* --- FIREBASE AUTH MODAL --- */
-        .modal {
-            display: none; position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%; background: rgba(0,0,0,0.8);
-            z-index: 200; justify-content: center; align-items: center;
-            backdrop-filter: blur(5px);
+        .game-info { padding: 1.2rem; }
+        .game-title { 
+            font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+        }
+        
+        .game-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+        .price-container { display: flex; flex-direction: column; }
+        .price-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; }
+        .game-price { color: var(--text-main); font-size: 1.2rem; font-weight: 600; }
+        
+        .add-btn {
+            background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold);
+            width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            cursor: pointer; transition: 0.3s;
+        }
+        .game-card:hover .add-btn { background: var(--accent-gold); color: #000; }
+
+        /* --- FIREBASE & CART MODALS (Reused & Polished) --- */
+        .modal, .cart-sidebar {
+            /* Kept mostly same as before, just updated colors */
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 200; justify-content: center; align-items: center; backdrop-filter: blur(5px);
         }
         .modal-content {
-            background: var(--surface-color); padding: 3rem;
-            border: 1px solid var(--gold); width: 400px; max-width: 90%;
-            text-align: center; position: relative;
+            background: var(--bg-surface); padding: 3rem; border: 1px solid #333; 
+            border-top: 3px solid var(--accent-gold); width: 400px; max-width: 90%; text-align: center; border-radius: 8px;
         }
-        .modal-close {
-            position: absolute; top: 1rem; right: 1.5rem;
-            font-size: 1.5rem; cursor: pointer; color: var(--gold);
-        }
-        .modal h2 { font-family: var(--font-brand); color: var(--gold); margin-bottom: 2rem; }
+        .modal-content h2 { font-family: var(--font-brand); margin-bottom: 1.5rem; }
         .modal input {
-            width: 100%; padding: 1rem; margin-bottom: 1rem;
-            background: #000; border: 1px solid #333; color: #fff;
-            font-family: var(--font-ui); outline: none;
+            width: 100%; padding: 1rem; margin-bottom: 1rem; background: var(--bg-base);
+            border: 1px solid #333; color: #fff; border-radius: 4px; outline: none;
         }
-        .modal input:focus { border-color: var(--gold); }
+        .modal input:focus { border-color: var(--accent-gold); }
         .btn-solid {
-            width: 100%; padding: 1rem; background: var(--gold);
-            color: #000; font-weight: bold; border: none;
-            cursor: pointer; text-transform: uppercase;
+            width: 100%; padding: 1rem; background: var(--accent-gold); color: #000;
+            font-weight: bold; border: none; border-radius: 4px; cursor: pointer; text-transform: uppercase;
         }
 
-        /* --- CART SIDEBAR --- */
+        /* Cart Sidebar */
         .cart-sidebar {
-            position: fixed; top: 0; right: -400px;
-            width: 400px; max-width: 100%; height: 100%;
-            background: var(--surface-color); z-index: 300;
-            border-left: 1px solid var(--gold); transition: right 0.4s ease;
-            display: flex; flex-direction: column; padding: 2rem;
+            display: flex; position: fixed; top: 0; right: -450px; width: 450px; max-width: 100%;
+            background: var(--bg-surface); border-left: 1px solid #333;
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1); flex-direction: column; padding: 2rem;
         }
         .cart-sidebar.open { right: 0; }
-        .cart-header {
-            display: flex; justify-content: space-between;
-            align-items: center; margin-bottom: 2rem;
-            font-family: var(--font-brand); color: var(--gold);
-        }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid #333; padding-bottom: 1rem; }
         .cart-items { flex-grow: 1; overflow-y: auto; }
-        .cart-item {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #333;
-        }
-        .cart-item-title { font-size: 0.9rem; max-width: 60%; }
-        .cart-item-remove { color: #ff4444; cursor: pointer; }
-        .cart-footer { margin-top: 2rem; }
-        .cart-total {
-            display: flex; justify-content: space-between;
-            font-size: 1.2rem; margin-bottom: 1rem; color: var(--gold);
-        }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding: 1rem; background: var(--bg-card); border-radius: 6px; }
+        .cart-item-info { display: flex; flex-direction: column; }
+        .cart-item-title { font-size: 0.9rem; font-weight: 600; }
+        .cart-item-platform { font-size: 0.7rem; color: var(--text-muted); }
+        .cart-item-price { font-weight: bold; color: var(--accent-gold); }
+        .cart-item-remove { color: #ff4444; cursor: pointer; padding: 5px; }
+        .cart-footer { border-top: 1px solid #333; padding-top: 1rem; margin-top: 1rem; }
+        .cart-total { display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: bold; margin-bottom: 1rem; }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="brand">PlayWithEase</div>
-        <div class="nav-links">
-            <button onclick="openModal()">Account</button>
+        <div class="brand">Play<span>With</span>Ease</div>
+        <div class="nav-center">
+            <a href="#" class="active">Store</a>
+            <a href="#">Trending</a>
+            <a href="#">Pre-Orders</a>
+        </div>
+        <div class="nav-actions">
+            <button><i class="fas fa-search"></i></button>
+            <button onclick="openModal()"><i class="far fa-user"></i></button>
             <button class="cart-icon" onclick="toggleCart()">
-                <i class="fas fa-shopping-bag"></i>
+                <i class="fas fa-shopping-cart"></i>
                 <span class="cart-count" id="cartCount">0</span>
             </button>
         </div>
     </nav>
 
     <section class="hero">
-        <h1>Master Your Domain</h1>
-        <p>Premium Game Accounts. Uncompromised Quality.</p>
-        <div class="launchers">
-            <i class="fab fa-steam" title="Steam"></i>
-            <i class="fas fa-gamepad" title="Epic Games"></i>
-            <i class="fas fa-star" title="Rockstar Games"></i>
+        <div class="hero-content">
+            <span class="hero-tag">Premium Featured Account</span>
+            <h1>Night City Awaits</h1>
+            <p>Get instant access to Cyberpunk 2077 with all premium launcher perks unlocked. Secure, instant delivery.</p>
+            <button class="hero-btn" onclick="addToCart('1091500', 'Cyberpunk 2077 - Premium Account', 29.99)">Buy Account - $29.99</button>
         </div>
     </section>
 
-    <section class="catalog-container">
-        <h2 class="section-title">The Collection</h2>
+    <section class="store-section">
+        <div class="section-header">
+            <h2>The Catalog</h2>
+            <div class="filters">
+                <button class="filter-btn active"><i class="fas fa-globe"></i> All</button>
+                <button class="filter-btn"><i class="fab fa-steam"></i> Steam</button>
+                <button class="filter-btn"><i class="fas fa-gamepad"></i> Epic</button>
+                <button class="filter-btn"><i class="fas fa-star"></i> Rockstar</button>
+            </div>
+        </div>
+        
         <div class="grid" id="gameGrid">
             </div>
     </section>
 
-    <div class="modal" id="authModal">
+    <div class="modal" id="authModal" style="display: none;">
         <div class="modal-content">
-            <span class="modal-close" onclick="closeModal()">&times;</span>
-            <h2>Client Portal</h2>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                <h2>Account Login</h2>
+                <i class="fas fa-times" style="cursor: pointer; color: var(--text-muted);" onclick="closeModal()"></i>
+            </div>
             <input type="email" id="email" placeholder="Email Address">
             <input type="password" id="password" placeholder="Password">
             <button class="btn-solid" onclick="authenticate()">Sign In / Register</button>
-            <p style="margin-top: 1rem; font-size: 0.8rem; color: #666;">Secured by Firebase</p>
         </div>
     </div>
 
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
             <h2>Your Cart</h2>
-            <i class="fas fa-times" style="cursor: pointer; font-size: 1.5rem;" onclick="toggleCart()"></i>
+            <i class="fas fa-times" style="cursor: pointer; font-size: 1.2rem;" onclick="toggleCart()"></i>
         </div>
         <div class="cart-items" id="cartItems">
             </div>
         <div class="cart-footer">
             <div class="cart-total">
                 <span>Total:</span>
-                <span id="cartTotalValue">$0.00</span>
+                <span id="cartTotalValue" style="color: var(--accent-gold);">$0.00</span>
             </div>
             <button class="btn-solid">Secure Checkout</button>
         </div>
     </div>
 
     <script>
-        // --- 1. GAME DATA (40+ Steam App IDs for CDN Posters) ---
+        // --- 1. GAME DATA (40+ Steam App IDs) ---
         const steamAppIds = [
             271590, 1174180, 1091500, 1245620, 1086940, 730, 570, 1938090, 
             1172470, 1145360, 252490, 289070, 381210, 413150, 394360, 236850, 
@@ -255,30 +279,56 @@
             1446780, 1888160, 2208920, 1778820, 1364780, 2073850, 2195250, 1509960, 440, 252950
         ];
 
-        // Generate game objects dynamically
+        // Platforms array to randomly assign launchers for the demo
+        const platforms = [
+            { name: 'Steam', icon: 'fab fa-steam' },
+            { name: 'Epic Games', icon: 'fas fa-gamepad' },
+            { name: 'Rockstar', icon: 'fas fa-star' }
+        ];
+
         const games = steamAppIds.map((id, index) => {
-            // Simulated pricing and titles for demo purposes
             const price = (Math.random() * (59.99 - 9.99) + 9.99).toFixed(2);
+            // Assign 1 or 2 random platforms to each game
+            const gamePlatforms = [platforms[Math.floor(Math.random() * platforms.length)]];
+            if(Math.random() > 0.7 && gamePlatforms[0].name !== 'Steam') gamePlatforms.push(platforms[0]);
+
             return {
                 id: id,
-                title: `Premium Account #${id}`, // In reality, fetch actual names from API
+                title: `Premium Account #${id}`, // In a real app, you fetch titles via Steam API
                 price: parseFloat(price),
-                image: `https://cdn.akamai.steamstatic.com/steam/apps/${id}/header.jpg`
+                image: `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${id}/header.jpg`,
+                platforms: gamePlatforms
             };
         });
 
-        // --- 2. RENDER STOREFRONT ---
+        // --- 2. RENDER DIGITAL CATALOG ---
         const gameGrid = document.getElementById('gameGrid');
         
         games.forEach(game => {
             const card = document.createElement('div');
             card.className = 'game-card';
+            
+            // Generate HTML for platform badges
+            const badgesHtml = game.platforms.map(p => `<div class="badge" title="${p.name}"><i class="${p.icon}"></i></div>`).join('');
+
             card.innerHTML = `
-                <img src="${game.image}" alt="Game Poster" onerror="this.src='https://via.placeholder.com/460x215/111/D4AF37?text=PlayWithEase'">
+                <div class="game-image-wrapper">
+                    <img src="${game.image}" alt="Game Poster" onerror="this.src='https://via.placeholder.com/460x215/151518/d4af37?text=PlayWithEase'">
+                    <div class="platform-badges">
+                        ${badgesHtml}
+                    </div>
+                </div>
                 <div class="game-info">
-                    <h3 class="game-title">${game.title}</h3>
-                    <p class="game-price">$${game.price}</p>
-                    <button class="add-to-cart-btn" onclick="addToCart('${game.id}', '${game.title}', ${game.price})">Add to Cart</button>
+                    <div class="game-title">${game.title}</div>
+                    <div class="game-bottom">
+                        <div class="price-container">
+                            <span class="price-label">Full Access</span>
+                            <span class="game-price">$${game.price}</span>
+                        </div>
+                        <button class="add-btn" onclick="addToCart('${game.id}', '${game.title}', ${game.price})" title="Add to Cart">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
                 </div>
             `;
             gameGrid.appendChild(card);
@@ -291,16 +341,15 @@
             cart.push({ id, title, price });
             updateCartUI();
             
-            // Subtle Rolex-style feedback (no alert boxes)
-            const btn = event.target;
-            const originalText = btn.innerText;
-            btn.innerText = "Added";
-            btn.style.background = "var(--gold)";
-            btn.style.color = "#000";
+            // Visual feedback on the button
+            const btn = event.currentTarget;
+            btn.innerHTML = '<i class="fas fa-check"></i>';
+            btn.style.background = 'var(--accent-gold)';
+            btn.style.color = '#000';
             setTimeout(() => {
-                btn.innerText = originalText;
-                btn.style.background = "transparent";
-                btn.style.color = "var(--gold)";
+                btn.innerHTML = '<i class="fas fa-plus"></i>';
+                btn.style.background = 'transparent';
+                btn.style.color = 'var(--accent-gold)';
             }, 1000);
         }
 
@@ -319,8 +368,10 @@
                 total += item.price;
                 cartItemsContainer.innerHTML += `
                     <div class="cart-item">
-                        <span class="cart-item-title">${item.title}</span>
-                        <span>$${item.price.toFixed(2)}</span>
+                        <div class="cart-item-info">
+                            <span class="cart-item-title">${item.title}</span>
+                            <span class="cart-item-price">$${item.price.toFixed(2)}</span>
+                        </div>
                         <i class="fas fa-trash cart-item-remove" onclick="removeFromCart(${index})"></i>
                     </div>
                 `;
@@ -329,27 +380,21 @@
         }
 
         function toggleCart() {
-            document.getElementById('cartSidebar').classList.toggle('open');
+            const sidebar = document.getElementById('cartSidebar');
+            sidebar.style.display = 'flex';
+            // Slight delay to allow display:flex to apply before transition
+            setTimeout(() => sidebar.classList.toggle('open'), 10);
         }
 
         // --- 4. FIREBASE AUTH MODAL LOGIC ---
-        function openModal() {
-            document.getElementById('authModal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('authModal').style.display = 'none';
-        }
+        function openModal() { document.getElementById('authModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('authModal').style.display = 'none'; }
 
         function authenticate() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            
             if(email && password) {
-                // Placeholder for Firebase: 
-                // firebase.auth().signInWithEmailAndPassword(email, password)
-                console.log("Firebase Auth Triggered for:", email);
-                alert("Firebase Authentication connection ready for configuration.");
+                alert("Firebase Authentication ready to connect!");
                 closeModal();
             } else {
                 alert("Please enter credentials.");
