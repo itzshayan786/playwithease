@@ -1,199 +1,360 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PlayVerse Store — All-in-One Game Shop</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #0f172a, #020617);
-      color: white;
-      overflow-x: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlayWithEase | Premium Gaming Accounts</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CORE VARIABLES & RESET --- */
+        :root {
+            --bg-color: #050505;
+            --surface-color: #111111;
+            --text-main: #f5f5f5;
+            --gold: #D4AF37;
+            --gold-hover: #f3c93f;
+            --font-brand: 'Cinzel', serif;
+            --font-ui: 'Montserrat', sans-serif;
+        }
 
-    header {
-      position: sticky;
-      top: 0;
-      backdrop-filter: blur(14px);
-      background: rgba(15, 23, 42, 0.7);
-      padding: 15px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 999;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            overflow-x: hidden;
+        }
 
-    .logo {
-      font-size: 24px;
-      font-weight: 700;
-      background: linear-gradient(90deg,#38bdf8,#818cf8);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 5%;
+            background: rgba(5, 5, 5, 0.95);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(10px);
+        }
 
-    nav a {
-      margin-left: 20px;
-      text-decoration: none;
-      color: #cbd5f5;
-      font-weight: 500;
-      transition: 0.3s;
-    }
+        .brand {
+            font-family: var(--font-brand);
+            font-size: 2rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
 
-    nav a:hover { color: white; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links button {
+            background: none; border: none; color: var(--text-main);
+            font-family: var(--font-ui); font-size: 0.9rem;
+            text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; transition: color 0.3s ease;
+        }
+        .nav-links button:hover { color: var(--gold); }
+        .cart-icon { position: relative; font-size: 1.2rem; }
+        .cart-count {
+            position: absolute; top: -10px; right: -15px;
+            background: var(--gold); color: #000;
+            font-size: 0.7rem; font-weight: bold;
+            padding: 2px 6px; border-radius: 50%;
+        }
 
-    .hero {
-      padding: 80px 40px;
-      text-align: center;
-    }
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
+            margin-top: 80px;
+        }
+        .hero h1 {
+            font-family: var(--font-brand);
+            font-size: 4rem; margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+        .hero p {
+            font-size: 1.2rem; font-weight: 300; letter-spacing: 2px;
+            margin-bottom: 3rem; color: #888;
+        }
 
-    .hero h1 {
-      font-size: 42px;
-      margin-bottom: 15px;
-    }
+        /* --- LAUNCHER BADGES --- */
+        .launchers { display: flex; gap: 3rem; margin-bottom: 2rem; opacity: 0.7;}
+        .launchers i { font-size: 2.5rem; transition: all 0.3s; cursor: pointer; }
+        .launchers i:hover { color: var(--gold); transform: scale(1.1); }
 
-    .hero p { color: #cbd5f5; }
+        /* --- CATALOG (40+ GAMES) --- */
+        .catalog-container { padding: 5rem 5%; }
+        .section-title {
+            font-family: var(--font-brand); font-size: 2.5rem;
+            text-align: center; margin-bottom: 4rem; color: var(--gold);
+        }
 
-    .section {
-      padding: 50px 40px;
-    }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
 
-    .section h2 {
-      margin-bottom: 25px;
-      font-size: 28px;
-    }
+        .game-card {
+            background: var(--surface-color);
+            border: 1px solid #222;
+            transition: transform 0.4s ease, border-color 0.4s ease;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+        }
+        .game-card:hover { transform: translateY(-10px); border-color: var(--gold); }
+        .game-card img { width: 100%; height: auto; display: block; }
+        .game-info { padding: 1.5rem; text-align: center; }
+        .game-title {
+            font-family: var(--font-brand); font-size: 1.1rem;
+            margin-bottom: 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .game-price { color: var(--gold); font-size: 1.2rem; margin-bottom: 1rem; }
+        .add-to-cart-btn {
+            width: 100%; padding: 0.8rem;
+            background: transparent; border: 1px solid var(--gold);
+            color: var(--gold); font-family: var(--font-ui);
+            text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .add-to-cart-btn:hover { background: var(--gold); color: #000; }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 20px;
-    }
+        /* --- FIREBASE AUTH MODAL --- */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.8);
+            z-index: 200; justify-content: center; align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: var(--surface-color); padding: 3rem;
+            border: 1px solid var(--gold); width: 400px; max-width: 90%;
+            text-align: center; position: relative;
+        }
+        .modal-close {
+            position: absolute; top: 1rem; right: 1.5rem;
+            font-size: 1.5rem; cursor: pointer; color: var(--gold);
+        }
+        .modal h2 { font-family: var(--font-brand); color: var(--gold); margin-bottom: 2rem; }
+        .modal input {
+            width: 100%; padding: 1rem; margin-bottom: 1rem;
+            background: #000; border: 1px solid #333; color: #fff;
+            font-family: var(--font-ui); outline: none;
+        }
+        .modal input:focus { border-color: var(--gold); }
+        .btn-solid {
+            width: 100%; padding: 1rem; background: var(--gold);
+            color: #000; font-weight: bold; border: none;
+            cursor: pointer; text-transform: uppercase;
+        }
 
-    .card {
-      position: relative;
-      padding: 20px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.08);
-      transition: 0.35s ease;
-      cursor: pointer;
-      overflow: hidden;
-    }
-
-    .card:hover {
-      transform: translateY(-8px) scale(1.02);
-      background: rgba(255, 255, 255, 0.08);
-      box-shadow: 0 10px 30px rgba(56, 189, 248, 0.25);
-    }
-
-    .card img {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
-
-    .card h3 { font-size: 16px; }
-
-    .tag {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      background: rgba(56,189,248,0.2);
-      margin-top: 6px;
-    }
-
-    footer {
-      padding: 30px;
-      text-align: center;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      color: #94a3b8;
-    }
-
-    .glass-hover::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.25), transparent);
-      opacity: 0;
-      transition: 0.5s;
-    }
-
-    .glass-hover:hover::before { opacity: 1; }
-  </style>
+        /* --- CART SIDEBAR --- */
+        .cart-sidebar {
+            position: fixed; top: 0; right: -400px;
+            width: 400px; max-width: 100%; height: 100%;
+            background: var(--surface-color); z-index: 300;
+            border-left: 1px solid var(--gold); transition: right 0.4s ease;
+            display: flex; flex-direction: column; padding: 2rem;
+        }
+        .cart-sidebar.open { right: 0; }
+        .cart-header {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 2rem;
+            font-family: var(--font-brand); color: var(--gold);
+        }
+        .cart-items { flex-grow: 1; overflow-y: auto; }
+        .cart-item {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #333;
+        }
+        .cart-item-title { font-size: 0.9rem; max-width: 60%; }
+        .cart-item-remove { color: #ff4444; cursor: pointer; }
+        .cart-footer { margin-top: 2rem; }
+        .cart-total {
+            display: flex; justify-content: space-between;
+            font-size: 1.2rem; margin-bottom: 1rem; color: var(--gold);
+        }
+    </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">PlayVerse</div>
-  <nav>
-    <a href="#games">Games</a>
-    <a href="#giftcards">Gift Cards</a>
-    <a href="#subscriptions">Subscriptions</a>
-  </nav>
-</header>
-
-<section class="hero">
-  <h1>All‑in‑One Game Store</h1>
-  <p>Buy games, gift cards & subscriptions instantly with a premium experience.</p>
-</section>
-
-<section class="section" id="games">
-  <h2>🔥 Popular Games (40+)</h2>
-  <div class="grid">
-    <!-- 40 Game Cards -->
-    <script>
-      const games = [
-        "GTA V","Valorant","Fortnite","PUBG","Minecraft","Call of Duty","FIFA 24","Cyberpunk 2077","Elden Ring","God of War",
-        "Spider‑Man","Red Dead Redemption 2","Assassin's Creed","Far Cry 6","Battlefield","Apex Legends","Resident Evil 4","Hogwarts Legacy","Forza Horizon","The Witcher 3",
-        "Overwatch 2","Halo Infinite","Doom Eternal","Need for Speed","Tekken 8","Street Fighter","Mortal Kombat","Rainbow Six Siege","Rocket League","Among Us",
-        "Fall Guys","The Sims 4","Dota 2","League of Legends","Genshin Impact","CS2","Starfield","No Man's Sky","Destiny 2","ARK Survival"
-      ];
-
-      document.write(games.map(g => `
-        <div class="card glass-hover">
-          <img src="https://via.placeholder.com/300x160" alt="${g}">
-          <h3>${g}</h3>
-          <span class="tag">Instant Delivery</span>
+    <nav>
+        <div class="brand">PlayWithEase</div>
+        <div class="nav-links">
+            <button onclick="openModal()">Account</button>
+            <button class="cart-icon" onclick="toggleCart()">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
         </div>
-      `).join(""));
+    </nav>
+
+    <section class="hero">
+        <h1>Master Your Domain</h1>
+        <p>Premium Game Accounts. Uncompromised Quality.</p>
+        <div class="launchers">
+            <i class="fab fa-steam" title="Steam"></i>
+            <i class="fas fa-gamepad" title="Epic Games"></i>
+            <i class="fas fa-star" title="Rockstar Games"></i>
+        </div>
+    </section>
+
+    <section class="catalog-container">
+        <h2 class="section-title">The Collection</h2>
+        <div class="grid" id="gameGrid">
+            </div>
+    </section>
+
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h2>Client Portal</h2>
+            <input type="email" id="email" placeholder="Email Address">
+            <input type="password" id="password" placeholder="Password">
+            <button class="btn-solid" onclick="authenticate()">Sign In / Register</button>
+            <p style="margin-top: 1rem; font-size: 0.8rem; color: #666;">Secured by Firebase</p>
+        </div>
+    </div>
+
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <i class="fas fa-times" style="cursor: pointer; font-size: 1.5rem;" onclick="toggleCart()"></i>
+        </div>
+        <div class="cart-items" id="cartItems">
+            </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotalValue">$0.00</span>
+            </div>
+            <button class="btn-solid">Secure Checkout</button>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. GAME DATA (40+ Steam App IDs for CDN Posters) ---
+        const steamAppIds = [
+            271590, 1174180, 1091500, 1245620, 1086940, 730, 570, 1938090, 
+            1172470, 1145360, 252490, 289070, 381210, 413150, 394360, 236850, 
+            230410, 218620, 105600, 550, 4000, 322330, 292030, 814380, 1240440, 
+            1599340, 1811260, 1190460, 1623730, 2050650, 1716740, 1326470, 
+            1446780, 1888160, 2208920, 1778820, 1364780, 2073850, 2195250, 1509960, 440, 252950
+        ];
+
+        // Generate game objects dynamically
+        const games = steamAppIds.map((id, index) => {
+            // Simulated pricing and titles for demo purposes
+            const price = (Math.random() * (59.99 - 9.99) + 9.99).toFixed(2);
+            return {
+                id: id,
+                title: `Premium Account #${id}`, // In reality, fetch actual names from API
+                price: parseFloat(price),
+                image: `https://cdn.akamai.steamstatic.com/steam/apps/${id}/header.jpg`
+            };
+        });
+
+        // --- 2. RENDER STOREFRONT ---
+        const gameGrid = document.getElementById('gameGrid');
+        
+        games.forEach(game => {
+            const card = document.createElement('div');
+            card.className = 'game-card';
+            card.innerHTML = `
+                <img src="${game.image}" alt="Game Poster" onerror="this.src='https://via.placeholder.com/460x215/111/D4AF37?text=PlayWithEase'">
+                <div class="game-info">
+                    <h3 class="game-title">${game.title}</h3>
+                    <p class="game-price">$${game.price}</p>
+                    <button class="add-to-cart-btn" onclick="addToCart('${game.id}', '${game.title}', ${game.price})">Add to Cart</button>
+                </div>
+            `;
+            gameGrid.appendChild(card);
+        });
+
+        // --- 3. CART LOGIC ---
+        let cart = [];
+
+        function addToCart(id, title, price) {
+            cart.push({ id, title, price });
+            updateCartUI();
+            
+            // Subtle Rolex-style feedback (no alert boxes)
+            const btn = event.target;
+            const originalText = btn.innerText;
+            btn.innerText = "Added";
+            btn.style.background = "var(--gold)";
+            btn.style.color = "#000";
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.background = "transparent";
+                btn.style.color = "var(--gold)";
+            }, 1000);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            document.getElementById('cartCount').innerText = cart.length;
+            const cartItemsContainer = document.getElementById('cartItems');
+            cartItemsContainer.innerHTML = '';
+            
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                cartItemsContainer.innerHTML += `
+                    <div class="cart-item">
+                        <span class="cart-item-title">${item.title}</span>
+                        <span>$${item.price.toFixed(2)}</span>
+                        <i class="fas fa-trash cart-item-remove" onclick="removeFromCart(${index})"></i>
+                    </div>
+                `;
+            });
+            document.getElementById('cartTotalValue').innerText = `$${total.toFixed(2)}`;
+        }
+
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('open');
+        }
+
+        // --- 4. FIREBASE AUTH MODAL LOGIC ---
+        function openModal() {
+            document.getElementById('authModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('authModal').style.display = 'none';
+        }
+
+        function authenticate() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if(email && password) {
+                // Placeholder for Firebase: 
+                // firebase.auth().signInWithEmailAndPassword(email, password)
+                console.log("Firebase Auth Triggered for:", email);
+                alert("Firebase Authentication connection ready for configuration.");
+                closeModal();
+            } else {
+                alert("Please enter credentials.");
+            }
+        }
     </script>
-  </div>
-</section>
-
-<section class="section" id="giftcards">
-  <h2>🎁 Gift Cards</h2>
-  <div class="grid">
-    <div class="card glass-hover"><h3>Amazon</h3><span class="tag">Global</span></div>
-    <div class="card glass-hover"><h3>Google Play</h3><span class="tag">Android</span></div>
-    <div class="card glass-hover"><h3>Steam Wallet</h3><span class="tag">Gaming</span></div>
-    <div class="card glass-hover"><h3>PlayStation</h3><span class="tag">Console</span></div>
-    <div class="card glass-hover"><h3>Xbox</h3><span class="tag">Console</span></div>
-    <div class="card glass-hover"><h3>Netflix</h3><span class="tag">Streaming</span></div>
-    <div class="card glass-hover"><h3>Spotify</h3><span class="tag">Music</span></div>
-    <div class="card glass-hover"><h3>BookMyShow</h3><span class="tag">Entertainment</span></div>
-  </div>
-</section>
-
-<section class="section" id="subscriptions">
-  <h2>💎 Subscriptions</h2>
-  <div class="grid">
-    <div class="card glass-hover"><h3>Xbox Game Pass</h3></div>
-    <div class="card glass-hover"><h3>PlayStation Plus</h3></div>
-    <div class="card glass-hover"><h3>EA Play</h3></div>
-    <div class="card glass-hover"><h3>Ubisoft+</h3></div>
-    <div class="card glass-hover"><h3>NVIDIA GeForce Now</h3></div>
-    <div class="card glass-hover"><h3>Apple Arcade</h3></div>
-  </div>
-</section>
-
-<footer>
-  © 2026 PlayVerse Store • All rights reserved
-</footer>
-
 </body>
 </html>
