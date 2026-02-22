@@ -1,501 +1,1572 @@
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayWithEase | Digital Game Keys & Gift Cards</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: { primary: '#6d28d9', secondary: '#4c1d95' }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
-        .hide { display: none !important; }
-        .cart-slide { transform: translateX(100%); transition: transform 0.3s ease-in-out; }
-        .cart-open { transform: translateX(0); }
-        .product-card { transition: box-shadow 0.3s ease, transform 0.2s ease; }
-        .product-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
-        .product-img-wrapper { overflow: hidden; }
-        .product-img { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .product-card:hover .product-img { transform: scale(1.08); }
-    </style>
+<meta charset="UTF-8">
+<title>PlayWithEase | Trusted Games & OTT Store</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.ico">
+
+<!-- TRUSTPILOT DOMAIN VERIFICATION -->
+<meta name="trustpilot-one-time-domain-verification-id" content="9813f6e5-27fa-4e5f-8f0f-428c4a46632a">
+<script src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
+body{background:#f8fafc;color:#0f172a}
+
+/* HEADER */
+header{
+  background:#3b82f6; /* Light professional blue */
+  border-bottom:1px solid #2563eb;
+  position:sticky;
+  top:0;
+  z-index:100
+}
+
+/* Logo */
+.logo .name{color:#ffffff}
+.logo .tag{color:#e0e7ff}
+
+/* Navbar links */
+nav a,
+nav span{
+  color:#eff6ff;
+}
+
+nav a:hover{
+  color:#ffffff;
+}
+
+.header-wrap{max-width:1200px;margin:auto;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:12px}
+.logo img{width:42px;height:42px;border-radius:10px}
+.logo .name{font-size:20px;font-weight:800}
+.logo .tag{display:block;font-size:11px;color:#64748b}
+
+nav{display:flex;align-items:center;margin-left:auto}
+nav a, nav span{margin-left:18px;text-decoration:none;color:#334155;font-size:14px}
+nav a:hover{color:#2563eb}
+.cart-count{background:#2563eb;color:#fff;border-radius:999px;padding:2px 7px;font-size:11px;margin-left:4px}
+
+/* HERO */
+.hero{
+  max-width:1200px;margin:40px auto 20px;padding:40px 30px;
+  display:grid;grid-template-columns:1.2fr 1fr;gap:40px;
+  align-items:center;background:linear-gradient(180deg,#f8fafc,#eef2ff);
+  border-radius:28px
+}
+.hero h1{font-size:42px;line-height:1.2}
+.hero h1 span{color:#2563eb}
+.hero p{margin-top:14px;color:#475569}
+.actions{margin-top:22px}
+.btn{display:inline-block;padding:12px 24px;border-radius:8px;font-weight:600;text-decoration:none;margin-right:10px}
+.btn.primary{background:#2563eb;color:#fff}
+.btn.secondary{border:1px solid #cbd5f5;color:#2563eb;background:#fff}
+
+/* TRUST BAR */
+.trust-bar{margin-top:18px;display:flex;gap:18px;flex-wrap:wrap;font-size:13px}
+.trust-bar span{background:#fff;padding:6px 12px;border-radius:999px;border:1px solid #e5e7eb}
+
+/* SECTION */
+.section{max-width:1200px;margin:auto;padding:60px 20px}
+.section h2{font-size:26px;margin-bottom:18px}
+
+/* SEARCH */
+.search-wrap{max-width:420px;margin-bottom:20px}
+.search-wrap input{
+  width:100%;padding:14px 18px;border-radius:999px;
+  border:1px solid #cbd5e1;font-size:14px;outline:none
+}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:22px}
+
+/* CARD + ANIMATION */
+.card{
+  position:relative;
+  overflow:hidden;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  opacity:0;
+  transform:translateY(20px);
+  transition:.4s;
+}
+
+.card.show{opacity:1;transform:translateY(0)}
+.card:hover{transform:translateY(-6px);box-shadow:0 14px 30px rgba(0,0,0,.1)}
+.card img{width:100%;height:180px;object-fit:revert}
+.card .info{padding:14px}
+.card h4{font-size:14px}
+.card p{font-size:12px;color:#64748b}
+.card b{display:block;margin:6px 0;color:#2563eb}
+.card button{
+  margin-top:6px;
+  background:#2563eb;color:#fff;border:none;
+  padding:7px 14px;border-radius:6px;
+  font-size:12px;cursor:pointer
+}
+
+/* OTT */
+.card .ott{width:100%;height:120px;object-fit:contain;padding:18px;background:#fff}
+
+/* SHOW MORE */
+.show-more-wrap{text-align:center;margin-top:30px}
+.show-more-wrap button{
+  padding:12px 26px;border-radius:999px;
+  background:#2563eb;color:#fff;border:none;font-weight:600;cursor:pointer
+}
+
+/* FOOTER */
+footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align:center;font-size:13px;color:#64748b}
+@media(max-width:900px){.hero{grid-template-columns:1fr}}
+
+  /* TRUSTPILOT REVIEW BADGE STYLE */
+.trustpilot-review{
+  max-width:1200px;
+  margin:18px auto 30px;
+  padding:0 20px;
+}
+
+.trustpilot-review a{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:#ffffff;
+  border:1px solid #e5e7eb;
+  padding:10px 18px;
+  border-radius:999px;
+  font-size:14px;
+  font-weight:600;
+  color:#0f172a;
+  text-decoration:none;
+  box-shadow:0 6px 18px rgba(0,0,0,.06);
+  transition:.25s;
+}
+
+.trustpilot-review a:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 26px rgba(0,0,0,.1);
+  color:#2563eb;
+}
+#ai-chat-btn{
+  position:fixed;
+  bottom:22px;
+  right:22px;
+  width:58px;
+  height:58px;
+  background:#2563eb;
+  color:#fff;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+  cursor:pointer;
+  box-shadow:0 14px 34px rgba(37,99,235,.45);
+  z-index:9999;
+}
+#ai-chat-box{
+  position:fixed;
+  bottom:90px;
+  right:22px;
+  width:320px;
+  max-height:440px;
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 18px 40px rgba(0,0,0,.18);
+  display:none;
+  flex-direction:column;
+  overflow:hidden;
+  z-index:9999;
+}
+.ai-header{
+  background:#2563eb;
+  color:#fff;
+  padding:12px 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:14px;
+  font-weight:600;
+}
+.ai-header button{
+  background:none;border:none;color:#fff;font-size:18px;cursor:pointer
+}
+#ai-messages{
+  flex:1;padding:14px;overflow-y:auto;background:#f8fafc
+}
+.ai-msg{margin-bottom:10px;font-size:13px;max-width:85%;padding:8px 12px;border-radius:12px}
+.ai-msg.ai{background:#e0e7ff}
+.ai-msg.user{background:#2563eb;color:#fff;margin-left:auto}
+.ai-input{display:flex;border-top:1px solid #e5e7eb}
+.ai-input input{flex:1;border:none;padding:12px;font-size:13px;outline:none}
+.ai-input button{background:#2563eb;color:#fff;border:none;padding:0 16px;font-size:13px}
+
+@media (max-width: 768px){
+
+  /* Header container */
+  .header-wrap{
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* Navbar */
+  nav{
+    width:100%;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+    row-gap:8px;
+  }
+
+  nav a,
+  nav span{
+    margin-left:12px;
+    font-size:13px;
+    white-space:nowrap;
+  }
+
+  #userEmail{
+    max-width:140px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:inline-block;
+    vertical-align:middle;
+  }
+}
+
+@media (max-width: 768px){
+  #ai-chat-btn{
+    bottom:16px;
+    right:16px;
+    width:54px;
+    height:54px;
+    font-size:24px;
+    z-index:9999;
+  }
+
+  #ai-chat-box{
+    right:10px;
+    bottom:80px;
+    width:92vw;
+    max-height:70vh;
+    z-index:9999;
+  }
+}
+  /* ADD TO CART ANIMATION (FINAL) */
+.card button{
+  position:relative;
+  overflow:hidden;
+  transition:all .25s ease;
+}
+
+.card button.added{
+  background:#16a34a !important;
+  transform:scale(0.96);
+}
+
+.card button.added span{
+  opacity:0;
+}
+
+.card button.added::after{
+  content:"✓ Added";
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:600;
+  color:#fff;
+  animation:fadeIn .25s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:scale(.8)}
+  to{opacity:1;transform:scale(1)}
+}
+
+  /* ===== ADD TO CART ANIMATION (SAFE) ===== */
+.card button{
+  position:relative;
+  overflow:hidden;
+  transition:.25s ease;
+}
+
+.card button:active{
+  transform:scale(.95);
+}
+
+.card button.added{
+  background:#16a34a !important;
+  color:#fff;
+}
+
+.card button.added span{
+  visibility:hidden;
+}
+
+.card button.added::after{
+  content:"✓ Added";
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:600;
+}
+/* ===== HEADER TEXT VISIBILITY FIX ===== */
+
+/* Brand text */
+.logo .name{
+  color:#ffffff;
+}
+
+.logo .tag{
+  color:#e0e7ff;   /* soft white-blue */
+  opacity:.95;
+}
+
+/* Navbar links */
+nav a{
+  color:#f8fafc;
+  font-weight:500;
+}
+
+nav a:hover{
+  color:#ffffff;
+}
+
+/* Cart count badge */
+.cart-count{
+  background:#ffffff;
+  color:#2563eb;
+  font-weight:700;
+}
+
+/* User email */
+#userEmail{
+  color:#e0e7ff;
+  font-weight:500;
+}
+
+/* Login / Logout */
+#loginBtn,
+#logoutBtn{
+  color:#ffffff;
+  font-weight:600;
+}
+
+#loginBtn:hover,
+#logoutBtn:hover{
+  text-decoration:underline;
+}
+
+/* Games / OTT text clarity */
+nav a[href="#games"],
+nav a[href="#ott"]{
+  color:#ffffff;
+}
+/* PROFILE DROPDOWN */
+.profile-wrap{
+  position:relative;
+  margin-left:18px;
+}
+
+.profile-btn{
+  cursor:pointer;
+}
+
+.profile-circle{
+  width:36px;
+  height:36px;
+  background:#2563eb;
+  color:#fff;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+}
+
+.profile-dropdown{
+  position:absolute;
+  top:48px;
+  right:0;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+  min-width:170px;
+  box-shadow:0 14px 30px rgba(0,0,0,.15);
+  overflow:hidden;
+  opacity:0;
+  transform:translateY(-10px);
+  pointer-events:none;
+  transition:.25s ease;
+  z-index:9999;
+}
+
+.profile-dropdown.show{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+
+.profile-dropdown a{
+  display:block;
+  padding:12px 14px;
+  font-size:14px;
+  color:#0f172a;
+  text-decoration:none;
+}
+
+.profile-dropdown a:hover{
+  background:#f1f5f9;
+}
+/* ===== PROFILE DROPDOWN (PROFESSIONAL) ===== */
+.profile-wrap{
+  position:relative;
+  margin-left:16px;
+}
+
+.profile-btn{
+  width:38px;
+  height:38px;
+  background:#ffffff;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  box-shadow:0 6px 16px rgba(0,0,0,.15);
+  transition:.25s ease;
+}
+
+.profile-btn:hover{
+  transform:translateY(-1px);
+}
+
+.profile-btn .avatar{
+  font-size:18px;
+}
+
+.profile-menu{
+  position:absolute;
+  top:48px;
+  right:0;
+  min-width:180px;
+  background:#ffffff;
+  border-radius:12px;
+  box-shadow:0 18px 40px rgba(0,0,0,.18);
+  overflow:hidden;
+
+  opacity:0;
+  transform:translateY(-10px);
+  pointer-events:none;
+  transition:.25s ease;
+  z-index:9999;
+}
+
+.profile-menu a{
+  display:block;
+  padding:12px 14px;
+  font-size:14px;
+  text-decoration:none;
+  color:#0f172a;
+  transition:.2s;
+}
+
+.profile-menu a:hover{
+  background:#f1f5ff;
+  color:#2563eb;
+}
+
+/* active state */
+.profile-wrap.active .profile-menu{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+/* PROFILE DROPDOWN FIX */
+.profile-wrap{
+  position:relative;
+  margin-left:14px;
+}
+
+.profile-btn{
+  width:38px;
+  height:38px;
+  background:#2563eb;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+}
+
+.profile-btn .avatar{
+  color:#fff;
+  font-size:18px;
+  line-height:1;
+}
+/* GAME POSTER FIX */
+.game-poster{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  background:#000;
+  display:block;
+}
+
+  .badge{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  background:rgba(37,99,235,0.9);
+  color:#fff;
+  font-size:13px;
+  font-weight:700;
+  padding:8px 16px;
+  border-radius:999px;
+  white-space:nowrap;
+  z-index:10;
+  pointer-events:none;
+  box-shadow:0 6px 18px rgba(0,0,0,.35);
+}
+  
+ .card:hover img{
+  transform:scale(1.05);
+}
+.card img{
+  transition:.35s ease;
+}
+@media(max-width:768px){
+  .wa-float{
+    bottom:16px;
+    left:16px;
+    font-size:13px;
+    padding:10px 16px;
+  }
+}
+/* ===== AMAZON-STYLE MOBILE LAYOUT ===== */
+@media (max-width: 768px){
+
+  /* PAGE PADDING */
+  body{
+    background:#f1f5f9;
+  }
+
+  .section{
+    padding:30px 12px;
+  }
+
+  /* GRID → 2 ITEMS PER ROW */
+  .grid{
+    grid-template-columns:repeat(2, 1fr);
+    gap:12px;
+  }
+
+  /* CARD COMPACT */
+  .card{
+    border-radius:14px;
+  }
+
+  /* IMAGE */
+  .game-poster{
+    height:140px;          /* compact like Amazon */
+  }
+
+  /* INFO SECTION */
+  .card .info{
+    padding:10px;
+  }
+
+  .card h4{
+    font-size:13px;
+    line-height:1.3;
+    margin-bottom:4px;
+  }
+  /* FIX GAME TITLE LINK LOOK */
+.card h4 a{
+  color:#0f172a;
+  text-decoration:none;
+  font-weight:600;
+}
+
+.card h4 a:hover{
+  color:#2563eb;
+  text-decoration:underline;
+}
+
+  .card p{
+    font-size:11px;
+  }
+
+  .card b{
+    font-size:14px;
+    margin:6px 0;
+    display:block;
+  }
+  
+.card{
+  display:block;
+  text-decoration:none;
+  color:#0f172a;
+}
+
+  /* ADD TO CART BUTTON */
+  .card button{
+    width:100%;
+    padding:9px 0;
+    font-size:13px;
+    border-radius:8px;
+  }
+
+  /* BADGE (Instant) */
+  .badge{
+    top:-10px;
+    font-size:10px;
+    padding:4px 10px;
+  }
+
+  /* SHOW MORE BUTTON */
+  .show-more-wrap button{
+    width:100%;
+    font-size:14px;
+  }
+
+}
+/* ===== PREMIUM MOBILE POLISH ===== */
+@media (max-width: 768px){
+
+  /* SECTION TITLE */
+  .section h2{
+    font-size:18px;
+    font-weight:800;
+    letter-spacing:.2px;
+  }
+
+  /* CARD LOOK (premium) */
+  .card{
+    background:#ffffff;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    border:none;
+  }
+
+  /* IMAGE POLISH */
+  .game-poster{
+    height:150px;
+    border-bottom:1px solid #f1f5f9;
+  }
+
+  /* INFO AREA */
+  .card .info{
+    padding:12px;
+  }
+
+  .card h4{
+    font-size:13.5px;
+    font-weight:600;
+    color:#0f172a;
+  }
+
+  /* PRICE = FOCUS */
+  .card b{
+    font-size:15px;
+    font-weight:800;
+    color:#2563eb;
+  }
+
+  /* ADD TO CART = PREMIUM BUTTON */
+  .card button{
+    margin-top:8px;
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    box-shadow:0 6px 16px rgba(37,99,235,.45);
+  }
+
+  .card button:active{
+    transform:scale(.96);
+  }
+
+  /* BADGE = GLASS EFFECT */
+  .badge{
+    background:rgba(37,99,235,.85);
+    backdrop-filter:blur(6px);
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:.3px;
+  }
+
+  /* SHOW MORE BUTTON */
+  .show-more-wrap button{
+    background:#0f172a;
+    font-weight:700;
+    letter-spacing:.4px;
+  }
+
+}
+/* ===== MOBILE HEADER COMPACT (AMAZON STYLE) ===== */
+@media (max-width: 768px){
+
+  /* Header height kam */
+  header{
+    position:sticky;
+    top:0;
+  }
+
+  .header-wrap{
+    padding:10px 12px;
+  }
+
+  /* Logo size chhota */
+  .logo img{
+    width:32px;
+    height:32px;
+  }
+
+  .logo .name{
+    font-size:15px;
+  }
+
+  .logo .tag{
+    display:none;
+  }
+
+  /* NAV CLEANUP */
+  nav{
+    width:auto;
+  }
+
+  /* Games / OTT links hide on mobile */
+  nav a[href="#games"],
+  nav a[href="#ott"]{
+    display:none;
+  }
+
+  /* Email hide (Amazon bhi email nahi dikhata) */
+  #userEmail{
+    display:none !important;
+  }
+
+  /* Login / Logout compact */
+  #loginBtn,
+  #logoutBtn{
+    font-size:13px;
+  }
+
+  /* Cart icon focus */
+  nav a[href="cart.html"]{
+    font-size:15px;
+  }
+
+  /* Profile icon clean */
+  .profile-btn{
+    width:34px;
+    height:34px;
+  }
+
+}
+/* ===== MOBILE TAGLINE FIX (PROFESSIONAL) ===== */
+@media (max-width: 768px){
+
+  /* Logo text wrapper ko tight */
+  .logo{
+    gap:8px;
+  }
+
+  .logo .name{
+    font-size:15px;
+    font-weight:800;
+    line-height:1.1;
+  }
+
+  .logo .tag{
+    display:block;          /* 🔥 wapas dikhao */
+    font-size:11px;         /* compact */
+    font-weight:500;
+    color:#e0e7ff;          /* soft professional */
+    line-height:1.2;
+    margin-top:2px;
+    white-space:nowrap;     /* ek hi line */
+    opacity:.95;
+  }
+
+}
+/* 🔥 REMOVE LINK LOOK FROM WHOLE CARD */
+.card{
+  color:#0f172a;           /* normal text color */
+  text-decoration:none;   /* remove underline */
+}
+
+/* Title professional look */
+.card h4{
+  color:#0f172a;
+  font-weight:700;
+  text-decoration:none;
+}
+
+/* Hover polish */
+.card:hover h4{
+  color:#2563eb;           /* subtle blue on hover */
+  text-decoration:none;
+}
+  .card h4{
+  font-weight:700;
+  font-size:14px;
+}
+
+.card:hover h4{
+  color:#2563eb;
+}
+  
+</style>
 </head>
-<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-200">
 
-    <header class="sticky top-0 z-40 w-full bg-white dark:bg-gray-800 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="showView('homeView')">
-                    <i class="fa-solid fa-gamepad text-3xl text-primary mr-2"></i>
-                    <span class="font-bold text-2xl tracking-tight">PlayWith<span class="text-primary">Ease</span></span>
-                </div>
-                
-                <div class="hidden md:flex flex-1 max-w-lg mx-8">
-                    <div class="relative w-full">
-                        <input type="text" placeholder="Search games, gift cards..." class="w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full py-2 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-primary">
-                        <button class="absolute right-3 top-2 text-gray-400 hover:text-primary"><i class="fa-solid fa-search"></i></button>
-                    </div>
-                </div>
+<body>
 
-                <div class="flex items-center space-x-4">
-                    <button id="currencyBtn" class="font-semibold text-sm hover:text-primary">INR ₹</button>
-                    <button id="themeToggle" class="text-xl text-gray-500 hover:text-primary"><i class="fa-solid fa-moon"></i></button>
-                    <button id="authBtn" class="text-xl text-gray-500 hover:text-primary" onclick="handleAuthClick()"><i class="fa-regular fa-user"></i></button>
-                    <button class="relative text-xl text-gray-500 hover:text-primary" onclick="toggleCart()">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                        <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-screen" id="mainContent">
-        
-        <div id="homeView">
-            <div class="bg-gradient-to-r from-primary to-purple-900 rounded-2xl p-8 sm:p-12 mb-10 text-white shadow-lg flex flex-col md:flex-row items-center justify-between">
-                <div>
-                    <h1 class="text-4xl md:text-5xl font-bold mb-4">Level Up Your Library</h1>
-                    <p class="text-lg md:text-xl mb-6 opacity-90">Instant digital keys, localized gift cards, and premium subscriptions.</p>
-                    <button class="bg-white text-primary font-bold py-3 px-8 rounded-full shadow hover:bg-gray-100 transition" onclick="document.getElementById('gamesSection').scrollIntoView()">Shop Now</button>
-                </div>
-                <div class="hidden md:block">
-                    <i class="fa-solid fa-vr-cardboard text-9xl opacity-80 animate-pulse"></i>
-                </div>
-            </div>
-
-            <h2 id="gamesSection" class="text-2xl font-bold mb-6 border-b border-gray-200 dark:border-gray-700 pb-2"><i class="fa-solid fa-fire text-orange-500 mr-2"></i>Trending Games</h2>
-            <div id="gamesGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-12"></div>
-
-            <h2 class="text-2xl font-bold mb-6 border-b border-gray-200 dark:border-gray-700 pb-2"><i class="fa-solid fa-gift text-pink-500 mr-2"></i>Gift Cards</h2>
-            <div id="giftCardsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12"></div>
-
-            <h2 class="text-2xl font-bold mb-6 border-b border-gray-200 dark:border-gray-700 pb-2"><i class="fa-solid fa-ticket text-blue-500 mr-2"></i>Subscriptions</h2>
-            <div id="subsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12"></div>
-        </div>
-
-        <div id="authView" class="hide max-w-md mx-auto mt-10 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
-            <h2 id="authTitle" class="text-2xl font-bold mb-6 text-center">Login to PlayWithEase</h2>
-            <form id="authForm" onsubmit="handleAuthSubmit(event)">
-                <div class="mb-4">
-                    <label class="block text-sm font-medium mb-1">Email</label>
-                    <input type="email" id="authEmail" required class="w-full border dark:border-gray-600 rounded px-3 py-2 bg-gray-50 dark:bg-gray-700">
-                </div>
-                <div class="mb-6">
-                    <label class="block text-sm font-medium mb-1">Password</label>
-                    <input type="password" id="authPassword" required class="w-full border dark:border-gray-600 rounded px-3 py-2 bg-gray-50 dark:bg-gray-700">
-                </div>
-                <button type="submit" class="w-full bg-primary text-white py-2 rounded font-bold hover:bg-secondary transition">Submit</button>
-            </form>
-            <p class="mt-4 text-center text-sm">
-                <span id="authToggleText">Don't have an account?</span> 
-                <button class="text-primary font-bold" onclick="toggleAuthMode()">Toggle here</button>
-            </p>
-            <div id="authError" class="text-red-500 text-sm text-center mt-3 hide"></div>
-        </div>
-
-        <div id="profileView" class="hide max-w-3xl mx-auto mt-10">
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
-                <div class="flex items-center border-b dark:border-gray-700 pb-6 mb-6">
-                    <div class="w-24 h-24 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-4xl text-gray-400 mr-6">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-3xl font-bold" id="profileEmail">user@example.com</h2>
-                        <p class="text-gray-500 dark:text-gray-400">PlayWithEase Member</p>
-                        <button class="mt-2 text-sm bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded hover:bg-gray-300 dark:hover:bg-gray-600"><i class="fa-solid fa-pen mr-1"></i>Edit Profile</button>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4 mb-8">
-                    <div class="bg-purple-50 dark:bg-gray-700 p-4 rounded-lg text-center">
-                        <span class="block text-3xl font-bold text-primary">0</span>
-                        <span class="text-sm text-gray-500 dark:text-gray-300">Total Orders</span>
-                    </div>
-                    <div class="bg-purple-50 dark:bg-gray-700 p-4 rounded-lg text-center">
-                        <span class="block text-3xl font-bold text-primary">0</span>
-                        <span class="text-sm text-gray-500 dark:text-gray-300">Wishlist Items</span>
-                    </div>
-                </div>
-                <button onclick="logoutUser()" class="w-full bg-red-500 text-white py-3 rounded-lg font-bold hover:bg-red-600 transition"><i class="fa-solid fa-right-from-bracket mr-2"></i>Logout</button>
-            </div>
-        </div>
-
-        <div id="checkoutView" class="hide max-w-2xl mx-auto mt-10">
-            <h2 class="text-3xl font-bold mb-6">Checkout</h2>
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-6 mb-6">
-                <h3 class="text-xl font-semibold mb-4 border-b pb-2">Order Summary</h3>
-                <div id="checkoutItems" class="mb-4 space-y-2"></div>
-                <div class="flex justify-between font-bold text-lg pt-4 border-t">
-                    <span>Total Pay:</span>
-                    <span id="checkoutTotal">₹0</span>
-                </div>
-            </div>
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-6 text-center">
-                <h3 class="text-xl font-semibold mb-2">Pay via UPI</h3>
-                <p class="text-gray-500 dark:text-gray-400 mb-4">Scan the QR or use the UPI ID below to complete your payment.</p>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=shayanff98@okhdfcbank&pn=PlayWithEase" alt="UPI QR" class="mx-auto mb-4 border-4 border-white rounded">
-                <p class="text-lg font-mono bg-gray-100 dark:bg-gray-700 py-2 rounded mb-6">shayanff98@okhdfcbank</p>
-                <button onclick="confirmOrder()" class="bg-green-500 text-white w-full py-3 rounded-lg font-bold hover:bg-green-600 transition text-lg">I Have Paid</button>
-            </div>
-        </div>
-
-        <div id="successView" class="hide max-w-md mx-auto mt-20 text-center">
-            <i class="fa-solid fa-circle-check text-6xl text-green-500 mb-4"></i>
-            <h2 class="text-3xl font-bold mb-2">Payment Received!</h2>
-            <p class="text-gray-500 dark:text-gray-400 mb-6">Your digital keys will be emailed to you shortly.</p>
-            <button onclick="showView('homeView')" class="bg-primary text-white py-2 px-6 rounded-full font-bold hover:bg-secondary">Continue Shopping</button>
-        </div>
-
-    </main>
-
-    <div id="cartDrawer" class="fixed inset-y-0 right-0 w-full md:w-96 bg-white dark:bg-gray-800 shadow-2xl z-50 cart-slide flex flex-col">
-        <div class="p-4 border-b dark:border-gray-700 flex justify-between items-center">
-            <h2 class="text-xl font-bold"><i class="fa-solid fa-cart-shopping mr-2"></i>Your Cart</h2>
-            <button onclick="toggleCart()" class="text-gray-500 hover:text-red-500 text-xl"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div id="cartItems" class="flex-1 overflow-y-auto p-4 space-y-4"></div>
-        <div class="p-6 border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
-            <div class="flex justify-between font-bold text-lg mb-4">
-                <span>Total:</span>
-                <span id="cartTotalUI">₹0</span>
-            </div>
-            <button onclick="proceedToCheckout()" class="w-full bg-primary text-white py-3 rounded font-bold hover:bg-secondary transition">Checkout</button>
-        </div>
+<header>
+<div class="header-wrap">
+  <div class="logo">
+    <img src="favicon.ico">
+    <div>
+      <span class="name">PlayWithEase</span>
+      <span class="tag">Trusted Games & OTT Store</span>
     </div>
-    <div id="cartOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hide" onclick="toggleCart()"></div>
+  </div>
+  <nav>
+  <a href="#games">Games</a>
+  <a href="#ott">OTT</a>
 
-    <footer class="bg-gray-800 text-gray-300 py-8 text-center">
-        <p>&copy; 2026 PlayWithEase. All digital goods delivered instantly.</p>
-    </footer>
+  <a href="cart.html">
+    🛒 Cart <span id="cartCount" class="cart-count">0</span>
+  </a>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+  <!-- USER EMAIL -->
+  <span id="userEmail" style="font-weight:600; display:none"></span>
 
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
-            authDomain: "playwithease.firebaseapp.com",
-            projectId: "playwithease",
-            storageBucket: "playwithease.firebasestorage.app",
-            messagingSenderId: "189729941006",
-            appId: "1:189729941006:web:362653774b92416c357e5f",
-            measurementId: "G-1C3B31KQ7C"
-        };
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+  <!-- LOGIN -->
+  <a href="login.html" id="loginBtn">Login</a>
 
-        // --- GLOBAL STATE ---
-        let cart = JSON.parse(localStorage.getItem('playWithEaseCart')) || [];
-        let currency = 'INR'; 
-        let conversionRate = 0.012; 
-        let currentUser = null;
-        let isLoginMode = true;
+  <!-- LOGOUT -->
+  <a href="#" id="logoutBtn" style="display:none">Logout</a>
+<div class="profile-wrap" id="profileWrap" style="display:none">
+  <div class="profile-btn" onclick="toggleProfile()">
+    <span class="avatar" style="
+    margin-left: 3px;
+">🙎🏻&zwj;♂️</span>
 
-        // --- DATABASE ---
-        const products = [
-            // FULL 40+ GAMES
-            { id: 'g1', type: 'game', title: 'Grand Theft Auto V', platform: 'Steam', price: 999, discount: 50, rating: 4.8, img: 'https://cdn.akamai.steamstatic.com/steam/apps/271590/header.jpg' },
-            { id: 'g2', type: 'game', title: 'Red Dead Redemption 2', platform: 'Steam', price: 3199, discount: 60, rating: 4.9, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1174180/header.jpg' },
-            { id: 'g3', type: 'game', title: 'EA FC 24', platform: 'EA App', price: 3499, discount: 20, rating: 4.2, img: 'https://cdn.akamai.steamstatic.com/steam/apps/2195250/header.jpg' },
-            { id: 'g4', type: 'game', title: 'Cyberpunk 2077', platform: 'GOG', price: 2999, discount: 40, rating: 4.5, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg' },
-            { id: 'g5', type: 'game', title: 'Elden Ring', platform: 'Steam', price: 3599, discount: 10, rating: 4.9, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg' },
-            { id: 'g6', type: 'game', title: 'Call of Duty MW3', platform: 'Battle.net', price: 5599, discount: 15, rating: 3.9, img: 'https://cdn.akamai.steamstatic.com/steam/apps/2315580/header.jpg' },
-            { id: 'g7', type: 'game', title: 'Minecraft Java & Bedrock', platform: 'Xbox', price: 1999, discount: 0, rating: 4.9, img: 'https://placehold.co/460x215/22c55e/white?text=Minecraft' },
-            { id: 'g8', type: 'game', title: 'Valorant Points (1000 VP)', platform: 'Riot', price: 800, discount: 5, rating: 4.8, img: 'https://placehold.co/460x215/ef4444/white?text=Valorant+Points' },
-            { id: 'g9', type: 'game', title: 'PUBG 600 UC', platform: 'Mobile', price: 750, discount: 0, rating: 4.5, img: 'https://cdn.akamai.steamstatic.com/steam/apps/578080/header.jpg' },
-            { id: 'g10', type: 'game', title: 'Apex Legends 1000 Coins', platform: 'EA App', price: 799, discount: 0, rating: 4.7, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1172470/header.jpg' },
-            { id: 'g11', type: 'game', title: 'Assassin\'s Creed Mirage', platform: 'Ubisoft', price: 3499, discount: 25, rating: 4.1, img: 'https://placehold.co/460x215/1e3a8a/white?text=AC+Mirage' },
-            { id: 'g12', type: 'game', title: 'Hogwarts Legacy', platform: 'Steam', price: 2999, discount: 30, rating: 4.6, img: 'https://cdn.akamai.steamstatic.com/steam/apps/990080/header.jpg' },
-            { id: 'g13', type: 'game', title: 'Spider-Man Remastered', platform: 'Steam', price: 3999, discount: 40, rating: 4.8, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1817070/header.jpg' },
-            { id: 'g14', type: 'game', title: 'The Witcher 3: Wild Hunt', platform: 'Steam', price: 800, discount: 75, rating: 4.9, img: 'https://cdn.akamai.steamstatic.com/steam/apps/292030/header.jpg' },
-            { id: 'g15', type: 'game', title: 'FIFA 23', platform: 'EA App', price: 999, discount: 80, rating: 4.3, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1811260/header.jpg' },
-            { id: 'g16', type: 'game', title: 'Forza Horizon 5', platform: 'Xbox/PC', price: 3499, discount: 50, rating: 4.7, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1551360/header.jpg' },
-            { id: 'g17', type: 'game', title: 'Resident Evil 4', platform: 'Steam', price: 3599, discount: 35, rating: 4.9, img: 'https://cdn.akamai.steamstatic.com/steam/apps/2050650/header.jpg' },
-            { id: 'g18', type: 'game', title: 'God of War', platform: 'Steam', price: 3299, discount: 50, rating: 4.9, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1593500/header.jpg' },
-            { id: 'g19', type: 'game', title: 'Baldur\'s Gate 3', platform: 'Steam', price: 2999, discount: 10, rating: 5.0, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1086940/header.jpg' },
-            { id: 'g20', type: 'game', title: 'Starfield', platform: 'Steam', price: 4999, discount: 30, rating: 3.8, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1716740/header.jpg' },
-            { id: 'g21', type: 'game', title: 'Helldivers 2', platform: 'Steam', price: 2499, discount: 0, rating: 4.5, img: 'https://cdn.akamai.steamstatic.com/steam/apps/2054970/header.jpg' },
-            { id: 'g22', type: 'game', title: 'Palworld', platform: 'Steam', price: 1300, discount: 10, rating: 4.6, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1623730/header.jpg' },
-            { id: 'g23', type: 'game', title: 'Tekken 8', platform: 'Steam', price: 4299, discount: 15, rating: 4.7, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1778820/header.jpg' },
-            { id: 'g24', type: 'game', title: 'Mortal Kombat 1', platform: 'Steam', price: 4499, discount: 40, rating: 4.2, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1971870/header.jpg' },
-            { id: 'g25', type: 'game', title: 'Street Fighter 6', platform: 'Steam', price: 3999, discount: 34, rating: 4.6, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1364780/header.jpg' },
-            { id: 'g26', type: 'game', title: 'Fallout 4', platform: 'Steam', price: 999, discount: 60, rating: 4.5, img: 'https://cdn.akamai.steamstatic.com/steam/apps/377160/header.jpg' },
-            { id: 'g27', type: 'game', title: 'Skyrim Special Edition', platform: 'Steam', price: 1799, discount: 75, rating: 4.8, img: 'https://cdn.akamai.steamstatic.com/steam/apps/489830/header.jpg' },
-            { id: 'g28', type: 'game', title: 'No Man\'s Sky', platform: 'Steam', price: 1799, discount: 50, rating: 4.4, img: 'https://cdn.akamai.steamstatic.com/steam/apps/275850/header.jpg' },
-            { id: 'g29', type: 'game', title: 'Terraria', platform: 'Steam', price: 369, discount: 50, rating: 4.9, img: 'https://cdn.akamai.steamstatic.com/steam/apps/105600/header.jpg' },
-            { id: 'g30', type: 'game', title: 'Stardew Valley', platform: 'Steam', price: 479, discount: 20, rating: 4.9, img: 'https://cdn.akamai.steamstatic.com/steam/apps/413150/header.jpg' },
-            { id: 'g31', type: 'game', title: 'Rust', platform: 'Steam', price: 1599, discount: 33, rating: 4.5, img: 'https://cdn.akamai.steamstatic.com/steam/apps/252490/header.jpg' },
-            { id: 'g32', type: 'game', title: 'DayZ', platform: 'Steam', price: 2799, discount: 40, rating: 4.2, img: 'https://cdn.akamai.steamstatic.com/steam/apps/221100/header.jpg' },
-            { id: 'g33', type: 'game', title: 'Rainbow Six Siege', platform: 'Ubisoft', price: 999, discount: 60, rating: 4.4, img: 'https://cdn.akamai.steamstatic.com/steam/apps/359550/header.jpg' },
-            { id: 'g34', type: 'game', title: 'Destiny 2: Lightfall', platform: 'Steam', price: 2199, discount: 50, rating: 3.5, img: 'https://placehold.co/460x215/4c1d95/white?text=Destiny+2+Lightfall' },
-            { id: 'g35', type: 'game', title: 'Overwatch 2: 1000 Coins', platform: 'Battle.net', price: 800, discount: 0, rating: 4.0, img: 'https://placehold.co/460x215/f97316/white?text=OW2+Coins' },
-            { id: 'g36', type: 'game', title: 'Genshin Impact 1098 Crystals', platform: 'HoYoverse', price: 1290, discount: 0, rating: 4.7, img: 'https://placehold.co/460x215/0ea5e9/white?text=Genshin+Crystals' },
-            { id: 'g37', type: 'game', title: 'Ghost of Tsushima', platform: 'PSN', price: 3999, discount: 20, rating: 4.9, img: 'https://placehold.co/460x215/1f2937/white?text=Ghost+of+Tsushima' },
-            { id: 'g38', type: 'game', title: 'The Last of Us Part I', platform: 'Steam', price: 3999, discount: 33, rating: 4.6, img: 'https://placehold.co/460x215/166534/white?text=TLOU+Part+I' },
-            { id: 'g39', type: 'game', title: 'Horizon Zero Dawn', platform: 'Steam', price: 3299, discount: 60, rating: 4.8, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1151640/header.jpg' },
-            { id: 'g40', type: 'game', title: 'Spider-Man: Miles Morales', platform: 'Steam', price: 3299, discount: 40, rating: 4.7, img: 'https://cdn.akamai.steamstatic.com/steam/apps/1817190/header.jpg' },
+  <div class="profile-menu" id="profileMenu">
+  <a href="my-account.html">My Account</a>
+  <a href="order-history.html">Order History</a>
+  <a href="#" onclick="firebaseLogout()">Logout</a>
+</div>
+</nav>
 
-            // UNSPLASH GIFT CARDS (High Quality Photography)
-            { id: 'gc1', type: 'giftcard', title: 'Amazon Gift Card', platform: 'Shopping', price: 1000, options: '₹500 - ₹10000', img: 'https://images.unsplash.com/photo-1622560480654-d96214fdc887?w=600&h=400&fit=crop&q=80' },
-            { id: 'gc2', type: 'giftcard', title: 'Flipkart E-Voucher', platform: 'Shopping', price: 1000, options: '₹100 - ₹5000', img: 'https://images.unsplash.com/photo-1607082349566-187342175e2f?w=600&h=400&fit=crop&q=80' },
-            { id: 'gc3', type: 'giftcard', title: 'BookMyShow Card', platform: 'Entertainment', price: 500, options: '₹250 - ₹2000', img: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=600&h=400&fit=crop&q=80' },
-            { id: 'gc4', type: 'giftcard', title: 'Ajio E-Gift Card', platform: 'Fashion', price: 2000, options: '₹500 - ₹5000', img: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&h=400&fit=crop&q=80' },
-            { id: 'gc5', type: 'giftcard', title: 'Myntra Voucher', platform: 'Fashion', price: 1000, options: '₹500 - ₹3000', img: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&h=400&fit=crop&q=80' },
-            { id: 'gc6', type: 'giftcard', title: 'Google Play Recharge', platform: 'Mobile', price: 500, options: '₹100 - ₹5000', img: 'https://images.unsplash.com/photo-1573867639040-6dd25fa5f597?w=600&h=400&fit=crop&q=80' },
-            { id: 'gc7', type: 'giftcard', title: 'Steam Wallet Code', platform: 'Gaming', price: 1000, options: '₹150 - ₹5000', img: 'https://images.unsplash.com/photo-1616588589676-62b3bd4ff6d2?w=600&h=400&fit=crop&q=80' },
-            { id: 'gc8', type: 'giftcard', title: 'PlayStation Store Wallet', platform: 'Gaming', price: 1000, options: '₹500 - ₹4000', img: 'https://images.unsplash.com/photo-1606144042743-18e38d49a3ae?w=600&h=400&fit=crop&q=80' },
-            { id: 'gc9', type: 'giftcard', title: 'Xbox Gift Card', platform: 'Gaming', price: 1000, options: '₹500 - ₹5000', img: 'https://images.unsplash.com/photo-1605901309584-818e25960b8f?w=600&h=400&fit=crop&q=80' },
-            { id: 'gc10', type: 'giftcard', title: 'Netflix E-Pin', platform: 'Streaming', price: 500, options: '₹149 - ₹649', img: 'https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?w=600&h=400&fit=crop&q=80' },
-            { id: 'gc11', type: 'giftcard', title: 'Spotify Premium Card', platform: 'Audio', price: 359, options: '1 - 12 Months', img: 'https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=600&h=400&fit=crop&q=80' },
-            { id: 'gc12', type: 'giftcard', title: 'Disney+ Hotstar', platform: 'Streaming', price: 899, options: 'Super / Premium', img: 'https://images.unsplash.com/photo-1586899028174-e7098604235b?w=600&h=400&fit=crop&q=80' },
+  <!-- LOGIN SYSTEM -->
+  <span id="userEmail" style="font-weight:600"></span>
+  <a href="login.html" id="loginBtn" style="display:none">Login</a>
+</nav>
+</div>
+</header>
 
-            // UNSPLASH SUBSCRIPTIONS (High Quality Photography)
-            { id: 's1', type: 'sub', title: 'PlayStation Plus Extra', platform: 'Subscription', price: 749, options: '1 / 3 / 12 Months', img: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&h=400&fit=crop&q=80' },
-            { id: 's2', type: 'sub', title: 'Xbox Game Pass Ultimate', platform: 'Subscription', price: 549, options: '1 / 3 / 6 Months', img: 'https://images.unsplash.com/photo-1605901309584-818e25960b8f?w=600&h=400&fit=crop&q=80' },
-            { id: 's3', type: 'sub', title: 'EA Play Membership', platform: 'Subscription', price: 315, options: '1 Month / 1 Year', img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&h=400&fit=crop&q=80' },
-            { id: 's4', type: 'sub', title: 'Netflix Premium Plan', platform: 'Subscription', price: 649, options: 'Monthly Auto-Renew', img: 'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=600&h=400&fit=crop&q=80' },
-            { id: 's5', type: 'sub', title: 'Amazon Prime Video', platform: 'Subscription', price: 1499, options: 'Yearly Plan', img: 'https://images.unsplash.com/photo-1593784991095-a205069470b6?w=600&h=400&fit=crop&q=80' },
-            { id: 's6', type: 'sub', title: 'Spotify Premium Individual', platform: 'Subscription', price: 119, options: 'Monthly Auto-Renew', img: 'https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=600&h=400&fit=crop&q=80' },
-        ];
+<section class="hero">
+  <div>
+    <h1>
+      We’re Live 🚀<br>
+      <span>Buy Games & OTT Instantly</span>
+    </h1>
 
-        // --- UI RENDERING ---
-        function formatPrice(inrPrice) {
-            return currency === 'USD' ? `$${(inrPrice * conversionRate).toFixed(2)}` : `₹${inrPrice.toLocaleString('en-IN')}`;
-        }
+    <p>
+      India’s trusted digital store for PC Games, PS5, Xbox & OTT subscriptions.<br>
+      Instant delivery • Genuine access • WhatsApp support
+    </p>
 
-        function generateCard(item) {
-            const currentPrice = item.price * (1 - (item.discount || 0) / 100);
-            const isGame = item.type === 'game';
-            
-            // For Giftcards/Subs we use 3/2 aspect ratio to look like physical cards, games use standard cover height
-            const imgClass = isGame ? "h-32 sm:h-40" : "aspect-[3/2]"; 
+    <div class="actions">
+      <a class="btn primary" href="#games">Browse Games</a>
+      <a class="btn secondary" href="#ott">Browse OTT</a>
+    </div>
 
-            return `
-                <div class="product-card bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col cursor-pointer">
-                    <div class="product-img-wrapper relative w-full ${imgClass} bg-gray-200 dark:bg-gray-700">
-                        <img src="${item.img}" alt="${item.title}" class="product-img w-full h-full object-cover" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/600x400/333333/ffffff?text=Image+Unavailable';">
-                        ${item.discount ? `<div class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded shadow-sm">-${item.discount}%</div>` : ''}
-                    </div>
-                    <div class="p-4 flex flex-col flex-grow">
-                        <div class="text-xs text-gray-500 dark:text-gray-400 mb-1 flex justify-between uppercase tracking-wider font-semibold">
-                            <span><i class="fa-solid ${isGame ? 'fa-gamepad' : (item.type === 'giftcard' ? 'fa-gift' : 'fa-ticket')} mr-1"></i>${item.platform}</span>
-                            ${item.rating ? `<span class="text-yellow-500"><i class="fa-solid fa-star"></i> ${item.rating}</span>` : ''}
-                        </div>
-                        <h3 class="font-bold text-base mb-1 line-clamp-2">${item.title}</h3>
-                        
-                        ${item.options ? `<p class="text-xs text-primary dark:text-purple-400 mb-3 bg-purple-50 dark:bg-purple-900/20 inline-block px-2 py-1 rounded border border-purple-100 dark:border-purple-800">Options: ${item.options}</p>` : '<div class="mb-3"></div>'}
-                        
-                        <div class="mt-auto flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-700">
-                            <div>
-                                <span class="text-[10px] text-gray-400 block leading-none mb-1">Starts at</span>
-                                <span class="font-bold text-lg">${formatPrice(currentPrice)}</span>
-                                ${item.discount > 0 ? `<span class="text-xs line-through text-gray-400 ml-1">${formatPrice(item.price)}</span>` : ''}
-                            </div>
-                            <button onclick="addToCart('${item.id}')" class="bg-primary hover:bg-secondary text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center shadow hover:shadow-md">
-                                Add <i class="fa-solid fa-plus ml-1 text-xs"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
+    <div class="trust-bar">
+      <span>✔ Instant Delivery</span>
+      <span>✔ Genuine Digital Access</span>
+      <span>✔ Secure UPI Payments</span>
+      <span>✔ WhatsApp Support</span>
+    </div>
+  </div>
 
-        function renderProducts() {
-            document.getElementById('gamesGrid').innerHTML = products.filter(p => p.type === 'game').map(generateCard).join('');
-            document.getElementById('giftCardsGrid').innerHTML = products.filter(p => p.type === 'giftcard').map(generateCard).join('');
-            document.getElementById('subsGrid').innerHTML = products.filter(p => p.type === 'sub').map(generateCard).join('');
-        }
+  <!-- RIGHT SIDE LAUNCH CARD -->
+  <div style="
+    background:#ffffff;
+    border-radius:22px;
+    padding:30px;
+    box-shadow:0 20px 50px rgba(0,0,0,.12);
+  ">
+    <h3 style="font-size:20px;margin-bottom:10px;">
+      🎉 Store is Now Open
+    </h3>
 
-        // --- CART LOGIC ---
-        window.addToCart = (id) => {
-            const product = products.find(p => p.id === id);
-            const existing = cart.find(item => item.id === id);
-            if (existing) existing.qty++;
-            else cart.push({ ...product, qty: 1, currentPrice: product.price * (1 - (product.discount || 0) / 100) });
-            saveCart();
-            updateCartUI();
-        };
+    <p style="font-size:14px;color:#475569;line-height:1.6;">
+      PlayWithEase is officially live.<br>
+      Get instant access to premium games & subscriptions with secure payments and fast support.
+    </p>
 
-        window.updateQty = (id, change) => {
-            const item = cart.find(i => i.id === id);
-            if (!item) return;
-            item.qty += change;
-            if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
-            saveCart();
-            updateCartUI();
-        };
+    <ul style="margin-top:14px;font-size:14px;line-height:1.8;">
+      <li>✔ PC Games (Steam / Rockstar)</li>
+      <li>✔ PS5 & Xbox Digital Accounts</li>
+      <li>✔ Netflix, Prime, Hotstar & more</li>
+    </ul>
 
-        function saveCart() {
-            localStorage.setItem('playWithEaseCart', JSON.stringify(cart));
-        }
+    <a href="https://wa.me/917001568884"
+       style="
+         display:inline-block;
+         margin-top:18px;
+         padding:12px 20px;
+         background:#16a34a;
+         color:#fff;
+         border-radius:12px;
+         text-decoration:none;
+         font-size:14px;
+         font-weight:700;
+         box-shadow:0 12px 28px rgba(22,163,74,.35);
+       ">
+       💬 Order on WhatsApp
+    </a>
+  </div>
+</section>
 
-        function updateCartUI() {
-            document.getElementById('cartCount').innerText = cart.reduce((sum, item) => sum + item.qty, 0);
-            const cartItemsDiv = document.getElementById('cartItems');
-            
-            if (cart.length === 0) {
-                cartItemsDiv.innerHTML = '<div class="text-center text-gray-500 mt-10"><i class="fa-solid fa-box-open text-4xl mb-3"></i><p>Your cart is empty</p></div>';
-                document.getElementById('cartTotalUI').innerText = formatPrice(0);
-                return;
-            }
+<!-- TRUSTPILOT REVIEW BADGE -->
+<div class="trustpilot-review">
+  <a href="https://www.trustpilot.com/review/playwithease.in" target="_blank">
+    ⭐ Rated on <b>Trustpilot</b> — Review us →
+  </a>
+</div>
+  
+  <section class="section" style="padding-top:30px">
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+    <div class="card show">
+      <div class="info">
+        <h4>🛒 Choose Product</h4>
+        <p>Select your game or OTT subscription</p>
+      </div>
+    </div>
+    <div class="card show">
+      <div class="info">
+        <h4>💬 Manual Verification</h4>
+        <p>We verify & guide you on WhatsApp</p>
+      </div>
+    </div>
+    <div class="card show">
+      <div class="info">
+        <h4>⚡ Instant Access</h4>
+        <p>Get login details within minutes</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-            let total = 0;
-            cartItemsDiv.innerHTML = cart.map(item => {
-                const itemTotal = item.currentPrice * item.qty;
-                total += itemTotal;
-                return `
-                    <div class="flex items-center gap-4 bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
-                        <img src="${item.img}" class="w-16 h-12 object-cover rounded" onerror="this.onerror=null; this.src='https://placehold.co/100x100/333333/ffffff?text=Img';">
-                        <div class="flex-1">
-                            <h4 class="text-sm font-bold line-clamp-1">${item.title}</h4>
-                            <div class="text-primary font-semibold text-sm">${formatPrice(item.currentPrice)}</div>
-                        </div>
-                        <div class="flex items-center space-x-2 bg-white dark:bg-gray-600 rounded px-2 py-1 shadow-sm">
-                            <button onclick="updateQty('${item.id}', -1)" class="text-gray-500 hover:text-red-500"><i class="fa-solid fa-minus text-xs"></i></button>
-                            <span class="text-sm font-bold w-4 text-center">${item.qty}</span>
-                            <button onclick="updateQty('${item.id}', 1)" class="text-gray-500 hover:text-green-500"><i class="fa-solid fa-plus text-xs"></i></button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            
-            document.getElementById('cartTotalUI').innerText = formatPrice(total);
-        }
+<section class="section" id="games">
+<h2>🎮 Premium PC Games Vault</h2>
+<div class="search-wrap">
+  <input id="searchInput" placeholder="Search games...">
+</div>
+<div class="grid" id="gameGrid"></div>
+<div class="show-more-wrap">
+  <button id="toggleBtn">Show More Games</button>
+</div>
+</section>
+<!-- PS5 SECTION -->
+<section class="section" id="ps5">
+  <h2>🎮 PS5 DIGITAL ACCOUNTS</h2>
 
-        // --- NAVIGATION & CHECKOUT ---
-        window.toggleCart = () => {
-            document.getElementById('cartDrawer').classList.toggle('cart-open');
-            document.getElementById('cartOverlay').classList.toggle('hide');
-        };
+  <div class="grid" id="ps5Grid"></div>
 
-        window.showView = (viewId) => {
-            ['homeView', 'authView', 'profileView', 'checkoutView', 'successView'].forEach(id => {
-                document.getElementById(id).classList.add('hide');
-            });
-            document.getElementById(viewId).classList.remove('hide');
-            window.scrollTo(0,0);
-        };
+  <div class="show-more-wrap">
+    <button id="ps5Toggle">Show More Games</button>
+  </div>
+</section>
 
-        window.proceedToCheckout = () => {
-            if (cart.length === 0) return alert('Cart is empty!');
-            if (!currentUser) {
-                toggleCart();
-                alert('Please login to checkout.');
-                showView('authView');
-                return;
-            }
-            toggleCart();
-            
-            let total = 0;
-            const checkoutItemsDiv = document.getElementById('checkoutItems');
-            checkoutItemsDiv.innerHTML = cart.map(item => {
-                const itemTotal = item.currentPrice * item.qty;
-                total += itemTotal;
-                return `
-                    <div class="flex justify-between items-center text-sm">
-                        <span>${item.qty}x ${item.title}</span>
-                        <span class="font-medium">${formatPrice(itemTotal)}</span>
-                    </div>
-                `;
-            }).join('');
-            document.getElementById('checkoutTotal').innerText = formatPrice(total);
-            showView('checkoutView');
-        };
+<!-- XBOX SECTION -->
+<section class="section" id="xbox">
+  <h2>🎮 XBOX DIGITAL ACCOUNTS</h2>
 
-        window.confirmOrder = () => {
-            cart = [];
-            saveCart();
-            updateCartUI();
-            showView('successView');
-        };
+  <div class="grid" id="xboxGrid"></div>
 
-        // --- AUTHENTICATION ---
-        window.handleAuthClick = () => {
-            if (currentUser) showView('profileView');
-            else showView('authView');
-        };
+  <div class="show-more-wrap">
+    <button id="xboxToggle">Show More Games</button>
+  </div>
+</section>
 
-        window.toggleAuthMode = () => {
-            isLoginMode = !isLoginMode;
-            document.getElementById('authTitle').innerText = isLoginMode ? 'Login to PlayWithEase' : 'Create an Account';
-            document.getElementById('authToggleText').innerText = isLoginMode ? "Don't have an account?" : "Already have an account?";
-            document.getElementById('authError').classList.add('hide');
-        };
+<section class="section" id="ott">
+<h2>📺 OTT Subscriptions</h2>
 
-        window.handleAuthSubmit = async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('authEmail').value;
-            const password = document.getElementById('authPassword').value;
-            const errorDiv = document.getElementById('authError');
-            
-            try {
-                if (isLoginMode) {
-                    await signInWithEmailAndPassword(auth, email, password);
-                } else {
-                    await createUserWithEmailAndPassword(auth, email, password);
-                }
-                document.getElementById('authForm').reset();
-                showView('profileView');
-            } catch (error) {
-                errorDiv.innerText = error.message.replace('Firebase: ', '');
-                errorDiv.classList.remove('hide');
-            }
-        };
+<div class="grid">
 
-        window.logoutUser = async () => {
-            await signOut(auth);
-            showView('homeView');
-        };
+  <!-- NETFLIX -->
+  <a href="product.html?id=netflix" class="card">
+    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg">
+    <div class="info">
+      <h4>Netflix</h4>
+      <b>From ₹149</b>
+      <button onclick="event.preventDefault(); addToCart('Netflix',149,this)">
+        <span>Add to Cart</span>
+      </button>
+    </div>
+  </a>
 
-        onAuthStateChanged(auth, (user) => {
-            currentUser = user;
-            const authBtnIcon = document.querySelector('#authBtn i');
-            if (user) {
-                authBtnIcon.classList.remove('fa-regular');
-                authBtnIcon.classList.add('fa-solid');
-                authBtnIcon.classList.add('text-primary');
-                document.getElementById('profileEmail').innerText = user.email;
-            } else {
-                authBtnIcon.classList.add('fa-regular');
-                authBtnIcon.classList.remove('fa-solid');
-                authBtnIcon.classList.remove('text-primary');
-            }
-        });
+  <!-- AMAZON PRIME -->
+  <a href="product.html?id=prime" class="card">
+    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png">
+    <div class="info">
+      <h4>Amazon Prime</h4>
+      <b>From ₹129</b>
+      <button onclick="event.preventDefault(); addToCart('Amazon Prime',129,this)">
+        <span>Add to Cart</span>
+      </button>
+    </div>
+  </a>
 
-        // --- MISC UTILS ---
-        document.getElementById('currencyBtn').addEventListener('click', (e) => {
-            currency = currency === 'INR' ? 'USD' : 'INR';
-            e.target.innerText = currency === 'INR' ? 'INR ₹' : 'USD $';
-            renderProducts();
-            updateCartUI();
-        });
+  <!-- HOTSTAR -->
+  <a href="product.html?id=hotstar" class="card">
+    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg">
+    <div class="info">
+      <h4>Disney+ Hotstar</h4>
+      <b>From ₹99</b>
+      <button onclick="event.preventDefault(); addToCart('Disney+ Hotstar',99,this)">
+        <span>Add to Cart</span>
+      </button>
+    </div>
+  </a>
 
-        const htmlEl = document.documentElement;
-        const themeBtn = document.getElementById('themeToggle');
-        
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            htmlEl.classList.add('dark');
-        }
+  <!-- YOUTUBE PREMIUM -->
+  <a href="product.html?id=youtube" class="card">
+    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/6/62/YouTube_social_white_square_%282024%29.svg">
+    <div class="info">
+      <h4>YouTube Premium</h4>
+      <b>From ₹79</b>
+      <button onclick="event.preventDefault(); addToCart('YouTube Premium',79,this)">
+        <span>Add to Cart</span>
+      </button>
+    </div>
+  </a>
 
-        themeBtn.addEventListener('click', () => {
-            htmlEl.classList.toggle('dark');
-        });
+  <!-- CRUNCHYROLL -->
+  <a href="product.html?id=crunchyroll" class="card">
+    <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/8/85/Crunchyroll_2024_stacked.svg">
+    <div class="info">
+      <h4>Crunchyroll</h4>
+      <b>From ₹129</b>
+      <button onclick="event.preventDefault(); addToCart('Crunchyroll',129,this)">
+        <span>Add to Cart</span>
+      </button>
+    </div>
+  </a>
 
-        // Init
-        renderProducts();
-        updateCartUI();
-    </script>
+</div>
+</section>
+  
+<!-- TRUSTPILOT WIDGET (UNTOUCHED) -->
+<section class="section" style="padding-top:0">
+<div style="background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:18px;text-align:center">
+<div class="trustpilot-widget"
+data-locale="en-US"
+data-template-id="56278e9abfbbba0bdcd568bc"
+data-businessunit-id="6985c274abb8a0a2645265ef"
+data-style-height="52px"
+data-style-width="100%">
+<a href="https://www.trustpilot.com/review/playwithease.in" target="_blank">Trustpilot</a>
+</div>
+</div>
+</section>
+
+<footer style="text-align:center; padding:15px; font-size:14px; color:#aaa;">
+  © 2026 PlayWithEase <br>
+  Owned & Operated by <strong>SHAYAN AKHTAR</strong><br>
+
+  <a href="refund-policy.html" style="color:#4da3ff; text-decoration:none;">
+    Refund & Cancellation Policy
+  </a> |
+  <a href="terms-and-conditions.html" style="color:#4da3ff; text-decoration:none;">
+    Terms & Conditions
+  </a>
+</footer>
+
+<script>
+const games = [
+/* GTA / ROCKSTAR */
+["GTA V",199,"271590"],
+["GTA V Premium Edition 🔑 Rockstar Activation Key (Global)",1000,"271590","Rockstar Key"],
+["Red Dead Redemption 2",249,"1174180"],
+["Max Payne 3",149,"204100"],
+
+/* CYBERPUNK */
+["Cyberpunk 2077 – Ultimate Edition (Phantom Liberty DLC)",75,"1091500"],
+
+/* ACTION / RPG */
+["God of War",199,"1593500"],
+["God of War Ragnarök",249,"2322010"],
+["Elden Ring",229,"1245620"],
+["Sekiro Shadows Die Twice",219,"814380"],
+["Dark Souls III",199,"374320"],
+["Baldur’s Gate 3",249,"1086940"],
+["Hogwarts Legacy",239,"990080"],
+["Starfield",249,"1716740"],
+["The Witcher 3",149,"292030"],
+["Lies of P",229,"1627720"],
+["Atomic Heart",219,"668580"],
+
+/* SONY / PLAYSTATION PORTS */
+["Spider-Man Remastered",219,"1817070"],
+["Spider-Man Miles Morales",229,"1817190"],
+["The Last of Us Part I",249,"1888930"],
+["Uncharted Legacy of Thieves",219,"1659420"],
+["Days Gone",199,"1259420"],
+["Horizon Zero Dawn",199,"1151640"],
+
+/* FPS / SHOOTERS */
+["Call of Duty Modern Warfare II",249,"1938090"],
+["Call of Duty Modern Warfare III",269,"2519060"],
+["DOOM Eternal",179,"782330"],
+["Battlefield V",149,"1238810"],
+["Battlefield 2042",199,"1517290"],
+["Metro Exodus",159,"412020"],
+["Far Cry 5",149,"552520"],
+["Far Cry 6",179,"2369390"],
+
+/* UBISOFT */
+["Assassin’s Creed Mirage",229,"3035570"],
+["Assassin’s Creed Valhalla",199,"2208920"],
+["Assassin’s Creed Origins",179,"582160"],
+["Watch Dogs Legion",189,"2239550"],
+["The Division 2",179,"2221490"],
+
+/* RACING */
+["Forza Horizon 5",219,"1551360"],
+["Forza Horizon 4",199,"1293830"],
+["Need for Speed Unbound",189,"1846380"],
+["Need for Speed Heat",149,"1222680"],
+["F1 23",219,"2108330"],
+
+/* SPORTS */
+["FIFA 23",199,"1811260"],
+["EA Sports FC 24",229,"2195250"],
+["Cricket 24",199,"2358260"],
+["Cricket 26",249,"2600010"],
+["WWE 2K23",199,"1942660"],
+["NBA 2K23",179,"1919590"],
+
+/* HORROR */
+["Resident Evil 4 Remake",229,"2050650"],
+["Resident Evil Village",199,"1196590"],
+["Alan Wake 2",259,"1087100"],
+["Outlast 2",129,"414700"],
+
+/* MISC */
+["Mafia Definitive Edition",179,"1030840"],
+["Hitman World of Assassination",219,"1659040"],
+["Control Ultimate Edition",179,"870780"],
+["Death Stranding",199,"1190460"],
+["Ghostwire Tokyo",179,"1475810"],
+["Remnant II",229,"1282100"]
+];
+
+const grid=document.getElementById("gameGrid");
+const toggleBtn=document.getElementById("toggleBtn");
+let visible=6, expanded=false;
+let cart=JSON.parse(localStorage.getItem("cart")||"[]");
+
+function render(){
+  grid.innerHTML="";
+  games.slice(0,expanded?games.length:visible).forEach(g=>{
+const card = document.createElement("a");
+card.className = "card";
+card.href = `product.html?id=${g[2]}`;
+
+card.innerHTML = `
+  <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${g[2]}/header.jpg">
+  <div class="info">
+    <h4>${g[0]}</h4>
+    <p>${
+      g[0].toLowerCase().includes("rockstar")
+        ? "Rockstar Activation Key (Global)"
+        : "Steam Account"
+    }</p>
+    <b>₹${g[1]}</b>
+    <button onclick="event.preventDefault(); addToCart('${g[0]}',${g[1]},this)">
+      <span>Add to Cart</span>
+    </button>
+  </div>
+`;
+
+grid.appendChild(card);
+  });
+  toggleBtn.innerText=expanded?"Show Less":"Show More Games";
+  observeCards();
+}
+toggleBtn.onclick=()=>{expanded=!expanded;render()};
+
+function addToCart(name,price){
+  cart.push({name,price});
+  localStorage.setItem("cart",JSON.stringify(cart));
+  document.getElementById("cartCount").innerText=cart.length;
+  alert(name+" added to cart");
+}
+
+/* ANIMATION OBSERVER */
+function observeCards(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>e.isIntersecting && e.target.classList.add("show"));
+  },{threshold:.15});
+  document.querySelectorAll(".card").forEach(c=>obs.observe(c));
+}
+
+document.getElementById("cartCount").innerText=cart.length;
+render();
+</script>
+
+<!-- FIREBASE AUTH (UNCHANGED LOGIC) -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+  setPersistence,
+  browserLocalPersistence
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+  authDomain: "playwithease.firebaseapp.com"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+await setPersistence(auth, browserLocalPersistence);
+
+const userEmail=document.getElementById("userEmail");
+const loginBtn=document.getElementById("loginBtn");
+const logoutBtn=document.getElementById("logoutBtn");
+
+onAuthStateChanged(auth,user=>{
+  if(user){
+  userEmail.textContent = user.email;
+  loginBtn.style.display="none";
+  logoutBtn.style.display="none";
+  profileWrap.style.display="inline-block";
+}else{
+  userEmail.textContent="";
+  loginBtn.style.display="inline";
+  profileWrap.style.display="none";
+}
+});
+
+logoutBtn.onclick = e => { 
+  e.preventDefault(); 
+  signOut(auth); 
+};
+</script>
+
+<div id="ai-chat-btn" title="Support">💬</div>
+
+<div id="ai-chat-box">
+  <div class="ai-header">
+    <span>PlayWithEase Support 🤖</span>
+    <button onclick="toggleChat()">✕</button>
+  </div>
+
+  <div id="ai-messages">
+    <div class="ai-msg ai">
+      👋 Hi! Welcome to PlayWithEase.<br>
+      How can I help you today?
+    </div>
+  </div>
+
+  <div class="ai-input">
+    <input id="aiInput" placeholder="Type your message..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+/* ===== AI CHAT JS ===== */
+const chatBtn = document.getElementById("ai-chat-btn");
+const chatBox = document.getElementById("ai-chat-box");
+const messages = document.getElementById("ai-messages");
+
+/* default closed */
+chatBox.style.display = "none";
+
+/* toggle open / close */
+function toggleChat(){
+  chatBox.style.display =
+    chatBox.style.display === "flex" ? "none" : "flex";
+}
+
+/* button click */
+chatBtn.addEventListener("click", toggleChat);
+
+/* send message */
+function sendMessage(){
+  const input = document.getElementById("aiInput");
+  const text = input.value.trim();
+  if(!text) return;
+
+  messages.innerHTML += `<div class="ai-msg user">${text}</div>`;
+  input.value = "";
+  messages.scrollTop = messages.scrollHeight;
+
+  setTimeout(()=>{
+    messages.innerHTML += `
+      <div class="ai-msg ai">
+        🤖 Thanks for contacting PlayWithEase!  
+        Please tell me which game or OTT service you need.
+      </div>`;
+    messages.scrollTop = messages.scrollHeight;
+  },700);
+}
+</script>
+  
+
+<script>
+window.addToCart = function(name, price, btn){
+
+  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  cart.push({ name, price });
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  const cartCount = document.getElementById("cartCount");
+  if(cartCount){
+    cartCount.innerText = cart.length;
+    cartCount.classList.add("cart-bounce");
+    setTimeout(()=>cartCount.classList.remove("cart-bounce"),400);
+  }
+
+  if(btn){
+    btn.classList.add("added");
+    setTimeout(()=>{
+      btn.classList.remove("added");
+    },1200);
+  }
+};
+</script>
+  
+<script>
+
+function toggleProfile(){
+  const menu = document.getElementById("profileMenu");
+  if(!menu) return;
+  menu.classList.toggle("show");
+}
+
+/* click outside close */
+document.addEventListener("click", function(e){
+  const wrap = document.getElementById("profileWrap");
+  const menu = document.getElementById("profileMenu");
+  if(!wrap || !menu) return;
+
+  if(!wrap.contains(e.target)){
+    menu.classList.remove("show");
+  }
+});
+
+/* logout bridge */
+function firebaseLogout(){
+  document.getElementById("logoutBtn")?.click();
+}
+</script>
+<script>
+const profileBtn = document.getElementById("profileBtn");
+const profileDropdown = document.getElementById("profileDropdown");
+const profileWrap = document.getElementById("profileWrap");
+const logoutBtn2 = document.getElementById("logoutBtn2");
+
+/* TOGGLE DROPDOWN */
+if(profileBtn){
+  profileBtn.addEventListener("click", (e)=>{
+    e.stopPropagation();
+    profileDropdown.classList.toggle("show");
+  });
+}
+
+/* CLOSE ON OUTSIDE CLICK */
+document.addEventListener("click", ()=>{
+  profileDropdown.classList.remove("show");
+});
+
+/* FIREBASE LOGOUT HOOK */
+if(logoutBtn2){
+  logoutBtn2.addEventListener("click", (e)=>{
+    e.preventDefault();
+    document.getElementById("logoutBtn")?.click();
+  });
+}
+</script>
+  <script>
+/* ===== PROFILE DROPDOWN TOGGLE ===== */
+function toggleProfile(){
+  const wrap = document.getElementById("profileWrap");
+  wrap.classList.toggle("active");
+}
+
+/* close when clicking outside */
+document.addEventListener("click", (e)=>{
+  const wrap = document.getElementById("profileWrap");
+  if(!wrap.contains(e.target)){
+    wrap.classList.remove("active");
+  }
+});
+
+/* firebase logout bridge */
+function firebaseLogout(){
+  document.getElementById("logoutBtn")?.click();
+}
+</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
+  authDomain: "playwithease.firebaseapp.com"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const loginBtn  = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const userEmail = document.getElementById("userEmail");
+
+/* AUTH STATE */
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // logged in
+    loginBtn.style.display = "none";
+    logoutBtn.style.display = "inline";
+    userEmail.style.display = "inline";
+    userEmail.textContent = user.email;
+  } else {
+    // not logged in
+    loginBtn.style.display = "inline";
+    logoutBtn.style.display = "none";
+    userEmail.style.display = "none";
+    userEmail.textContent = "";
+  }
+});
+
+/* LOGOUT */
+logoutBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  signOut(auth).then(() => {
+    window.location.reload();
+  });
+});
+</script>
+<script>
+/* ===============================
+   PS5 & XBOX – CLEAN START
+================================ */
+
+/* DATA */
+const ps5Games = [
+  [
+  "Spider-Man 2",
+  499,
+  "https://dtzone.in/wp-content/uploads/2023/06/88.webp"
+],
+  [
+    "God of War Ragnarök",
+    549,
+    "https://upload.wikimedia.org/wikipedia/en/e/ee/God_of_War_Ragnar%C3%B6k_cover.jpg"
+  ],
+  [
+    "Horizon Forbidden West",
+    499,
+    "https://upload.wikimedia.org/wikipedia/en/6/69/Horizon_Forbidden_West_cover_art.jpg"
+  ],
+  [
+  "The Last of Us Part I",
+  549,
+  "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1888930/capsule_616x353.jpg"
+],
+  [
+    "Gran Turismo 7",
+    499,
+    "https://image-cdn.essentiallysports.com/wp-content/uploads/20210201183356/gran-turismo-7-keyart-01-en-23oct20.png"
+  ],
+  [
+    "Ghost of Tsushima Director’s Cut",
+    549,
+    "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2215430/capsule_616x353.jpg?t=1763409398"
+  ]
+];
+
+const xboxGames = [
+  ["Forza Horizon 5", 499, "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1551360/header.jpg?t=1746471508"],
+  ["Halo Infinite", 399, "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1708091/capsule_616x353.jpg?t=1763578010"],
+  ["Starfield", 599, "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1716740/capsule_616x353.jpg?t=1749757928"],
+  ["Microsoft Flight Simulator", 399, "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2537590/8fa176d72210f43c71d50f4c8ffca70a4f171e62/capsule_616x353.jpg?t=1747324291"],
+  ["Forza Motorsport", 349, "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2440510/capsule_616x353.jpg?t=1747073895"],
+  ["Gears 5", 499, "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1097840/capsule_616x353.jpg?t=1684425784"]
+];
+
+/* STATE */
+let ps5Expanded = false;
+let xboxExpanded = false;
+
+/* RENDER FUNCTION */
+function renderConsoleGames(gridId, games, expanded){
+  const grid = document.getElementById(gridId);
+  if(!grid) return;
+
+  grid.innerHTML = "";
+
+  const visibleGames = expanded ? games : games.slice(0,4);
+
+  visibleGames.forEach(g => {
+    const card = document.createElement("div");
+    card.className = "card show";
+    card.innerHTML = `
+    <div class="badge">Instant</div>
+      <img src="${g[2]}" class="game-poster">
+      <div class="info">
+        <h4>${g[0]}</h4>
+        <b>₹${g[1]}</b>
+        <button onclick="addToCart('${g[0]}', ${g[1]}, this)">
+          <span>Add to Cart</span>
+        </button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+/* INITIAL LOAD */
+renderConsoleGames("ps5Grid", ps5Games, false);
+renderConsoleGames("xboxGrid", xboxGames, false);
+
+/* SHOW MORE BUTTONS */
+document.getElementById("ps5Toggle").onclick = () => {
+  ps5Expanded = !ps5Expanded;
+  document.getElementById("ps5Toggle").innerText =
+    ps5Expanded ? "Show Less Games" : "Show More Games";
+  renderConsoleGames("ps5Grid", ps5Games, ps5Expanded);
+};
+
+document.getElementById("xboxToggle").onclick = () => {
+  xboxExpanded = !xboxExpanded;
+  document.getElementById("xboxToggle").innerText =
+    xboxExpanded ? "Show Less Games" : "Show More Games";
+  renderConsoleGames("xboxGrid", xboxGames, xboxExpanded);
+};
+</script>
 </body>
 </html>
