@@ -1,451 +1,337 @@
-:root {
-    --bg-color: #0a0a0f;
-    --surface-color: rgba(20, 20, 30, 0.6);
-    --primary-color: #00f0ff;
-    --primary-hover: #00c3ff;
-    --text-main: #ffffff;
-    --text-muted: #a0a0b0;
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --neon-shadow: 0 0 10px rgba(0, 240, 255, 0.5), 0 0 20px rgba(0, 240, 255, 0.3);
+import { auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, googleProvider, signInWithPopup, signOut, onAuthStateChanged, updateProfile } from './firebase.js';
+
+// --- MOCK DATA ---
+const categories = ['Action', 'RPG', 'Open World', 'Battle Royale', 'Racing', 'Sports', 'Horror', 'Survival', 'Adventure', 'Multiplayer', 'Indie', 'Simulation', 'Strategy', 'Anime', 'Story Mode', 'FPS', 'TPS', 'Sandbox', 'Co-op', 'Puzzle'];
+
+// Using official Steam CDN vertical library assets
+const games = [
+    { id: 'g1', title: 'Cyberpunk 2077', price: 29.99, discount: '-50%', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900_2x.jpg' },
+    { id: 'g2', title: 'Elden Ring', price: 59.99, discount: null, img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900_2x.jpg' },
+    { id: 'g3', title: 'Red Dead Redemption 2', price: 19.79, discount: '-67%', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900_2x.jpg' },
+    { id: 'g4', title: 'Helldivers 2', price: 39.99, discount: null, img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2530890/library_600x900_2x.jpg' },
+    { id: 'g5', title: 'Baldur\'s Gate 3', price: 59.99, discount: null, img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1086940/library_600x900_2x.jpg' },
+    { id: 'g6', title: 'Grand Theft Auto V', price: 14.99, discount: '-63%', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900_2x.jpg' },
+    { id: 'g7', title: 'Palworld', price: 26.99, discount: '-10%', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1623730/library_600x900_2x.jpg' },
+    { id: 'g8', title: 'Counter-Strike 2', price: 0.00, discount: 'FREE', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/730/library_600x900_2x.jpg' }
+];
+
+// Using high-quality retail posters for Gift Cards
+const giftCards = [
+    { id: 'gc1', title: 'Steam Wallet $50', price: 48.99, img: 'https://community.akamai.steamstatic.com/public/images/gift/steamcards_cards_02.png' },
+    { id: 'gc2', title: 'Amazon Gift Card $100', price: 98.50, img: 'https://m.media-amazon.com/images/I/41DXYE5mRjL.jpg' },
+    { id: 'gc3', title: 'PlayStation Store $25', price: 23.50, img: 'https://m.media-amazon.com/images/I/71Xm3z89u9L._AC_SL1500_.jpg' },
+    { id: 'gc4', title: 'Netflix Gift Card $30', price: 29.00, img: 'https://m.media-amazon.com/images/I/610tP5sJ2hL._AC_SL1500_.jpg' },
+    { id: 'gc5', title: 'Xbox Gift Card $50', price: 47.99, img: 'https://m.media-amazon.com/images/I/61m1a0v4wmL._AC_SL1500_.jpg' },
+    { id: 'gc6', title: 'Google Play $10', price: 9.50, img: 'https://m.media-amazon.com/images/I/611ZzX0TuxL._AC_SL1500_.jpg' }
+];
+
+// Using high-quality retail posters for Subscriptions
+const subscriptions = [
+    { id: 's1', title: 'Xbox Game Pass Ultimate (3 Months)', price: 44.99, img: 'https://m.media-amazon.com/images/I/612aJ5U9fFL._AC_SL1500_.jpg' },
+    { id: 's2', title: 'PlayStation Plus Premium (12 Months)', price: 119.99, img: 'https://m.media-amazon.com/images/I/71d1D5Vb09L._AC_SL1500_.jpg' },
+    { id: 's3', title: 'EA Play (1 Month)', price: 4.99, img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/subs/806140/header_586x192.jpg' },
+    { id: 's4', title: 'Spotify Premium (3 Months)', price: 29.99, img: 'https://m.media-amazon.com/images/I/51r5c7Xv-3L._AC_SL1500_.jpg' }
+];
+
+// --- APP STATE ---
+let cart = [];
+let currentUser = null;
+
+// --- DOM ELEMENTS ---
+const appContent = document.getElementById('app-content');
+const cartCount = document.getElementById('cart-count');
+const mobileCartCount = document.getElementById('mobile-cart-count');
+const authSection = document.getElementById('auth-section');
+
+// --- NEW UTILITY: TOAST NOTIFICATIONS ---
+function showToast(message) {
+    const container = document.getElementById('toast-container');
+    if (!container) return; // Prevent errors if HTML isn't updated yet
+    
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = `<i class="fa-solid fa-circle-check" style="color: var(--primary-color); margin-right: 8px;"></i> ${message}`;
+    container.appendChild(toast);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        toast.style.animation = 'slideIn 0.3s reverse forwards';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-    -webkit-tap-highlight-color: transparent;
+// --- ROUTER / UI MANAGER ---
+window.app = {
+    currentData: [], // Tracks what data is currently on screen for sorting
+    navigate: (route) => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // Safely clear search if element exists
+        const searchInput = document.getElementById('global-search');
+        if (searchInput) searchInput.value = ''; 
+        
+        switch(route) {
+            case 'home': renderHome(); break;
+            case 'store': app.currentData = [...games]; renderProducts(app.currentData, 'PC Games Store'); break;
+            case 'giftcards': app.currentData = [...giftCards]; renderProducts(app.currentData, 'Gift Cards'); break;
+            case 'subscriptions': app.currentData = [...subscriptions]; renderProducts(app.currentData, 'Subscriptions'); break;
+            case 'cart': renderCart(); break;
+            case 'login': currentUser ? renderProfile() : renderLogin(); break;
+        }
+    },
+    addToCart: (id) => {
+        const item = [...games, ...giftCards, ...subscriptions].find(p => p.id === id);
+        if(item) {
+            cart.push(item);
+            updateCartUI();
+            showToast(`Added ${item.title} to cart!`);
+            app.closeModal();
+        }
+    },
+    removeFromCart: (index) => {
+        cart.splice(index, 1);
+        updateCartUI();
+        renderCart();
+        showToast('Item removed from cart');
+    },
+    openModal: (id) => {
+        const item = [...games, ...giftCards, ...subscriptions].find(p => p.id === id);
+        const modal = document.getElementById('quick-view-modal');
+        const modalBody = document.getElementById('modal-body');
+        
+        if(!modal || !modalBody) return;
+
+        modalBody.innerHTML = `
+            <img src="${item.img}" class="modal-img" alt="${item.title}" style="${item.id.startsWith('s') || item.id.startsWith('gc') ? 'object-fit: contain; padding: 10px; background: rgba(0,0,0,0.3);' : 'object-fit: cover;'}">
+            <div class="modal-info">
+                <h2 style="margin-bottom: 10px; font-size: 2rem;">${item.title}</h2>
+                <div style="color: #ffaa00; margin-bottom: 15px;">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i> (4.8/5)
+                </div>
+                <p style="color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">
+                    Instant digital delivery. Activate this key on the official platform to add it to your library permanently. Secure checkout and 24/7 support included.
+                </p>
+                <h3 class="neon-text" style="font-size: 1.8rem; margin-bottom: 20px;">${item.price === 0 ? 'FREE' : '$' + item.price.toFixed(2)}</h3>
+                <button class="btn btn-primary" onclick="app.addToCart('${item.id}')" style="width: fit-content; padding: 12px 30px; font-size: 1.1rem;">
+                    <i class="fa-solid fa-cart-plus"></i> Add to Cart Now
+                </button>
+            </div>
+        `;
+        modal.classList.remove('hidden');
+    },
+    closeModal: () => {
+        const modal = document.getElementById('quick-view-modal');
+        if(modal) modal.classList.add('hidden');
+    },
+    handleSearch: (e) => {
+        const query = e.target.value.toLowerCase();
+        const allItems = [...games, ...giftCards, ...subscriptions];
+        const filtered = allItems.filter(item => item.title.toLowerCase().includes(query));
+        
+        if(query.length > 0) {
+            // We pass an empty string for title so it handles sorting logic properly, but display a custom header
+            renderProducts(filtered, `Search Results for "${e.target.value}"`);
+        } else {
+            app.navigate('home');
+        }
+    },
+    sortData: (type) => {
+        if(type === 'low') app.currentData.sort((a, b) => a.price - b.price);
+        if(type === 'high') app.currentData.sort((a, b) => b.price - a.price);
+        
+        // Get current title so we don't lose it
+        const headerEl = document.querySelector('.section-header h2');
+        const currentTitle = headerEl ? headerEl.innerText : 'Store';
+        
+        renderProducts(app.currentData, currentTitle, true);
+    }
+};
+
+// --- RENDER FUNCTIONS ---
+function renderHome() {
+    let html = `
+        <div class="hero" style="text-align:center; padding: 50px 0;">
+            <h1 style="font-size: 3rem; margin-bottom:10px;">Level Up Your <span class="neon-text">Gaming Experience</span></h1>
+            <p style="color:var(--text-muted); margin-bottom: 30px;">Premium CD Keys, Gift Cards, and Subscriptions at the best prices.</p>
+            <button class="btn btn-primary" onclick="app.navigate('store')">Browse Store</button>
+        </div>
+        
+        <div class="section-header"><h2><i class="fa-solid fa-list"></i> Top Categories</h2></div>
+        <div class="category-badges">
+            ${categories.map(c => `<div class="category-badge">${c}</div>`).join('')}
+        </div>
+
+        <div class="section-header"><h2><i class="fa-solid fa-fire"></i> Trending PC Games</h2></div>
+        <div class="grid">${generateCardsHTML(games.slice(0, 4))}</div>
+    `;
+    appContent.innerHTML = html;
 }
 
-body {
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    overflow-x: hidden;
-    padding-bottom: 70px; /* Space for mobile nav */
+function renderProducts(data, title, isSorting = false) {
+    // Only show the sort dropdown if we are looking at a specific category (not search results)
+    const sortHTML = isSorting || title.includes('Search') ? '' : `
+        <div class="store-controls">
+            <span style="color: var(--text-muted);">${data.length} products found</span>
+            <select class="sort-select" onchange="app.sortData(this.value)">
+                <option value="default">Sort by: Default</option>
+                <option value="low">Price: Low to High</option>
+                <option value="high">Price: High to Low</option>
+            </select>
+        </div>
+    `;
+
+    appContent.innerHTML = `
+        <div class="section-header"><h2>${title}</h2></div>
+        ${sortHTML}
+        <div class="grid">${data.length > 0 ? generateCardsHTML(data) : '<p style="color:var(--text-muted)">No products found.</p>'}</div>
+    `;
 }
 
-/* Glassmorphism Utilities */
-.glass-effect {
-    background: var(--surface-color);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
+function generateCardsHTML(data) {
+    return data.map(item => `
+        <div class="card glass-effect">
+            ${item.discount ? `<div class="discount-badge">${item.discount}</div>` : ''}
+            
+            <div style="position:relative; cursor:pointer; overflow: hidden; border-radius: 12px 12px 0 0;" onclick="app.openModal('${item.id}')">
+                <img src="${item.img}" alt="${item.title}" class="card-img" loading="lazy" style="${item.id.startsWith('s') || item.id.startsWith('gc') ? 'object-fit: contain; padding: 10px; height: 250px;' : 'object-fit: cover; height: 250px;'}">
+                
+                <div style="position:absolute; inset:0; background:rgba(0,0,0,0.6); display:flex; justify-content:center; align-items:center; opacity:0; transition:0.3s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0">
+                    <span class="btn btn-primary" style="pointer-events:none;"><i class="fa-solid fa-eye"></i> Quick View</span>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <h3 class="card-title">${item.title}</h3>
+                <div class="card-price">${item.price === 0 ? 'FREE' : '$' + item.price.toFixed(2)}</div>
+                <button class="btn btn-outline" onclick="app.addToCart('${item.id}')">
+                    <i class="fa-solid fa-cart-plus"></i> Add
+                </button>
+            </div>
+        </div>
+    `).join('');
 }
 
-.neon-text {
-    color: var(--primary-color);
-    text-shadow: 0 0 5px rgba(0, 240, 255, 0.4);
+function renderCart() {
+    let total = cart.reduce((sum, item) => sum + item.price, 0);
+    let html = `
+        <div class="cart-panel glass-effect" style="max-width: 800px; margin: 0 auto;">
+            <h2 class="section-header">Shopping Cart</h2>
+            ${cart.length === 0 ? '<p style="text-align:center; padding: 40px; color: var(--text-muted);"><i class="fa-solid fa-cart-shopping" style="font-size: 3rem; margin-bottom: 15px; display: block;"></i>Your cart is empty.</p>' : 
+                cart.map((item, index) => `
+                    <div class="cart-item">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <img src="${item.img}" style="width: 60px; height: 80px; object-fit: ${item.id.startsWith('s') || item.id.startsWith('gc') ? 'contain' : 'cover'}; border-radius: 5px; background: rgba(0,0,0,0.3);">
+                            <div>
+                                <h4 style="margin-bottom: 5px;">${item.title}</h4>
+                                <span class="neon-text" style="font-weight: 800;">${item.price === 0 ? 'FREE' : '$' + item.price.toFixed(2)}</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline" style="padding: 8px 12px; border-color: #ff0055; color: #ff0055;" onclick="app.removeFromCart(${index})">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `).join('')
+            }
+            <div style="margin-top: 30px; text-align: right; border-top: 1px solid var(--glass-border); padding-top: 20px;">
+                <h3 style="font-size: 1.5rem;">Total: <span class="neon-text">$${total.toFixed(2)}</span></h3>
+                ${cart.length > 0 ? `<button class="btn btn-primary" style="margin-top:15px; width:100%; font-size: 1.1rem; padding: 15px;"><i class="fa-solid fa-lock"></i> Secure Checkout</button>` : ''}
+            </div>
+        </div>
+    `;
+    appContent.innerHTML = html;
 }
 
-/* Buttons */
-.btn {
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s ease;
+// --- AUTHENTICATION UI ---
+function renderLogin() {
+    appContent.innerHTML = `
+        <div class="auth-form glass-effect">
+            <h2>Welcome Back</h2>
+            <p style="color:var(--text-muted); margin-bottom:20px;">Login to PlayWithEase</p>
+            
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="auth-email" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="auth-password" placeholder="Enter password">
+            </div>
+            
+            <button class="btn btn-primary" style="width:100%; margin-bottom:15px;" id="btn-login">Login / Sign Up</button>
+            <button class="btn btn-outline" style="width:100%;" id="btn-google">
+                <i class="fa-brands fa-google"></i> Continue with Google
+            </button>
+        </div>
+    `;
+    setupAuthListeners();
 }
 
-.btn-primary {
-    background: linear-gradient(45deg, var(--primary-color), #0051ff);
-    color: #fff;
-    box-shadow: var(--neon-shadow);
+function renderProfile() {
+    appContent.innerHTML = `
+        <div class="auth-form glass-effect" style="text-align:center;">
+            <i class="fa-solid fa-user-circle" style="font-size: 4rem; color:var(--primary-color); margin-bottom:15px;"></i>
+            <h2>${currentUser.displayName || 'Gamer'}</h2>
+            <p style="color:var(--text-muted); margin-bottom:20px;">${currentUser.email}</p>
+            <button class="btn btn-outline" style="width:100%; border-color: #ff0055; color: #ff0055;" id="btn-logout">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+        </div>
+    `;
+    document.getElementById('btn-logout').addEventListener('click', () => {
+        signOut(auth).then(() => {
+            showToast("Successfully logged out");
+            app.navigate('home');
+        });
+    });
 }
 
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 15px rgba(0, 240, 255, 0.8);
+function updateCartUI() {
+    if(cartCount) cartCount.innerText = cart.length;
+    if(mobileCartCount) mobileCartCount.innerText = cart.length;
 }
 
-.btn-outline {
-    background: transparent;
-    border: 1px solid var(--primary-color);
-    color: var(--primary-color);
+// --- FIREBASE AUTH LOGIC ---
+function setupAuthListeners() {
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        const email = document.getElementById('auth-email').value;
+        const pass = document.getElementById('auth-password').value;
+        if(!email || !pass) return alert("Please enter email and password");
+        
+        try {
+            await signInWithEmailAndPassword(auth, email, pass);
+            showToast("Successfully logged in!");
+            app.navigate('home');
+        } catch (error) {
+            if(error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found') {
+                try {
+                    await createUserWithEmailAndPassword(auth, email, pass);
+                    showToast("Account created successfully!");
+                    app.navigate('home');
+                } catch(e) { alert(e.message); }
+            } else { alert(error.message); }
+        }
+    });
+
+    document.getElementById('btn-google').addEventListener('click', async () => {
+        try {
+            await signInWithPopup(auth, googleProvider);
+            showToast("Logged in with Google!");
+            app.navigate('home');
+        } catch (error) { alert(error.message); }
+    });
 }
 
-.btn-outline:hover {
-    background: rgba(0, 240, 255, 0.1);
-}
+// Track Auth State
+onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    if (user) {
+        authSection.innerHTML = `<button class="btn btn-outline" onclick="app.navigate('login')"><i class="fa-solid fa-user"></i> Profile</button>`;
+    } else {
+        authSection.innerHTML = `<button class="btn btn-primary" onclick="app.navigate('login')">Login</button>`;
+    }
+});
 
-/* Navbar */
-.navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-    padding: 15px 0;
-}
-
-.nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: 800;
-    cursor: pointer;
-}
-
-.search-bar {
-    display: flex;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 20px;
-    padding: 8px 15px;
-    border: 1px solid var(--glass-border);
-    width: 300px;
-}
-
-.search-bar input {
-    background: transparent;
-    border: none;
-    color: #fff;
-    margin-left: 10px;
-    outline: none;
-    width: 100%;
-}
-
-.desktop-nav a {
-    color: var(--text-main);
-    text-decoration: none;
-    margin: 0 15px;
-    font-weight: 600;
-    transition: color 0.3s;
-}
-
-.desktop-nav a:hover {
-    color: var(--primary-color);
-}
-
-.nav-actions {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.cart-icon {
-    position: relative;
-    cursor: pointer;
-    font-size: 1.2rem;
-}
-
-.badge {
-    position: absolute;
-    top: -8px;
-    right: -10px;
-    background: #ff0055;
-    color: #fff;
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    border-radius: 50%;
-}
-
-/* Layout & Sections */
-#app-content {
-    max-width: 1200px;
-    margin: 100px auto 40px auto;
-    padding: 0 20px;
-    min-height: 70vh;
-}
-
-.section-header {
-    margin-bottom: 30px;
-    border-bottom: 1px solid var(--glass-border);
-    padding-bottom: 10px;
-}
-
-/* Product Grids */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 25px;
-}
-
-.card {
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
-
-.card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-    border-color: rgba(0, 240, 255, 0.3);
-}
-
-.card-img {
-    width: 100%;
-    height: 280px;
-    object-fit: cover;
-    background: #1a1a24; /* skeleton loading fallback */
-}
-
-.card-body {
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-}
-
-.card-title {
-    font-size: 1.1rem;
-    margin-bottom: 5px;
-}
-
-.card-price {
-    color: var(--primary-color);
-    font-weight: 800;
-    font-size: 1.2rem;
-    margin-top: auto;
-    margin-bottom: 15px;
-}
-
-.discount-badge {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: #ff0055;
-    color: white;
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: 800;
-}
-
-/* Categories Wrap */
-.category-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 30px;
-}
-.category-badge {
-    padding: 8px 15px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-.category-badge:hover {
-    background: var(--primary-color);
-    color: #000;
-}
-
-/* Cart & Forms */
-.auth-form, .cart-panel {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 30px;
-    border-radius: 15px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 12px;
-    background: rgba(0,0,0,0.2);
-    border: 1px solid var(--glass-border);
-    color: white;
-    border-radius: 8px;
-    margin-top: 5px;
-}
-
-.cart-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0;
-    border-bottom: 1px solid var(--glass-border);
-}
-
-/* Mobile Nav */
-.mobile-bottom-nav {
-    display: none;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    justify-content: space-around;
-    padding: 10px 0;
-    z-index: 1000;
-}
-
-.mobile-bottom-nav a {
-    color: var(--text-muted);
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 1.2rem;
-    position: relative;
-}
-
-.mobile-bottom-nav a span {
-    font-size: 0.7rem;
-    margin-top: 3px;
-}
-
-.mobile-bottom-nav a.active {
-    color: var(--primary-color);
-}
-
-/* Footer */
-footer {
-    background: #050508;
-    padding: 40px 20px 20px;
-    border-top: 1px solid var(--glass-border);
-    margin-top: 50px;
-}
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-.footer-links a {
-    color: var(--text-muted);
-    text-decoration: none;
-    display: block;
-    margin-bottom: 8px;
-}
-.footer-bottom {
-    text-align: center;
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    color: var(--text-muted);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .desktop-nav, .search-bar, .cart-icon { display: none; }
-    .mobile-bottom-nav { display: flex; }
-    #app-content { margin-top: 80px; }
-}
-/* --- Custom Toast Notifications --- */
-#toast-container {
-    position: fixed;
-    bottom: 90px;
-    right: 20px;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.toast {
-    background: var(--surface-color);
-    border-left: 4px solid var(--primary-color);
-    padding: 15px 20px;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    color: white;
-    font-weight: 600;
-    animation: slideIn 0.3s ease forwards;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-@keyframes slideIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
-
-/* --- Quick View Modal --- */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 2000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 1;
-    transition: opacity 0.3s ease;
-    backdrop-filter: blur(5px);
-}
-
-.modal-overlay.hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.modal-content {
-    width: 90%;
-    max-width: 800px;
-    padding: 30px;
-    border-radius: 15px;
-    position: relative;
-    display: flex;
-    gap: 30px;
-    border: 1px solid var(--glass-border);
-}
-
-.close-modal {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 2rem;
-    cursor: pointer;
-    color: var(--text-muted);
-    transition: 0.3s;
-    line-height: 1;
-}
-
-.close-modal:hover {
-    color: var(--primary-color);
-}
-
-/* Modal Internal Layout */
-.modal-img {
-    width: 300px;
-    border-radius: 10px;
-    object-fit: cover;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-}
-
-.modal-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-/* --- Sorting Controls --- */
-.store-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.sort-select {
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: 1px solid var(--glass-border);
-    padding: 8px 15px;
-    border-radius: 8px;
-    outline: none;
-    cursor: pointer;
-}
-
-@media (max-width: 768px) {
-    .modal-content { flex-direction: column; overflow-y: auto; max-height: 90vh; }
-    .modal-img { width: 100%; height: 300px; }
-}
+// Initialize App
+document.addEventListener('DOMContentLoaded', () => {
+    app.navigate('home');
+});
