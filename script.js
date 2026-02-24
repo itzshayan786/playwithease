@@ -3,23 +3,34 @@ import { auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, googl
 // --- MOCK DATA ---
 const categories = ['Action', 'RPG', 'Open World', 'Battle Royale', 'Racing', 'Sports', 'Horror', 'Survival', 'Adventure', 'Multiplayer', 'Indie', 'Simulation', 'Strategy', 'Anime', 'Story Mode', 'FPS', 'TPS', 'Sandbox', 'Co-op', 'Puzzle'];
 
+// Using official Steam CDN vertical library assets
 const games = [
-    { id: 'g1', title: 'Cyber Hunter 2077', price: 49.99, discount: '-20%', img: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=400&q=80' },
-    { id: 'g2', title: 'Fantasy Ring', price: 59.99, discount: null, img: 'https://images.unsplash.com/photo-1605901309584-818e25960b8f?auto=format&fit=crop&w=400&q=80' },
-    { id: 'g3', title: 'Space Warfare', price: 29.99, discount: '-50%', img: 'https://images.unsplash.com/photo-1614294149010-950b698f72c0?auto=format&fit=crop&w=400&q=80' },
-    { id: 'g4', title: 'Auto Theft VI', price: 69.99, discount: null, img: 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&w=400&q=80' }
+    { id: 'g1', title: 'Cyberpunk 2077', price: 29.99, discount: '-50%', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900_2x.jpg' },
+    { id: 'g2', title: 'Elden Ring', price: 59.99, discount: null, img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900_2x.jpg' },
+    { id: 'g3', title: 'Red Dead Redemption 2', price: 19.79, discount: '-67%', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900_2x.jpg' },
+    { id: 'g4', title: 'Helldivers 2', price: 39.99, discount: null, img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2530890/library_600x900_2x.jpg' },
+    { id: 'g5', title: 'Baldur\'s Gate 3', price: 59.99, discount: null, img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1086940/library_600x900_2x.jpg' },
+    { id: 'g6', title: 'Grand Theft Auto V', price: 14.99, discount: '-63%', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900_2x.jpg' },
+    { id: 'g7', title: 'Palworld', price: 26.99, discount: '-10%', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1623730/library_600x900_2x.jpg' },
+    { id: 'g8', title: 'Counter-Strike 2', price: 0.00, discount: 'FREE', img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/730/library_600x900_2x.jpg' }
 ];
 
+// Using high-quality retail posters for Gift Cards
 const giftCards = [
-    { id: 'gc1', title: 'Steam $50', price: 48.99, img: 'https://images.unsplash.com/photo-1614680376408-81e91ffe3db7?auto=format&fit=crop&w=400&q=80' },
-    { id: 'gc2', title: 'Amazon $100', price: 95.00, img: 'https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?auto=format&fit=crop&w=400&q=80' },
-    { id: 'gc3', title: 'PlayStation $25', price: 23.50, img: 'https://images.unsplash.com/photo-1606144042870-2022830f305f?auto=format&fit=crop&w=400&q=80' },
-    { id: 'gc4', title: 'Netflix 1 Month', price: 15.00, img: 'https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?auto=format&fit=crop&w=400&q=80' }
+    { id: 'gc1', title: 'Steam Wallet $50', price: 48.99, img: 'https://community.akamai.steamstatic.com/public/images/gift/steamcards_cards_02.png' },
+    { id: 'gc2', title: 'Amazon Gift Card $100', price: 98.50, img: 'https://m.media-amazon.com/images/I/41DXYE5mRjL.jpg' },
+    { id: 'gc3', title: 'PlayStation Store $25', price: 23.50, img: 'https://m.media-amazon.com/images/I/71Xm3z89u9L._AC_SL1500_.jpg' },
+    { id: 'gc4', title: 'Netflix Gift Card $30', price: 29.00, img: 'https://m.media-amazon.com/images/I/610tP5sJ2hL._AC_SL1500_.jpg' },
+    { id: 'gc5', title: 'Xbox Gift Card $50', price: 47.99, img: 'https://m.media-amazon.com/images/I/61m1a0v4wmL._AC_SL1500_.jpg' },
+    { id: 'gc6', title: 'Google Play $10', price: 9.50, img: 'https://m.media-amazon.com/images/I/611ZzX0TuxL._AC_SL1500_.jpg' }
 ];
 
+// Using high-quality retail posters for Subscriptions
 const subscriptions = [
-    { id: 's1', title: 'Xbox Game Pass (1 Mo)', price: 9.99, img: 'https://images.unsplash.com/photo-1605901309584-818e25960b8f?auto=format&fit=crop&w=400&q=80' },
-    { id: 's2', title: 'PlayStation Plus Premium', price: 17.99, img: 'https://images.unsplash.com/photo-1606144042870-2022830f305f?auto=format&fit=crop&w=400&q=80' }
+    { id: 's1', title: 'Xbox Game Pass Ultimate (3 Months)', price: 44.99, img: 'https://m.media-amazon.com/images/I/612aJ5U9fFL._AC_SL1500_.jpg' },
+    { id: 's2', title: 'PlayStation Plus Premium (12 Months)', price: 119.99, img: 'https://m.media-amazon.com/images/I/71d1D5Vb09L._AC_SL1500_.jpg' },
+    { id: 's3', title: 'EA Play (1 Month)', price: 4.99, img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/subs/806140/header_586x192.jpg' },
+    { id: 's4', title: 'Spotify Premium (3 Months)', price: 29.99, img: 'https://m.media-amazon.com/images/I/51r5c7Xv-3L._AC_SL1500_.jpg' }
 ];
 
 // --- APP STATE ---
@@ -76,8 +87,7 @@ function renderHome() {
         </div>
 
         <div class="section-header"><h2><i class="fa-solid fa-fire"></i> Trending PC Games</h2></div>
-        <div class="grid">${generateCardsHTML(games)}</div>
-    `;
+        <div class="grid">${generateCardsHTML(games.slice(0, 4))}</div> `;
     appContent.innerHTML = html;
 }
 
@@ -92,10 +102,10 @@ function generateCardsHTML(data) {
     return data.map(item => `
         <div class="card glass-effect">
             ${item.discount ? `<div class="discount-badge">${item.discount}</div>` : ''}
-            <img src="${item.img}" alt="${item.title}" class="card-img" loading="lazy">
+            <img src="${item.img}" alt="${item.title}" class="card-img" loading="lazy" style="${item.id.startsWith('s') || item.id.startsWith('gc') ? 'object-fit: contain; padding: 10px;' : 'object-fit: cover;'}">
             <div class="card-body">
                 <h3 class="card-title">${item.title}</h3>
-                <div class="card-price">$${item.price.toFixed(2)}</div>
+                <div class="card-price">${item.price === 0 ? 'FREE' : '$' + item.price.toFixed(2)}</div>
                 <button class="btn btn-outline" onclick="app.addToCart('${item.id}')">
                     <i class="fa-solid fa-cart-plus"></i> Add to Cart
                 </button>
@@ -112,9 +122,12 @@ function renderCart() {
             ${cart.length === 0 ? '<p>Your cart is empty.</p>' : 
                 cart.map((item, index) => `
                     <div class="cart-item">
-                        <div>
-                            <h4>${item.title}</h4>
-                            <span class="neon-text">$${item.price.toFixed(2)}</span>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <img src="${item.img}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
+                            <div>
+                                <h4>${item.title}</h4>
+                                <span class="neon-text">${item.price === 0 ? 'FREE' : '$' + item.price.toFixed(2)}</span>
+                            </div>
                         </div>
                         <button class="btn btn-outline" style="padding: 5px 10px;" onclick="app.removeFromCart(${index})">
                             <i class="fa-solid fa-trash"></i>
@@ -186,7 +199,6 @@ function setupAuthListeners() {
             await signInWithEmailAndPassword(auth, email, pass);
             app.navigate('home');
         } catch (error) {
-            // If user doesn't exist, try to create one
             if(error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found') {
                 try {
                     await createUserWithEmailAndPassword(auth, email, pass);
