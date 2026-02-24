@@ -1,338 +1,72 @@
-:root {
-    --bg-color: #0a0a0f;
-    --surface-color: rgba(20, 20, 30, 0.6);
-    --primary-color: #00f0ff;
-    --primary-hover: #00c3ff;
-    --text-main: #ffffff;
-    --text-muted: #a0a0b0;
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --neon-shadow: 0 0 10px rgba(0, 240, 255, 0.5), 0 0 20px rgba(0, 240, 255, 0.3);
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlayWithEase | Premium Gaming Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar glass-effect">
+        <div class="nav-container">
+            <div class="logo" onclick="app.navigate('home')">
+                <i class="fa-solid fa-gamepad neon-text"></i> PlayWithEase
+            </div>
+            
+            <div class="search-bar">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" placeholder="Search games, gift cards, subs...">
+            </div>
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-    -webkit-tap-highlight-color: transparent;
-}
+            <nav class="desktop-nav">
+                <a href="#" onclick="app.navigate('home')">Home</a>
+                <a href="#" onclick="app.navigate('store')">Store</a>
+                <a href="#" onclick="app.navigate('giftcards')">Gift Cards</a>
+                <a href="#" onclick="app.navigate('subscriptions')">Subscriptions</a>
+            </nav>
 
-body {
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    overflow-x: hidden;
-    padding-bottom: 70px; /* Space for mobile nav */
-}
+            <div class="nav-actions">
+                <div class="cart-icon" onclick="app.navigate('cart')">
+                    <i class="fa-solid fa-shopping-cart"></i>
+                    <span id="cart-count" class="badge">0</span>
+                </div>
+                <div id="auth-section">
+                    <button class="btn btn-primary" onclick="app.navigate('login')">Login</button>
+                </div>
+            </div>
+        </div>
+    </header>
 
-/* Glassmorphism Utilities */
-.glass-effect {
-    background: var(--surface-color);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-}
+    <main id="app-content">
+        </main>
 
-.neon-text {
-    color: var(--primary-color);
-    text-shadow: 0 0 5px rgba(0, 240, 255, 0.4);
-}
+    <nav class="mobile-bottom-nav glass-effect">
+        <a href="#" onclick="app.navigate('home')"><i class="fa-solid fa-home"></i><span>Home</span></a>
+        <a href="#" onclick="app.navigate('store')"><i class="fa-solid fa-store"></i><span>Store</span></a>
+        <a href="#" onclick="app.navigate('cart')"><i class="fa-solid fa-cart-shopping"></i><span id="mobile-cart-count" class="badge">0</span></a>
+        <a href="#" onclick="app.navigate('login')" id="mobile-auth-icon"><i class="fa-solid fa-user"></i><span>Profile</span></a>
+    </nav>
 
-/* Buttons */
-.btn {
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h2>PlayWithEase</h2>
+                <p>Your premium destination for games, gift cards, and subscriptions.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#">Terms of Service</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Support</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 PlayWithEase. Designed by <span class="neon-text">Shayan Akhtar</span></p>
+        </div>
+    </footer>
 
-.btn-primary {
-    background: linear-gradient(45deg, var(--primary-color), #0051ff);
-    color: #fff;
-    box-shadow: var(--neon-shadow);
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 15px rgba(0, 240, 255, 0.8);
-}
-
-.btn-outline {
-    background: transparent;
-    border: 1px solid var(--primary-color);
-    color: var(--primary-color);
-}
-
-.btn-outline:hover {
-    background: rgba(0, 240, 255, 0.1);
-}
-
-/* Navbar */
-.navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-    padding: 15px 0;
-}
-
-.nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: 800;
-    cursor: pointer;
-}
-
-.search-bar {
-    display: flex;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 20px;
-    padding: 8px 15px;
-    border: 1px solid var(--glass-border);
-    width: 300px;
-}
-
-.search-bar input {
-    background: transparent;
-    border: none;
-    color: #fff;
-    margin-left: 10px;
-    outline: none;
-    width: 100%;
-}
-
-.desktop-nav a {
-    color: var(--text-main);
-    text-decoration: none;
-    margin: 0 15px;
-    font-weight: 600;
-    transition: color 0.3s;
-}
-
-.desktop-nav a:hover {
-    color: var(--primary-color);
-}
-
-.nav-actions {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.cart-icon {
-    position: relative;
-    cursor: pointer;
-    font-size: 1.2rem;
-}
-
-.badge {
-    position: absolute;
-    top: -8px;
-    right: -10px;
-    background: #ff0055;
-    color: #fff;
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    border-radius: 50%;
-}
-
-/* Layout & Sections */
-#app-content {
-    max-width: 1200px;
-    margin: 100px auto 40px auto;
-    padding: 0 20px;
-    min-height: 70vh;
-}
-
-.section-header {
-    margin-bottom: 30px;
-    border-bottom: 1px solid var(--glass-border);
-    padding-bottom: 10px;
-}
-
-/* Product Grids */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 25px;
-}
-
-.card {
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
-
-.card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-    border-color: rgba(0, 240, 255, 0.3);
-}
-
-.card-img {
-    width: 100%;
-    height: 280px;
-    object-fit: cover;
-    background: #1a1a24; /* skeleton loading fallback */
-}
-
-.card-body {
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-}
-
-.card-title {
-    font-size: 1.1rem;
-    margin-bottom: 5px;
-}
-
-.card-price {
-    color: var(--primary-color);
-    font-weight: 800;
-    font-size: 1.2rem;
-    margin-top: auto;
-    margin-bottom: 15px;
-}
-
-.discount-badge {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: #ff0055;
-    color: white;
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: 800;
-}
-
-/* Categories Wrap */
-.category-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 30px;
-}
-.category-badge {
-    padding: 8px 15px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-.category-badge:hover {
-    background: var(--primary-color);
-    color: #000;
-}
-
-/* Cart & Forms */
-.auth-form, .cart-panel {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 30px;
-    border-radius: 15px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 12px;
-    background: rgba(0,0,0,0.2);
-    border: 1px solid var(--glass-border);
-    color: white;
-    border-radius: 8px;
-    margin-top: 5px;
-}
-
-.cart-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0;
-    border-bottom: 1px solid var(--glass-border);
-}
-
-/* Mobile Nav */
-.mobile-bottom-nav {
-    display: none;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    justify-content: space-around;
-    padding: 10px 0;
-    z-index: 1000;
-}
-
-.mobile-bottom-nav a {
-    color: var(--text-muted);
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 1.2rem;
-    position: relative;
-}
-
-.mobile-bottom-nav a span {
-    font-size: 0.7rem;
-    margin-top: 3px;
-}
-
-.mobile-bottom-nav a.active {
-    color: var(--primary-color);
-}
-
-/* Footer */
-footer {
-    background: #050508;
-    padding: 40px 20px 20px;
-    border-top: 1px solid var(--glass-border);
-    margin-top: 50px;
-}
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-.footer-links a {
-    color: var(--text-muted);
-    text-decoration: none;
-    display: block;
-    margin-bottom: 8px;
-}
-.footer-bottom {
-    text-align: center;
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    color: var(--text-muted);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .desktop-nav, .search-bar, .cart-icon { display: none; }
-    .mobile-bottom-nav { display: flex; }
-    #app-content { margin-top: 80px; }
-}
+    <script type="module" src="firebase.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
