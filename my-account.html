@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,289 +5,355 @@
 <title>My Account | PlayWithEase</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="favicon.ico">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
+/* ===== BASE STYLES (Matched to index.html) ===== */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial}
-
-body{
-  min-height:100vh;
-  background:linear-gradient(135deg,#0f172a,#020617);
-  color:#e5e7eb;
-  display:flex;
-  justify-content:center;
-  padding:40px 16px;
-}
-
-/* MAIN WRAP */
-.account-wrap{
-  width:100%;
-  max-width:1000px;
-}
+body{background:#f8fafc;color:#0f172a}
 
 /* HEADER */
-.account-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:28px;
+header{background:#3b82f6;border-bottom:1px solid #2563eb;position:sticky;top:0;z-index:100}
+.header-wrap{max-width:1200px;margin:auto;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo img{width:42px;height:42px;border-radius:10px}
+.logo .name{font-size:20px;font-weight:800;color:#ffffff}
+.logo .tag{display:block;font-size:11px;color:#e0e7ff;opacity:.95}
+nav{display:flex;align-items:center;margin-left:auto}
+nav a{margin-left:18px;text-decoration:none;color:#f8fafc;font-size:14px;font-weight:500}
+nav a:hover{color:#ffffff}
+@media(max-width:768px){
+  .header-wrap{padding:10px 12px}
+  .logo img{width:32px;height:32px}
+  .logo .name{font-size:15px}
+  nav a{font-size:13px;margin-left:12px}
 }
 
-.account-header h1{
-  font-size:28px;
-  font-weight:800;
-  color:#ffffff;
+/* ===== ACCOUNT LAYOUT ===== */
+.account-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 30px;
+  min-height: 60vh;
 }
 
-.back-store{
-  padding:10px 16px;
-  background:#2563eb;
-  color:#fff;
-  border-radius:12px;
-  text-decoration:none;
-  font-size:14px;
-  font-weight:600;
-  box-shadow:0 12px 30px rgba(37,99,235,.45);
+/* SIDEBAR */
+.sidebar {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  padding: 24px 16px;
+  height: fit-content;
+  box-shadow: 0 10px 25px rgba(0,0,0,.03);
 }
 
-/* PROFILE CARD */
-.profile-card{
-  background:rgba(255,255,255,.08);
-  backdrop-filter:blur(14px);
-  border-radius:22px;
-  padding:26px;
-  display:grid;
-  grid-template-columns:1fr 2fr;
-  gap:24px;
-  box-shadow:0 30px 70px rgba(0,0,0,.55);
-  margin-bottom:30px;
+.user-profile {
+  text-align: center;
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e5e7eb;
 }
 
-.avatar{
-  width:120px;
-  height:120px;
-  background:#2563eb;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:46px;
-  font-weight:800;
-  color:#fff;
-  box-shadow:0 14px 40px rgba(37,99,235,.6);
+.user-avatar {
+  width: 70px;
+  height: 70px;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin: 0 auto 12px;
+  box-shadow: 0 8px 20px rgba(37,99,235,.2);
 }
 
-.profile-info h2{
-  font-size:22px;
-  margin-bottom:6px;
-}
-.profile-info p{
-  font-size:14px;
-  color:#cbd5f5;
-  margin-bottom:12px;
+.user-profile h3 { font-size: 16px; color: #0f172a; }
+.user-profile p { font-size: 13px; color: #64748b; margin-top: 4px; word-break: break-all; }
+
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.badge{
-  display:inline-block;
-  padding:6px 12px;
-  background:#16a34a;
-  color:#fff;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:700;
+.side-nav button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #475569;
+  cursor: pointer;
+  text-align: left;
+  transition: .2s ease;
 }
 
-/* STATS */
-.stats{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  gap:18px;
-  margin-bottom:32px;
+.side-nav button:hover { background: #f1f5f9; color: #2563eb; }
+.side-nav button.active { background: #eff6ff; color: #2563eb; font-weight: 600; }
+.side-nav button i { width: 18px; text-align: center; font-size: 16px; }
+.side-nav button.logout { color: #ef4444; margin-top: 10px; }
+.side-nav button.logout:hover { background: #fef2f2; }
+
+/* CONTENT AREA */
+.content-area {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  padding: 30px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.03);
 }
 
-.stat{
-  background:rgba(255,255,255,.08);
-  border-radius:18px;
-  padding:18px;
-  text-align:center;
-  box-shadow:0 20px 40px rgba(0,0,0,.35);
+.tab-content { display: none; animation: fadeIn .3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.content-title { font-size: 22px; font-weight: 700; margin-bottom: 24px; color: #0f172a; border-bottom: 2px solid #f1f5f9; padding-bottom: 12px; }
+
+/* WIDGETS */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+.widget {
+  background: linear-gradient(135deg, #f8fafc, #eef2ff);
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid #e0e7ff;
+}
+.widget i { font-size: 24px; color: #2563eb; margin-bottom: 10px; }
+.widget h4 { font-size: 13px; color: #64748b; font-weight: 500; }
+.widget b { font-size: 24px; color: #0f172a; display: block; margin-top: 5px; }
+
+/* ORDERS TABLE */
+.order-list { display: flex; flex-direction: column; gap: 16px; }
+.order-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.order-info h4 { font-size: 15px; color: #0f172a; }
+.order-info p { font-size: 12px; color: #64748b; margin-top: 4px; }
+.order-status {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #dcfce7;
+  color: #166534;
+}
+.order-action {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 500;
 }
 
-.stat h3{
-  font-size:22px;
-  color:#38bdf8;
-}
-.stat span{
-  font-size:13px;
-  color:#cbd5f5;
-}
+/* SETTINGS FORM */
+.form-group { margin-bottom: 18px; }
+.form-group label { display: block; font-size: 13px; font-weight: 500; color: #475569; margin-bottom: 6px; }
+.form-group input { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; outline: none; transition: .2s; }
+.form-group input:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,.1); }
+.btn-save { background: #2563eb; color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; }
 
-/* ACTION GRID */
-.actions{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:22px;
-}
+/* FOOTER */
+footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align:center;font-size:13px;color:#64748b; margin-top: auto;}
 
-.action-card{
-  background:rgba(255,255,255,.08);
-  border-radius:20px;
-  padding:22px;
-  text-decoration:none;
-  color:#fff;
-  transition:.3s ease;
-  box-shadow:0 20px 45px rgba(0,0,0,.4);
-}
-
-.action-card:hover{
-  transform:translateY(-6px);
-  box-shadow:0 30px 70px rgba(0,0,0,.6);
-}
-
-.action-card h4{
-  font-size:18px;
-  margin-bottom:8px;
-}
-.action-card p{
-  font-size:13px;
-  color:#cbd5f5;
-}
-
-/* LOGOUT */
-.logout{
-  margin-top:36px;
-  text-align:center;
-}
-
-.logout button{
-  background:#dc2626;
-  border:none;
-  padding:14px 28px;
-  border-radius:14px;
-  color:#fff;
-  font-size:15px;
-  font-weight:700;
-  cursor:pointer;
-  box-shadow:0 16px 40px rgba(220,38,38,.45);
-}
-
-.logout button:hover{
-  background:#b91c1c;
-}
-
-/* MOBILE */
-@media(max-width:700px){
-  .profile-card{
-    grid-template-columns:1fr;
-    text-align:center;
-  }
-  .avatar{margin:auto}
+/* MOBILE RESPONSIVE */
+@media(max-width: 900px) {
+  .account-container { grid-template-columns: 1fr; margin: 20px auto; }
+  .sidebar { padding: 16px; }
+  .content-area { padding: 20px; }
+  .side-nav { flex-direction: row; overflow-x: auto; padding-bottom: 8px; }
+  .side-nav button { white-space: nowrap; width: auto; padding: 8px 12px; }
+  .side-nav button i { display: none; } /* Hide icons on mobile tabs for space */
 }
 </style>
 </head>
-
 <body>
 
-<div class="account-wrap">
-
-  <!-- HEADER -->
-  <div class="account-header">
-    <h1>👤 My Account</h1>
-    <a href="index.html" class="back-store">← Back to Store</a>
-  </div>
-
-  <!-- PROFILE -->
-  <div class="profile-card">
-    <div class="avatar" id="avatar">U</div>
-
-    <div class="profile-info">
-      <h2 id="userEmail">Loading...</h2>
-      <p>Welcome back to PlayWithEase</p>
-      <span class="badge">Verified User</span>
-    </div>
-  </div>
-
-  <!-- STATS -->
-  <div class="stats">
-    <div class="stat">
-      <h3 id="totalOrders">0</h3>
-      <span>Total Orders</span>
-    </div>
-    <div class="stat">
-      <h3 id="successOrders">0</h3>
-      <span>Completed</span>
-    </div>
-    <div class="stat">
-      <h3>24/7</h3>
-      <span>WhatsApp Support</span>
-    </div>
-  </div>
-
-  <!-- ACTIONS -->
-  <div class="actions">
-    <a href="order-history.html" class="action-card">
-      <h4>📦 My Orders</h4>
-      <p>Track order status, delivery & credentials</p>
+<header>
+  <div class="header-wrap">
+    <a href="index.html" class="logo">
+      <img src="favicon.ico" alt="PlayWithEase">
+      <div>
+        <span class="name">PlayWithEase</span>
+        <span class="tag">Trusted Games & OTT Store</span>
+      </div>
     </a>
-
-    <a href="cart.html" class="action-card">
-      <h4>🛒 My Cart</h4>
-      <p>Continue shopping & checkout securely</p>
-    </a>
-
-    <a href="https://wa.me/917001568884" target="_blank" class="action-card">
-      <h4>💬 Support</h4>
-      <p>Chat with PlayWithEase on WhatsApp</p>
-    </a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="cart.html">🛒 Cart</a>
+    </nav>
   </div>
+</header>
 
-  <!-- LOGOUT -->
-  <div class="logout">
-    <button onclick="logout()">Logout</button>
-  </div>
+<div class="account-container">
+  
+  <aside class="sidebar">
+    <div class="user-profile">
+      <div class="user-avatar">🙎🏻‍♂️</div>
+      <h3 id="display-name">Loading...</h3>
+      <p id="display-email">loading@email.com</p>
+    </div>
+    <div class="side-nav">
+      <button class="active" onclick="switchTab('dashboard')"><i class="fa-solid fa-gauge"></i> Dashboard</button>
+      <button onclick="switchTab('orders')"><i class="fa-solid fa-box-open"></i> My Orders</button>
+      <button onclick="switchTab('subscriptions')"><i class="fa-solid fa-tv"></i> Subscriptions</button>
+      <button onclick="switchTab('settings')"><i class="fa-solid fa-gear"></i> Settings</button>
+      <button class="logout" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+  </aside>
 
+  <main class="content-area">
+    
+    <div id="dashboard" class="tab-content active">
+      <h2 class="content-title">Welcome Back!</h2>
+      <div class="dashboard-grid">
+        <div class="widget">
+          <i class="fa-solid fa-shopping-bag"></i>
+          <h4>Total Orders</h4>
+          <b>0</b>
+        </div>
+        <div class="widget">
+          <i class="fa-solid fa-play-circle"></i>
+          <h4>Active Subscriptions</h4>
+          <b>0</b>
+        </div>
+        <div class="widget">
+          <i class="fa-solid fa-wallet"></i>
+          <h4>Wallet Balance</h4>
+          <b>₹0.00</b>
+        </div>
+      </div>
+      <p style="color:#64748b; font-size:14px; line-height:1.6;">
+        Welcome to your PlayWithEase dashboard. Here you can view your recent purchases, access your game keys, and manage your OTT subscriptions.
+      </p>
+    </div>
+
+    <div id="orders" class="tab-content">
+      <h2 class="content-title">My Orders</h2>
+      <div class="order-list">
+        <div style="text-align:center; padding:40px 20px; background:#f8fafc; border-radius:12px;">
+          <i class="fa-solid fa-receipt" style="font-size:40px; color:#cbd5e1; margin-bottom:12px;"></i>
+          <h4 style="color:#0f172a;">No orders yet</h4>
+          <p style="color:#64748b; font-size:13px; margin-top:8px;">When you buy games or gift cards, they will appear here.</p>
+          <a href="index.html#games" style="display:inline-block; margin-top:16px; color:#2563eb; font-weight:600; text-decoration:none;">Browse Store →</a>
+        </div>
+        
+        </div>
+    </div>
+
+    <div id="subscriptions" class="tab-content">
+      <h2 class="content-title">Active Subscriptions</h2>
+      <div class="order-list">
+         <div style="text-align:center; padding:40px 20px; background:#f8fafc; border-radius:12px;">
+          <i class="fa-solid fa-tv" style="font-size:40px; color:#cbd5e1; margin-bottom:12px;"></i>
+          <h4 style="color:#0f172a;">No active OTT plans</h4>
+          <p style="color:#64748b; font-size:13px; margin-top:8px;">Your Netflix, Prime, and other subscriptions will track here.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="settings" class="tab-content">
+      <h2 class="content-title">Account Settings</h2>
+      <div style="max-width: 500px;">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="settings-name" placeholder="Enter your name">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="settings-email" disabled style="background:#f1f5f9; cursor:not-allowed;">
+          <p style="font-size:11px; color:#64748b; margin-top:4px;">Email cannot be changed once registered.</p>
+        </div>
+        <button class="btn-save" onclick="alert('Profile updated successfully!')">Save Changes</button>
+      </div>
+    </div>
+
+  </main>
 </div>
 
-<!-- FIREBASE AUTH -->
+<footer>
+  © 2026 PlayWithEase <br>
+  Owned & Operated by <strong>SHAYAN AKHTAR</strong>
+</footer>
+
+<script>
+function switchTab(tabId) {
+  // Hide all tabs
+  document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+  // Remove active state from all buttons
+  document.querySelectorAll('.side-nav button').forEach(btn => btn.classList.remove('active'));
+  
+  // Show selected tab
+  document.getElementById(tabId).classList.add('active');
+  // Add active state to clicked button (finds button based on onclick attribute)
+  event.currentTarget.classList.add('active');
+}
+</script>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import {
-  getAuth,
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAxuYwom2tuGTz3Nsi-6ndYSwK7BkEJIVs",
-  authDomain: "playwithease.firebaseapp.com",
-  projectId: "playwithease"
+  authDomain: "playwithease.firebaseapp.com"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const emailEl = document.getElementById("userEmail");
-const avatar = document.getElementById("avatar");
+const userEmailDisplay = document.getElementById("display-email");
+const settingsEmail = document.getElementById("settings-email");
+const userNameDisplay = document.getElementById("display-name");
 
-onAuthStateChanged(auth,user=>{
-  if(!user){
-    window.location.href="login.html";
-    return;
+// Check if user is logged in
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // User is logged in, populate their data
+    userEmailDisplay.textContent = user.email;
+    settingsEmail.value = user.email;
+    
+    // If they have a display name in Firebase, use it, otherwise format the email prefix
+    if(user.displayName) {
+      userNameDisplay.textContent = user.displayName;
+    } else {
+      let emailPrefix = user.email.split('@')[0];
+      userNameDisplay.textContent = emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1);
+    }
+  } else {
+    // NOT logged in -> Kick them to the login page immediately
+    window.location.href = "login.html";
   }
-
-  emailEl.textContent = user.email;
-  avatar.textContent = user.email.charAt(0).toUpperCase();
-
-  const orders = JSON.parse(localStorage.getItem("orders")||"[]");
-  document.getElementById("totalOrders").textContent = orders.length;
-  document.getElementById("successOrders").textContent =
-    orders.filter(o=>o.status==="success").length;
 });
 
-window.logout = function(){
-  signOut(auth).then(()=>{
-    window.location.href="login.html";
+// Logout Button Logic
+document.getElementById("logoutBtn").addEventListener("click", (e) => {
+  e.preventDefault();
+  signOut(auth).then(() => {
+    window.location.href = "login.html";
   });
-};
+});
 </script>
 
 </body>
