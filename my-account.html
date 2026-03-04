@@ -177,14 +177,57 @@ nav a:hover{color:#ffffff}
 /* FOOTER */
 footer{background:#fff;border-top:1px solid #e5e7eb;padding:25px 15px;text-align:center;font-size:13px;color:#64748b; margin-top: auto;}
 
-/* MOBILE RESPONSIVE */
+/* ===== MOBILE RESPONSIVE FIX ===== */
+body {
+  overflow-x: hidden; /* Prevents the whole page from sliding sideways */
+  width: 100%;
+}
+
 @media(max-width: 900px) {
-  .account-container { grid-template-columns: 1fr; margin: 20px auto; }
+  .account-container { 
+    grid-template-columns: 1fr; 
+    margin: 15px auto; 
+    padding: 0 12px; /* Tighter padding for small screens */
+  }
+  
   .sidebar { padding: 16px; }
-  .content-area { padding: 20px; }
-  .side-nav { flex-direction: row; overflow-x: auto; padding-bottom: 8px; }
-  .side-nav button { white-space: nowrap; width: auto; padding: 8px 12px; }
-  .side-nav button i { display: none; } /* Hide icons on mobile tabs for space */
+  .content-area { padding: 18px; }
+  
+  /* Swipeable Horizontal Menu for Mobile */
+  .side-nav { 
+    flex-direction: row; 
+    flex-wrap: nowrap; /* Forces them in one line */
+    overflow-x: auto; /* Allows swiping left/right */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    padding-bottom: 8px;
+    gap: 10px;
+  }
+  
+  /* Hides the ugly scrollbar but keeps the swipe function */
+  .side-nav::-webkit-scrollbar { display: none; }
+  
+  .side-nav button { 
+    white-space: nowrap; 
+    flex-shrink: 0; /* Prevents text from squishing */
+    width: auto; 
+    padding: 8px 14px; 
+    font-size: 13px;
+  }
+  
+  .side-nav button i { display: none; } /* Hide icons to save space */
+  
+  /* Stack dashboard widgets on small screens */
+  .dashboard-grid {
+    grid-template-columns: 1fr; 
+  }
+
+  /* Header adjustments to match your index.html Amazon style */
+  .header-wrap {
+    padding: 12px;
+  }
+  .logo .tag {
+    display: none; /* Hide tagline on mobile to save space */
+  }
 }
 </style>
 </head>
