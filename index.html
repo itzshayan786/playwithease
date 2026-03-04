@@ -822,7 +822,105 @@ nav a[href="#ott"]{
 .card:hover h4{
   color:#2563eb;
 }
-  
+/* ===== GIFT CARD OVERLAY MODAL ===== */
+.gc-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.gc-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.gc-modal {
+  background: #ffffff;
+  width: 90%;
+  max-width: 360px;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+  transform: translateY(20px) scale(0.95);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.gc-overlay.show .gc-modal {
+  transform: translateY(0) scale(1);
+}
+
+.gc-header {
+  background: #f8fafc;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gc-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.gc-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #64748b;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.gc-close:hover { color: #ef4444; }
+
+.gc-body {
+  padding: 20px;
+}
+
+.gc-body p {
+  font-size: 13px;
+  color: #475569;
+  margin-bottom: 16px;
+}
+
+.gc-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.gc-btn {
+  background: #f1f5f9;
+  border: 2px solid transparent;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 700;
+  color: #0f172a;
+  cursor: pointer;
+  transition: 0.2s ease;
+  text-align: center;
+  font-size: 15px;
+}
+
+.gc-btn:hover {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  color: #2563eb;
+}
+
+.gc-btn:active {
+  transform: scale(0.96);
+}
 </style>
 </head>
 
@@ -1070,49 +1168,48 @@ nav a[href="#ott"]{
 </section>
 <section class="section" id="giftcards">
   <h2>🎁 Digital Gift Cards</h2>
-
   <div class="grid">
 
     <a href="product.html?id=steam-wallet" class="card">
-      <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" alt="Steam Wallet">
+      <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg">
       <div class="info">
         <h4>Steam Wallet (Gift Card)</h4>
-        <b>From ₹150</b>
-        <button onclick="event.preventDefault(); addToCart('Steam wALLET (Gift Card)', 150, this)">
-          <span>Add to Cart</span>
+        <b>Custom Amount</b>
+        <button onclick="event.preventDefault(); openGiftCardModal('Steam Wallet (Gift Card)', this)">
+          <span>Select Amount</span>
         </button>
       </div>
     </a>
 
     <a href="product.html?id=psn-card" class="card">
-      <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_logo.svg" alt="PlayStation Store">
+      <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_logo.svg">
       <div class="info">
-        <h4>PlayStation Store (Gift Card)</h4>
-        <b>From ₹500</b>
-        <button onclick="event.preventDefault(); addToCart('PlayStation Store (Gift Card)', 500, this)">
-          <span>Add to Cart</span>
+        <h4>Playstation Store (Gift Card)</h4>
+        <b>Custom Amount</b>
+        <button onclick="event.preventDefault(); openGiftCardModal('Playstation Store (Gift Card)', this)">
+          <span>Select Amount</span>
         </button>
       </div>
     </a>
 
     <a href="product.html?id=xbox-gc" class="card">
-      <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg" alt="Xbox Gift Card">
+      <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg">
       <div class="info">
-        <h4>Xbox Gift Card</h4>
-        <b>From ₹500</b>
-        <button onclick="event.preventDefault(); addToCart('Xbox Gift Card', 500, this)">
-          <span>Add to Cart</span>
+        <h4>Xbox ( Gift Card)</h4>
+        <b>Custom Amount</b>
+        <button onclick="event.preventDefault(); openGiftCardModal('Xbox ( Gift Card)', this)">
+          <span>Select Amount</span>
         </button>
       </div>
     </a>
 
     <a href="product.html?id=google-play" class="card">
-      <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Google_Play_Arrow_logo.svg" alt="Google Play">
+      <img class="ott" src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Google_Play_Arrow_logo.svg">
       <div class="info">
         <h4>Google Play Recharge</h4>
-        <b>From ₹100</b>
-        <button onclick="event.preventDefault(); addToCart('Google Play Recharge', 100, this)">
-          <span>Add to Cart</span>
+        <b>Custom Amount</b>
+        <button onclick="event.preventDefault(); openGiftCardModal('Google Play Recharge', this)">
+          <span>Select Amount</span>
         </button>
       </div>
     </a>
@@ -1619,5 +1716,66 @@ document.getElementById("xboxToggle").onclick = () => {
   renderConsoleGames("xboxGrid", xboxGames, xboxExpanded);
 };
 </script>
+
+<div id="gcModalOverlay" class="gc-overlay" onclick="closeGiftCardModal(event)">
+  <div class="gc-modal" onclick="event.stopPropagation()">
+    <div class="gc-header">
+      <h3>Select Amount</h3>
+      <button class="gc-close" onclick="closeGiftCardModal()">✕</button>
+    </div>
+    <div class="gc-body">
+      <p>Choose the value for your <span id="gcModalName" style="font-weight:700;color:#2563eb"></span>:</p>
+      <div class="gc-options" id="gcOptions">
+        </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== GIFT CARD MODAL LOGIC ===== */
+
+// Define available prices for each card
+const gcPricing = {
+  "Steam Wallet (Gift Card)": [150, 300, 500, 1000, 2500, 5000],
+  "Playstation Store (Gift Card)": [500, 1000, 1500, 2000, 3000, 5000],
+  "Xbox ( Gift Card)": [500, 1000, 2000, 3000, 5000],
+  "Google Play Recharge": [100, 300, 500, 1000, 1500, 2500]
+};
+
+let currentGcBtn = null; 
+
+function openGiftCardModal(name, btnElement) {
+  currentGcBtn = btnElement;
+  const overlay = document.getElementById("gcModalOverlay");
+  const titleName = document.getElementById("gcModalName");
+  const optionsBox = document.getElementById("gcOptions");
+  
+  titleName.innerText = name;
+  optionsBox.innerHTML = ""; 
+  
+  const amounts = gcPricing[name] || [100, 500, 1000]; 
+  
+  amounts.forEach(amount => {
+    const btn = document.createElement("button");
+    btn.className = "gc-btn";
+    btn.innerText = "₹" + amount;
+    
+    btn.onclick = () => {
+      window.addToCart(`${name} - ₹${amount}`, amount, currentGcBtn);
+      closeGiftCardModal();
+    };
+    
+    optionsBox.appendChild(btn);
+  });
+  
+  overlay.classList.add("show");
+}
+
+function closeGiftCardModal(e) {
+  if(e && e.target.id !== "gcModalOverlay") return;
+  document.getElementById("gcModalOverlay").classList.remove("show");
+}
+</script>
+
 </body>
 </html>
