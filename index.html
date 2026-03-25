@@ -2137,5 +2137,26 @@ function setTheme(theme){
   setTheme(savedTheme);
 })();
 </script>
+<script>
+function toggleThemeMenu(e){
+  e.preventDefault();
+  e.stopPropagation();
+
+  const menu = document.getElementById("themeDropdown");
+  if(menu){
+    menu.classList.toggle("show");
+  }
+}
+
+/* close theme menu on outside click */
+document.addEventListener("click", function(e){
+  const themeDropdown = document.getElementById("themeDropdown");
+  const themeParent = document.querySelector(".theme-parent");
+
+  if(themeDropdown && themeParent && !themeParent.contains(e.target)){
+    themeDropdown.classList.remove("show");
+  }
+});
+</script>
 </body>
 </html>
