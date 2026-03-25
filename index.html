@@ -2331,7 +2331,7 @@ function closeGiftCardModal(e) {
 function setTheme(theme){
   const body = document.body;
 
-  // remove old theme classes
+  // remove all previous theme classes
   body.classList.remove(
     "theme-light",
     "theme-dark",
@@ -2340,22 +2340,33 @@ function setTheme(theme){
     "theme-emerald"
   );
 
-  // add selected theme
+  // apply selected theme
   body.classList.add("theme-" + theme);
 
-  // save theme
+  // save selected theme
   localStorage.setItem("pwe_theme", theme);
 
-  // close theme dropdown after selection
+  // close theme dropdown
   document.getElementById("themeDropdown")?.classList.remove("show");
+
+  console.log("Theme applied:", theme, body.className);
 }
 
 document.addEventListener("DOMContentLoaded", function(){
   const savedTheme = localStorage.getItem("pwe_theme") || "light";
-  setTheme(savedTheme);
+  document.body.classList.remove(
+    "theme-light",
+    "theme-dark",
+    "theme-ocean",
+    "theme-purple",
+    "theme-emerald"
+  );
+  document.body.classList.add("theme-" + savedTheme);
 
-  // keep theme list hidden initially
+  // keep theme dropdown hidden on load
   document.getElementById("themeDropdown")?.classList.remove("show");
+
+  console.log("Theme loaded:", savedTheme, document.body.className);
 });
 </script>
 <script>
