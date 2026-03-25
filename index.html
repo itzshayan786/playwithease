@@ -1164,7 +1164,7 @@ footer{
   margin-top:4px;
 }
 /* =========================
-   WORKING THEME DROPDOWN
+   FINAL WORKING THEME MENU
 ========================= */
 .theme-parent{
   width:100%;
@@ -1186,14 +1186,19 @@ footer{
 }
 
 .theme-dropdown{
-  display:none;
+  display:none !important;
+  max-height:0;
+  overflow:hidden;
   background:rgba(0,0,0,.03);
   border-top:1px solid var(--border);
-  padding:6px 0;
+  transition:all .25s ease;
+  padding:0;
 }
 
 .theme-dropdown.show{
-  display:block;
+  display:block !important;
+  max-height:500px;
+  padding:6px 0;
 }
 
 .theme-option{
@@ -1216,96 +1221,76 @@ footer{
 <body class="theme-light">
 
 <header>
-<div class="header-wrap">
-  <div class="logo">
-    <img src="favicon.ico">
-    <div>
-      <span class="name">PlayWithEase</span>
-      <span class="tag">Trusted Games & OTT Store</span>
-    </div>
-  </div>
-  <nav>
-  <a href="#games">Games</a>
-  <a href="#ott">OTT</a>
-  <a href="#giftcards">Gift Cards</a>
-
-  <a href="cart.html">
-    🛒 Cart <span id="cartCount" class="cart-count">0</span>
-  </a>
-
-  <!-- USER EMAIL -->
-  <span id="userEmail" style="font-weight:600; display:none"></span>
-
-  <!-- LOGIN -->
-  <a href="login.html" id="loginBtn">Login</a>
-
-  <!-- LOGOUT (hidden, JS use karega) -->
-  <a href="#" id="logoutBtn" style="display:none">Logout</a>
-
-  <!-- PROFILE -->
-  <div class="profile-wrap" id="profileWrap" style="display:none">
-    <div class="profile-btn" onclick="toggleProfile()">
-      <span class="avatar" style="margin-left:3px;">🙎🏻‍♂️</span>
+  <div class="header-wrap">
+    <div class="logo">
+      <img src="favicon.ico">
+      <div>
+        <span class="name">PlayWithEase</span>
+        <span class="tag">Trusted Games & OTT Store</span>
+      </div>
     </div>
 
-    <div class="profile-menu" id="profileMenu">
-      <a href="my-account.html">My Account</a>
-      <a href="order-history.html">Order History</a>
+    <nav>
+      <a href="#games">Games</a>
+      <a href="#ott">OTT</a>
+      <a href="#giftcards">Gift Cards</a>
 
-      <div class="theme-parent">
-  <a href="#" class="theme-main" onclick="toggleThemeMenu(event)">
-    Theme ▼
-  </a>
+      <a href="cart.html">
+        🛒 Cart <span id="cartCount" class="cart-count">0</span>
+      </a>
 
-  <div class="theme-dropdown" id="themeDropdown">
-    <a href="#" class="theme-option" onclick="setTheme('light'); return false;">
-      <span class="theme-dot" style="background:#2563eb"></span> Default Blue
-    </a>
+      <!-- USER EMAIL -->
+      <span id="userEmail" style="font-weight:600; display:none"></span>
 
-    <a href="#" class="theme-option" onclick="setTheme('dark'); return false;">
-      <span class="theme-dot" style="background:#111827"></span> Night Ops
-    </a>
+      <!-- LOGIN -->
+      <a href="login.html" id="loginBtn">Login</a>
 
-    <a href="#" class="theme-option" onclick="setTheme('ocean'); return false;">
-      <span class="theme-dot" style="background:#06b6d4"></span> Neon Core
-    </a>
+      <!-- LOGOUT (hidden, JS use karega) -->
+      <a href="#" id="logoutBtn" style="display:none">Logout</a>
 
-    <a href="#" class="theme-option" onclick="setTheme('purple'); return false;">
-      <span class="theme-dot" style="background:#9333ea"></span> Royal Pulse
-    </a>
+      <!-- PROFILE -->
+      <div class="profile-wrap" id="profileWrap" style="display:none">
+        <div class="profile-btn" onclick="toggleProfile()">
+          <span class="avatar" style="margin-left:3px;">🙎🏻‍♂️</span>
+        </div>
 
-    <a href="#" class="theme-option" onclick="setTheme('emerald'); return false;">
-      <span class="theme-dot" style="background:#10b981"></span> Toxic Zone
-    </a>
+        <div class="profile-menu" id="profileMenu">
+          <a href="my-account.html">My Account</a>
+          <a href="order-history.html">Order History</a>
+
+          <div class="theme-parent">
+            <a href="#" class="theme-main" onclick="toggleThemeMenu(event)">
+              Theme ▼
+            </a>
+
+            <div class="theme-dropdown" id="themeDropdown">
+              <a href="#" class="theme-option" onclick="setTheme('light'); return false;">
+                <span class="theme-dot" style="background:#2563eb"></span> Default Blue
+              </a>
+
+              <a href="#" class="theme-option" onclick="setTheme('dark'); return false;">
+                <span class="theme-dot" style="background:#111827"></span> Night Ops
+              </a>
+
+              <a href="#" class="theme-option" onclick="setTheme('ocean'); return false;">
+                <span class="theme-dot" style="background:#06b6d4"></span> Neon Core
+              </a>
+
+              <a href="#" class="theme-option" onclick="setTheme('purple'); return false;">
+                <span class="theme-dot" style="background:#9333ea"></span> Royal Pulse
+              </a>
+
+              <a href="#" class="theme-option" onclick="setTheme('emerald'); return false;">
+                <span class="theme-dot" style="background:#10b981"></span> Toxic Zone
+              </a>
+            </div>
+          </div>
+
+          <a href="#" onclick="firebaseLogout()">Logout</a>
+        </div>
+      </div>
+    </nav>
   </div>
-</div>
-    <a href="#" class="theme-option" onclick="setTheme('light'); return false;">
-      <span class="theme-dot" style="background:#2563eb"></span> Default Blue
-    </a>
-
-    <a href="#" class="theme-option" onclick="setTheme('dark'); return false;">
-      <span class="theme-dot" style="background:#111827"></span> Night Ops
-    </a>
-
-    <a href="#" class="theme-option" onclick="setTheme('ocean'); return false;">
-      <span class="theme-dot" style="background:#06b6d4"></span> Neon Core
-    </a>
-
-    <a href="#" class="theme-option" onclick="setTheme('purple'); return false;">
-      <span class="theme-dot" style="background:#9333ea"></span> Royal Pulse
-    </a>
-
-    <a href="#" class="theme-option" onclick="setTheme('emerald'); return false;">
-      <span class="theme-dot" style="background:#10b981"></span> Toxic Zone
-    </a>
-  </div>
-</div>
-      <a href="#" onclick="firebaseLogout()">Logout</a>
-    </div>
-  </div>
-</nav>
-
-</div>
 </header>
 
 <section class="hero">
