@@ -1164,10 +1164,10 @@ footer{
   margin-top:4px;
 }
 /* =========================
-   NESTED THEME DROPDOWN
+   WORKING THEME DROPDOWN
 ========================= */
 .theme-parent{
-  position:relative;
+  width:100%;
 }
 
 .theme-main{
@@ -1177,6 +1177,7 @@ footer{
   text-decoration:none;
   color:var(--text) !important;
   cursor:pointer;
+  user-select:none;
 }
 
 .theme-main:hover{
@@ -1185,34 +1186,21 @@ footer{
 }
 
 .theme-dropdown{
-  position:absolute;
-  top:0;
-  left:100%;
-  min-width:210px;
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:12px;
-  box-shadow:0 18px 40px rgba(0,0,0,.18);
-  overflow:hidden;
-
-  opacity:0;
-  transform:translateX(10px);
-  pointer-events:none;
-  transition:.25s ease;
-  z-index:10000;
+  display:none;
+  background:rgba(0,0,0,.03);
+  border-top:1px solid var(--border);
+  padding:6px 0;
 }
 
 .theme-dropdown.show{
-  opacity:1;
-  transform:translateX(0);
-  pointer-events:auto;
+  display:block;
 }
 
 .theme-option{
   display:flex !important;
   align-items:center;
   gap:10px;
-  padding:12px 14px;
+  padding:11px 18px;
   text-decoration:none;
   color:var(--text) !important;
   font-size:14px;
@@ -1221,16 +1209,6 @@ footer{
 .theme-option:hover{
   background:var(--primary-soft);
   color:var(--primary) !important;
-}
-
-/* Mobile fix */
-@media (max-width:768px){
-  .theme-dropdown{
-    left:auto;
-    right:0;
-    top:100%;
-    margin-top:6px;
-  }
 }
 </style>
 </head>
@@ -1276,10 +1254,31 @@ footer{
 
       <div class="theme-parent">
   <a href="#" class="theme-main" onclick="toggleThemeMenu(event)">
-    Theme ▸
+    Theme ▼
   </a>
 
   <div class="theme-dropdown" id="themeDropdown">
+    <a href="#" class="theme-option" onclick="setTheme('light'); return false;">
+      <span class="theme-dot" style="background:#2563eb"></span> Default Blue
+    </a>
+
+    <a href="#" class="theme-option" onclick="setTheme('dark'); return false;">
+      <span class="theme-dot" style="background:#111827"></span> Night Ops
+    </a>
+
+    <a href="#" class="theme-option" onclick="setTheme('ocean'); return false;">
+      <span class="theme-dot" style="background:#06b6d4"></span> Neon Core
+    </a>
+
+    <a href="#" class="theme-option" onclick="setTheme('purple'); return false;">
+      <span class="theme-dot" style="background:#9333ea"></span> Royal Pulse
+    </a>
+
+    <a href="#" class="theme-option" onclick="setTheme('emerald'); return false;">
+      <span class="theme-dot" style="background:#10b981"></span> Toxic Zone
+    </a>
+  </div>
+</div>
     <a href="#" class="theme-option" onclick="setTheme('light'); return false;">
       <span class="theme-dot" style="background:#2563eb"></span> Default Blue
     </a>
