@@ -921,6 +921,248 @@ nav a[href="#ott"]{
 .gc-btn:active {
   transform: scale(0.96);
 }
+/* =========================
+   GLOBAL THEME SYSTEM
+========================= */
+:root{
+  --bg:#f8fafc;
+  --surface:#ffffff;
+  --surface-2:#eef2ff;
+  --text:#0f172a;
+  --muted:#475569;
+  --primary:#2563eb;
+  --primary-dark:#1d4ed8;
+  --primary-soft:#dbeafe;
+  --border:#e5e7eb;
+  --header:#3b82f6;
+  --header-border:#2563eb;
+  --header-text:#ffffff;
+  --tag:#e0e7ff;
+  --success:#16a34a;
+  --shadow:0 14px 30px rgba(0,0,0,.10);
+}
+
+/* THEMES */
+body.theme-light{
+  --bg:#f8fafc;
+  --surface:#ffffff;
+  --surface-2:#eef2ff;
+  --text:#0f172a;
+  --muted:#475569;
+  --primary:#2563eb;
+  --primary-dark:#1d4ed8;
+  --primary-soft:#dbeafe;
+  --border:#e5e7eb;
+  --header:#3b82f6;
+  --header-border:#2563eb;
+  --header-text:#ffffff;
+  --tag:#e0e7ff;
+  --success:#16a34a;
+}
+
+body.theme-dark{
+  --bg:#0b1220;
+  --surface:#111827;
+  --surface-2:#172033;
+  --text:#f8fafc;
+  --muted:#94a3b8;
+  --primary:#60a5fa;
+  --primary-dark:#3b82f6;
+  --primary-soft:#1e3a8a;
+  --border:#243041;
+  --header:#0f172a;
+  --header-border:#1e293b;
+  --header-text:#f8fafc;
+  --tag:#93c5fd;
+  --success:#22c55e;
+}
+
+body.theme-ocean{
+  --bg:#ecfeff;
+  --surface:#ffffff;
+  --surface-2:#cffafe;
+  --text:#083344;
+  --muted:#155e75;
+  --primary:#0891b2;
+  --primary-dark:#0e7490;
+  --primary-soft:#a5f3fc;
+  --border:#bae6fd;
+  --header:#06b6d4;
+  --header-border:#0891b2;
+  --header-text:#ffffff;
+  --tag:#cffafe;
+  --success:#14b8a6;
+}
+
+body.theme-purple{
+  --bg:#faf5ff;
+  --surface:#ffffff;
+  --surface-2:#f3e8ff;
+  --text:#3b0764;
+  --muted:#6b21a8;
+  --primary:#9333ea;
+  --primary-dark:#7e22ce;
+  --primary-soft:#e9d5ff;
+  --border:#e9d5ff;
+  --header:#a855f7;
+  --header-border:#9333ea;
+  --header-text:#ffffff;
+  --tag:#f3e8ff;
+  --success:#22c55e;
+}
+
+body.theme-emerald{
+  --bg:#ecfdf5;
+  --surface:#ffffff;
+  --surface-2:#d1fae5;
+  --text:#064e3b;
+  --muted:#065f46;
+  --primary:#10b981;
+  --primary-dark:#059669;
+  --primary-soft:#a7f3d0;
+  --border:#bbf7d0;
+  --header:#10b981;
+  --header-border:#059669;
+  --header-text:#ffffff;
+  --tag:#d1fae5;
+  --success:#16a34a;
+}
+
+/* APPLY THEME */
+body{
+  background:var(--bg);
+  color:var(--text);
+  transition:background .25s ease, color .25s ease;
+}
+
+header{
+  background:var(--header) !important;
+  border-bottom:1px solid var(--header-border) !important;
+}
+
+.logo .name,
+nav a,
+nav span,
+#loginBtn,
+#logoutBtn{
+  color:var(--header-text) !important;
+}
+
+.logo .tag,
+#userEmail{
+  color:var(--tag) !important;
+}
+
+.hero{
+  background:linear-gradient(180deg,var(--bg),var(--surface-2)) !important;
+}
+
+.hero h1 span,
+.card b,
+.trustpilot-review a:hover,
+nav a:hover{
+  color:var(--primary) !important;
+}
+
+.card,
+.gc-modal,
+#ai-chat-box,
+footer,
+.trustpilot-review a,
+.section > div[style*="background:#fff"]{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+  color:var(--text) !important;
+}
+
+.card p,
+.hero p,
+.gc-body p,
+footer{
+  color:var(--muted) !important;
+}
+
+.search-wrap input,
+.ai-input input{
+  background:var(--surface);
+  color:var(--text);
+  border:1px solid var(--border);
+}
+
+.btn.primary,
+.card button,
+.show-more-wrap button,
+.ai-input button,
+#ai-chat-btn,
+.profile-btn{
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark)) !important;
+  color:#fff !important;
+}
+
+.btn.secondary{
+  border:1px solid var(--border) !important;
+  color:var(--primary) !important;
+  background:var(--surface) !important;
+}
+
+.ai-header{
+  background:var(--primary) !important;
+}
+
+.ai-msg.ai{
+  background:var(--primary-soft) !important;
+  color:var(--text) !important;
+}
+
+.ai-msg.user{
+  background:var(--primary) !important;
+  color:#fff !important;
+}
+
+.cart-count{
+  background:#fff !important;
+  color:var(--primary) !important;
+}
+
+.profile-menu,
+.profile-dropdown{
+  background:var(--surface) !important;
+  border:1px solid var(--border) !important;
+}
+
+.profile-menu a,
+.profile-dropdown a{
+  color:var(--text) !important;
+}
+
+.profile-menu a:hover,
+.profile-dropdown a:hover{
+  background:var(--primary-soft) !important;
+  color:var(--primary) !important;
+}
+
+/* Theme option style */
+.theme-option{
+  display:flex !important;
+  align-items:center;
+  gap:10px;
+  cursor:pointer;
+}
+
+.theme-dot{
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  border:2px solid rgba(255,255,255,.4);
+  box-shadow:0 0 0 1px rgba(0,0,0,.08);
+  flex-shrink:0;
+}
+
+.theme-submenu{
+  border-top:1px solid var(--border);
+  padding-top:6px;
+  margin-top:4px;
+}
 </style>
 </head>
 
