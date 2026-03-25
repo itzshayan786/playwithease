@@ -1166,7 +1166,7 @@ footer{
 </style>
 </head>
 
-<body>
+<<body class="theme-light">>
 
 <header>
 <div class="header-wrap">
@@ -2037,6 +2037,29 @@ function closeGiftCardModal(e) {
   document.getElementById("gcModalOverlay").classList.remove("show");
 }
 </script>
+<script>
+/* =========================
+   THEME CHANGER
+========================= */
+function setTheme(theme){
+  const body = document.body;
 
+  body.classList.remove(
+    "theme-light",
+    "theme-dark",
+    "theme-ocean",
+    "theme-purple",
+    "theme-emerald"
+  );
+
+  body.classList.add("theme-" + theme);
+  localStorage.setItem("pwe_theme", theme);
+}
+
+(function loadSavedTheme(){
+  const savedTheme = localStorage.getItem("pwe_theme") || "light";
+  setTheme(savedTheme);
+})();
+</script>
 </body>
 </html>
