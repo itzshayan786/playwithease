@@ -1259,6 +1259,188 @@ footer{
   background:var(--primary-soft);
   color:var(--primary) !important;
 }
+/* =========================================
+   FINAL FORCE THEME PATCH (PASTE AT VERY END)
+========================================= */
+
+/* Base body */
+body{
+  background:var(--bg) !important;
+  color:var(--text) !important;
+  transition:background .25s ease, color .25s ease;
+}
+
+/* Header */
+header{
+  background:var(--header) !important;
+  border-bottom:1px solid var(--header-border) !important;
+}
+
+/* Header texts */
+.logo .name,
+nav a,
+nav span,
+#loginBtn,
+#logoutBtn{
+  color:var(--header-text) !important;
+}
+
+.logo .tag,
+#userEmail{
+  color:var(--tag) !important;
+}
+
+/* Hero */
+.hero{
+  background:linear-gradient(180deg,var(--bg),var(--surface-2)) !important;
+}
+
+.hero h1{
+  color:var(--text) !important;
+}
+
+.hero h1 span{
+  color:var(--primary) !important;
+}
+
+.hero p{
+  color:var(--muted) !important;
+}
+
+/* Hero right launch card */
+.hero > div:last-child{
+  background:var(--surface) !important;
+  color:var(--text) !important;
+  border:1px solid var(--border) !important;
+}
+
+.hero > div:last-child p,
+.hero > div:last-child ul{
+  color:var(--muted) !important;
+}
+
+/* Buttons */
+.btn.primary,
+.card button,
+.show-more-wrap button,
+.ai-input button,
+#ai-chat-btn,
+.profile-btn{
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark)) !important;
+  color:#fff !important;
+}
+
+.btn.secondary{
+  background:var(--surface) !important;
+  color:var(--primary) !important;
+  border:1px solid var(--border) !important;
+}
+
+/* Search */
+.search-wrap input,
+.ai-input input{
+  background:var(--surface) !important;
+  color:var(--text) !important;
+  border:1px solid var(--border) !important;
+}
+
+/* Trust pills */
+.trust-bar span,
+.trustpilot-review a{
+  background:var(--surface) !important;
+  border:1px solid var(--border) !important;
+  color:var(--text) !important;
+}
+
+/* Sections */
+.section h2{
+  color:var(--text) !important;
+}
+
+/* Cards */
+.card{
+  background:var(--surface) !important;
+  border:1px solid var(--border) !important;
+  color:var(--text) !important;
+}
+
+.card h4{
+  color:var(--text) !important;
+}
+
+.card p{
+  color:var(--muted) !important;
+}
+
+.card b{
+  color:var(--primary) !important;
+}
+
+/* OTT cards too */
+.card .ott{
+  background:var(--surface) !important;
+}
+
+/* Footer */
+footer{
+  background:var(--surface) !important;
+  border-top:1px solid var(--border) !important;
+  color:var(--muted) !important;
+}
+
+/* Profile dropdown */
+.profile-menu,
+.profile-dropdown{
+  background:var(--surface) !important;
+  border:1px solid var(--border) !important;
+}
+
+.profile-menu a,
+.profile-dropdown a,
+.theme-main,
+.theme-option{
+  color:var(--text) !important;
+}
+
+.profile-menu a:hover,
+.profile-dropdown a:hover,
+.theme-main:hover,
+.theme-option:hover{
+  background:var(--primary-soft) !important;
+  color:var(--primary) !important;
+}
+
+/* Theme nested dropdown */
+.theme-dropdown{
+  background:rgba(0,0,0,.03) !important;
+  border-top:1px solid var(--border) !important;
+}
+
+/* Cart badge */
+.cart-count{
+  background:#fff !important;
+  color:var(--primary) !important;
+}
+
+/* AI chat */
+#ai-chat-box{
+  background:var(--surface) !important;
+  border:1px solid var(--border) !important;
+}
+
+.ai-header{
+  background:var(--primary) !important;
+}
+
+.ai-msg.ai{
+  background:var(--primary-soft) !important;
+  color:var(--text) !important;
+}
+
+.ai-msg.user{
+  background:var(--primary) !important;
+  color:#fff !important;
+}
 </style>
 </head>
 
