@@ -2116,6 +2116,7 @@ function closeGiftCardModal(e) {
 /* =========================
    THEME CHANGER
 ========================= */
+<script>
 function setTheme(theme){
   const body = document.body;
 
@@ -2129,6 +2130,9 @@ function setTheme(theme){
 
   body.classList.add("theme-" + theme);
   localStorage.setItem("pwe_theme", theme);
+
+  // theme dropdown close after selection
+  document.getElementById("themeDropdown")?.classList.remove("show");
 }
 
 (function loadSavedTheme(){
@@ -2146,16 +2150,6 @@ function toggleThemeMenu(e){
     menu.classList.toggle("show");
   }
 }
-
-/* close theme menu on outside click */
-document.addEventListener("click", function(e){
-  const themeDropdown = document.getElementById("themeDropdown");
-  const themeParent = document.querySelector(".theme-parent");
-
-  if(themeDropdown && themeParent && !themeParent.contains(e.target)){
-    themeDropdown.classList.remove("show");
-  }
-});
 </script>
 </body>
 </html>
